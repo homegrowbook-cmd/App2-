@@ -31,23 +31,31 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 
 ---
 
-## Phase 2 – Audio & Interaktion (v2.0)
+## Phase 2 – Audio & Interaktion (v2.0) ✅ *Abgeschlossen*
+
+> **Abgeschlossen** – Alle v2-Features sind live in `index.html` integriert.
 
 **Ziel:** Hör- und Sprachkompetenz verbessern
 
-### Geplante Features
-- [ ] **Web Speech API Integration** – Text-to-Speech für alle Vokabeln (brasilianisches Portugiesisch)
-- [ ] **Aussprache-Übungen** – Mikrofon-Input, Vergleich mit Zielaussprache
-- [ ] **Hörverständnis-Quiz** – Audio abspielen, richtiges Wort tippen/wählen
-- [ ] **Tipp-Übungen** – Wort eintippen statt Multiple Choice
-- [ ] **Lernpfad-System** – Sequenzieller Fortschritt (A1 → A2 → B1)
-- [ ] **Fehler-Analyse** – Häufig falsch gemachte Wörter gezielt üben
-- [ ] **Grammatik-Karten** – Kurze Grammatikregeln mit Beispielen (Genus, Konjugation)
+### Features
+- [x] **Web Speech API (TTS)** – 🔊 Sprechen-Button auf Karteikarten, Wort-des-Tages und Fehler-Analyse
+- [x] **Hörverständnis-Quiz** – TTS spielt Wort ab, Nutzer wählt richtige Übersetzung aus 4 Optionen
+- [x] **Tipp-Übungen** – Wort eintippen statt Multiple Choice (mit Akzent-Normalisierung)
+- [x] **Fehler-Analyse** – Häufig falsch gemachte Wörter im Fortschrittsbildschirm anzeigen
+- [x] **Grammatik-Karten** – 7 aufklappbare Grammatikthemen (neuer Tab):
+  - Artikel (o/a, um/uma)
+  - Ser vs. Estar
+  - Zahlen 1–20
+  - Regelmäßige -ar Verben (Präsens)
+  - Aussprache-Tipps für brasilianisches Portugiesisch
+  - Essenzielle Gesprächsphrasen
+  - Präpositionen & Ortsangaben
+- [x] **Lernpfad-System** – A1/A2 Level-Badges auf allen Kategorien
 
 ### Technische Erweiterungen
-- Service Worker für Offline-Nutzung (PWA)
-- Web App Manifest (installierbar auf Smartphone)
-- IndexedDB für größere Datensätze
+- [x] **Service Worker** – Offline-Nutzung (PWA) via `service-worker.js`
+- [x] **Web App Manifest** – App installierbar auf Smartphone via `manifest.json`
+- [ ] IndexedDB für größere Datensätze *(für v3.0 verschoben)*
 
 ---
 
@@ -63,6 +71,7 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 - [ ] **Thematische Geschichten** – Kurze Texte auf Portugiesisch mit Vokabel-Highlighting
 - [ ] **Kulturelle Lektionen** – Brasilianische Feste, Küche, Musik, Slang
 - [ ] **Leistungsnachweise** – Level-Tests, Zertifikate (A1, A2)
+- [ ] **IndexedDB** – Größere Datensätze effizient speichern
 
 ---
 
@@ -80,25 +89,23 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 
 ---
 
-## Technische Architektur (Langfristig)
+## Technische Architektur
 
 ```
 LinguaBrasil/
-├── index.html          # Haupt-App (MVP: alles in einer Datei)
+├── index.html          # Haupt-App (v2.0: alle Features in einer Datei)
+├── manifest.json       # PWA Manifest ✅
+├── service-worker.js   # Offline-Support ✅
 ├── ANALYSIS.md         # App-Analyse & Methodik-Forschung
 ├── ROADMAP.md          # Diese Roadmap
-├── v2/                 # Zukünftige Version
-│   ├── index.html
-│   ├── app.js
-│   ├── styles.css
-│   ├── data/
-│   │   ├── vocab-pt-de.json
-│   │   ├── vocab-pt-en.json
-│   │   └── grammar.json
-│   └── audio/          # Audiodateien (TTS-generiert)
-└── pwa/
-    ├── manifest.json
-    └── service-worker.js
+└── v3/                 # Zukünftige Version (v3.0)
+    ├── index.html
+    ├── app.js
+    ├── styles.css
+    └── data/
+        ├── vocab-pt-de.json
+        ├── vocab-pt-en.json
+        └── grammar.json
 ```
 
 ---
@@ -108,22 +115,26 @@ LinguaBrasil/
 ```
 1. SRS + tägliche Wiederholung    → IMPLEMENTIERT ✅
 2. Gamification (XP, Streaks)     → IMPLEMENTIERT ✅
-3. Strukturierter Lehrplan        → IMPLEMENTIERT ✅ (8 Kategorien)
+3. Strukturierter Lehrplan        → IMPLEMENTIERT ✅ (8 Kategorien, A1/A2)
 4. Multiple-Choice Übungen        → IMPLEMENTIERT ✅
-5. Aussprache / Audio             → Phase 2 🔜
-6. Schreib-Übungen                → Phase 2 🔜
-7. Grammatik-Lektionen            → Phase 3 🔜
-8. KI-Konversation                → Phase 4 🔜
+5. Aussprache / Audio (TTS)       → IMPLEMENTIERT ✅ (v2.0)
+6. Schreib-Übungen (Tippen)       → IMPLEMENTIERT ✅ (v2.0)
+7. Hörverständnis-Quiz            → IMPLEMENTIERT ✅ (v2.0)
+8. Fehler-Analyse                 → IMPLEMENTIERT ✅ (v2.0)
+9. Grammatik-Karten               → IMPLEMENTIERT ✅ (v2.0)
+10. PWA (Offline, Installierbar)  → IMPLEMENTIERT ✅ (v2.0)
+11. Grammatik-Lektionen (Detail)  → Phase 3 🔜
+12. KI-Konversation               → Phase 4 🔜
 ```
 
 ---
 
-## Zeitplan (Schätzung)
+## Zeitplan
 
 | Phase | Dauer | Status |
 |-------|-------|--------|
 | v1.0 MVP | 1–2 Tage | ✅ Fertig |
-| v2.0 Audio & Interaktion | 2–3 Wochen | 🔜 Geplant |
+| v2.0 Audio & Interaktion | 2–3 Wochen | ✅ Fertig |
 | v3.0 Vollständiger Lehrplan | 4–6 Wochen | 🔜 Geplant |
 | v4.0 Social & KI | 2–3 Monate | 🔜 Geplant |
 
@@ -136,3 +147,5 @@ LinguaBrasil/
 - **Streak-Länge** (Ziel: >7 Tage Durchschnitt)
 - **Vokabeln bis Level 5** (Mastery Rate)
 - **Genauigkeitsrate** im Quiz-Modus (Ziel: >70%)
+- **Tipp-Übungen Genauigkeit** (Ziel: >60%)
+- **PWA-Installationsrate** (Neue Metrik ab v2.0)
