@@ -2,12 +2,15 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>LinguaBrasil – Brasilianisches Portugiesisch lernen</title>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#002776" />
+  <!-- iOS PWA -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="LinguaBrasil" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
   <style>
     /* ─── CSS Variables & Reset ───────────────────────────────────────────── */
     :root {
@@ -879,9 +882,61 @@
     /* ─── Utility Classes ───────────────────────────────────────────────────── */
     .mb-16 { margin-bottom: 16px; }
     .hidden { display: none !important; }
+
+    /* ─── iOS Install Banner ─────────────────────────────────────────────── */
+    #ios-install-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: linear-gradient(135deg, var(--blue) 0%, #1a4a9e 100%);
+      color: #fff;
+      padding: 12px 16px 16px;
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
+      box-shadow: 0 -4px 20px rgba(0,39,118,0.3);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.9rem;
+    }
+    #ios-install-banner .ios-banner-icon { font-size: 2rem; flex-shrink: 0; }
+    #ios-install-banner .ios-banner-text { flex: 1; }
+    #ios-install-banner .ios-banner-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
+    #ios-install-banner .ios-banner-steps { opacity: 0.9; font-size: 0.82rem; line-height: 1.5; }
+    #ios-install-banner .ios-banner-close {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: #fff;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      font-size: 1rem;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Safe area padding for notch/home-indicator on iOS */
+    #app {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
   </style>
 </head>
 <body>
+
+  <!-- ── iOS Install Banner (shown only on iOS Safari, not in standalone mode) ── -->
+  <div id="ios-install-banner" class="hidden">
+    <span class="ios-banner-icon">📲</span>
+    <div class="ios-banner-text">
+      <div class="ios-banner-title">App zum Home-Bildschirm hinzufügen</div>
+      <div class="ios-banner-steps">
+        Tippe auf <strong>Teilen</strong> <span style="font-size:1.1em">⬆️</span> → <strong>„Zum Home-Bildschirm"</strong> → so startet LinguaBrasil wie eine App.
+      </div>
+    </div>
+    <button class="ios-banner-close" id="ios-banner-close-btn" aria-label="Schließen">✕</button>
+  </div>
 <div id="app">
 
   <!-- ── Header ─────────────────────────────────────────────── -->
@@ -2291,6 +2346,21 @@ const App = (() => {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js').catch(err => {
         console.info('LinguaBrasil: Service Worker nicht verfügbar – Offline-Modus deaktiviert.', err);
+      });
+    }
+
+    // iOS "Add to Home Screen" banner
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isStandalone = window.navigator.standalone === true;
+    const bannerDismissed = localStorage.getItem('iosBannerDismissed') === '1';
+    if (isIOS && !isStandalone && !bannerDismissed) {
+      document.getElementById('ios-install-banner').classList.remove('hidden');
+    }
+    const closeBannerBtn = document.getElementById('ios-banner-close-btn');
+    if (closeBannerBtn) {
+      closeBannerBtn.addEventListener('click', () => {
+        document.getElementById('ios-install-banner').classList.add('hidden');
+        localStorage.setItem('iosBannerDismissed', '1');
       });
     }
 
