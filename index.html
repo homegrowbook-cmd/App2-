@@ -956,17 +956,27 @@
   <!-- HOME -->
   <div class="view active" id="view-home">
 
-    <p class="section-title mb-16" style="margin-top:4px">Lernsprache wählen / Choose your language</p>
+    <p class="section-title mb-16" style="margin-top:4px">Lernrichtung wählen / Choose learning direction</p>
     <div class="lang-selector">
       <button class="lang-btn" id="lang-de" onclick="App.setLang('de')">
         <span class="lang-flag">🇩🇪</span>
         <span>Deutsch</span>
-        <span style="font-size:0.72rem;color:var(--text-2);font-weight:500">→ Português</span>
+        <span style="font-size:0.72rem;color:var(--text-2);font-weight:500">→ 🇧🇷</span>
       </button>
       <button class="lang-btn" id="lang-en" onclick="App.setLang('en')">
         <span class="lang-flag">🇬🇧</span>
         <span>English</span>
-        <span style="font-size:0.72rem;color:var(--text-2);font-weight:500">→ Português</span>
+        <span style="font-size:0.72rem;color:var(--text-2);font-weight:500">→ 🇧🇷</span>
+      </button>
+      <button class="lang-btn" id="lang-pt-de" onclick="App.setLang('pt-de')">
+        <span class="lang-flag">🇧🇷</span>
+        <span>Português</span>
+        <span style="font-size:0.72rem;color:var(--text-2);font-weight:500">→ 🇩🇪</span>
+      </button>
+      <button class="lang-btn" id="lang-pt-en" onclick="App.setLang('pt-en')">
+        <span class="lang-flag">🇧🇷</span>
+        <span>Português</span>
+        <span style="font-size:0.72rem;color:var(--text-2);font-weight:500">→ 🇬🇧</span>
       </button>
     </div>
 
@@ -1269,6 +1279,10 @@ const CATEGORIES = [
   { id: 'family',    icon: '👨‍👩‍👧', level: 'A1', name: { de: 'Familie',      en: 'Family'    } },
   { id: 'days',      icon: '📅', level: 'A1', name: { de: 'Wochentage',    en: 'Days'      } },
   { id: 'verbs',     icon: '⚡', level: 'A2', name: { de: 'Verben',        en: 'Verbs'     } },
+  { id: 'body',      icon: '🧍', level: 'A1', name: { de: 'Körper',        en: 'Body'      } },
+  { id: 'clothing',  icon: '👕', level: 'A1', name: { de: 'Kleidung',      en: 'Clothing'  } },
+  { id: 'weather',   icon: '🌤️', level: 'A1', name: { de: 'Wetter',        en: 'Weather'   } },
+  { id: 'emotions',  icon: '😊', level: 'A2', name: { de: 'Gefühle',       en: 'Emotions'  } },
 ];
 
 // Each word: { id, category, pt, de, en, pron, ex_pt, ex_de, ex_en }
@@ -1382,6 +1396,49 @@ const WORDS = [
   { id:92, cat:'verbs', pt:'Poder',    de:'Können / Dürfen',    en:'To be able to',      pron:'po-DER',   ex_pt:'Você pode me ajudar?',        ex_de:'Können Sie mir helfen?',        ex_en:'Can you help me?' },
   { id:93, cat:'verbs', pt:'Gostar',   de:'Mögen / Gerne haben',en:'To like',            pron:'gos-TAR',  ex_pt:'Gosto muito de música.',     ex_de:'Ich mag Musik sehr.',           ex_en:'I really like music.' },
   { id:94, cat:'verbs', pt:'Vir',      de:'Kommen',             en:'To come',            pron:'Vir',      ex_pt:'Você pode vir mais cedo?',    ex_de:'Kannst du früher kommen?',      ex_en:'Can you come earlier?' },
+
+  /* ── BODY ── */
+  { id:97,  cat:'body', pt:'Cabeça',   de:'Kopf',     en:'Head',     pron:'ka-BÉ-sa',   ex_pt:'Eu tenho dor de cabeça.',        ex_de:'Ich habe Kopfschmerzen.',         ex_en:'I have a headache.' },
+  { id:98,  cat:'body', pt:'Olho',     de:'Auge',     en:'Eye',      pron:'Ó-lhu',      ex_pt:'Ela tem olhos verdes.',          ex_de:'Sie hat grüne Augen.',            ex_en:'She has green eyes.' },
+  { id:99,  cat:'body', pt:'Boca',     de:'Mund',     en:'Mouth',    pron:'BÓ-ka',      ex_pt:'Abra a boca, por favor.',        ex_de:'Öffnen Sie den Mund, bitte.',     ex_en:'Open your mouth, please.' },
+  { id:100, cat:'body', pt:'Mão',      de:'Hand',     en:'Hand',     pron:'MÃO',        ex_pt:'Lava as mãos antes de comer.',   ex_de:'Wasch dir die Hände vor dem Essen.', ex_en:'Wash your hands before eating.' },
+  { id:101, cat:'body', pt:'Pé',       de:'Fuß',      en:'Foot',     pron:'PÊ',         ex_pt:'Meu pé está doendo.',            ex_de:'Mein Fuß tut weh.',               ex_en:'My foot hurts.' },
+  { id:102, cat:'body', pt:'Coração',  de:'Herz',     en:'Heart',    pron:'ko-ra-SÃO',  ex_pt:'Meu coração bate rápido.',       ex_de:'Mein Herz schlägt schnell.',      ex_en:'My heart beats fast.' },
+  { id:103, cat:'body', pt:'Nariz',    de:'Nase',     en:'Nose',     pron:'na-RÍS',     ex_pt:'Estou com nariz entupido.',      ex_de:'Meine Nase ist verstopft.',       ex_en:'My nose is blocked.' },
+  { id:104, cat:'body', pt:'Ouvido',   de:'Ohr',      en:'Ear',      pron:'ou-VÍ-du',   ex_pt:'Ele tem ouvido musical.',        ex_de:'Er hat ein musikalisches Ohr.',   ex_en:'He has a musical ear.' },
+  { id:105, cat:'body', pt:'Costas',   de:'Rücken',   en:'Back',     pron:'KÓS-tas',    ex_pt:'Tenho dor nas costas.',          ex_de:'Ich habe Rückenschmerzen.',       ex_en:'I have back pain.' },
+  { id:106, cat:'body', pt:'Braço',    de:'Arm',      en:'Arm',      pron:'BRÁ-su',     ex_pt:'Ela quebrou o braço.',           ex_de:'Sie hat sich den Arm gebrochen.', ex_en:'She broke her arm.' },
+
+  /* ── CLOTHING ── */
+  { id:107, cat:'clothing', pt:'Camisa',   de:'Hemd',       en:'Shirt',     pron:'ka-MÍ-za',  ex_pt:'Esta camisa é muito bonita.',     ex_de:'Dieses Hemd ist sehr schön.',     ex_en:'This shirt is very nice.' },
+  { id:108, cat:'clothing', pt:'Calça',    de:'Hose',        en:'Pants',     pron:'KÁL-sa',    ex_pt:'Essa calça azul fica bem em você.', ex_de:'Diese blaue Hose steht dir gut.', ex_en:'These blue pants look good on you.' },
+  { id:109, cat:'clothing', pt:'Sapato',   de:'Schuh',       en:'Shoe',      pron:'sa-PÁ-tu',  ex_pt:'Esses sapatos são confortáveis.',  ex_de:'Diese Schuhe sind bequem.',       ex_en:'These shoes are comfortable.' },
+  { id:110, cat:'clothing', pt:'Vestido',  de:'Kleid',       en:'Dress',     pron:'ves-TÍ-du', ex_pt:'Ela usa um vestido vermelho.',     ex_de:'Sie trägt ein rotes Kleid.',      ex_en:'She wears a red dress.' },
+  { id:111, cat:'clothing', pt:'Jaqueta',  de:'Jacke',       en:'Jacket',    pron:'zha-KÉ-ta', ex_pt:'Vista sua jaqueta, está frio!',   ex_de:'Zieh deine Jacke an, es ist kalt!', ex_en:'Put on your jacket, it\'s cold!' },
+  { id:112, cat:'clothing', pt:'Chapéu',   de:'Hut',         en:'Hat',       pron:'sha-PÉU',   ex_pt:'Ele usa chapéu no sol.',          ex_de:'Er trägt einen Hut in der Sonne.', ex_en:'He wears a hat in the sun.' },
+  { id:113, cat:'clothing', pt:'Meias',    de:'Socken',      en:'Socks',     pron:'MÉI-as',    ex_pt:'Preciso de meias novas.',         ex_de:'Ich brauche neue Socken.',        ex_en:'I need new socks.' },
+  { id:114, cat:'clothing', pt:'Bolsa',    de:'Tasche',      en:'Bag',       pron:'BÓL-sa',    ex_pt:'A bolsa dela é cara.',            ex_de:'Ihre Tasche ist teuer.',          ex_en:'Her bag is expensive.' },
+
+  /* ── WEATHER ── */
+  { id:115, cat:'weather', pt:'Sol',       de:'Sonne',    en:'Sun',      pron:'SÓL',          ex_pt:'O sol está forte hoje.',          ex_de:'Die Sonne ist heute stark.',      ex_en:'The sun is strong today.' },
+  { id:116, cat:'weather', pt:'Chuva',     de:'Regen',    en:'Rain',     pron:'SHÚ-va',       ex_pt:'Está chuvendo muito.',            ex_de:'Es regnet stark.',                ex_en:'It is raining a lot.' },
+  { id:117, cat:'weather', pt:'Vento',     de:'Wind',     en:'Wind',     pron:'VÊN-tu',       ex_pt:'O vento está forte hoje.',        ex_de:'Der Wind ist heute stark.',       ex_en:'The wind is strong today.' },
+  { id:118, cat:'weather', pt:'Frio',      de:'Kalt',     en:'Cold',     pron:'FRÍ-u',        ex_pt:'Que frio! Vou pegar um casaco.',  ex_de:'So kalt! Ich hole eine Jacke.',   ex_en:'So cold! I\'ll get a jacket.' },
+  { id:119, cat:'weather', pt:'Calor',     de:'Hitze',    en:'Heat',     pron:'ka-LOR',       ex_pt:'Que calor! Vou à praia.',         ex_de:'Was für eine Hitze! Ich gehe an den Strand.', ex_en:'What heat! I\'m going to the beach.' },
+  { id:120, cat:'weather', pt:'Nuvem',     de:'Wolke',    en:'Cloud',    pron:'NÚ-vem',       ex_pt:'O céu está cheio de nuvens.',     ex_de:'Der Himmel ist voller Wolken.',   ex_en:'The sky is full of clouds.' },
+  { id:121, cat:'weather', pt:'Neve',      de:'Schnee',   en:'Snow',     pron:'NÉ-ve',        ex_pt:'No Brasil quase nunca neva.',     ex_de:'In Brasilien schneit es kaum.',   ex_en:'It almost never snows in Brazil.' },
+  { id:122, cat:'weather', pt:'Tempestade',de:'Sturm',    en:'Storm',    pron:'tem-pes-TÁ-dʒi', ex_pt:'Uma tempestade se aproxima.',   ex_de:'Ein Sturm nähert sich.',          ex_en:'A storm is approaching.' },
+  { id:123, cat:'weather', pt:'Tempo',     de:'Wetter',   en:'Weather',  pron:'TÊM-pu',       ex_pt:'Que tempo está hoje?',            ex_de:'Wie ist das Wetter heute?',       ex_en:'What\'s the weather like today?' },
+
+  /* ── EMOTIONS ── */
+  { id:124, cat:'emotions', pt:'Feliz',      de:'Glücklich',  en:'Happy',     pron:'fe-LÍS',     ex_pt:'Estou muito feliz hoje!',         ex_de:'Ich bin heute sehr glücklich!',   ex_en:'I am very happy today!' },
+  { id:125, cat:'emotions', pt:'Triste',     de:'Traurig',    en:'Sad',       pron:'TRÍS-tʃi',   ex_pt:'Ela está triste com a notícia.',  ex_de:'Sie ist traurig über die Nachricht.', ex_en:'She is sad about the news.' },
+  { id:126, cat:'emotions', pt:'Com raiva',  de:'Wütend',     en:'Angry',     pron:'kom RÁIV-a', ex_pt:'Ele está com raiva do resultado.', ex_de:'Er ist wütend über das Ergebnis.', ex_en:'He is angry about the result.' },
+  { id:127, cat:'emotions', pt:'Com medo',   de:'Verängstigt',en:'Scared',    pron:'kom MÉ-du',  ex_pt:'Ela está com medo do escuro.',    ex_de:'Sie hat Angst vor dem Dunkeln.',  ex_en:'She is scared of the dark.' },
+  { id:128, cat:'emotions', pt:'Cansado',    de:'Müde',       en:'Tired',     pron:'kân-SÁ-du',  ex_pt:'Estou cansado depois do trabalho.', ex_de:'Ich bin müde nach der Arbeit.',  ex_en:'I am tired after work.' },
+  { id:129, cat:'emotions', pt:'Surpreso',   de:'Überrascht', en:'Surprised', pron:'sur-PRÉ-zu', ex_pt:'Fiquei surpreso com o presente.', ex_de:'Ich war überrascht von dem Geschenk.', ex_en:'I was surprised by the gift.' },
+  { id:130, cat:'emotions', pt:'Animado',    de:'Aufgeregt',  en:'Excited',   pron:'a-ni-MÁ-du', ex_pt:'Estou animado para a viagem!',    ex_de:'Ich bin aufgeregt für die Reise!', ex_en:'I am excited for the trip!' },
+  { id:131, cat:'emotions', pt:'Amor',       de:'Liebe',      en:'Love',      pron:'a-MOR',      ex_pt:'Eu te amo de verdade.',           ex_de:'Ich liebe dich wirklich.',        ex_en:'I truly love you.' },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -1421,6 +1478,17 @@ function saveState(s) {
 const App = (() => {
   let state = loadState();
   let session = null; // current learning session data
+
+  /* ── direction helpers ─────────────────────────────────────────────────── */
+  function nativeLang() {
+    if (state.lang === 'pt-de') return 'de';
+    if (state.lang === 'pt-en') return 'en';
+    return state.lang; // 'de' or 'en'
+  }
+
+  function isReverse() {
+    return state.lang === 'pt-de' || state.lang === 'pt-en';
+  }
 
   /* ── helpers ───────────────────────────────────────────────────────────── */
   function today() {
@@ -1541,13 +1609,15 @@ const App = (() => {
     // language buttons
     document.getElementById('lang-de').classList.toggle('selected', state.lang === 'de');
     document.getElementById('lang-en').classList.toggle('selected', state.lang === 'en');
+    document.getElementById('lang-pt-de').classList.toggle('selected', state.lang === 'pt-de');
+    document.getElementById('lang-pt-en').classList.toggle('selected', state.lang === 'pt-en');
 
     // word of day (deterministic per day)
     const dayNum = Math.floor(Date.now() / 86400000);
     const wd = WORD_OF_DAY_WORDS[dayNum % WORD_OF_DAY_WORDS.length];
     document.getElementById('daily-word').textContent = wd.pt;
     document.getElementById('daily-translation').textContent =
-      state.lang === 'de' ? wd.de : wd.en;
+      nativeLang() === 'de' ? wd.de : wd.en;
     document.getElementById('daily-pron').textContent = '[ ' + wd.pron + ' ]';
 
     // stats
@@ -1580,7 +1650,7 @@ const App = (() => {
       card.onclick = () => startFlashcardSession(cat.id);
       card.innerHTML = `
         <div class="cat-icon">${cat.icon}</div>
-        <div class="cat-name">${cat.name[state.lang]}<span class="level-badge level-${cat.level}">${cat.level}</span></div>
+        <div class="cat-name">${cat.name[nativeLang()]}<span class="level-badge level-${cat.level}">${cat.level}</span></div>
         <div class="cat-count">${seen}/${words.length} Wörter</div>
         <div style="display:flex;gap:6px;margin-top:8px;font-size:0.72rem">
           <button onclick="event.stopPropagation();App.startFlashcardSession('${cat.id}')" style="flex:1;padding:5px 4px;background:linear-gradient(135deg,var(--green),var(--light-green));color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.7rem">🃏 Karten</button>
@@ -1630,19 +1700,30 @@ const App = (() => {
     document.getElementById('fc-progress-fill').style.width = pct + '%';
 
     // front
-    document.getElementById('fc-lang-badge').textContent =
-      state.lang === 'de' ? '🇩🇪 Deutsch' : '🇬🇧 English';
-    document.getElementById('fc-source-word').textContent =
-      state.lang === 'de' ? word.de : word.en;
     const cat = CATEGORIES.find(c => c.id === word.cat);
-    document.getElementById('fc-category').textContent = cat ? cat.icon + ' ' + cat.name[state.lang] : '';
+    if (isReverse()) {
+      document.getElementById('fc-lang-badge').textContent = '🇧🇷 Português';
+      document.getElementById('fc-source-word').textContent = word.pt;
+      document.getElementById('fc-category').textContent = cat ? cat.icon + ' ' + cat.name[nativeLang()] : '';
+    } else {
+      document.getElementById('fc-lang-badge').textContent = nativeLang() === 'de' ? '🇩🇪 Deutsch' : '🇬🇧 English';
+      document.getElementById('fc-source-word').textContent = nativeLang() === 'de' ? word.de : word.en;
+      document.getElementById('fc-category').textContent = cat ? cat.icon + ' ' + cat.name[nativeLang()] : '';
+    }
 
     // back
-    document.getElementById('fc-pt-word').textContent = word.pt;
-    document.getElementById('fc-pronunciation').textContent = '[ ' + word.pron + ' ]';
-    const exSource = state.lang === 'de' ? word.ex_de : word.ex_en;
-    document.getElementById('fc-example').innerHTML =
-      `<span class="ex-pt">${word.ex_pt}</span><span>${exSource}</span>`;
+    const exSource = nativeLang() === 'de' ? word.ex_de : word.ex_en;
+    if (isReverse()) {
+      document.getElementById('fc-pt-word').textContent = nativeLang() === 'de' ? word.de : word.en;
+      document.getElementById('fc-pronunciation').textContent = '[ ' + word.pron + ' ] 🇧🇷';
+      document.getElementById('fc-example').innerHTML =
+        `<span class="ex-pt">${word.pt}</span><span>${exSource}</span>`;
+    } else {
+      document.getElementById('fc-pt-word').textContent = word.pt;
+      document.getElementById('fc-pronunciation').textContent = '[ ' + word.pron + ' ]';
+      document.getElementById('fc-example').innerHTML =
+        `<span class="ex-pt">${word.ex_pt}</span><span>${exSource}</span>`;
+    }
 
     // reset flip
     const flipCard = document.getElementById('flip-card');
@@ -1734,20 +1815,30 @@ const App = (() => {
     document.getElementById('quiz-progress-label').textContent = `Frage ${index + 1} / ${total}`;
     document.getElementById('quiz-progress-fill').style.width = Math.round(((index) / total) * 100) + '%';
 
-    const qLabel = state.lang === 'de'
-      ? 'Was bedeutet auf Português?'
-      : 'What does it mean in Portuguese?';
-    document.getElementById('quiz-q-label').textContent = qLabel;
-    document.getElementById('quiz-q-word').textContent = state.lang === 'de' ? word.de : word.en;
     const cat = CATEGORIES.find(c => c.id === word.cat);
-    document.getElementById('quiz-q-category').textContent = cat ? cat.icon + ' ' + cat.name[state.lang] : '';
+    let qLabel, qWord, correct, others;
+    if (isReverse()) {
+      qLabel = nativeLang() === 'de' ? 'Was bedeutet auf Deutsch?' : 'What does it mean in English?';
+      qWord = word.pt;
+      correct = nativeLang() === 'de' ? word.de : word.en;
+      others = WORDS.filter(w => w.id !== word.id)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3)
+        .map(w => nativeLang() === 'de' ? w.de : w.en);
+    } else {
+      qLabel = nativeLang() === 'de' ? 'Was bedeutet auf Português?' : 'What does it mean in Portuguese?';
+      qWord = nativeLang() === 'de' ? word.de : word.en;
+      correct = word.pt;
+      others = WORDS.filter(w => w.id !== word.id)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3)
+        .map(w => w.pt);
+    }
+    document.getElementById('quiz-q-label').textContent = qLabel;
+    document.getElementById('quiz-q-word').textContent = qWord;
+    document.getElementById('quiz-q-category').textContent = cat ? cat.icon + ' ' + cat.name[nativeLang()] : '';
 
     // Generate 4 options: 1 correct + 3 random wrong
-    const correct = word.pt;
-    const others = WORDS.filter(w => w.id !== word.id)
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 3)
-      .map(w => w.pt);
     const options = [correct, ...others].sort(() => Math.random() - 0.5);
 
     const container = document.getElementById('quiz-options');
@@ -1872,7 +1963,7 @@ const App = (() => {
       sorted.forEach(([id, cnt]) => {
         const w = WORDS.find(x => x.id === parseInt(id));
         if (!w) return;
-        const tr = state.lang === 'de' ? w.de : w.en;
+        const tr = nativeLang() === 'de' ? w.de : w.en;
         const item = document.createElement('div');
         item.className = 'error-word-item';
         const left = document.createElement('div');
@@ -1912,7 +2003,7 @@ const App = (() => {
       catDiv.innerHTML += `
         <div class="cat-progress-item">
           <div class="cat-progress-header">
-            <span>${cat.icon} ${cat.name[state.lang]}<span class="level-badge level-${cat.level}">${cat.level}</span></span>
+            <span>${cat.icon} ${cat.name[nativeLang()]}<span class="level-badge level-${cat.level}">${cat.level}</span></span>
             <span class="cat-progress-pct">${seen}/${words.length}</span>
           </div>
           <div class="progress-bar-full">
@@ -2123,11 +2214,18 @@ const App = (() => {
     document.getElementById('type-progress-label').textContent = `${index + 1} / ${total}`;
     document.getElementById('type-progress-fill').style.width = Math.round((index / total) * 100) + '%';
 
-    const qLabel = state.lang === 'de' ? 'Schreibe auf Portugiesisch' : 'Type in Portuguese';
+    let qLabel, qWord;
+    if (isReverse()) {
+      qLabel = nativeLang() === 'de' ? 'Schreibe auf Deutsch' : 'Type in English';
+      qWord = word.pt;
+    } else {
+      qLabel = nativeLang() === 'de' ? 'Schreibe auf Portugiesisch' : 'Type in Portuguese';
+      qWord = nativeLang() === 'de' ? word.de : word.en;
+    }
     document.getElementById('type-q-label').textContent = qLabel;
-    document.getElementById('type-q-word').textContent = state.lang === 'de' ? word.de : word.en;
+    document.getElementById('type-q-word').textContent = qWord;
     const cat = CATEGORIES.find(c => c.id === word.cat);
-    document.getElementById('type-q-category').textContent = cat ? cat.icon + ' ' + cat.name[state.lang] : '';
+    document.getElementById('type-q-category').textContent = cat ? cat.icon + ' ' + cat.name[nativeLang()] : '';
 
     const input = document.getElementById('typing-input');
     input.value = '';
@@ -2148,7 +2246,10 @@ const App = (() => {
     const word = session.queue[session.index];
     const input = document.getElementById('typing-input');
     const answer = input.value.trim().toLowerCase();
-    const correct = word.pt.toLowerCase();
+    const correctWord = isReverse()
+      ? (nativeLang() === 'de' ? word.de : word.en)
+      : word.pt;
+    const correct = correctWord.toLowerCase();
     // Allow minor typos: check exact or strip accents
     // NFD decomposition strips accent/diacritic marks (e.g. ã→a, ç→c) for typo tolerance
     const normalize = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
@@ -2170,7 +2271,9 @@ const App = (() => {
     } else {
       reveal.style.background = '#fff0f3';
       reveal.style.color = 'var(--danger)';
-      reveal.textContent = `❌ Richtige Antwort: ${word.pt}  [ ${word.pron} ]`;
+      reveal.textContent = isReverse()
+        ? `❌ Richtige Antwort: ${correctWord}  (🇧🇷 ${word.pt}  [ ${word.pron} ])`
+        : `❌ Richtige Antwort: ${word.pt}  [ ${word.pron} ]`;
     }
     speakWord(word.pt);
     rateWord(word.id, isCorrect);
@@ -2240,11 +2343,11 @@ const App = (() => {
     document.getElementById('listen-play-btn').textContent = '🔊';
 
     // 4 options: correct translation + 3 wrong
-    const correct = state.lang === 'de' ? word.de : word.en;
+    const correct = nativeLang() === 'de' ? word.de : word.en;
     const others = WORDS.filter(w => w.id !== word.id)
       .sort(() => Math.random() - 0.5)
       .slice(0, 3)
-      .map(w => state.lang === 'de' ? w.de : w.en);
+      .map(w => nativeLang() === 'de' ? w.de : w.en);
     const options = [correct, ...others].sort(() => Math.random() - 0.5);
 
     const container = document.getElementById('listen-options');
@@ -2373,7 +2476,8 @@ const App = (() => {
       resetProgress,
       speak, speakWord,
       startTypingSession, checkTypingAnswer, nextTypingCard, typeListenHint,
-      startListeningQuiz, playListenWord, nextListenQuestion
+      startListeningQuiz, playListenWord, nextListenQuestion,
+      nativeLang, isReverse
     };
   }
 
