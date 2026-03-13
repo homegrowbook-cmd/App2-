@@ -1960,7 +1960,7 @@ const WORDS = [
   { id:298, cat:'jobs', pt:'Arquiteto / Arquiteta',     de:'Architekt / Architektin',     en:'Architect',     pron:'ar-ki-TÉ-tu/ta',  ex_pt:'O arquiteto desenhou o edifício.',  ex_de:'Der Architekt entwarf das Gebäude.',      ex_en:'The architect designed the building.' },
   { id:299, cat:'jobs', pt:'Jornalista',                de:'Journalist / Journalistin',   en:'Journalist',    pron:'zhor-na-LÍS-ta',  ex_pt:'A jornalista escreveu a reportagem.', ex_de:'Die Journalistin schrieb den Bericht.', ex_en:'The journalist wrote the report.' },
   { id:300, cat:'jobs', pt:'Ator / Atriz',              de:'Schauspieler / Schauspielerin', en:'Actor / Actress', pron:'a-TOR / a-TRÍZ', ex_pt:'O ator ganhou o prêmio.',         ex_de:'Der Schauspieler gewann den Preis.',      ex_en:'The actor won the award.' },
-  { id:301, cat:'jobs', pt:'Músico / Músicca',          de:'Musiker / Musikerin',         en:'Musician',      pron:'MÚ-zi-ku/ka',     ex_pt:'O músico tocou violão na praça.',   ex_de:'Der Musiker spielte Gitarre auf dem Platz.', ex_en:'The musician played guitar in the square.' },
+  { id:301, cat:'jobs', pt:'Músico / Música',          de:'Musiker / Musikerin',         en:'Musician',      pron:'MÚ-zi-ku/ka',     ex_pt:'O músico tocou violão na praça.',   ex_de:'Der Musiker spielte Gitarre auf dem Platz.', ex_en:'The musician played guitar in the square.' },
 
   /* ── NATURE / NATUR (v3.2) ── */
   { id:302, cat:'nature', pt:'Árvore',   de:'Baum',    en:'Tree',      pron:'ÁR-vo-ri',   ex_pt:'A árvore tem muitas folhas verdes.',   ex_de:'Der Baum hat viele grüne Blätter.',     ex_en:'The tree has many green leaves.' },
@@ -2150,7 +2150,7 @@ const App = (() => {
     renderSettingsLang();
     // Update dynamic word count in app info
     const infoEl = document.getElementById('settings-word-count');
-    if (infoEl) infoEl.textContent = WORDS.length + ' Vokabeln & Sätze · 16 Kategorien';
+    if (infoEl) infoEl.textContent = WORDS.length + ' Vokabeln & Sätze · ' + CATEGORIES.length + ' Kategorien';
     // Dark mode
     const dmBtn = document.getElementById('settings-dark-btn');
     if (dmBtn) dmBtn.textContent = state.darkMode ? '☀️ Hell-Modus aktivieren' : '🌙 Dunkel-Modus aktivieren';
@@ -2404,8 +2404,8 @@ const App = (() => {
     document.getElementById('fc-progress-label').textContent = session.queue.length + ' / ' + session.queue.length;
     const summEl = document.getElementById('fc-session-summary');
     if (summEl) {
-      const c = session.correctCount || 0, w = session.wrongCount || 0;
-      summEl.textContent = `✅ ${c} richtig  ❌ ${w} falsch`;
+      const correctCount = session.correctCount || 0, wrongCount = session.wrongCount || 0;
+      summEl.textContent = `✅ ${correctCount} richtig  ❌ ${wrongCount} falsch`;
     }
     checkAchievements();
     renderHeaderStats();
@@ -2938,7 +2938,7 @@ const App = (() => {
       body: `
         <p>Brasilien ist bekannt für seine lebendigen Feste und kulturellen Feiern.</p>
         <table class="grammar-table">
-          <tr><th>Fest</th><th>Tiempo / Wann</th><th>Beschreibung</th></tr>
+          <tr><th>Fest</th><th>Zeit / Wann</th><th>Beschreibung</th></tr>
           <tr><td>🎭 <strong>Carnaval</strong></td><td>Februar / März</td><td>Weltberühmter Umzug mit Samba, Kostümen und Straßenfeiern. Rio de Janeiro ist das Epizentrum.</td></tr>
           <tr><td>🌽 <strong>Festa Junina</strong></td><td>Juni</td><td>Nordöstliches Volksfest mit Musik (forró), Tanz (quadrilha), Maisgerichten und bunten Kostümen.</td></tr>
           <tr><td>⚽ <strong>Dia do Futebol</strong></td><td>ganzjährig</td><td>Fußball ist in Brasilien mehr als Sport – er ist Kultur, Religion und Identität.</td></tr>
