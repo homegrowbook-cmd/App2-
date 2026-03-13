@@ -1283,6 +1283,7 @@ const CATEGORIES = [
   { id: 'clothing',  icon: '👕', level: 'A1', name: { de: 'Kleidung',      en: 'Clothing'  } },
   { id: 'weather',   icon: '🌤️', level: 'A1', name: { de: 'Wetter',        en: 'Weather'   } },
   { id: 'emotions',  icon: '😊', level: 'A2', name: { de: 'Gefühle',       en: 'Emotions'  } },
+  { id: 'sentences', icon: '💬', level: 'A1', name: { de: 'Alltagssätze',  en: 'Everyday Phrases' } },
 ];
 
 // Each word: { id, category, pt, de, en, pron, ex_pt, ex_de, ex_en }
@@ -1439,6 +1440,73 @@ const WORDS = [
   { id:129, cat:'emotions', pt:'Surpreso',   de:'Überrascht', en:'Surprised', pron:'sur-PRÉ-zu', ex_pt:'Fiquei surpreso com o presente.', ex_de:'Ich war überrascht von dem Geschenk.', ex_en:'I was surprised by the gift.' },
   { id:130, cat:'emotions', pt:'Animado',    de:'Aufgeregt',  en:'Excited',   pron:'a-ni-MÁ-du', ex_pt:'Estou animado para a viagem!',    ex_de:'Ich bin aufgeregt für die Reise!', ex_en:'I am excited for the trip!' },
   { id:131, cat:'emotions', pt:'Amor',       de:'Liebe',      en:'Love',      pron:'a-MOR',      ex_pt:'Eu te amo de verdade.',           ex_de:'Ich liebe dich wirklich.',        ex_en:'I truly love you.' },
+
+  /* ── NUMBERS (extended) ── */
+  { id:132, cat:'numbers', pt:'Trinta',      de:'Dreißig',    en:'Thirty',    pron:'TRÎN-ta',      ex_pt:'Ele tem trinta anos.',            ex_de:'Er ist dreißig Jahre alt.',       ex_en:'He is thirty years old.' },
+  { id:133, cat:'numbers', pt:'Quarenta',    de:'Vierzig',    en:'Forty',     pron:'kua-RÊN-ta',   ex_pt:'Quarenta graus de calor!',        ex_de:'Vierzig Grad Hitze!',             ex_en:'Forty degrees of heat!' },
+  { id:134, cat:'numbers', pt:'Cinquenta',   de:'Fünfzig',    en:'Fifty',     pron:'sîn-KUÊ-ta',   ex_pt:'Cinquenta por cento de desconto.', ex_de:'Fünfzig Prozent Rabatt.',        ex_en:'Fifty percent discount.' },
+  { id:135, cat:'numbers', pt:'Cem / Cento', de:'Hundert',    en:'One hundred', pron:'Sêm / SÊN-tu', ex_pt:'Cento e vinte reais.',            ex_de:'Hundertzwanzig Reais.',           ex_en:'One hundred and twenty reais.' },
+  { id:136, cat:'numbers', pt:'Primeiro',    de:'Erste/r/s',  en:'First',     pron:'pri-MÉI-ru',   ex_pt:'Ele é o primeiro da fila.',       ex_de:'Er ist der Erste in der Schlange.', ex_en:'He is the first in the queue.' },
+  { id:137, cat:'numbers', pt:'Metade',      de:'Hälfte',     en:'Half',      pron:'me-TÁ-dʒi',    ex_pt:'A metade do bolo é minha.',       ex_de:'Die Hälfte des Kuchens gehört mir.', ex_en:'Half the cake is mine.' },
+
+  /* ── FOOD (extended) ── */
+  { id:138, cat:'food', pt:'Suco',       de:'Saft',      en:'Juice',      pron:'SÚ-ku',        ex_pt:'Um suco de laranja, por favor.',   ex_de:'Ein Orangensaft, bitte.',         ex_en:'An orange juice, please.' },
+  { id:139, cat:'food', pt:'Legumes',    de:'Gemüse',    en:'Vegetables', pron:'le-GÚ-mis',    ex_pt:'Eu como muitos legumes.',          ex_de:'Ich esse viel Gemüse.',           ex_en:'I eat a lot of vegetables.' },
+  { id:140, cat:'food', pt:'Carne',      de:'Fleisch',   en:'Meat',       pron:'KÁR-ni',       ex_pt:'Gosto de churrasco de carne.',     ex_de:'Ich mag Fleischgrill.',           ex_en:'I like meat barbecue.' },
+  { id:141, cat:'food', pt:'Queijo',     de:'Käse',      en:'Cheese',     pron:'KÉI-zhu',      ex_pt:'Pão de queijo é tipicamente brasileiro.', ex_de:'Käsebrot ist typisch brasilianisch.', ex_en:'Cheese bread is typically Brazilian.' },
+  { id:142, cat:'food', pt:'Ovo',        de:'Ei',        en:'Egg',        pron:'Ó-vu',         ex_pt:'Dois ovos mexidos, por favor.',    ex_de:'Zwei Rühreier, bitte.',           ex_en:'Two scrambled eggs, please.' },
+  { id:143, cat:'food', pt:'Açúcar',     de:'Zucker',    en:'Sugar',      pron:'a-SÚ-kar',     ex_pt:'Sem açúcar no café.',              ex_de:'Kein Zucker im Kaffee.',          ex_en:'No sugar in the coffee.' },
+  { id:144, cat:'food', pt:'Sal',        de:'Salz',      en:'Salt',       pron:'Sál',          ex_pt:'Coloca mais sal na sopa.',         ex_de:'Gib mehr Salz in die Suppe.',     ex_en:'Add more salt to the soup.' },
+  { id:145, cat:'food', pt:'Manteiga',   de:'Butter',    en:'Butter',     pron:'mân-TÉI-ga',   ex_pt:'Pão com manteiga no café da manhã.', ex_de:'Brot mit Butter zum Frühstück.', ex_en:'Bread with butter for breakfast.' },
+
+  /* ── TRAVEL (extended) ── */
+  { id:146, cat:'travel', pt:'Rua',       de:'Straße',     en:'Street',    pron:'RÚ-a',         ex_pt:'Qual é o nome desta rua?',         ex_de:'Wie heißt diese Straße?',         ex_en:'What is the name of this street?' },
+  { id:147, cat:'travel', pt:'Endereço',  de:'Adresse',    en:'Address',   pron:'ên-de-RÉ-su',  ex_pt:'Qual é o seu endereço?',           ex_de:'Wie lautet Ihre Adresse?',         ex_en:'What is your address?' },
+  { id:148, cat:'travel', pt:'Bilhete',   de:'Ticket',     en:'Ticket',    pron:'bi-LHÉ-tʃi',   ex_pt:'Quero dois bilhetes para o show.',  ex_de:'Ich möchte zwei Tickets für das Konzert.', ex_en:'I want two tickets for the show.' },
+  { id:149, cat:'travel', pt:'Trem',      de:'Zug',        en:'Train',     pron:'Trêm',         ex_pt:'O trem parte às oito horas.',      ex_de:'Der Zug fährt um acht Uhr ab.',   ex_en:'The train departs at eight o\'clock.' },
+  { id:150, cat:'travel', pt:'Avião',     de:'Flugzeug',   en:'Airplane',  pron:'a-vi-ÃO',      ex_pt:'O avião atrasou duas horas.',      ex_de:'Das Flugzeug hatte zwei Stunden Verspätung.', ex_en:'The airplane was two hours late.' },
+  { id:151, cat:'travel', pt:'Estação',   de:'Bahnhof',    en:'Station',   pron:'es-ta-SÃO',    ex_pt:'A estação fica perto daqui.',      ex_de:'Der Bahnhof ist in der Nähe.',    ex_en:'The station is nearby.' },
+
+  /* ── VERBS (extended) ── */
+  { id:152, cat:'verbs', pt:'Amar',     de:'Lieben',             en:'To love',     pron:'a-MAR',    ex_pt:'Amo viver no Brasil.',            ex_de:'Ich liebe es, in Brasilien zu leben.', ex_en:'I love living in Brazil.' },
+  { id:153, cat:'verbs', pt:'Comprar',  de:'Kaufen',             en:'To buy',      pron:'kom-PRAR', ex_pt:'Quero comprar um presente.',      ex_de:'Ich möchte ein Geschenk kaufen.',  ex_en:'I want to buy a gift.' },
+  { id:154, cat:'verbs', pt:'Correr',   de:'Laufen / Rennen',    en:'To run',      pron:'ko-HER',   ex_pt:'Corro toda manhã no parque.',     ex_de:'Ich laufe jeden Morgen im Park.',  ex_en:'I run in the park every morning.' },
+  { id:155, cat:'verbs', pt:'Ajudar',   de:'Helfen',             en:'To help',     pron:'a-zhu-DAR',ex_pt:'Pode me ajudar, por favor?',      ex_de:'Können Sie mir bitte helfen?',     ex_en:'Can you please help me?' },
+  { id:156, cat:'verbs', pt:'Saber',    de:'Wissen / Können',    en:'To know',     pron:'sa-BER',   ex_pt:'Você sabe onde fica o banco?',    ex_de:'Wissen Sie, wo die Bank ist?',     ex_en:'Do you know where the bank is?' },
+  { id:157, cat:'verbs', pt:'Ver',      de:'Sehen',              en:'To see',      pron:'Ver',      ex_pt:'Você viu o filme ontem?',         ex_de:'Haben Sie den Film gestern gesehen?', ex_en:'Did you see the movie yesterday?' },
+  { id:158, cat:'verbs', pt:'Ouvir',    de:'Hören',              en:'To hear',     pron:'ou-VIR',   ex_pt:'Ouço música enquanto trabalho.',  ex_de:'Ich höre Musik beim Arbeiten.',    ex_en:'I listen to music while working.' },
+  { id:159, cat:'verbs', pt:'Abrir',    de:'Öffnen',             en:'To open',     pron:'a-BRIR',   ex_pt:'Pode abrir a janela, por favor?', ex_de:'Können Sie das Fenster öffnen?',   ex_en:'Can you open the window, please?' },
+  { id:160, cat:'verbs', pt:'Fechar',   de:'Schließen',          en:'To close',    pron:'fe-SHAR',  ex_pt:'Feche a porta ao sair.',          ex_de:'Schließen Sie die Tür beim Verlassen.', ex_en:'Close the door when leaving.' },
+
+  /* ── BODY (extended) ── */
+  { id:161, cat:'body', pt:'Perna',    de:'Bein',      en:'Leg',       pron:'PÉR-na',     ex_pt:'Ela quebrou a perna esquerda.',    ex_de:'Sie hat das linke Bein gebrochen.', ex_en:'She broke her left leg.' },
+  { id:162, cat:'body', pt:'Joelho',   de:'Knie',      en:'Knee',      pron:'zhu-É-lhu',  ex_pt:'Meu joelho dói depois de correr.', ex_de:'Mein Knie schmerzt nach dem Laufen.', ex_en:'My knee hurts after running.' },
+  { id:163, cat:'body', pt:'Dente',    de:'Zahn',      en:'Tooth',     pron:'DÊN-tʃi',    ex_pt:'Tenho dor de dente.',              ex_de:'Ich habe Zahnschmerzen.',          ex_en:'I have a toothache.' },
+  { id:164, cat:'body', pt:'Cabelo',   de:'Haar',      en:'Hair',      pron:'ka-BÉ-lu',   ex_pt:'Ela tem cabelo longo e bonito.',   ex_de:'Sie hat langes, schönes Haar.',    ex_en:'She has long, beautiful hair.' },
+  { id:165, cat:'body', pt:'Dedo',     de:'Finger',    en:'Finger',    pron:'DÉ-du',      ex_pt:'Ele se cortou o dedo.',            ex_de:'Er hat sich den Finger geschnitten.', ex_en:'He cut his finger.' },
+  { id:166, cat:'body', pt:'Ombro',    de:'Schulter',  en:'Shoulder',  pron:'ÔM-bru',     ex_pt:'Tenho tensão nos ombros.',         ex_de:'Ich habe Spannung in den Schultern.', ex_en:'I have tension in my shoulders.' },
+
+  /* ── EVERYDAY PHRASES (Alltagssätze) ── */
+  { id:167, cat:'sentences', pt:'Onde fica o banheiro?',           de:'Wo ist das Badezimmer?',                en:'Where is the bathroom?',            pron:'ÔN-dʒi FÍ-ka u ba-NHÉI-ru',    ex_pt:'Com licença, onde fica o banheiro?',       ex_de:'Entschuldigung, wo ist das Badezimmer?',      ex_en:'Excuse me, where is the bathroom?' },
+  { id:168, cat:'sentences', pt:'Não entendo.',                    de:'Ich verstehe nicht.',                   en:'I don\'t understand.',              pron:'Não en-TÊN-du',                  ex_pt:'Não entendo, pode explicar?',              ex_de:'Ich verstehe nicht, können Sie erklären?',    ex_en:'I don\'t understand, can you explain?' },
+  { id:169, cat:'sentences', pt:'Pode falar mais devagar?',        de:'Können Sie bitte langsamer sprechen?',  en:'Can you speak more slowly?',        pron:'PÓ-dʒi fa-LAR máis dʒi-va-GAR', ex_pt:'Não entendi. Pode falar mais devagar?',    ex_de:'Ich habe nicht verstanden. Können Sie langsamer sprechen?', ex_en:'I didn\'t understand. Can you speak more slowly?' },
+  { id:170, cat:'sentences', pt:'Me chamo...',                     de:'Ich heiße...',                          en:'My name is...',                     pron:'Mi SHÁ-mu',                      ex_pt:'Me chamo Ana, e você?',                    ex_de:'Ich heiße Ana, und du?',                      ex_en:'My name is Ana, and yours?' },
+  { id:171, cat:'sentences', pt:'Prazer em conhecê-lo!',           de:'Schön, Sie kennenzulernen!',            en:'Nice to meet you!',                 pron:'pra-ZER êm ku-nhe-SÊ-lu',        ex_pt:'Prazer em conhecê-lo! Sou do Brasil.',     ex_de:'Schön, Sie kennenzulernen! Ich komme aus Brasilien.', ex_en:'Nice to meet you! I\'m from Brazil.' },
+  { id:172, cat:'sentences', pt:'Que horas são?',                  de:'Wie spät ist es?',                      en:'What time is it?',                  pron:'Ki Ó-ras SÃO',                   ex_pt:'Com licença, que horas são?',              ex_de:'Entschuldigung, wie spät ist es?',            ex_en:'Excuse me, what time is it?' },
+  { id:173, cat:'sentences', pt:'Preciso de ajuda.',               de:'Ich brauche Hilfe.',                    en:'I need help.',                      pron:'pre-SÍ-zu dʒi a-ZHÚ-da',        ex_pt:'Preciso de ajuda, estou perdido.',         ex_de:'Ich brauche Hilfe, ich habe mich verlaufen.',  ex_en:'I need help, I am lost.' },
+  { id:174, cat:'sentences', pt:'Você fala inglês?',               de:'Sprechen Sie Englisch?',                en:'Do you speak English?',             pron:'vo-SÊ FÁ-la îng-GLÊS',           ex_pt:'Com licença, você fala inglês?',           ex_de:'Entschuldigung, sprechen Sie Englisch?',      ex_en:'Excuse me, do you speak English?' },
+  { id:175, cat:'sentences', pt:'Estou perdido/a.',                de:'Ich habe mich verlaufen.',              en:'I am lost.',                        pron:'es-TÔ per-DÍ-du/da',             ex_pt:'Estou perdida, pode me ajudar?',           ex_de:'Ich habe mich verlaufen, können Sie mir helfen?', ex_en:'I am lost, can you help me?' },
+  { id:176, cat:'sentences', pt:'A conta, por favor.',             de:'Die Rechnung, bitte.',                  en:'The bill, please.',                 pron:'a KÔN-ta, por fa-VOR',           ex_pt:'Garçom, a conta por favor!',               ex_de:'Kellner, die Rechnung bitte!',                ex_en:'Waiter, the bill please!' },
+  { id:177, cat:'sentences', pt:'Tem Wi-Fi aqui?',                 de:'Gibt es hier WLAN?',                    en:'Is there Wi-Fi here?',              pron:'Têm Wi-Fi a-KÍ',                 ex_pt:'Tem Wi-Fi aqui? Qual é a senha?',          ex_de:'Gibt es hier WLAN? Was ist das Passwort?',    ex_en:'Is there Wi-Fi here? What is the password?' },
+  { id:178, cat:'sentences', pt:'Quanto tempo leva?',              de:'Wie lange dauert es?',                  en:'How long does it take?',            pron:'KUÂ-tu TÊM-pu LÉ-va',           ex_pt:'Quanto tempo leva para chegar?',           ex_de:'Wie lange dauert es, um anzukommen?',         ex_en:'How long does it take to get there?' },
+  { id:179, cat:'sentences', pt:'Pode me dar o cardápio?',         de:'Können Sie mir die Speisekarte geben?', en:'Can you give me the menu?',         pron:'PÓ-dʒi mi DAR u kar-DÁ-pi-u',   ex_pt:'Pode me dar o cardápio, por favor?',       ex_de:'Können Sie mir bitte die Speisekarte geben?', ex_en:'Can you please give me the menu?' },
+  { id:180, cat:'sentences', pt:'Estou bem, obrigado/a!',          de:'Mir geht es gut, danke!',               en:'I\'m fine, thank you!',             pron:'es-TÔ BÊM, ob-ri-GA-du/da',     ex_pt:'Como você está? — Estou bem, obrigado!',   ex_de:'Wie geht es Ihnen? — Mir geht es gut, danke!', ex_en:'How are you? — I\'m fine, thank you!' },
+  { id:181, cat:'sentences', pt:'Com licença!',                    de:'Entschuldigung! / Darf ich?',           en:'Excuse me!',                        pron:'Kom li-SÊN-sa',                  ex_pt:'Com licença, posso passar?',               ex_de:'Entschuldigung, darf ich vorbeigehen?',       ex_en:'Excuse me, may I pass?' },
+  { id:182, cat:'sentences', pt:'Não falo português muito bem.',   de:'Ich spreche nicht sehr gut Portugiesisch.', en:'I don\'t speak Portuguese very well.', pron:'Não FÁ-lu por-tu-GUÊS MÚI-tu BÊM', ex_pt:'Não falo português muito bem, tenha paciência.', ex_de:'Ich spreche nicht sehr gut Portugiesisch, bitte Geduld.', ex_en:'I don\'t speak Portuguese very well, please be patient.' },
+  { id:183, cat:'sentences', pt:'Pode repetir, por favor?',        de:'Können Sie das bitte wiederholen?',     en:'Can you repeat that, please?',      pron:'PÓ-dʒi re-pe-TIR, por fa-VOR',   ex_pt:'Não ouvi. Pode repetir, por favor?',       ex_de:'Ich habe nicht gehört. Können Sie bitte wiederholen?', ex_en:'I didn\'t hear. Can you repeat that, please?' },
+  { id:184, cat:'sentences', pt:'Como se diz ... em português?',   de:'Wie sagt man ... auf Portugiesisch?',   en:'How do you say ... in Portuguese?', pron:'KÓ-mu si DÍS êm por-tu-GUÊS',   ex_pt:'Como se diz "obrigado" em inglês?',        ex_de:'Wie sagt man "obrigado" auf Englisch?',       ex_en:'How do you say "obrigado" in English?' },
+  { id:185, cat:'sentences', pt:'Onde posso comprar...?',          de:'Wo kann ich ... kaufen?',               en:'Where can I buy...?',               pron:'ÔN-dʒi PÓ-su kom-PRAR',         ex_pt:'Onde posso comprar um cartão SIM?',        ex_de:'Wo kann ich eine SIM-Karte kaufen?',          ex_en:'Where can I buy a SIM card?' },
+  { id:186, cat:'sentences', pt:'Qual é o preço?',                 de:'Was ist der Preis?',                    en:'What is the price?',                pron:'Kuál é u PRÉ-su',                ex_pt:'Qual é o preço deste produto?',            ex_de:'Was ist der Preis dieses Produkts?',          ex_en:'What is the price of this product?' },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════════
