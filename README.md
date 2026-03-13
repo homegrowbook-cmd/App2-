@@ -11,6 +11,19 @@ Eine kostenlose, browserbasierte HTML-App ohne Installation, die wissenschaftlic
 
 👉 **[LinguaBrasil direkt im Browser öffnen](https://homegrowbook-cmd.github.io/App2-/)** *(GitHub Pages)*
 
+### 📱 iOS – App zum Home-Bildschirm hinzufügen
+
+LinguaBrasil funktioniert auf iPhone und iPad als vollwertige Offline-App:
+
+1. Öffne **[https://homegrowbook-cmd.github.io/App2-/](https://homegrowbook-cmd.github.io/App2-/)** in **Safari**
+2. Tippe auf das **Teilen-Symbol** (⬆️ unten in der Mitte)
+3. Wähle **„Zum Home-Bildschirm"** (ggf. nach unten scrollen)
+4. Tippe oben rechts auf **„Hinzufügen"**
+
+Die App startet dann ohne Browser-Leiste, funktioniert offline und hat ein eigenes App-Icon – genauso wie eine native App.
+
+> **Hinweis:** Die App zeigt beim ersten Besuch automatisch eine Installationsanleitung an.
+
 Oder lokal: Lade `index.html` herunter und öffne sie in deinem Browser – keine Installation nötig!
 
 ```
