@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LinguaBrasil – Brasilianisches Portugiesisch lernen</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#002776" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="LinguaBrasil" />
   <style>
     /* ─── CSS Variables & Reset ───────────────────────────────────────────── */
     :root {
@@ -106,19 +110,19 @@
       flex: 1;
       border: none;
       background: none;
-      padding: 10px 4px 8px;
+      padding: 8px 2px 6px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
-      font-size: 0.68rem;
+      gap: 2px;
+      font-size: 0.62rem;
       font-weight: 600;
       color: var(--text-2);
       transition: color var(--transition);
     }
 
-    .nav-btn .nav-icon { font-size: 1.45rem; line-height: 1; }
+    .nav-btn .nav-icon { font-size: 1.3rem; line-height: 1; }
 
     .nav-btn.active {
       color: var(--blue);
@@ -708,6 +712,170 @@
       100% { opacity: 0; transform: translateY(-60px) scale(1.3); }
     }
 
+    /* ─── TTS Speak Button ──────────────────────────────────────────────────── */
+    .speak-btn {
+      border: none;
+      background: rgba(0,156,59,0.12);
+      color: var(--green);
+      border-radius: 50%;
+      width: 44px; height: 44px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: all var(--transition);
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+    .speak-btn:hover { background: rgba(0,156,59,0.22); transform: scale(1.1); }
+    .speak-btn.speaking { background: var(--green); color: #fff; animation: pulse 0.9s infinite; }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+
+    /* ─── Level Badge ───────────────────────────────────────────────────────── */
+    .level-badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 10px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .level-A1 { background: #e8f5e9; color: #2e7d32; }
+    .level-A2 { background: #e3f2fd; color: #1565c0; }
+    .level-B1 { background: #fce4ec; color: #ad1457; }
+
+    /* ─── Typing Exercise ───────────────────────────────────────────────────── */
+    .typing-input-wrap {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .typing-input {
+      flex: 1;
+      padding: 14px 16px;
+      border: 2.5px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      background: var(--card);
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .typing-input:focus { border-color: var(--blue); }
+    .typing-input.correct { border-color: var(--green); background: #e8fff2; }
+    .typing-input.wrong   { border-color: var(--danger); background: #fff0f3; }
+
+    .typing-hint {
+      font-size: 0.8rem;
+      color: var(--text-2);
+      text-align: center;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+    .typing-reveal {
+      text-align: center;
+      padding: 10px;
+      border-radius: var(--radius-sm);
+      background: #e8fff2;
+      color: var(--green);
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 12px;
+      display: none;
+    }
+    .typing-reveal.visible { display: block; }
+
+    /* ─── Listening Quiz ────────────────────────────────────────────────────── */
+    .listen-card {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 36px 24px;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .listen-card .listen-icon {
+      font-size: 4rem;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: transform var(--transition);
+      display: block;
+    }
+    .listen-card .listen-icon:hover { transform: scale(1.15); }
+    .listen-card .listen-label { font-size: 0.82rem; opacity: 0.6; margin-top: 6px; }
+
+    /* ─── Grammar View ──────────────────────────────────────────────────────── */
+    .grammar-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--blue);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .grammar-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,39,118,0.12); }
+    .grammar-card.open { border-left-color: var(--green); }
+    .grammar-card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .grammar-card-chevron { margin-left: auto; transition: transform 0.25s; font-size: 0.9rem; color: var(--text-2); }
+    .grammar-card.open .grammar-card-chevron { transform: rotate(90deg); }
+    .grammar-card-body {
+      display: none;
+      margin-top: 14px;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text);
+    }
+    .grammar-card.open .grammar-card-body { display: block; }
+    .grammar-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+      font-size: 0.88rem;
+    }
+    .grammar-table th, .grammar-table td {
+      padding: 7px 10px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    .grammar-table th { background: var(--bg); font-weight: 700; }
+    .grammar-table .pt { color: var(--green); font-weight: 600; }
+    .grammar-example {
+      background: rgba(0,39,118,0.06);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      margin: 6px 0;
+      font-style: italic;
+    }
+    .grammar-example .ex-pt { color: var(--green); font-weight: 600; font-style: normal; }
+    .grammar-example .ex-tr { color: var(--text-2); font-size: 0.82rem; }
+
+    /* ─── Error Analysis ────────────────────────────────────────────────────── */
+    .error-word-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: #fff8f8;
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--danger);
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+    .error-word-pt { font-weight: 700; color: var(--text); }
+    .error-word-tr { color: var(--text-2); font-size: 0.82rem; }
+    .error-count { background: var(--danger); color: #fff; border-radius: 12px; padding: 2px 8px; font-size: 0.75rem; font-weight: 700; }
+
     /* ─── Utility Classes ───────────────────────────────────────────────────── */
     .mb-16 { margin-bottom: 16px; }
     .hidden { display: none !important; }
@@ -752,6 +920,7 @@
       <div class="word-of-day" id="daily-word">Saudade</div>
       <div class="word-translation" id="daily-translation">Sehnsucht / Longing</div>
       <div class="pronunciation" id="daily-pron">[ sau-DA-dʒi ]</div>
+      <button class="speak-btn" style="margin-top:10px;background:rgba(255,255,255,0.2);color:#fff" onclick="App.speakWord(document.getElementById('daily-word').textContent)" title="Aussprechen / Speak">🔊</button>
     </div>
 
     <div class="stats-grid">
@@ -771,11 +940,17 @@
 
     <button class="cta-btn" onclick="App.startQuickSession()">⚡ Schnellübung starten</button>
     <button class="cta-btn" style="background:linear-gradient(135deg,var(--blue),var(--light-blue));box-shadow:0 4px 16px rgba(0,39,118,0.3)" onclick="App.showView('learn')">📚 Alle Kategorien</button>
+    <button class="cta-btn" style="background:linear-gradient(135deg,#6a0dad,#9b30ff);box-shadow:0 4px 16px rgba(106,13,173,0.3)" onclick="App.startListeningQuiz()">👂 Hörverständnis-Quiz</button>
+    <button class="cta-btn" style="background:linear-gradient(135deg,#c77b17,#e89c2f);box-shadow:0 4px 16px rgba(199,123,23,0.3)" onclick="App.startTypingSession(null)">✏️ Tipp-Übung</button>
   </div>
 
   <!-- LEARN (categories) -->
   <div class="view" id="view-learn">
     <p class="section-title mb-16">Kategorien / Categories</p>
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+      <button class="cta-btn" style="padding:10px 14px;font-size:0.85rem;margin-bottom:0;flex:1;min-width:120px" onclick="App.startTypingSession(null)">✏️ Tipp-Übung</button>
+      <button class="cta-btn" style="padding:10px 14px;font-size:0.85rem;margin-bottom:0;flex:1;min-width:120px;background:linear-gradient(135deg,#6a0dad,#9b30ff);box-shadow:0 4px 16px rgba(106,13,173,0.3)" onclick="App.startListeningQuiz()">👂 Hören</button>
+    </div>
     <div class="category-grid" id="category-grid"></div>
   </div>
 
@@ -804,6 +979,7 @@
             <div class="card-lang-badge" style="background:rgba(0,156,59,0.12);color:var(--green)">Português (BR)</div>
             <div class="card-pt-word" id="fc-pt-word">—</div>
             <div class="card-pronunciation" id="fc-pronunciation">—</div>
+            <button class="speak-btn" id="fc-speak-btn" onclick="event.stopPropagation();App.speak()" title="Aussprechen / Speak">🔊</button>
             <div class="card-example" id="fc-example"></div>
           </div>
         </div>
@@ -877,6 +1053,85 @@
     </div>
   </div>
 
+  <!-- TYPING EXERCISE -->
+  <div class="view" id="view-typing">
+    <div class="flashcard-header">
+      <button class="back-btn" onclick="App.exitSession()">←</button>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-label" id="type-progress-label">0 / 0</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="type-progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+    <div id="type-session-area">
+      <div class="quiz-question-card" id="type-question-card">
+        <div class="q-label" id="type-q-label">Schreibe auf Portugiesisch</div>
+        <div class="q-word" id="type-q-word">—</div>
+        <div class="q-category" id="type-q-category">—</div>
+      </div>
+      <div class="typing-hint">Tippe das portugiesische Wort ein / Type the Portuguese word</div>
+      <div class="typing-input-wrap">
+        <input class="typing-input" id="typing-input" type="text" placeholder="Antwort / Answer..." autocomplete="off" autocorrect="off" spellcheck="false" onkeydown="if(event.key==='Enter')App.checkTypingAnswer()" />
+        <button class="speak-btn" id="type-listen-btn" onclick="App.typeListenHint()" title="Hinweis abspielen">👂</button>
+      </div>
+      <div class="typing-reveal" id="typing-reveal"></div>
+      <button class="cta-btn" id="type-check-btn" onclick="App.checkTypingAnswer()">Prüfen ✓</button>
+      <button class="cta-btn hidden" id="type-next-btn" style="background:linear-gradient(135deg,var(--blue),var(--light-blue));box-shadow:0 4px 16px rgba(0,39,118,0.3)" onclick="App.nextTypingCard()">Weiter →</button>
+    </div>
+    <div class="session-complete hidden" id="type-complete">
+      <div class="trophy">✏️</div>
+      <h2>Tipp-Übung beendet!</h2>
+      <p id="type-complete-msg">Gut gemacht!</p>
+      <div class="xp-earned" id="type-xp">+0 XP</div>
+      <br><br>
+      <button class="cta-btn" onclick="App.showView('learn')" style="max-width:280px;margin:0 auto">📚 Kategorien</button>
+      <button class="cta-btn" style="max-width:280px;margin:8px auto;background:linear-gradient(135deg,var(--blue),var(--light-blue));box-shadow:0 4px 16px rgba(0,39,118,0.3)" onclick="App.restartSession()">🔄 Nochmal</button>
+    </div>
+  </div>
+
+  <!-- LISTENING QUIZ -->
+  <div class="view" id="view-listening">
+    <div class="flashcard-header">
+      <button class="back-btn" onclick="App.exitSession()">←</button>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-label" id="listen-progress-label">Frage 0 / 0</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="listen-progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+    <div id="listen-session-area">
+      <div class="quiz-score-bar">
+        <span>Punkte</span>
+        <span class="quiz-score-val" id="listen-score-val">0</span>
+      </div>
+      <div class="listen-card">
+        <span class="listen-icon" id="listen-play-btn" onclick="App.playListenWord()">🔊</span>
+        <div id="listen-word-reveal" class="hidden" style="font-size:1.8rem;font-weight:800;color:#fff;margin-top:8px"></div>
+        <div class="listen-label">Tippe auf 🔊 zum Abspielen / Tap 🔊 to play</div>
+      </div>
+      <div class="quiz-options" id="listen-options"></div>
+      <div class="quiz-feedback" id="listen-feedback"></div>
+      <button class="cta-btn hidden" id="listen-next-btn" onclick="App.nextListenQuestion()">Weiter →</button>
+    </div>
+    <div class="session-complete hidden" id="listen-complete">
+      <div class="trophy">👂</div>
+      <h2 id="listen-complete-title">Hörübung beendet!</h2>
+      <p id="listen-complete-msg">Gut gemacht!</p>
+      <div class="xp-earned" id="listen-xp">+0 XP</div>
+      <br><br>
+      <button class="cta-btn" onclick="App.showView('home')" style="max-width:280px;margin:0 auto">🏠 Startseite</button>
+      <button class="cta-btn" style="max-width:280px;margin:8px auto;background:linear-gradient(135deg,#6a0dad,#9b30ff);box-shadow:0 4px 16px rgba(106,13,173,0.3)" onclick="App.startListeningQuiz()">🔄 Nochmal</button>
+    </div>
+  </div>
+
+  <!-- GRAMMAR -->
+  <div class="view" id="view-grammar">
+    <p class="section-title mb-16">Grammatik / Grammar</p>
+    <div id="grammar-cards-list"></div>
+  </div>
+
   <!-- PROGRESS -->
   <div class="view" id="view-progress">
     <p class="section-title mb-16">Mein Fortschritt / My Progress</p>
@@ -906,6 +1161,11 @@
     </div>
 
     <div class="progress-card">
+      <h3>❌ Fehler-Analyse – Schwierige Wörter</h3>
+      <div id="error-analysis-list"><span style="color:var(--text-2);font-size:0.85rem">Noch keine Fehler aufgezeichnet. Starte eine Übung!</span></div>
+    </div>
+
+    <div class="progress-card">
       <h3>📊 Kategorie-Fortschritt</h3>
       <div id="cat-progress-list"></div>
     </div>
@@ -928,6 +1188,9 @@
     <button class="nav-btn" id="nav-quiz" onclick="App.startQuizSession()">
       <span class="nav-icon">🎯</span><span>Quiz</span>
     </button>
+    <button class="nav-btn" id="nav-grammar" onclick="App.showView('grammar')">
+      <span class="nav-icon">📖</span><span>Grammatik</span>
+    </button>
     <button class="nav-btn" id="nav-progress" onclick="App.showView('progress')">
       <span class="nav-icon">📈</span><span>Fortschritt</span>
     </button>
@@ -943,14 +1206,14 @@
    DATA – Vocabulary for DE→PT-BR and EN→PT-BR
 ═══════════════════════════════════════════════════════════════════════════ */
 const CATEGORIES = [
-  { id: 'greetings', icon: '👋', name: { de: 'Begrüßungen', en: 'Greetings' } },
-  { id: 'numbers',   icon: '🔢', name: { de: 'Zahlen',       en: 'Numbers'   } },
-  { id: 'colors',    icon: '🎨', name: { de: 'Farben',        en: 'Colors'    } },
-  { id: 'food',      icon: '🍽️', name: { de: 'Essen',         en: 'Food'      } },
-  { id: 'travel',    icon: '✈️', name: { de: 'Reisen',        en: 'Travel'    } },
-  { id: 'family',    icon: '👨‍👩‍👧', name: { de: 'Familie',      en: 'Family'    } },
-  { id: 'days',      icon: '📅', name: { de: 'Wochentage',    en: 'Days'      } },
-  { id: 'verbs',     icon: '⚡', name: { de: 'Verben',        en: 'Verbs'     } },
+  { id: 'greetings', icon: '👋', level: 'A1', name: { de: 'Begrüßungen', en: 'Greetings' } },
+  { id: 'numbers',   icon: '🔢', level: 'A1', name: { de: 'Zahlen',       en: 'Numbers'   } },
+  { id: 'colors',    icon: '🎨', level: 'A1', name: { de: 'Farben',        en: 'Colors'    } },
+  { id: 'food',      icon: '🍽️', level: 'A1', name: { de: 'Essen',         en: 'Food'      } },
+  { id: 'travel',    icon: '✈️', level: 'A2', name: { de: 'Reisen',        en: 'Travel'    } },
+  { id: 'family',    icon: '👨‍👩‍👧', level: 'A1', name: { de: 'Familie',      en: 'Family'    } },
+  { id: 'days',      icon: '📅', level: 'A1', name: { de: 'Wochentage',    en: 'Days'      } },
+  { id: 'verbs',     icon: '⚡', level: 'A2', name: { de: 'Verben',        en: 'Verbs'     } },
 ];
 
 // Each word: { id, category, pt, de, en, pron, ex_pt, ex_de, ex_en }
@@ -1088,7 +1351,8 @@ function loadState() {
     lastStudied: null,
     totalCorrect: 0,
     totalAnswered: 0,
-    cards: {}   // id -> { level, nextReview, timesStudied, correct }
+    cards: {},       // id -> { level, nextReview, timesStudied, correct }
+    wrongCounts: {}  // id -> number of wrong answers (for error analysis)
   };
 }
 
@@ -1148,6 +1412,8 @@ const App = (() => {
       state.totalCorrect += 1;
     } else {
       c.level = Math.max(0, c.level - 1);
+      if (!state.wrongCounts) state.wrongCounts = {};
+      state.wrongCounts[id] = (state.wrongCounts[id] || 0) + 1;
     }
     const interval = SRS_INTERVALS[c.level];
     const next = new Date();
@@ -1202,6 +1468,7 @@ const App = (() => {
     if (name === 'home') renderHome();
     if (name === 'learn') renderLearn();
     if (name === 'progress') renderProgress();
+    if (name === 'grammar') renderGrammar();
   }
 
   /* ── HOME ────────────────────────────────────────────────────────────────── */
@@ -1258,9 +1525,13 @@ const App = (() => {
       card.onclick = () => startFlashcardSession(cat.id);
       card.innerHTML = `
         <div class="cat-icon">${cat.icon}</div>
-        <div class="cat-name">${cat.name[state.lang]}</div>
+        <div class="cat-name">${cat.name[state.lang]}<span class="level-badge level-${cat.level}">${cat.level}</span></div>
         <div class="cat-count">${seen}/${words.length} Wörter</div>
-        <div class="cat-progress-bar">
+        <div style="display:flex;gap:6px;margin-top:8px;font-size:0.72rem">
+          <button onclick="event.stopPropagation();App.startFlashcardSession('${cat.id}')" style="flex:1;padding:5px 4px;background:linear-gradient(135deg,var(--green),var(--light-green));color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.7rem">🃏 Karten</button>
+          <button onclick="event.stopPropagation();App.startTypingSession('${cat.id}')" style="flex:1;padding:5px 4px;background:linear-gradient(135deg,#c77b17,#e89c2f);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.7rem">✏️ Tippen</button>
+        </div>
+        <div class="cat-progress-bar" style="margin-top:6px">
           <div class="cat-progress-fill" style="width:${pct}%"></div>
         </div>`;
       grid.appendChild(card);
@@ -1533,6 +1804,49 @@ const App = (() => {
       srsDiv.innerHTML = '<span style="color:var(--text-2);font-size:0.85rem">Noch keine Wörter gelernt. Starte eine Lektion!</span>';
     }
 
+    // Error analysis
+    const errorDiv = document.getElementById('error-analysis-list');
+    const wc = state.wrongCounts || {};
+    const sorted = Object.entries(wc)
+      .sort((a,b) => b[1]-a[1])
+      .slice(0, 8);
+    if (sorted.length === 0) {
+      errorDiv.innerHTML = '<span style="color:var(--text-2);font-size:0.85rem">Noch keine Fehler aufgezeichnet. Starte eine Übung!</span>';
+    } else {
+      errorDiv.innerHTML = '';
+      sorted.forEach(([id, cnt]) => {
+        const w = WORDS.find(x => x.id === parseInt(id));
+        if (!w) return;
+        const tr = state.lang === 'de' ? w.de : w.en;
+        const item = document.createElement('div');
+        item.className = 'error-word-item';
+        const left = document.createElement('div');
+        const ptEl = document.createElement('div');
+        ptEl.className = 'error-word-pt';
+        ptEl.textContent = w.pt;
+        const trEl = document.createElement('div');
+        trEl.className = 'error-word-tr';
+        trEl.textContent = tr;
+        left.appendChild(ptEl);
+        left.appendChild(trEl);
+        const right = document.createElement('div');
+        right.style.cssText = 'display:flex;align-items:center;gap:6px';
+        const speakBtn = document.createElement('button');
+        speakBtn.style.cssText = 'background:rgba(0,156,59,0.1);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:1rem';
+        speakBtn.textContent = '🔊';
+        speakBtn.setAttribute('data-pt', w.pt);
+        speakBtn.addEventListener('click', function() { speakWord(this.getAttribute('data-pt')); });
+        const badge = document.createElement('span');
+        badge.className = 'error-count';
+        badge.textContent = cnt + '×';
+        right.appendChild(speakBtn);
+        right.appendChild(badge);
+        item.appendChild(left);
+        item.appendChild(right);
+        errorDiv.appendChild(item);
+      });
+    }
+
     // Category progress
     const catDiv = document.getElementById('cat-progress-list');
     catDiv.innerHTML = '';
@@ -1543,7 +1857,7 @@ const App = (() => {
       catDiv.innerHTML += `
         <div class="cat-progress-item">
           <div class="cat-progress-header">
-            <span>${cat.icon} ${cat.name[state.lang]}</span>
+            <span>${cat.icon} ${cat.name[state.lang]}<span class="level-badge level-${cat.level}">${cat.level}</span></span>
             <span class="cat-progress-pct">${seen}/${words.length}</span>
           </div>
           <div class="progress-bar-full">
@@ -1555,7 +1869,7 @@ const App = (() => {
 
   function resetProgress() {
     if (confirm('Fortschritt wirklich zurücksetzen? / Really reset progress?')) {
-      state = { lang: state.lang, xp: 0, streak: 0, lastStudied: null, totalCorrect: 0, totalAnswered: 0, cards: {} };
+      state = { lang: state.lang, xp: 0, streak: 0, lastStudied: null, totalCorrect: 0, totalAnswered: 0, cards: {}, wrongCounts: {} };
       saveState(state);
       renderHeaderStats();
       renderProgress();
@@ -1584,10 +1898,401 @@ const App = (() => {
   }
 
   /* ── init ────────────────────────────────────────────────────────────────── */
+  /* ── TEXT-TO-SPEECH ──────────────────────────────────────────────────────── */
+  function speakWord(text) {
+    if (!window.speechSynthesis) { showToast('TTS nicht unterstützt / TTS not supported'); return; }
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'pt-BR';
+    utt.rate = 0.85;
+    window.speechSynthesis.speak(utt);
+  }
+
+  function speak() {
+    if (!session || !session.queue) return;
+    const word = session.queue[session.index];
+    if (!word) return;
+    const btn = document.getElementById('fc-speak-btn');
+    if (btn) { btn.classList.add('speaking'); setTimeout(() => btn.classList.remove('speaking'), 1500); }
+    speakWord(word.pt);
+  }
+
+  /* ── GRAMMAR DATA & RENDER ───────────────────────────────────────────────── */
+  const GRAMMAR_CARDS = [
+    {
+      title: '🗣️ Artikel – O, A, Um, Uma',
+      body: `
+        <p>Im brasilianischen Portugiesisch hat jedes Nomen ein grammatisches Geschlecht (Maskulinum / Femininum).</p>
+        <table class="grammar-table">
+          <tr><th>Deutsch</th><th>Portugiesisch</th><th>Beispiel</th></tr>
+          <tr><td>der (bestimmt)</td><td class="pt">o</td><td><span class="pt">o menino</span> – der Junge</td></tr>
+          <tr><td>die (bestimmt)</td><td class="pt">a</td><td><span class="pt">a menina</span> – das Mädchen</td></tr>
+          <tr><td>ein (unbestimmt)</td><td class="pt">um</td><td><span class="pt">um carro</span> – ein Auto</td></tr>
+          <tr><td>eine (unbestimmt)</td><td class="pt">uma</td><td><span class="pt">uma casa</span> – ein Haus</td></tr>
+        </table>
+        <p>💡 Tipp: Wörter auf <strong>-o</strong> sind meist maskulin, auf <strong>-a</strong> meist feminin.</p>`
+    },
+    {
+      title: '🔄 Präsens – Ser vs. Estar (sein)',
+      body: `
+        <p>Im Portugiesischen gibt es zwei Verben für "sein": <strong class="pt">ser</strong> (dauerhaft) und <strong class="pt">estar</strong> (vorübergehend).</p>
+        <table class="grammar-table">
+          <tr><th>Person</th><th>ser</th><th>estar</th></tr>
+          <tr><td>eu (ich)</td><td class="pt">sou</td><td class="pt">estou</td></tr>
+          <tr><td>você (Sie/du)</td><td class="pt">é</td><td class="pt">está</td></tr>
+          <tr><td>ele/ela (er/sie)</td><td class="pt">é</td><td class="pt">está</td></tr>
+          <tr><td>nós (wir)</td><td class="pt">somos</td><td class="pt">estamos</td></tr>
+          <tr><td>vocês (ihr/Sie)</td><td class="pt">são</td><td class="pt">estão</td></tr>
+        </table>
+        <div class="grammar-example"><span class="ex-pt">Eu sou brasileiro.</span><br><span class="ex-tr">Ich bin Brasilianer. (dauerhaft)</span></div>
+        <div class="grammar-example"><span class="ex-pt">Eu estou cansado.</span><br><span class="ex-tr">Ich bin müde. (vorübergehend)</span></div>`
+    },
+    {
+      title: '🔢 Zahlen 1–20',
+      body: `
+        <table class="grammar-table">
+          <tr><th>#</th><th>Português</th><th>#</th><th>Português</th></tr>
+          <tr><td>1</td><td class="pt">um / uma</td><td>11</td><td class="pt">onze</td></tr>
+          <tr><td>2</td><td class="pt">dois / duas</td><td>12</td><td class="pt">doze</td></tr>
+          <tr><td>3</td><td class="pt">três</td><td>13</td><td class="pt">treze</td></tr>
+          <tr><td>4</td><td class="pt">quatro</td><td>14</td><td class="pt">quatorze</td></tr>
+          <tr><td>5</td><td class="pt">cinco</td><td>15</td><td class="pt">quinze</td></tr>
+          <tr><td>6</td><td class="pt">seis</td><td>16</td><td class="pt">dezesseis</td></tr>
+          <tr><td>7</td><td class="pt">sete</td><td>17</td><td class="pt">dezessete</td></tr>
+          <tr><td>8</td><td class="pt">oito</td><td>18</td><td class="pt">dezoito</td></tr>
+          <tr><td>9</td><td class="pt">nove</td><td>19</td><td class="pt">dezenove</td></tr>
+          <tr><td>10</td><td class="pt">dez</td><td>20</td><td class="pt">vinte</td></tr>
+        </table>`
+    },
+    {
+      title: '🗓️ Wichtige Verben im Präsens (Regular -ar)',
+      body: `
+        <p>Regelmäßige Verben auf <strong>-ar</strong>: Beispiel <span class="pt">falar</span> (sprechen)</p>
+        <table class="grammar-table">
+          <tr><th>Person</th><th>falar</th><th>Bedeutung</th></tr>
+          <tr><td>eu</td><td class="pt">falo</td><td>ich spreche</td></tr>
+          <tr><td>você</td><td class="pt">fala</td><td>du sprichst / Sie sprechen</td></tr>
+          <tr><td>ele/ela</td><td class="pt">fala</td><td>er/sie spricht</td></tr>
+          <tr><td>nós</td><td class="pt">falamos</td><td>wir sprechen</td></tr>
+          <tr><td>vocês</td><td class="pt">falam</td><td>ihr sprecht / Sie sprechen</td></tr>
+        </table>
+        <p>🔑 Gleiche Endungen für: <span class="pt">trabalhar</span> (arbeiten), <span class="pt">gostar</span> (mögen), <span class="pt">morar</span> (wohnen)</p>`
+    },
+    {
+      title: '📢 Aussprache-Tipps – Brasilianisches Portugiesisch',
+      body: `
+        <table class="grammar-table">
+          <tr><th>Buchstabe/Kombo</th><th>Aussprache</th><th>Beispiel</th></tr>
+          <tr><td class="pt">lh</td><td>[lj] wie "Milli"</td><td><span class="pt">filho</span> [FÍ-lju]</td></tr>
+          <tr><td class="pt">nh</td><td>[nj] wie "Njet"</td><td><span class="pt">banho</span> [BÂ-nju]</td></tr>
+          <tr><td class="pt">ã</td><td>nasales [ã]</td><td><span class="pt">irmã</span> [ir-MÃ]</td></tr>
+          <tr><td class="pt">ão</td><td>[ãw] nasal</td><td><span class="pt">não</span> [NÃWM]</td></tr>
+          <tr><td class="pt">ch</td><td>[ʃ] wie "sch"</td><td><span class="pt">chá</span> [ʃÁ] = Tee</td></tr>
+          <tr><td class="pt">ç</td><td>[s] wie "ss"</td><td><span class="pt">açúcar</span> [a-SÚ-kar]</td></tr>
+          <tr><td>d + e/i (BR)</td><td>[dʒ] wie "dsch"</td><td><span class="pt">dia</span> [DʒI-a]</td></tr>
+          <tr><td>t + e/i (BR)</td><td>[tʃ] wie "tsch"</td><td><span class="pt">noite</span> [NOI-tʃi]</td></tr>
+        </table>`
+    },
+    {
+      title: '💬 Essenzielle Phrasen für Gespräche',
+      body: `
+        <table class="grammar-table">
+          <tr><th>Situation</th><th>Português</th><th>Bedeutung</th></tr>
+          <tr><td>Zustimmung</td><td class="pt">Claro! / Com certeza!</td><td>Klar! / Natürlich!</td></tr>
+          <tr><td>Verneinung</td><td class="pt">Não, obrigado(a).</td><td>Nein, danke.</td></tr>
+          <tr><td>Verstehen?</td><td class="pt">Você entendeu?</td><td>Hast du verstanden?</td></tr>
+          <tr><td>Nicht verstanden</td><td class="pt">Não entendi.</td><td>Ich habe nicht verstanden.</td></tr>
+          <tr><td>Langsamer</td><td class="pt">Pode falar mais devagar?</td><td>Können Sie langsamer sprechen?</td></tr>
+          <tr><td>Wiederholen</td><td class="pt">Pode repetir?</td><td>Können Sie wiederholen?</td></tr>
+          <tr><td>Preis?</td><td class="pt">Quanto custa?</td><td>Wie viel kostet das?</td></tr>
+          <tr><td>WC?</td><td class="pt">Onde fica o banheiro?</td><td>Wo ist die Toilette?</td></tr>
+        </table>`
+    },
+    {
+      title: '📍 Präpositionen & Ortsangaben',
+      body: `
+        <table class="grammar-table">
+          <tr><th>Deutsch</th><th>Português</th><th>Beispiel</th></tr>
+          <tr><td>in / im</td><td class="pt">em / no / na</td><td><span class="pt">no Brasil</span> – in Brasilien</td></tr>
+          <tr><td>zu / nach</td><td class="pt">para</td><td><span class="pt">Vou para casa.</span> – Ich gehe nach Hause.</td></tr>
+          <tr><td>von / aus</td><td class="pt">de</td><td><span class="pt">de São Paulo</span> – aus São Paulo</td></tr>
+          <tr><td>mit</td><td class="pt">com</td><td><span class="pt">com você</span> – mit dir</td></tr>
+          <tr><td>ohne</td><td class="pt">sem</td><td><span class="pt">sem açúcar</span> – ohne Zucker</td></tr>
+          <tr><td>für</td><td class="pt">para / por</td><td><span class="pt">para você</span> – für dich</td></tr>
+        </table>`
+    },
+  ];
+
+  function renderGrammar() {
+    const container = document.getElementById('grammar-cards-list');
+    if (!container) return;
+    if (container.innerHTML !== '') return; // already rendered
+    container.innerHTML = GRAMMAR_CARDS.map((gc, i) => `
+      <div class="grammar-card" id="gc-${i}" onclick="toggleGrammarCard(${i})">
+        <div class="grammar-card-title">${gc.title}<span class="grammar-card-chevron">▶</span></div>
+        <div class="grammar-card-body">${gc.body}</div>
+      </div>`).join('');
+  }
+
+  function toggleGrammarCard(i) {
+    const card = document.getElementById('gc-' + i);
+    card.classList.toggle('open');
+  }
+
+  /* ── TYPING SESSION ──────────────────────────────────────────────────────── */
+  function startTypingSession(catId) {
+    const pool = catId
+      ? WORDS.filter(w => w.cat === catId)
+      : [...WORDS].sort(() => Math.random() - 0.5).slice(0, 12);
+    if (pool.length === 0) { showToast('Keine Wörter verfügbar!'); return; }
+    session = {
+      type: 'typing',
+      catId,
+      queue: [...pool].sort(() => Math.random() - 0.5),
+      index: 0,
+      xpEarned: 0,
+      checked: false
+    };
+    updateStreak();
+    document.getElementById('type-session-area').classList.remove('hidden');
+    document.getElementById('type-complete').classList.add('hidden');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    showView('typing');
+    renderTypingCard();
+  }
+
+  function renderTypingCard() {
+    const { queue, index } = session;
+    const word = queue[index];
+    const total = queue.length;
+    document.getElementById('type-progress-label').textContent = `${index + 1} / ${total}`;
+    document.getElementById('type-progress-fill').style.width = Math.round((index / total) * 100) + '%';
+
+    const qLabel = state.lang === 'de' ? 'Schreibe auf Portugiesisch' : 'Type in Portuguese';
+    document.getElementById('type-q-label').textContent = qLabel;
+    document.getElementById('type-q-word').textContent = state.lang === 'de' ? word.de : word.en;
+    const cat = CATEGORIES.find(c => c.id === word.cat);
+    document.getElementById('type-q-category').textContent = cat ? cat.icon + ' ' + cat.name[state.lang] : '';
+
+    const input = document.getElementById('typing-input');
+    input.value = '';
+    input.className = 'typing-input';
+    input.disabled = false;
+    input.focus();
+
+    document.getElementById('typing-reveal').className = 'typing-reveal';
+    document.getElementById('typing-reveal').textContent = '';
+    document.getElementById('type-check-btn').classList.remove('hidden');
+    document.getElementById('type-next-btn').classList.add('hidden');
+    session.checked = false;
+  }
+
+  function checkTypingAnswer() {
+    if (session.checked) return;
+    session.checked = true;
+    const word = session.queue[session.index];
+    const input = document.getElementById('typing-input');
+    const answer = input.value.trim().toLowerCase();
+    const correct = word.pt.toLowerCase();
+    // Allow minor typos: check exact or strip accents
+    // NFD decomposition strips accent/diacritic marks (e.g. ã→a, ç→c) for typo tolerance
+    const normalize = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+    const isCorrect = answer === correct || normalize(answer) === normalize(correct);
+
+    input.classList.add(isCorrect ? 'correct' : 'wrong');
+    input.disabled = true;
+
+    const reveal = document.getElementById('typing-reveal');
+    reveal.classList.add('visible');
+    if (isCorrect) {
+      const earnedXP = 20;
+      session.xpEarned += earnedXP;
+      const rect = input.getBoundingClientRect();
+      addXP(earnedXP, rect.left + rect.width / 2, rect.top);
+      reveal.style.background = '#e8fff2';
+      reveal.style.color = 'var(--green)';
+      reveal.textContent = '✅ Richtig! / Correct!';
+    } else {
+      reveal.style.background = '#fff0f3';
+      reveal.style.color = 'var(--danger)';
+      reveal.textContent = `❌ Richtige Antwort: ${word.pt}  [ ${word.pron} ]`;
+    }
+    speakWord(word.pt);
+    rateWord(word.id, isCorrect);
+
+    document.getElementById('type-check-btn').classList.add('hidden');
+    document.getElementById('type-next-btn').classList.remove('hidden');
+  }
+
+  function nextTypingCard() {
+    session.index += 1;
+    if (session.index >= session.queue.length) {
+      endTypingSession();
+    } else {
+      renderTypingCard();
+    }
+  }
+
+  function typeListenHint() {
+    const word = session.queue[session.index];
+    speakWord(word.pt);
+  }
+
+  function endTypingSession() {
+    document.getElementById('type-session-area').classList.add('hidden');
+    document.getElementById('type-complete').classList.remove('hidden');
+    document.getElementById('type-progress-fill').style.width = '100%';
+    const total = session.queue.length;
+    document.getElementById('type-progress-label').textContent = `${total} / ${total}`;
+    document.getElementById('type-xp').textContent = '+' + session.xpEarned + ' XP';
+    const pct = Math.round((session.xpEarned / (total * 20)) * 100);
+    document.getElementById('type-complete-msg').textContent =
+      pct >= 80 ? `Ausgezeichnet! ${pct}% richtig 🌟` :
+      pct >= 50 ? `Gut gemacht! ${pct}% richtig 💪` :
+                  `Übe weiter! ${pct}% richtig 📚`;
+    renderHeaderStats();
+  }
+
+  /* ── LISTENING QUIZ ──────────────────────────────────────────────────────── */
+  function startListeningQuiz() {
+    const pool = [...WORDS].sort(() => Math.random() - 0.5).slice(0, 10);
+    session = {
+      type: 'listening',
+      queue: pool,
+      index: 0,
+      score: 0,
+      xpEarned: 0,
+      answered: false
+    };
+    updateStreak();
+    document.getElementById('listen-session-area').classList.remove('hidden');
+    document.getElementById('listen-complete').classList.add('hidden');
+    document.getElementById('listen-score-val').textContent = '0';
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    showView('listening');
+    renderListenQuestion();
+  }
+
+  function renderListenQuestion() {
+    const { queue, index } = session;
+    const word = queue[index];
+    const total = queue.length;
+    document.getElementById('listen-progress-label').textContent = `Frage ${index + 1} / ${total}`;
+    document.getElementById('listen-progress-fill').style.width = Math.round((index / total) * 100) + '%';
+
+    document.getElementById('listen-word-reveal').classList.add('hidden');
+    document.getElementById('listen-word-reveal').textContent = '';
+    document.getElementById('listen-play-btn').textContent = '🔊';
+
+    // 4 options: correct translation + 3 wrong
+    const correct = state.lang === 'de' ? word.de : word.en;
+    const others = WORDS.filter(w => w.id !== word.id)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3)
+      .map(w => state.lang === 'de' ? w.de : w.en);
+    const options = [correct, ...others].sort(() => Math.random() - 0.5);
+
+    const container = document.getElementById('listen-options');
+    container.innerHTML = '';
+    options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-option';
+      btn.textContent = opt;
+      btn.onclick = () => handleListenAnswer(btn, opt, correct, word);
+      container.appendChild(btn);
+    });
+
+    const fb = document.getElementById('listen-feedback');
+    fb.className = 'quiz-feedback';
+    fb.textContent = '';
+    document.getElementById('listen-next-btn').classList.add('hidden');
+    session.answered = false;
+
+    // Auto-play the word
+    setTimeout(() => playListenWord(), 400);
+  }
+
+  function playListenWord() {
+    if (!session || !session.queue) return;
+    const word = session.queue[session.index];
+    const btn = document.getElementById('listen-play-btn');
+    if (btn) { btn.textContent = '🔉'; setTimeout(() => { if(btn) btn.textContent='🔊'; }, 1500); }
+    speakWord(word.pt);
+  }
+
+  function handleListenAnswer(btn, chosen, correct, word) {
+    if (session.answered) return;
+    session.answered = true;
+
+    const isCorrect = chosen === correct;
+    document.querySelectorAll('#listen-options .quiz-option').forEach(b => {
+      b.disabled = true;
+      if (b.textContent === correct) b.classList.add('correct');
+      if (b === btn && !isCorrect) b.classList.add('wrong');
+    });
+
+    // Reveal the Portuguese word
+    const reveal = document.getElementById('listen-word-reveal');
+    reveal.textContent = word.pt + '  [ ' + word.pron + ' ]';
+    reveal.classList.remove('hidden');
+
+    const fb = document.getElementById('listen-feedback');
+    fb.classList.add('visible');
+    if (isCorrect) {
+      session.score += 1;
+      const earnedXP = 15;
+      session.xpEarned += earnedXP;
+      addXP(earnedXP, btn.getBoundingClientRect().left + btn.getBoundingClientRect().width / 2, btn.getBoundingClientRect().top);
+      fb.classList.add('correct-fb');
+      fb.textContent = '✅ Richtig! / Correct!';
+      document.getElementById('listen-score-val').textContent = session.score;
+    } else {
+      fb.classList.add('wrong-fb');
+      fb.textContent = `❌ Falsch! Richtige Antwort: ${correct}`;
+    }
+    rateWord(word.id, isCorrect);
+    document.getElementById('listen-next-btn').classList.remove('hidden');
+  }
+
+  function nextListenQuestion() {
+    session.index += 1;
+    if (session.index >= session.queue.length) {
+      endListenSession();
+    } else {
+      renderListenQuestion();
+    }
+  }
+
+  function endListenSession() {
+    document.getElementById('listen-session-area').classList.add('hidden');
+    document.getElementById('listen-complete').classList.remove('hidden');
+    document.getElementById('listen-progress-fill').style.width = '100%';
+    const score = session.score;
+    const total = session.queue.length;
+    const pct = Math.round((score / total) * 100);
+    let title = '👂 Hörübung beendet!';
+    let msg = '';
+    if (pct >= 90) { title = '🏆 Perfektes Gehör!'; msg = `${score}/${total} – Fantastisch! 🌟`; }
+    else if (pct >= 70) { msg = `${score}/${total} – Super! Dein Gehör verbessert sich! 💪`; }
+    else if (pct >= 50) { msg = `${score}/${total} – Gut gemacht! Weiter üben! 📚`; }
+    else { msg = `${score}/${total} – Nicht aufgeben! Hör noch einmal hin! 🔊`; }
+    document.getElementById('listen-complete-title').textContent = title;
+    document.getElementById('listen-complete-msg').textContent = msg;
+    document.getElementById('listen-xp').textContent = '+' + session.xpEarned + ' XP';
+    renderHeaderStats();
+  }
+
   function init() {
     updateStreak();
     renderHeaderStats();
     renderHome();
+
+    // Register service worker for PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js').catch(err => {
+        console.info('LinguaBrasil: Service Worker nicht verfügbar – Offline-Modus deaktiviert.', err);
+      });
+    }
 
     // Expose public methods
     return {
@@ -1595,7 +2300,10 @@ const App = (() => {
       startFlashcardSession, flipCard, rateCard,
       exitSession, restartSession,
       startQuizSession, nextQuizQuestion,
-      resetProgress
+      resetProgress,
+      speak, speakWord,
+      startTypingSession, checkTypingAnswer, nextTypingCard, typeListenHint,
+      startListeningQuiz, playListenWord, nextListenQuestion
     };
   }
 
