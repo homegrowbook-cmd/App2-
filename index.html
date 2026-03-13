@@ -2990,10 +2990,30 @@ const App = (() => {
       document.getElementById('lang-popup-overlay').classList.remove('hidden');
     }
 
-    // Register service worker for PWA
+    // Register service worker for PWA – force-update on mobile
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js').catch(err => {
+      navigator.serviceWorker.register('service-worker.js').then(reg => {
+        // If a new SW is already waiting, activate it immediately
+        if (reg.waiting) {
+          reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        }
+        // If a new SW installs while the page is open, activate it immediately
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          if (!newWorker) return;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              newWorker.postMessage({ type: 'SKIP_WAITING' });
+            }
+          });
+        });
+      }).catch(err => {
         console.info('LinguaBrasil: Service Worker nicht verfügbar – Offline-Modus deaktiviert.', err);
+      });
+      // Reload the page once the new SW has taken control
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!refreshing) { refreshing = true; location.reload(); }
       });
     }
 
