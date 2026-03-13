@@ -2150,7 +2150,7 @@ const App = (() => {
     renderSettingsLang();
     // Update dynamic word count in app info
     const infoEl = document.getElementById('settings-word-count');
-    if (infoEl) infoEl.textContent = WORDS.length + ' Vokabeln & Sätze · ' + CATEGORIES.length + ' Kategorien';
+    if (infoEl) infoEl.textContent = `${WORDS.length} Vokabeln & Sätze · ${CATEGORIES.length} Kategorien`;
     // Dark mode
     const dmBtn = document.getElementById('settings-dark-btn');
     if (dmBtn) dmBtn.textContent = state.darkMode ? '☀️ Hell-Modus aktivieren' : '🌙 Dunkel-Modus aktivieren';
@@ -2178,6 +2178,11 @@ const App = (() => {
   }
 
   /* ── HOME ────────────────────────────────────────────────────────────────── */
+  /* ── HTML escape helper for safe innerHTML interpolation ─────────────────── */
+  function esc(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
   const WORD_OF_DAY_WORDS = [
     { pt:'Saudade',      de:'Sehnsucht',              en:'Longing / Missing',        pron:'saw-DÁ-dʒi' },
     { pt:'Jeitinho',     de:'Erfinderischer Weg',     en:'Clever little way',        pron:'zhei-TÎ-nhu' },
@@ -2520,11 +2525,11 @@ const App = (() => {
       session.xpEarned += earnedXP;
       addXP(earnedXP, btn.getBoundingClientRect().left + btn.getBoundingClientRect().width / 2, btn.getBoundingClientRect().top);
       fb.classList.add('correct-fb');
-      fb.innerHTML = `✅ Richtig! / Correct! &nbsp;<span style="color:var(--green);font-size:0.82rem">[ ${word.pron} ]</span>`;
+      fb.innerHTML = `✅ Richtig! / Correct! &nbsp;<span style="color:var(--green);font-size:0.82rem">[ ${esc(word.pron)} ]</span>`;
       document.getElementById('quiz-score-val').textContent = session.score;
     } else {
       fb.classList.add('wrong-fb');
-      fb.innerHTML = `❌ Falsch! Richtige Antwort: <strong>${correct}</strong> &nbsp;<span style="font-size:0.8rem;color:var(--text-2)">[ ${word.pron} ] – ${word.ex_pt}</span>`;
+      fb.innerHTML = `❌ Falsch! Richtige Antwort: <strong>${esc(correct)}</strong> &nbsp;<span style="font-size:0.8rem;color:var(--text-2)">[ ${esc(word.pron)} ] – ${esc(word.ex_pt)}</span>`;
     }
 
     rateWord(word.id, isCorrect);
