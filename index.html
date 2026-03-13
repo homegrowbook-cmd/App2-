@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LinguaBrasil – Brasilianisches Portugiesisch lernen</title>
+  <style>
+    /* ─── CSS Variables & Reset ───────────────────────────────────────────── */
+    :root {
+      --green:   #009c3b;
+      --blue:    #002776;
+      --yellow:  #FFDF00;
+      --light-green: #00c44f;
+      --light-blue:  #1a4a9e;
+      --success: #06d6a0;
+      --danger:  #ef476f;
+      --warning: #ffd166;
+      --bg:      #f0f4f8;
+      --card:    #ffffff;
+      --text:    #1a2340;
+      --text-2:  #5a6a8a;
+      --border:  #dde3ee;
+      --shadow:  0 4px 20px rgba(0,39,118,0.10);
+      --radius:  16px;
+      --radius-sm: 10px;
+      --transition: 0.22s cubic-bezier(.4,0,.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    /* ─── App Shell ────────────────────────────────────────────────────────── */
+    #app {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      position: relative;
+    }
+
+    /* ─── Header ───────────────────────────────────────────────────────────── */
+    .app-header {
+      background: linear-gradient(135deg, var(--blue) 0%, #1a4a9e 100%);
+      color: #fff;
+      padding: 14px 18px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,39,118,0.25);
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .header-brand .flag { font-size: 1.4rem; }
+
+    .header-stats {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.85rem;
+    }
+
+    .stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255,255,255,0.15);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+      backdrop-filter: blur(4px);
+    }
+
+    /* ─── Bottom Nav ───────────────────────────────────────────────────────── */
+    .bottom-nav {
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      display: flex;
+      position: sticky;
+      bottom: 0;
+      z-index: 100;
+      box-shadow: 0 -2px 12px rgba(0,39,118,0.07);
+    }
+
+    .nav-btn {
+      flex: 1;
+      border: none;
+      background: none;
+      padding: 10px 4px 8px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--text-2);
+      transition: color var(--transition);
+    }
+
+    .nav-btn .nav-icon { font-size: 1.45rem; line-height: 1; }
+
+    .nav-btn.active {
+      color: var(--blue);
+    }
+
+    .nav-btn.active .nav-icon {
+      transform: scale(1.15);
+      transition: transform var(--transition);
+    }
+
+    /* ─── Views ────────────────────────────────────────────────────────────── */
+    .view {
+      display: none;
+      flex: 1;
+      padding: 18px;
+      padding-bottom: 80px;
+      animation: fadeIn 0.22s ease;
+      overflow-y: auto;
+    }
+
+    .view.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Home View ────────────────────────────────────────────────────────── */
+    .lang-selector {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .lang-btn {
+      flex: 1;
+      padding: 14px;
+      border-radius: var(--radius);
+      border: 2.5px solid var(--border);
+      background: var(--card);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      transition: all var(--transition);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .lang-btn .lang-flag { font-size: 2rem; }
+
+    .lang-btn:hover { border-color: var(--blue); box-shadow: var(--shadow); }
+
+    .lang-btn.selected {
+      border-color: var(--green);
+      background: linear-gradient(135deg, #f0fff8, #e8f8ef);
+      color: var(--green);
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-2);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 12px;
+    }
+
+    .daily-card {
+      background: linear-gradient(135deg, var(--blue), var(--light-blue));
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .daily-card::after {
+      content: '🇧🇷';
+      position: absolute;
+      right: -10px;
+      bottom: -10px;
+      font-size: 5rem;
+      opacity: 0.15;
+    }
+
+    .daily-card h2 { font-size: 1.1rem; opacity: 0.85; margin-bottom: 6px; }
+    .daily-card .word-of-day { font-size: 2rem; font-weight: 800; }
+    .daily-card .word-translation { font-size: 1rem; opacity: 0.8; margin-top: 4px; }
+    .daily-card .pronunciation { font-size: 0.82rem; opacity: 0.65; font-style: italic; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border-radius: var(--radius-sm);
+      padding: 14px 10px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-card .stat-value {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--blue);
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-2);
+      margin-top: 2px;
+      font-weight: 600;
+    }
+
+    .cta-btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--green), var(--light-green));
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 4px 16px rgba(0,156,59,0.35);
+      margin-bottom: 12px;
+    }
+
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,156,59,0.45); }
+    .cta-btn:active { transform: translateY(0); }
+
+    /* ─── Category Grid ─────────────────────────────────────────────────────── */
+    .category-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .category-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: all var(--transition);
+      border: 2px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .category-card:hover {
+      border-color: var(--blue);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,39,118,0.15);
+    }
+
+    .category-card .cat-icon { font-size: 2rem; margin-bottom: 6px; }
+    .category-card .cat-name { font-weight: 700; font-size: 0.92rem; }
+    .category-card .cat-count { font-size: 0.75rem; color: var(--text-2); margin-top: 2px; }
+
+    .cat-progress-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 4px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    .cat-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), var(--light-green));
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+
+    /* ─── Flashcard View ────────────────────────────────────────────────────── */
+    .flashcard-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .back-btn {
+      border: none;
+      background: var(--card);
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: var(--shadow);
+      flex-shrink: 0;
+      transition: background var(--transition);
+    }
+
+    .back-btn:hover { background: var(--border); }
+
+    .progress-bar-wrap { flex: 1; }
+    .progress-bar-label { font-size: 0.78rem; color: var(--text-2); margin-bottom: 5px; font-weight: 600; }
+
+    .progress-bar {
+      height: 8px;
+      background: var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), var(--light-green));
+      border-radius: 8px;
+      transition: width 0.4s ease;
+    }
+
+    /* Card flip */
+    .card-container {
+      perspective: 1000px;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+
+    .flip-card {
+      position: relative;
+      width: 100%;
+      min-height: 220px;
+      transform-style: preserve-3d;
+      transition: transform 0.55s cubic-bezier(.4,0,.2,1);
+    }
+
+    .flip-card.flipped { transform: rotateY(180deg); }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .card-front {
+      background: linear-gradient(135deg, var(--card) 0%, #f8fbff 100%);
+      border: 2px solid var(--border);
+    }
+
+    .card-back {
+      background: linear-gradient(135deg, #e8fff2 0%, #f0fff8 100%);
+      border: 2px solid var(--green);
+      transform: rotateY(180deg);
+    }
+
+    .card-lang-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-2);
+      background: var(--bg);
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+
+    .card-word {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .card-category-badge {
+      font-size: 0.75rem;
+      color: var(--text-2);
+      margin-bottom: 12px;
+    }
+
+    .card-hint {
+      font-size: 0.82rem;
+      color: var(--text-2);
+      font-style: italic;
+    }
+
+    .card-pt-word {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--green);
+      margin-bottom: 6px;
+    }
+
+    .card-pronunciation {
+      font-size: 0.95rem;
+      color: var(--text-2);
+      font-style: italic;
+      margin-bottom: 12px;
+    }
+
+    .card-example {
+      font-size: 0.82rem;
+      color: var(--text-2);
+      background: rgba(0,156,59,0.07);
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      text-align: left;
+      width: 100%;
+    }
+
+    .card-example span { display: block; margin-bottom: 2px; }
+    .card-example .ex-pt { font-weight: 600; color: var(--green); }
+
+    .flip-hint {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-2);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .rating-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .rating-btn {
+      flex: 1;
+      padding: 14px 10px;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 700;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .rating-btn.bad {
+      background: linear-gradient(135deg, #fff0f3, #ffe0e7);
+      color: var(--danger);
+      border: 2px solid #ffb3c1;
+    }
+
+    .rating-btn.good {
+      background: linear-gradient(135deg, #f0fff8, #d4f8e5);
+      color: var(--green);
+      border: 2px solid #90e0b0;
+    }
+
+    .rating-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .rating-btn:active { transform: translateY(0); }
+
+    /* Session complete */
+    .session-complete {
+      text-align: center;
+      padding: 30px 0;
+    }
+
+    .session-complete .trophy { font-size: 5rem; margin-bottom: 14px; }
+    .session-complete h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; }
+    .session-complete p { color: var(--text-2); margin-bottom: 20px; }
+    .xp-earned { font-size: 1.8rem; font-weight: 800; color: var(--yellow); text-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+
+    /* ─── Quiz View ─────────────────────────────────────────────────────────── */
+    .quiz-question-card {
+      background: linear-gradient(135deg, var(--blue), var(--light-blue));
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 20px rgba(0,39,118,0.25);
+    }
+
+    .quiz-question-card .q-label { font-size: 0.8rem; opacity: 0.7; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.8px; }
+    .quiz-question-card .q-word { font-size: 2.2rem; font-weight: 800; }
+    .quiz-question-card .q-category { font-size: 0.82rem; opacity: 0.65; margin-top: 8px; }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .quiz-option {
+      background: var(--card);
+      border: 2.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all var(--transition);
+      color: var(--text);
+    }
+
+    .quiz-option:hover:not(:disabled) {
+      border-color: var(--blue);
+      background: #f0f4ff;
+    }
+
+    .quiz-option.correct {
+      border-color: var(--green);
+      background: linear-gradient(135deg, #e8fff2, #d4f8e5);
+      color: var(--green);
+    }
+
+    .quiz-option.wrong {
+      border-color: var(--danger);
+      background: linear-gradient(135deg, #fff0f3, #ffe0e7);
+      color: var(--danger);
+    }
+
+    .quiz-option:disabled { cursor: default; }
+
+    .quiz-feedback {
+      background: var(--card);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      border-left: 4px solid var(--border);
+      display: none;
+    }
+
+    .quiz-feedback.visible { display: block; }
+    .quiz-feedback.correct-fb { border-color: var(--green); color: var(--green); }
+    .quiz-feedback.wrong-fb { border-color: var(--danger); color: var(--danger); }
+
+    .quiz-score-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-2);
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .quiz-score-val { font-size: 1.4rem; font-weight: 800; color: var(--blue); }
+
+    /* ─── Progress View ─────────────────────────────────────────────────────── */
+    .progress-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .progress-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+
+    .big-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .big-stat {
+      background: linear-gradient(135deg, var(--blue), var(--light-blue));
+      color: #fff;
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      text-align: center;
+    }
+
+    .big-stat .bs-value { font-size: 2rem; font-weight: 800; }
+    .big-stat .bs-label { font-size: 0.75rem; opacity: 0.8; margin-top: 2px; }
+
+    .srs-levels {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .srs-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .srs-0 { background: #ffeef2; color: #d63384; }
+    .srs-1 { background: #fff3e0; color: #e65100; }
+    .srs-2 { background: #fffde7; color: #f57f17; }
+    .srs-3 { background: #e8f5e9; color: #2e7d32; }
+    .srs-4 { background: #e3f2fd; color: #1565c0; }
+    .srs-5 { background: #ede7f6; color: #4527a0; }
+
+    .cat-progress-item {
+      margin-bottom: 14px;
+    }
+
+    .cat-progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .cat-progress-pct { color: var(--text-2); font-size: 0.8rem; }
+
+    .progress-bar-full {
+      height: 10px;
+      background: var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), var(--light-green));
+      border-radius: 10px;
+      transition: width 0.7s ease;
+    }
+
+    /* ─── Toast Notification ────────────────────────────────────────────────── */
+    #toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--text);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 24px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+      z-index: 1000;
+      white-space: nowrap;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ─── XP Animation ──────────────────────────────────────────────────────── */
+    .xp-pop {
+      position: fixed;
+      pointer-events: none;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--yellow);
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      animation: xpFloat 1.2s ease forwards;
+      z-index: 2000;
+    }
+
+    @keyframes xpFloat {
+      0%   { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-60px) scale(1.3); }
+    }
+
+    /* ─── Utility Classes ───────────────────────────────────────────────────── */
+    .mb-16 { margin-bottom: 16px; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ── Header ─────────────────────────────────────────────── -->
+  <header class="app-header">
+    <div class="header-brand">
+      <span class="flag">🇧🇷</span>
+      <span>LinguaBrasil</span>
+    </div>
+    <div class="header-stats">
+      <div class="stat-pill" id="header-streak">🔥 <span id="streak-val">0</span></div>
+      <div class="stat-pill" id="header-xp">⭐ <span id="xp-val">0</span></div>
+    </div>
+  </header>
+
+  <!-- ── Views ──────────────────────────────────────────────── -->
+
+  <!-- HOME -->
+  <div class="view active" id="view-home">
+
+    <p class="section-title mb-16" style="margin-top:4px">Lernsprache wählen / Choose your language</p>
+    <div class="lang-selector">
+      <button class="lang-btn" id="lang-de" onclick="App.setLang('de')">
+        <span class="lang-flag">🇩🇪</span>
+        <span>Deutsch</span>
+        <span style="font-size:0.72rem;color:var(--text-2);font-weight:500">→ Português</span>
+      </button>
+      <button class="lang-btn" id="lang-en" onclick="App.setLang('en')">
+        <span class="lang-flag">🇬🇧</span>
+        <span>English</span>
+        <span style="font-size:0.72rem;color:var(--text-2);font-weight:500">→ Português</span>
+      </button>
+    </div>
+
+    <div class="daily-card" id="daily-card">
+      <h2>Wort des Tages / Word of the Day</h2>
+      <div class="word-of-day" id="daily-word">Saudade</div>
+      <div class="word-translation" id="daily-translation">Sehnsucht / Longing</div>
+      <div class="pronunciation" id="daily-pron">[ sau-DA-dʒi ]</div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="home-words-learned">0</div>
+        <div class="stat-label">Wörter gelernt</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="home-streak">0</div>
+        <div class="stat-label">Tage Streak</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="home-accuracy">—</div>
+        <div class="stat-label">Genauigkeit</div>
+      </div>
+    </div>
+
+    <button class="cta-btn" onclick="App.startQuickSession()">⚡ Schnellübung starten</button>
+    <button class="cta-btn" style="background:linear-gradient(135deg,var(--blue),var(--light-blue));box-shadow:0 4px 16px rgba(0,39,118,0.3)" onclick="App.showView('learn')">📚 Alle Kategorien</button>
+  </div>
+
+  <!-- LEARN (categories) -->
+  <div class="view" id="view-learn">
+    <p class="section-title mb-16">Kategorien / Categories</p>
+    <div class="category-grid" id="category-grid"></div>
+  </div>
+
+  <!-- FLASHCARD -->
+  <div class="view" id="view-flashcard">
+    <div class="flashcard-header">
+      <button class="back-btn" onclick="App.exitSession()">←</button>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-label" id="fc-progress-label">0 / 0</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="fc-progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="fc-session-area">
+      <div class="card-container" id="card-container" onclick="App.flipCard()">
+        <div class="flip-card" id="flip-card">
+          <div class="card-face card-front">
+            <div class="card-lang-badge" id="fc-lang-badge">Deutsch</div>
+            <div class="card-word" id="fc-source-word">—</div>
+            <div class="card-category-badge" id="fc-category">—</div>
+            <div class="card-hint">Tippe zum Umdrehen / Tap to flip</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-lang-badge" style="background:rgba(0,156,59,0.12);color:var(--green)">Português (BR)</div>
+            <div class="card-pt-word" id="fc-pt-word">—</div>
+            <div class="card-pronunciation" id="fc-pronunciation">—</div>
+            <div class="card-example" id="fc-example"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-hint" id="flip-hint">👆 Tippe auf die Karte, um die Antwort zu sehen</div>
+
+      <div class="rating-buttons hidden" id="rating-buttons">
+        <button class="rating-btn bad" onclick="App.rateCard(false)">😕 Noch nicht</button>
+        <button class="rating-btn good" onclick="App.rateCard(true)">✅ Gewusst!</button>
+      </div>
+    </div>
+
+    <div class="session-complete hidden" id="session-complete">
+      <div class="trophy">🏆</div>
+      <h2>Lektion abgeschlossen!</h2>
+      <p>Super gemacht! Du hast diese Runde beendet.</p>
+      <div class="xp-earned" id="session-xp">+0 XP</div>
+      <br><br>
+      <button class="cta-btn" onclick="App.showView('learn')" style="max-width:280px;margin:0 auto">
+        📚 Zurück zu Kategorien
+      </button>
+      <button class="cta-btn" style="max-width:280px;margin:8px auto;background:linear-gradient(135deg,var(--blue),var(--light-blue));box-shadow:0 4px 16px rgba(0,39,118,0.3)" onclick="App.restartSession()">
+        🔄 Nochmal üben
+      </button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="view" id="view-quiz">
+    <div class="flashcard-header">
+      <button class="back-btn" onclick="App.exitSession()">←</button>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-label" id="quiz-progress-label">Frage 0 / 0</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="quiz-progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="quiz-session-area">
+      <div class="quiz-score-bar">
+        <span>Punkte</span>
+        <span class="quiz-score-val" id="quiz-score-val">0</span>
+      </div>
+
+      <div class="quiz-question-card">
+        <div class="q-label" id="quiz-q-label">Was bedeutet auf Portugiesisch?</div>
+        <div class="q-word" id="quiz-q-word">—</div>
+        <div class="q-category" id="quiz-q-category">—</div>
+      </div>
+
+      <div class="quiz-options" id="quiz-options"></div>
+      <div class="quiz-feedback" id="quiz-feedback"></div>
+
+      <button class="cta-btn hidden" id="quiz-next-btn" onclick="App.nextQuizQuestion()">Weiter →</button>
+    </div>
+
+    <div class="session-complete hidden" id="quiz-complete">
+      <div class="trophy">🏅</div>
+      <h2 id="quiz-complete-title">Quiz abgeschlossen!</h2>
+      <p id="quiz-complete-msg">Gut gemacht!</p>
+      <div class="xp-earned" id="quiz-xp">+0 XP</div>
+      <br><br>
+      <button class="cta-btn" onclick="App.showView('home')" style="max-width:280px;margin:0 auto">
+        🏠 Startseite
+      </button>
+      <button class="cta-btn" style="max-width:280px;margin:8px auto;background:linear-gradient(135deg,var(--blue),var(--light-blue));box-shadow:0 4px 16px rgba(0,39,118,0.3)" onclick="App.startQuizSession()">
+        🔄 Nochmal
+      </button>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="view" id="view-progress">
+    <p class="section-title mb-16">Mein Fortschritt / My Progress</p>
+
+    <div class="big-stats-grid">
+      <div class="big-stat">
+        <div class="bs-value" id="prog-total-words">0</div>
+        <div class="bs-label">Wörter gesehen</div>
+      </div>
+      <div class="big-stat">
+        <div class="bs-value" id="prog-mastered">0</div>
+        <div class="bs-label">Gemeistert ⭐</div>
+      </div>
+      <div class="big-stat">
+        <div class="bs-value" id="prog-streak">0</div>
+        <div class="bs-label">🔥 Streak</div>
+      </div>
+      <div class="big-stat">
+        <div class="bs-value" id="prog-xp">0</div>
+        <div class="bs-label">⭐ XP gesamt</div>
+      </div>
+    </div>
+
+    <div class="progress-card">
+      <h3>🎯 SRS-Level Verteilung</h3>
+      <div class="srs-levels" id="srs-distribution"></div>
+    </div>
+
+    <div class="progress-card">
+      <h3>📊 Kategorie-Fortschritt</h3>
+      <div id="cat-progress-list"></div>
+    </div>
+
+    <div style="text-align:center;margin-top:16px">
+      <button onclick="App.resetProgress()" style="border:none;background:none;color:var(--danger);font-size:0.82rem;cursor:pointer;text-decoration:underline">
+        Fortschritt zurücksetzen
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Bottom Navigation ───────────────────────────────────── -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" id="nav-home" onclick="App.showView('home')">
+      <span class="nav-icon">🏠</span><span>Start</span>
+    </button>
+    <button class="nav-btn" id="nav-learn" onclick="App.showView('learn')">
+      <span class="nav-icon">📚</span><span>Lernen</span>
+    </button>
+    <button class="nav-btn" id="nav-quiz" onclick="App.startQuizSession()">
+      <span class="nav-icon">🎯</span><span>Quiz</span>
+    </button>
+    <button class="nav-btn" id="nav-progress" onclick="App.showView('progress')">
+      <span class="nav-icon">📈</span><span>Fortschritt</span>
+    </button>
+  </nav>
+
+</div><!-- #app -->
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   DATA – Vocabulary for DE→PT-BR and EN→PT-BR
+═══════════════════════════════════════════════════════════════════════════ */
+const CATEGORIES = [
+  { id: 'greetings', icon: '👋', name: { de: 'Begrüßungen', en: 'Greetings' } },
+  { id: 'numbers',   icon: '🔢', name: { de: 'Zahlen',       en: 'Numbers'   } },
+  { id: 'colors',    icon: '🎨', name: { de: 'Farben',        en: 'Colors'    } },
+  { id: 'food',      icon: '🍽️', name: { de: 'Essen',         en: 'Food'      } },
+  { id: 'travel',    icon: '✈️', name: { de: 'Reisen',        en: 'Travel'    } },
+  { id: 'family',    icon: '👨‍👩‍👧', name: { de: 'Familie',      en: 'Family'    } },
+  { id: 'days',      icon: '📅', name: { de: 'Wochentage',    en: 'Days'      } },
+  { id: 'verbs',     icon: '⚡', name: { de: 'Verben',        en: 'Verbs'     } },
+];
+
+// Each word: { id, category, pt, de, en, pron, ex_pt, ex_de, ex_en }
+const WORDS = [
+  /* ── GREETINGS ── */
+  { id:1,  cat:'greetings', pt:'Olá',             de:'Hallo',               en:'Hello',            pron:'O-láh',        ex_pt:'Olá! Como vai você?',            ex_de:'Hallo! Wie geht es dir?',        ex_en:'Hello! How are you?' },
+  { id:2,  cat:'greetings', pt:'Oi',              de:'Hi',                  en:'Hi',               pron:'Ói',           ex_pt:'Oi, tudo bem?',                  ex_de:'Hi, alles gut?',                 ex_en:'Hi, everything good?' },
+  { id:3,  cat:'greetings', pt:'Bom dia',         de:'Guten Morgen',        en:'Good morning',     pron:'Bom JI-a',     ex_pt:'Bom dia! Que bom te ver.',       ex_de:'Guten Morgen! Schön, dich zu sehen.', ex_en:'Good morning! Nice to see you.' },
+  { id:4,  cat:'greetings', pt:'Boa tarde',       de:'Guten Tag',           en:'Good afternoon',   pron:'Boa TAR-dʒi',  ex_pt:'Boa tarde! Como foi seu dia?',   ex_de:'Guten Tag! Wie war Ihr Tag?',    ex_en:'Good afternoon! How was your day?' },
+  { id:5,  cat:'greetings', pt:'Boa noite',       de:'Gute Nacht',          en:'Good night',       pron:'Boa NOI-tʃi',  ex_pt:'Boa noite! Durma bem.',          ex_de:'Gute Nacht! Schlaf gut.',        ex_en:'Good night! Sleep well.' },
+  { id:6,  cat:'greetings', pt:'Tudo bem?',       de:'Alles gut?',          en:'All good?',        pron:'TU-du BÊ?',    ex_pt:'Tudo bem? Sim, tudo bem.',       ex_de:'Alles gut? Ja, alles gut.',      ex_en:'All good? Yes, all good.' },
+  { id:7,  cat:'greetings', pt:'Obrigado',        de:'Danke',               en:'Thank you',        pron:'ob-ri-GA-du',  ex_pt:'Obrigado pela ajuda!',           ex_de:'Danke für die Hilfe!',           ex_en:'Thank you for the help!' },
+  { id:8,  cat:'greetings', pt:'Por favor',       de:'Bitte',               en:'Please',           pron:'por fa-VOR',   ex_pt:'Por favor, me ajude.',           ex_de:'Bitte hilf mir.',                ex_en:'Please help me.' },
+  { id:9,  cat:'greetings', pt:'De nada',         de:'Gern geschehen',      en:"You're welcome",   pron:'dʒi NA-da',    ex_pt:'Obrigado! – De nada!',           ex_de:'Danke! – Gern geschehen!',       ex_en:'Thank you! – You\'re welcome!' },
+  { id:10, cat:'greetings', pt:'Desculpe',        de:'Entschuldigung',      en:'Sorry',            pron:'dʒis-KUL-pi',  ex_pt:'Desculpe o atraso.',             ex_de:'Entschuldigung für die Verspätung.', ex_en:'Sorry for the delay.' },
+  { id:11, cat:'greetings', pt:'Tchau',           de:'Tschüss',             en:'Bye',              pron:'Tchau',        ex_pt:'Tchau! Até amanhã.',             ex_de:'Tschüss! Bis morgen.',           ex_en:'Bye! See you tomorrow.' },
+  { id:12, cat:'greetings', pt:'Até logo',        de:'Bis bald',            en:'See you later',    pron:'a-TÉ LÓ-gu',   ex_pt:'Até logo, cuide-se!',            ex_de:'Bis bald, pass auf dich auf!',   ex_en:'See you later, take care!' },
+
+  /* ── NUMBERS ── */
+  { id:13, cat:'numbers', pt:'Um / Uma',    de:'Eins',     en:'One',     pron:'Ûm / Ú-ma',   ex_pt:'Eu tenho um cão.',       ex_de:'Ich habe einen Hund.',    ex_en:'I have one dog.' },
+  { id:14, cat:'numbers', pt:'Dois / Duas', de:'Zwei',     en:'Two',     pron:'Dóis / Dú-as', ex_pt:'Duas xícaras de café.',  ex_de:'Zwei Tassen Kaffee.',     ex_en:'Two cups of coffee.' },
+  { id:15, cat:'numbers', pt:'Três',        de:'Drei',     en:'Three',   pron:'Três',         ex_pt:'Três horas da tarde.',   ex_de:'Drei Uhr nachmittags.',   ex_en:'Three in the afternoon.' },
+  { id:16, cat:'numbers', pt:'Quatro',      de:'Vier',     en:'Four',    pron:'KUA-tru',      ex_pt:'Quatro estações do ano.', ex_de:'Vier Jahreszeiten.',     ex_en:'Four seasons of the year.' },
+  { id:17, cat:'numbers', pt:'Cinco',       de:'Fünf',     en:'Five',    pron:'SÎN-ku',       ex_pt:'Cinco reais, por favor.', ex_de:'Fünf Reais, bitte.',     ex_en:'Five reais, please.' },
+  { id:18, cat:'numbers', pt:'Seis',        de:'Sechs',    en:'Six',     pron:'Séis',         ex_pt:'Seis dias de trabalho.',  ex_de:'Sechs Arbeitstage.',     ex_en:'Six working days.' },
+  { id:19, cat:'numbers', pt:'Sete',        de:'Sieben',   en:'Seven',   pron:'SÉ-tʃi',       ex_pt:'Sete da manhã.',          ex_de:'Sieben Uhr morgens.',    ex_en:'Seven in the morning.' },
+  { id:20, cat:'numbers', pt:'Oito',        de:'Acht',     en:'Eight',   pron:'ÓI-tu',        ex_pt:'Oito quilômetros daqui.', ex_de:'Acht Kilometer von hier.', ex_en:'Eight kilometers from here.' },
+  { id:21, cat:'numbers', pt:'Nove',        de:'Neun',     en:'Nine',    pron:'NÓ-vi',        ex_pt:'Nove meses de gravidez.', ex_de:'Neun Monate Schwangerschaft.', ex_en:'Nine months of pregnancy.' },
+  { id:22, cat:'numbers', pt:'Dez',         de:'Zehn',     en:'Ten',     pron:'Dêz',          ex_pt:'Dez reais de troco.',     ex_de:'Zehn Reais Wechselgeld.', ex_en:'Ten reais in change.' },
+  { id:23, cat:'numbers', pt:'Vinte',       de:'Zwanzig',  en:'Twenty',  pron:'VÎN-tʃi',      ex_pt:'Vinte anos de idade.',    ex_de:'Zwanzig Jahre alt.',      ex_en:'Twenty years old.' },
+  { id:24, cat:'numbers', pt:'Cem',         de:'Hundert',  en:'Hundred', pron:'Sêm',          ex_pt:'Cem por cento correto.',  ex_de:'Hundert Prozent richtig.', ex_en:'One hundred percent correct.' },
+  { id:25, cat:'numbers', pt:'Mil',         de:'Tausend',  en:'Thousand',pron:'Mil',          ex_pt:'Mil e uma noites.',       ex_de:'Tausend und eine Nacht.', ex_en:'One thousand and one nights.' },
+
+  /* ── COLORS ── */
+  { id:26, cat:'colors', pt:'Vermelho', de:'Rot',     en:'Red',    pron:'ver-MÉ-lhu', ex_pt:'O semáforo ficou vermelho.',   ex_de:'Die Ampel wurde rot.',        ex_en:'The traffic light turned red.' },
+  { id:27, cat:'colors', pt:'Azul',     de:'Blau',    en:'Blue',   pron:'a-ZUL',      ex_pt:'O céu está azul hoje.',        ex_de:'Der Himmel ist heute blau.',  ex_en:'The sky is blue today.' },
+  { id:28, cat:'colors', pt:'Verde',    de:'Grün',    en:'Green',  pron:'VÉR-dʒi',    ex_pt:'A floresta é muito verde.',    ex_de:'Der Wald ist sehr grün.',     ex_en:'The forest is very green.' },
+  { id:29, cat:'colors', pt:'Amarelo',  de:'Gelb',    en:'Yellow', pron:'a-ma-RÉ-lu', ex_pt:'O sol é amarelo.',             ex_de:'Die Sonne ist gelb.',         ex_en:'The sun is yellow.' },
+  { id:30, cat:'colors', pt:'Preto',    de:'Schwarz', en:'Black',  pron:'PRÉ-tu',     ex_pt:'Eu gosto de café preto.',      ex_de:'Ich mag schwarzen Kaffee.',   ex_en:'I like black coffee.' },
+  { id:31, cat:'colors', pt:'Branco',   de:'Weiß',    en:'White',  pron:'BRÂN-ku',    ex_pt:'Ela usa uma blusa branca.',    ex_de:'Sie trägt eine weiße Bluse.', ex_en:'She wears a white blouse.' },
+  { id:32, cat:'colors', pt:'Laranja',  de:'Orange',  en:'Orange', pron:'la-RÂN-zha', ex_pt:'Uma laranja fresca.',          ex_de:'Eine frische Orange.',        ex_en:'A fresh orange.' },
+  { id:33, cat:'colors', pt:'Roxo',     de:'Lila',    en:'Purple', pron:'RÓ-shu',     ex_pt:'Ela tem cabelo roxo.',         ex_de:'Sie hat lilafarbenes Haar.',   ex_en:'She has purple hair.' },
+  { id:34, cat:'colors', pt:'Rosa',     de:'Rosa',    en:'Pink',   pron:'RÓ-za',      ex_pt:'As flores são rosas.',         ex_de:'Die Blumen sind rosa.',        ex_en:'The flowers are pink.' },
+  { id:35, cat:'colors', pt:'Marrom',   de:'Braun',   en:'Brown',  pron:'ma-RÔM',     ex_pt:'O cachorro é marrom.',         ex_de:'Der Hund ist braun.',         ex_en:'The dog is brown.' },
+
+  /* ── FOOD ── */
+  { id:36, cat:'food', pt:'Pão',         de:'Brot',       en:'Bread',      pron:'Pão',          ex_pt:'Pão de queijo é delicioso.',      ex_de:'Käsebrot ist köstlich.',          ex_en:'Cheese bread is delicious.' },
+  { id:37, cat:'food', pt:'Água',        de:'Wasser',     en:'Water',      pron:'Á-gua',        ex_pt:'Pode me trazer água gelada?',     ex_de:'Können Sie mir kaltes Wasser bringen?', ex_en:'Can you bring me cold water?' },
+  { id:38, cat:'food', pt:'Café',        de:'Kaffee',     en:'Coffee',     pron:'ka-FÉ',        ex_pt:'Um café com leite, por favor.',   ex_de:'Ein Kaffee mit Milch, bitte.',    ex_en:'A coffee with milk, please.' },
+  { id:39, cat:'food', pt:'Leite',       de:'Milch',      en:'Milk',       pron:'LÉI-tʃi',      ex_pt:'Eu bebo leite todo dia.',         ex_de:'Ich trinke jeden Tag Milch.',     ex_en:'I drink milk every day.' },
+  { id:40, cat:'food', pt:'Arroz',       de:'Reis',       en:'Rice',       pron:'a-RÔS',        ex_pt:'Arroz e feijão é nosso prato.',   ex_de:'Reis und Bohnen ist unser Gericht.', ex_en:'Rice and beans is our dish.' },
+  { id:41, cat:'food', pt:'Feijão',      de:'Bohnen',     en:'Beans',      pron:'fei-ZHÃO',     ex_pt:'Feijão preto com arroz.',         ex_de:'Schwarze Bohnen mit Reis.',       ex_en:'Black beans with rice.' },
+  { id:42, cat:'food', pt:'Frango',      de:'Hähnchen',   en:'Chicken',    pron:'FRÂN-gu',      ex_pt:'Frango assado com batata.',       ex_de:'Brathähnchen mit Kartoffeln.',    ex_en:'Roast chicken with potatoes.' },
+  { id:43, cat:'food', pt:'Peixe',       de:'Fisch',      en:'Fish',       pron:'PÉI-shi',      ex_pt:'O peixe está fresco.',            ex_de:'Der Fisch ist frisch.',           ex_en:'The fish is fresh.' },
+  { id:44, cat:'food', pt:'Fruta',       de:'Obst',       en:'Fruit',      pron:'FRÚ-ta',       ex_pt:'Eu como fruta no café da manhã.', ex_de:'Ich esse Obst zum Frühstück.',    ex_en:'I eat fruit at breakfast.' },
+  { id:45, cat:'food', pt:'Cerveja',     de:'Bier',       en:'Beer',       pron:'ser-VÉ-zha',   ex_pt:'Uma cerveja gelada, por favor!',  ex_de:'Ein kaltes Bier, bitte!',         ex_en:'A cold beer, please!' },
+  { id:46, cat:'food', pt:'Restaurante', de:'Restaurant', en:'Restaurant', pron:'hes-tau-RÂN-tʃi', ex_pt:'Vamos ao restaurante hoje?',  ex_de:'Gehen wir heute ins Restaurant?', ex_en:'Shall we go to a restaurant today?' },
+  { id:47, cat:'food', pt:'Fome',        de:'Hunger',     en:'Hunger',     pron:'FÔ-mi',        ex_pt:'Estou com muita fome.',           ex_de:'Ich habe großen Hunger.',         ex_en:'I am very hungry.' },
+  { id:48, cat:'food', pt:'Sobremesa',   de:'Nachtisch',  en:'Dessert',    pron:'so-bre-MÉ-za', ex_pt:'Que sobremesa você quer?',        ex_de:'Welches Dessert möchten Sie?',    ex_en:'What dessert would you like?' },
+
+  /* ── TRAVEL ── */
+  { id:49, cat:'travel', pt:'Aeroporto', de:'Flughafen', en:'Airport',   pron:'a-e-ro-POR-tu', ex_pt:'O aeroporto fica longe daqui?',    ex_de:'Ist der Flughafen weit von hier?',  ex_en:'Is the airport far from here?' },
+  { id:50, cat:'travel', pt:'Hotel',     de:'Hotel',     en:'Hotel',     pron:'o-TÉL',         ex_pt:'Tem um hotel perto daqui?',        ex_de:'Gibt es ein Hotel in der Nähe?',    ex_en:'Is there a hotel nearby?' },
+  { id:51, cat:'travel', pt:'Ônibus',    de:'Bus',       en:'Bus',       pron:'Ô-ni-bus',      ex_pt:'Qual ônibus vai ao centro?',       ex_de:'Welcher Bus fährt ins Zentrum?',    ex_en:'Which bus goes to the center?' },
+  { id:52, cat:'travel', pt:'Metrô',     de:'U-Bahn',    en:'Subway',    pron:'me-TRÔ',        ex_pt:'O metrô é rápido em SP.',          ex_de:'Die U-Bahn ist in SP schnell.',     ex_en:'The subway is fast in SP.' },
+  { id:53, cat:'travel', pt:'Passaporte',de:'Reisepass', en:'Passport',  pron:'pa-sa-POR-tʃi', ex_pt:'Não esqueça o passaporte!',        ex_de:'Vergiss deinen Reisepass nicht!',   ex_en:"Don't forget your passport!" },
+  { id:54, cat:'travel', pt:'Bagagem',   de:'Gepäck',    en:'Luggage',   pron:'ba-GA-zhem',    ex_pt:'Minha bagagem está pesada.',       ex_de:'Mein Gepäck ist schwer.',           ex_en:'My luggage is heavy.' },
+  { id:55, cat:'travel', pt:'Mapa',      de:'Karte',     en:'Map',       pron:'MA-pa',         ex_pt:'Você tem um mapa da cidade?',      ex_de:'Haben Sie eine Stadtkarte?',        ex_en:'Do you have a city map?' },
+  { id:56, cat:'travel', pt:'Praia',     de:'Strand',    en:'Beach',     pron:'PRÁ-ia',        ex_pt:'Vamos à praia amanhã!',            ex_de:'Wir gehen morgen an den Strand!',   ex_en:'We are going to the beach tomorrow!' },
+  { id:57, cat:'travel', pt:'Cidade',    de:'Stadt',     en:'City',      pron:'si-DA-dʒi',     ex_pt:'São Paulo é uma cidade enorme.',   ex_de:'São Paulo ist eine riesige Stadt.', ex_en:'São Paulo is an enormous city.' },
+  { id:58, cat:'travel', pt:'Táxi',      de:'Taxi',      en:'Taxi',      pron:'TÁK-si',        ex_pt:'Pode chamar um táxi?',             ex_de:'Können Sie ein Taxi rufen?',        ex_en:'Can you call a taxi?' },
+  { id:59, cat:'travel', pt:'Quanto custa?', de:'Wie viel kostet es?', en:'How much does it cost?', pron:'KUÂ-tu KÚS-ta?', ex_pt:'Quanto custa essa camiseta?', ex_de:'Wie viel kostet dieses T-Shirt?', ex_en:'How much does this T-shirt cost?' },
+
+  /* ── FAMILY ── */
+  { id:60, cat:'family', pt:'Família',   de:'Familie',     en:'Family',       pron:'fa-MÍ-lia',   ex_pt:'Minha família é grande.',         ex_de:'Meine Familie ist groß.',         ex_en:'My family is big.' },
+  { id:61, cat:'family', pt:'Pai',       de:'Vater',        en:'Father',       pron:'Pái',         ex_pt:'Meu pai é muito legal.',          ex_de:'Mein Vater ist sehr nett.',       ex_en:'My father is very cool.' },
+  { id:62, cat:'family', pt:'Mãe',       de:'Mutter',       en:'Mother',       pron:'Mãe',         ex_pt:'Minha mãe cozinha bem.',          ex_de:'Meine Mutter kocht gut.',         ex_en:'My mother cooks well.' },
+  { id:63, cat:'family', pt:'Irmão',     de:'Bruder',       en:'Brother',      pron:'ir-MÃO',      ex_pt:'Tenho um irmão mais novo.',       ex_de:'Ich habe einen jüngeren Bruder.', ex_en:'I have a younger brother.' },
+  { id:64, cat:'family', pt:'Irmã',      de:'Schwester',    en:'Sister',       pron:'ir-MÃ',       ex_pt:'Minha irmã mora em Rio.',         ex_de:'Meine Schwester wohnt in Rio.',   ex_en:'My sister lives in Rio.' },
+  { id:65, cat:'family', pt:'Filho',     de:'Sohn',         en:'Son',          pron:'FÍ-lhu',      ex_pt:'Meu filho tem dez anos.',         ex_de:'Mein Sohn ist zehn Jahre alt.',   ex_en:'My son is ten years old.' },
+  { id:66, cat:'family', pt:'Filha',     de:'Tochter',      en:'Daughter',     pron:'FÍ-lha',      ex_pt:'Minha filha estuda medicina.',    ex_de:'Meine Tochter studiert Medizin.', ex_en:'My daughter studies medicine.' },
+  { id:67, cat:'family', pt:'Avô',       de:'Großvater',    en:'Grandfather',  pron:'a-VÔ',        ex_pt:'Meu avô conta histórias.',        ex_de:'Mein Großvater erzählt Geschichten.', ex_en:'My grandfather tells stories.' },
+  { id:68, cat:'family', pt:'Avó',       de:'Großmutter',   en:'Grandmother',  pron:'a-VÓ',        ex_pt:'Minha avó faz bolo gostoso.',     ex_de:'Meine Großmutter backt leckeren Kuchen.', ex_en:'My grandmother bakes delicious cake.' },
+  { id:69, cat:'family', pt:'Amigo/a',   de:'Freund/in',    en:'Friend',       pron:'a-MÍ-gu/ga',  ex_pt:'Meu melhor amigo é Pedro.',       ex_de:'Mein bester Freund ist Pedro.',   ex_en:'My best friend is Pedro.' },
+
+  /* ── DAYS ── */
+  { id:70, cat:'days', pt:'Segunda-feira', de:'Montag',      en:'Monday',    pron:'se-GÛN-da-FÉI-ra', ex_pt:'Segunda-feira começa a semana.',   ex_de:'Montag beginnt die Woche.',     ex_en:'Monday starts the week.' },
+  { id:71, cat:'days', pt:'Terça-feira',   de:'Dienstag',    en:'Tuesday',   pron:'TÉR-sa-FÉI-ra',    ex_pt:'Terça-feira tenho reunião.',       ex_de:'Dienstag habe ich ein Meeting.', ex_en:'On Tuesday I have a meeting.' },
+  { id:72, cat:'days', pt:'Quarta-feira',  de:'Mittwoch',    en:'Wednesday', pron:'KUÂ-ta-FÉI-ra',    ex_pt:'Quarta-feira é dia de academia.',  ex_de:'Mittwoch ist Fitnesstag.',       ex_en:'Wednesday is gym day.' },
+  { id:73, cat:'days', pt:'Quinta-feira',  de:'Donnerstag',  en:'Thursday',  pron:'KÎN-ta-FÉI-ra',    ex_pt:'Quinta-feira vamos jantar fora.',  ex_de:'Donnerstag gehen wir auswärts essen.', ex_en:'On Thursday we dine out.' },
+  { id:74, cat:'days', pt:'Sexta-feira',   de:'Freitag',     en:'Friday',    pron:'SÉS-ta-FÉI-ra',    ex_pt:'Sexta-feira é dia de festa!',     ex_de:'Freitag ist Partytag!',          ex_en:'Friday is party day!' },
+  { id:75, cat:'days', pt:'Sábado',        de:'Samstag',     en:'Saturday',  pron:'SÁ-ba-du',         ex_pt:'Sábado vou à praia.',              ex_de:'Samstag gehe ich an den Strand.', ex_en:'On Saturday I go to the beach.' },
+  { id:76, cat:'days', pt:'Domingo',       de:'Sonntag',     en:'Sunday',    pron:'do-MÎN-gu',        ex_pt:'Domingo é dia de descanso.',       ex_de:'Sonntag ist Ruhetag.',           ex_en:'Sunday is a day of rest.' },
+  { id:77, cat:'days', pt:'Hoje',          de:'Heute',       en:'Today',     pron:'Ó-zhi',            ex_pt:'Hoje é um dia lindo.',             ex_de:'Heute ist ein schöner Tag.',     ex_en:'Today is a beautiful day.' },
+  { id:78, cat:'days', pt:'Amanhã',        de:'Morgen',      en:'Tomorrow',  pron:'a-ma-NHÃ',         ex_pt:'Amanhã começa uma nova fase.',     ex_de:'Morgen beginnt eine neue Phase.', ex_en:'Tomorrow a new phase begins.' },
+  { id:79, cat:'days', pt:'Ontem',         de:'Gestern',     en:'Yesterday', pron:'ÔN-tem',           ex_pt:'Ontem foi um dia difícil.',        ex_de:'Gestern war ein schwieriger Tag.', ex_en:'Yesterday was a difficult day.' },
+
+  /* ── VERBS ── */
+  { id:80, cat:'verbs', pt:'Ser',      de:'Sein (dauerhaft)',  en:'To be (permanent)',  pron:'Ser',      ex_pt:'Eu sou brasileiro.',          ex_de:'Ich bin Brasilianer.',          ex_en:'I am Brazilian.' },
+  { id:81, cat:'verbs', pt:'Estar',    de:'Sein (temporär)',   en:'To be (temporary)',  pron:'es-TAR',   ex_pt:'Eu estou bem hoje.',          ex_de:'Ich bin heute gut drauf.',      ex_en:'I am fine today.' },
+  { id:82, cat:'verbs', pt:'Ter',      de:'Haben',             en:'To have',            pron:'Ter',      ex_pt:'Eu tenho um carro.',          ex_de:'Ich habe ein Auto.',            ex_en:'I have a car.' },
+  { id:83, cat:'verbs', pt:'Fazer',    de:'Machen / Tun',      en:'To do / make',       pron:'fa-ZER',   ex_pt:'O que você quer fazer?',      ex_de:'Was möchtest du tun?',          ex_en:'What do you want to do?' },
+  { id:84, cat:'verbs', pt:'Ir',       de:'Gehen / Fahren',    en:'To go',              pron:'Ir',       ex_pt:'Vou ao mercado.',             ex_de:'Ich gehe zum Supermarkt.',      ex_en:'I am going to the market.' },
+  { id:85, cat:'verbs', pt:'Falar',    de:'Sprechen / Reden',  en:'To speak / talk',    pron:'fa-LAR',   ex_pt:'Você fala português?',        ex_de:'Sprechen Sie Portugiesisch?',   ex_en:'Do you speak Portuguese?' },
+  { id:86, cat:'verbs', pt:'Comer',    de:'Essen',              en:'To eat',             pron:'ko-MER',   ex_pt:'Vamos comer churrasco!',      ex_de:'Lass uns grillen!',             ex_en:'Let\'s eat barbecue!' },
+  { id:87, cat:'verbs', pt:'Beber',    de:'Trinken',            en:'To drink',           pron:'be-BER',   ex_pt:'Quero beber água.',           ex_de:'Ich möchte Wasser trinken.',    ex_en:'I want to drink water.' },
+  { id:88, cat:'verbs', pt:'Dormir',   de:'Schlafen',           en:'To sleep',           pron:'dor-MIR',  ex_pt:'Eu preciso dormir mais.',     ex_de:'Ich muss mehr schlafen.',       ex_en:'I need to sleep more.' },
+  { id:89, cat:'verbs', pt:'Trabalhar',de:'Arbeiten',           en:'To work',            pron:'tra-ba-LHAR', ex_pt:'Eu trabalho de casa.',     ex_de:'Ich arbeite von zu Hause.',     ex_en:'I work from home.' },
+  { id:90, cat:'verbs', pt:'Estudar',  de:'Studieren / Lernen', en:'To study',           pron:'es-tu-DAR', ex_pt:'Estudo português todo dia.',  ex_de:'Ich lerne jeden Tag Portugiesisch.', ex_en:'I study Portuguese every day.' },
+  { id:91, cat:'verbs', pt:'Querer',   de:'Wollen / Möchten',   en:'To want',            pron:'ke-RER',   ex_pt:'Quero aprender português.',   ex_de:'Ich möchte Portugiesisch lernen.', ex_en:'I want to learn Portuguese.' },
+  { id:92, cat:'verbs', pt:'Poder',    de:'Können / Dürfen',    en:'To be able to',      pron:'po-DER',   ex_pt:'Você pode me ajudar?',        ex_de:'Können Sie mir helfen?',        ex_en:'Can you help me?' },
+  { id:93, cat:'verbs', pt:'Gostar',   de:'Mögen / Gerne haben',en:'To like',            pron:'gos-TAR',  ex_pt:'Gosto muito de música.',     ex_de:'Ich mag Musik sehr.',           ex_en:'I really like music.' },
+  { id:94, cat:'verbs', pt:'Vir',      de:'Kommen',             en:'To come',            pron:'Vir',      ex_pt:'Você pode vir mais cedo?',    ex_de:'Kannst du früher kommen?',      ex_en:'Can you come earlier?' },
+];
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SRS CONFIG
+═══════════════════════════════════════════════════════════════════════════ */
+const SRS_INTERVALS = [0, 1, 3, 7, 14, 30]; // days per level
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   APP STATE
+═══════════════════════════════════════════════════════════════════════════ */
+const STATE_KEY = 'lingabrasil_v1';
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STATE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (_) {}
+  return {
+    lang: 'de',
+    xp: 0,
+    streak: 0,
+    lastStudied: null,
+    totalCorrect: 0,
+    totalAnswered: 0,
+    cards: {}   // id -> { level, nextReview, timesStudied, correct }
+  };
+}
+
+function saveState(s) {
+  localStorage.setItem(STATE_KEY, JSON.stringify(s));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   APP CONTROLLER
+═══════════════════════════════════════════════════════════════════════════ */
+const App = (() => {
+  let state = loadState();
+  let session = null; // current learning session data
+
+  /* ── helpers ───────────────────────────────────────────────────────────── */
+  function today() {
+    return new Date().toISOString().split('T')[0];
+  }
+
+  function daysBetween(a, b) {
+    const msPerDay = 86400000;
+    return Math.floor((new Date(b) - new Date(a)) / msPerDay);
+  }
+
+  function updateStreak() {
+    const td = today();
+    if (state.lastStudied === td) return;
+    if (state.lastStudied && daysBetween(state.lastStudied, td) === 1) {
+      state.streak += 1;
+    } else if (!state.lastStudied || daysBetween(state.lastStudied, td) > 1) {
+      state.streak = 1;
+    }
+    state.lastStudied = td;
+    saveState(state);
+  }
+
+  function addXP(amount, x, y) {
+    state.xp += amount;
+    saveState(state);
+    renderHeaderStats();
+    showXPPop(amount, x, y);
+  }
+
+  function getCard(id) {
+    if (!state.cards[id]) {
+      state.cards[id] = { level: 0, nextReview: today(), timesStudied: 0, correct: 0 };
+    }
+    return state.cards[id];
+  }
+
+  function rateWord(id, correct) {
+    const c = getCard(id);
+    c.timesStudied += 1;
+    if (correct) {
+      c.correct += 1;
+      c.level = Math.min(5, c.level + 1);
+      state.totalCorrect += 1;
+    } else {
+      c.level = Math.max(0, c.level - 1);
+    }
+    const interval = SRS_INTERVALS[c.level];
+    const next = new Date();
+    next.setDate(next.getDate() + interval);
+    c.nextReview = next.toISOString().split('T')[0];
+    state.totalAnswered += 1;
+    saveState(state);
+  }
+
+  /* ── due cards ──────────────────────────────────────────────────────────── */
+  function getDueCards(catId) {
+    const pool = catId ? WORDS.filter(w => w.cat === catId) : WORDS;
+    return pool.filter(w => {
+      const c = getCard(w.id);
+      return c.nextReview <= today();
+    });
+  }
+
+  function getNewCards(catId, limit) {
+    const pool = catId ? WORDS.filter(w => w.cat === catId) : WORDS;
+    const unseen = pool.filter(w => !state.cards[w.id]);
+    return unseen.slice(0, limit);
+  }
+
+  function buildLessonQueue(catId) {
+    let due = getDueCards(catId);
+    if (due.length === 0) {
+      // If nothing due, take new cards or shuffle all
+      due = getNewCards(catId, 10);
+      if (due.length === 0) {
+        const pool = catId ? WORDS.filter(w => w.cat === catId) : WORDS;
+        due = [...pool].sort(() => Math.random() - 0.5).slice(0, 10);
+      }
+    }
+    return due.sort(() => Math.random() - 0.5).slice(0, 10);
+  }
+
+  /* ── render header ──────────────────────────────────────────────────────── */
+  function renderHeaderStats() {
+    document.getElementById('streak-val').textContent = state.streak;
+    document.getElementById('xp-val').textContent = state.xp;
+  }
+
+  /* ── views ──────────────────────────────────────────────────────────────── */
+  function showView(name) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('view-' + name).classList.add('active');
+    const nb = document.getElementById('nav-' + name);
+    if (nb) nb.classList.add('active');
+
+    if (name === 'home') renderHome();
+    if (name === 'learn') renderLearn();
+    if (name === 'progress') renderProgress();
+  }
+
+  /* ── HOME ────────────────────────────────────────────────────────────────── */
+  const WORD_OF_DAY_WORDS = [
+    { pt:'Saudade', de:'Sehnsucht', en:'Longing / Missing', pron:'sau-DA-dʒi' },
+    { pt:'Jeitinho', de:'Erfinderischer Weg', en:'Clever little way', pron:'zhei-TÎ-nhu' },
+    { pt:'Bagunça', de:'Durcheinander', en:'Mess / Chaos', pron:'ba-GÛN-sa' },
+    { pt:'Gostoso', de:'Lecker / Schön', en:'Delicious / Gorgeous', pron:'gos-TÓ-zu' },
+    { pt:'Abraço', de:'Umarmung', en:'Hug', pron:'a-BRÁ-su' },
+    { pt:'Caramba!', de:'Meine Güte!', en:'Wow! / Good grief!', pron:'ka-RÂM-ba' },
+    { pt:'Beleza!', de:'Super! / Schön!', en:'Great! / Beautiful!', pron:'be-LÉ-za' },
+  ];
+
+  function renderHome() {
+    // language buttons
+    document.getElementById('lang-de').classList.toggle('selected', state.lang === 'de');
+    document.getElementById('lang-en').classList.toggle('selected', state.lang === 'en');
+
+    // word of day (deterministic per day)
+    const dayNum = Math.floor(Date.now() / 86400000);
+    const wd = WORD_OF_DAY_WORDS[dayNum % WORD_OF_DAY_WORDS.length];
+    document.getElementById('daily-word').textContent = wd.pt;
+    document.getElementById('daily-translation').textContent =
+      state.lang === 'de' ? wd.de : wd.en;
+    document.getElementById('daily-pron').textContent = '[ ' + wd.pron + ' ]';
+
+    // stats
+    const seen = Object.keys(state.cards).length;
+    const mastered = Object.values(state.cards).filter(c => c.level >= 5).length;
+    const acc = state.totalAnswered > 0
+      ? Math.round((state.totalCorrect / state.totalAnswered) * 100) + '%'
+      : '—';
+    document.getElementById('home-words-learned').textContent = seen;
+    document.getElementById('home-streak').textContent = state.streak;
+    document.getElementById('home-accuracy').textContent = acc;
+  }
+
+  function setLang(lang) {
+    state.lang = lang;
+    saveState(state);
+    renderHome();
+  }
+
+  /* ── LEARN ───────────────────────────────────────────────────────────────── */
+  function renderLearn() {
+    const grid = document.getElementById('category-grid');
+    grid.innerHTML = '';
+    CATEGORIES.forEach(cat => {
+      const words = WORDS.filter(w => w.cat === cat.id);
+      const seen = words.filter(w => state.cards[w.id]).length;
+      const pct = Math.round((seen / words.length) * 100);
+      const card = document.createElement('div');
+      card.className = 'category-card';
+      card.onclick = () => startFlashcardSession(cat.id);
+      card.innerHTML = `
+        <div class="cat-icon">${cat.icon}</div>
+        <div class="cat-name">${cat.name[state.lang]}</div>
+        <div class="cat-count">${seen}/${words.length} Wörter</div>
+        <div class="cat-progress-bar">
+          <div class="cat-progress-fill" style="width:${pct}%"></div>
+        </div>`;
+      grid.appendChild(card);
+    });
+  }
+
+  /* ── FLASHCARD SESSION ──────────────────────────────────────────────────── */
+  function startFlashcardSession(catId) {
+    const queue = buildLessonQueue(catId);
+    if (queue.length === 0) {
+      showToast('Keine Wörter in dieser Kategorie!');
+      return;
+    }
+    session = {
+      type: 'flashcard',
+      catId,
+      queue,
+      index: 0,
+      xpEarned: 0,
+      flipped: false
+    };
+    updateStreak();
+    showView('flashcard');
+    document.getElementById('session-complete').classList.add('hidden');
+    document.getElementById('fc-session-area').classList.remove('hidden');
+    renderFlashcard();
+  }
+
+  function startQuickSession() {
+    startFlashcardSession(null);
+  }
+
+  function renderFlashcard() {
+    const { queue, index } = session;
+    const word = queue[index];
+    const total = queue.length;
+
+    // progress
+    const pct = Math.round((index / total) * 100);
+    document.getElementById('fc-progress-label').textContent = `${index + 1} / ${total}`;
+    document.getElementById('fc-progress-fill').style.width = pct + '%';
+
+    // front
+    document.getElementById('fc-lang-badge').textContent =
+      state.lang === 'de' ? '🇩🇪 Deutsch' : '🇬🇧 English';
+    document.getElementById('fc-source-word').textContent =
+      state.lang === 'de' ? word.de : word.en;
+    const cat = CATEGORIES.find(c => c.id === word.cat);
+    document.getElementById('fc-category').textContent = cat ? cat.icon + ' ' + cat.name[state.lang] : '';
+
+    // back
+    document.getElementById('fc-pt-word').textContent = word.pt;
+    document.getElementById('fc-pronunciation').textContent = '[ ' + word.pron + ' ]';
+    const exSource = state.lang === 'de' ? word.ex_de : word.ex_en;
+    document.getElementById('fc-example').innerHTML =
+      `<span class="ex-pt">${word.ex_pt}</span><span>${exSource}</span>`;
+
+    // reset flip
+    const flipCard = document.getElementById('flip-card');
+    flipCard.classList.remove('flipped');
+    session.flipped = false;
+    document.getElementById('flip-hint').classList.remove('hidden');
+    document.getElementById('rating-buttons').classList.add('hidden');
+  }
+
+  function flipCard() {
+    if (session.flipped) return;
+    session.flipped = true;
+    document.getElementById('flip-card').classList.add('flipped');
+    document.getElementById('flip-hint').classList.add('hidden');
+    document.getElementById('rating-buttons').classList.remove('hidden');
+  }
+
+  function rateCard(correct) {
+    const word = session.queue[session.index];
+    rateWord(word.id, correct);
+
+    if (correct) {
+      const earnedXP = 10 + session.index; // small bonus for later cards
+      session.xpEarned += earnedXP;
+      const btn = document.querySelector('.rating-btn.good');
+      const rect = btn.getBoundingClientRect();
+      addXP(earnedXP, rect.left + rect.width / 2, rect.top);
+    }
+
+    session.index += 1;
+    if (session.index >= session.queue.length) {
+      endFlashcardSession();
+    } else {
+      renderFlashcard();
+    }
+  }
+
+  function endFlashcardSession() {
+    document.getElementById('fc-session-area').classList.add('hidden');
+    document.getElementById('session-complete').classList.remove('hidden');
+    document.getElementById('session-xp').textContent = '+' + session.xpEarned + ' XP';
+    document.getElementById('fc-progress-fill').style.width = '100%';
+    document.getElementById('fc-progress-label').textContent = session.queue.length + ' / ' + session.queue.length;
+    renderHeaderStats();
+  }
+
+  function exitSession() {
+    session = null;
+    showView('learn');
+  }
+
+  function restartSession() {
+    if (session && session.catId !== undefined) {
+      startFlashcardSession(session.catId);
+    } else {
+      startQuickSession();
+    }
+  }
+
+  /* ── QUIZ SESSION ───────────────────────────────────────────────────────── */
+  function startQuizSession() {
+    const pool = [...WORDS].sort(() => Math.random() - 0.5).slice(0, 12);
+    session = {
+      type: 'quiz',
+      queue: pool,
+      index: 0,
+      score: 0,
+      xpEarned: 0,
+      answered: false
+    };
+    updateStreak();
+    document.getElementById('quiz-session-area').classList.remove('hidden');
+    document.getElementById('quiz-complete').classList.add('hidden');
+    document.getElementById('quiz-score-val').textContent = '0';
+
+    // activate quiz nav button
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('nav-quiz').classList.add('active');
+
+    showView('quiz');
+    renderQuizQuestion();
+  }
+
+  function renderQuizQuestion() {
+    const { queue, index } = session;
+    const word = queue[index];
+    const total = queue.length;
+
+    document.getElementById('quiz-progress-label').textContent = `Frage ${index + 1} / ${total}`;
+    document.getElementById('quiz-progress-fill').style.width = Math.round(((index) / total) * 100) + '%';
+
+    const qLabel = state.lang === 'de'
+      ? 'Was bedeutet auf Português?'
+      : 'What does it mean in Portuguese?';
+    document.getElementById('quiz-q-label').textContent = qLabel;
+    document.getElementById('quiz-q-word').textContent = state.lang === 'de' ? word.de : word.en;
+    const cat = CATEGORIES.find(c => c.id === word.cat);
+    document.getElementById('quiz-q-category').textContent = cat ? cat.icon + ' ' + cat.name[state.lang] : '';
+
+    // Generate 4 options: 1 correct + 3 random wrong
+    const correct = word.pt;
+    const others = WORDS.filter(w => w.id !== word.id)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3)
+      .map(w => w.pt);
+    const options = [correct, ...others].sort(() => Math.random() - 0.5);
+
+    const container = document.getElementById('quiz-options');
+    container.innerHTML = '';
+    options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-option';
+      btn.textContent = opt;
+      btn.onclick = () => handleQuizAnswer(btn, opt, correct, word);
+      container.appendChild(btn);
+    });
+
+    // Reset feedback
+    const fb = document.getElementById('quiz-feedback');
+    fb.className = 'quiz-feedback';
+    fb.textContent = '';
+    document.getElementById('quiz-next-btn').classList.add('hidden');
+    session.answered = false;
+  }
+
+  function handleQuizAnswer(btn, chosen, correct, word) {
+    if (session.answered) return;
+    session.answered = true;
+
+    const isCorrect = chosen === correct;
+    const allBtns = document.querySelectorAll('.quiz-option');
+    allBtns.forEach(b => {
+      b.disabled = true;
+      if (b.textContent === correct) b.classList.add('correct');
+      if (b === btn && !isCorrect) b.classList.add('wrong');
+    });
+
+    const fb = document.getElementById('quiz-feedback');
+    fb.classList.add('visible');
+    if (isCorrect) {
+      session.score += 1;
+      const earnedXP = 15;
+      session.xpEarned += earnedXP;
+      addXP(earnedXP, btn.getBoundingClientRect().left + btn.getBoundingClientRect().width / 2, btn.getBoundingClientRect().top);
+      fb.classList.add('correct-fb');
+      fb.textContent = '✅ Richtig! Korrekt! / Correct!';
+      document.getElementById('quiz-score-val').textContent = session.score;
+    } else {
+      fb.classList.add('wrong-fb');
+      fb.textContent = `❌ Falsch! Die richtige Antwort: ${correct}`;
+    }
+
+    rateWord(word.id, isCorrect);
+    document.getElementById('quiz-next-btn').classList.remove('hidden');
+  }
+
+  function nextQuizQuestion() {
+    session.index += 1;
+    if (session.index >= session.queue.length) {
+      endQuizSession();
+    } else {
+      renderQuizQuestion();
+    }
+  }
+
+  function endQuizSession() {
+    document.getElementById('quiz-session-area').classList.add('hidden');
+    document.getElementById('quiz-complete').classList.remove('hidden');
+    document.getElementById('quiz-progress-fill').style.width = '100%';
+
+    const score = session.score;
+    const total = session.queue.length;
+    const pct = Math.round((score / total) * 100);
+    let title = '🏅 Quiz abgeschlossen!';
+    let msg = '';
+    if (pct >= 90) { title = '🏆 Ausgezeichnet!'; msg = `${score}/${total} – Fantastisch! Du bist ein Sprachgenie! 🌟`; }
+    else if (pct >= 70) { msg = `${score}/${total} – Super Ergebnis! Weiter so! 💪`; }
+    else if (pct >= 50) { msg = `${score}/${total} – Gut gemacht! Übe weiter! 📚`; }
+    else { msg = `${score}/${total} – Nicht aufgeben! Versuche es nochmal! 💡`; }
+
+    document.getElementById('quiz-complete-title').textContent = title;
+    document.getElementById('quiz-complete-msg').textContent = msg;
+    document.getElementById('quiz-xp').textContent = '+' + session.xpEarned + ' XP';
+    renderHeaderStats();
+  }
+
+  /* ── PROGRESS ───────────────────────────────────────────────────────────── */
+  function renderProgress() {
+    const seen = Object.keys(state.cards).length;
+    const mastered = Object.values(state.cards).filter(c => c.level >= 5).length;
+    document.getElementById('prog-total-words').textContent = seen;
+    document.getElementById('prog-mastered').textContent = mastered;
+    document.getElementById('prog-streak').textContent = state.streak;
+    document.getElementById('prog-xp').textContent = state.xp;
+
+    // SRS distribution
+    const levels = [0,1,2,3,4,5];
+    const levelNames = { 0:'Neu', 1:'Anfänger', 2:'Lernend', 3:'Bekannt', 4:'Gut', 5:'Gemeistert' };
+    const levelCounts = {};
+    levels.forEach(l => levelCounts[l] = 0);
+    Object.values(state.cards).forEach(c => levelCounts[c.level] = (levelCounts[c.level] || 0) + 1);
+
+    const srsDiv = document.getElementById('srs-distribution');
+    srsDiv.innerHTML = '';
+    levels.forEach(l => {
+      const cnt = levelCounts[l] || 0;
+      if (cnt === 0) return;
+      const badge = document.createElement('div');
+      badge.className = `srs-badge srs-${l}`;
+      badge.innerHTML = `${levelNames[l]}: <strong>${cnt}</strong>`;
+      srsDiv.appendChild(badge);
+    });
+    if (srsDiv.innerHTML === '') {
+      srsDiv.innerHTML = '<span style="color:var(--text-2);font-size:0.85rem">Noch keine Wörter gelernt. Starte eine Lektion!</span>';
+    }
+
+    // Category progress
+    const catDiv = document.getElementById('cat-progress-list');
+    catDiv.innerHTML = '';
+    CATEGORIES.forEach(cat => {
+      const words = WORDS.filter(w => w.cat === cat.id);
+      const seen = words.filter(w => state.cards[w.id]).length;
+      const pct = words.length > 0 ? Math.round((seen / words.length) * 100) : 0;
+      catDiv.innerHTML += `
+        <div class="cat-progress-item">
+          <div class="cat-progress-header">
+            <span>${cat.icon} ${cat.name[state.lang]}</span>
+            <span class="cat-progress-pct">${seen}/${words.length}</span>
+          </div>
+          <div class="progress-bar-full">
+            <div class="progress-bar-fill" style="width:${pct}%"></div>
+          </div>
+        </div>`;
+    });
+  }
+
+  function resetProgress() {
+    if (confirm('Fortschritt wirklich zurücksetzen? / Really reset progress?')) {
+      state = { lang: state.lang, xp: 0, streak: 0, lastStudied: null, totalCorrect: 0, totalAnswered: 0, cards: {} };
+      saveState(state);
+      renderHeaderStats();
+      renderProgress();
+      showToast('Fortschritt zurückgesetzt / Progress reset');
+    }
+  }
+
+  /* ── UI helpers ─────────────────────────────────────────────────────────── */
+  let toastTimer = null;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  function showXPPop(amount, x, y) {
+    const el = document.createElement('div');
+    el.className = 'xp-pop';
+    el.textContent = '+' + amount + ' XP';
+    el.style.left = (x - 30) + 'px';
+    el.style.top = (y - 10) + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1300);
+  }
+
+  /* ── init ────────────────────────────────────────────────────────────────── */
+  function init() {
+    updateStreak();
+    renderHeaderStats();
+    renderHome();
+
+    // Expose public methods
+    return {
+      setLang, showView, startQuickSession,
+      startFlashcardSession, flipCard, rateCard,
+      exitSession, restartSession,
+      startQuizSession, nextQuizQuestion,
+      resetProgress
+    };
+  }
+
+  return init();
+})();
+</script>
+</body>
+</html>
