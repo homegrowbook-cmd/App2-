@@ -922,6 +922,69 @@
     #app {
       padding-bottom: env(safe-area-inset-bottom);
     }
+
+    /* ─── Settings Button in Header ───────────────────────────────────────── */
+    .header-settings-btn {
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: #fff;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+      transition: background var(--transition);
+      flex-shrink: 0;
+    }
+    .header-settings-btn:hover,
+    .header-settings-btn:active {
+      background: rgba(255,255,255,0.28);
+    }
+
+    /* ─── Settings View ────────────────────────────────────────────────────── */
+    .settings-section {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+    .settings-heading {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .settings-danger-btn {
+      width: 100%;
+      padding: 12px;
+      background: none;
+      border: 2px solid var(--danger);
+      color: var(--danger);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .settings-danger-btn:hover,
+    .settings-danger-btn:active {
+      background: rgba(239,71,111,0.08);
+    }
+    .settings-info {
+      font-size: 0.85rem;
+      color: var(--text-2);
+      line-height: 1.9;
+    }
+    .settings-info strong {
+      color: var(--text);
+    }
   </style>
 </head>
 <body>
@@ -948,6 +1011,7 @@
     <div class="header-stats">
       <div class="stat-pill" id="header-streak">🔥 <span id="streak-val">0</span></div>
       <div class="stat-pill" id="header-xp">⭐ <span id="xp-val">0</span></div>
+      <button class="header-settings-btn" onclick="App.showView('settings')" title="Einstellungen / Settings">⚙️</button>
     </div>
   </header>
 
@@ -1242,6 +1306,57 @@
     </div>
   </div>
 
+  <!-- SETTINGS -->
+  <div class="view" id="view-settings">
+    <p class="section-title mb-16">Einstellungen / Settings</p>
+
+    <div class="settings-section">
+      <h3 class="settings-heading">🌍 Lernrichtung / Learning Direction</h3>
+      <p style="font-size:0.82rem;color:var(--text-2);margin-bottom:12px">
+        Wähle deine Ausgangssprache / Choose your native language
+      </p>
+      <div class="lang-selector">
+        <button class="lang-btn" id="settings-lang-de" onclick="App.setLang('de')">
+          <span class="lang-flag">🇩🇪</span>
+          <span>Deutsch</span>
+          <span style="font-size:0.72rem;color:var(--text-2);font-weight:500">→ 🇧🇷</span>
+        </button>
+        <button class="lang-btn" id="settings-lang-en" onclick="App.setLang('en')">
+          <span class="lang-flag">🇬🇧</span>
+          <span>English</span>
+          <span style="font-size:0.72rem;color:var(--text-2);font-weight:500">→ 🇧🇷</span>
+        </button>
+        <button class="lang-btn" id="settings-lang-pt-de" onclick="App.setLang('pt-de')">
+          <span class="lang-flag">🇧🇷</span>
+          <span>Português</span>
+          <span style="font-size:0.72rem;color:var(--text-2);font-weight:500">→ 🇩🇪</span>
+        </button>
+        <button class="lang-btn" id="settings-lang-pt-en" onclick="App.setLang('pt-en')">
+          <span class="lang-flag">🇧🇷</span>
+          <span>Português</span>
+          <span style="font-size:0.72rem;color:var(--text-2);font-weight:500">→ 🇬🇧</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h3 class="settings-heading">📊 Lernfortschritt / Learning Progress</h3>
+      <button onclick="App.resetProgress()" class="settings-danger-btn">
+        🗑️ Fortschritt zurücksetzen / Reset Progress
+      </button>
+    </div>
+
+    <div class="settings-section">
+      <h3 class="settings-heading">ℹ️ App-Info</h3>
+      <div class="settings-info">
+        <p><strong>LinguaBrasil</strong> v3.1</p>
+        <p id="settings-word-count">222 Vokabeln &amp; Sätze · 13 Kategorien</p>
+        <p>🇧🇷 Brasilianisches Portugiesisch lernen</p>
+        <p style="margin-top:8px;font-size:0.78rem">Kostenlos · Offline nutzbar · Keine Anmeldung erforderlich</p>
+      </div>
+    </div>
+  </div>
+
   <!-- ── Bottom Navigation ───────────────────────────────────── -->
   <nav class="bottom-nav">
     <button class="nav-btn active" id="nav-home" onclick="App.showView('home')">
@@ -1507,6 +1622,68 @@ const WORDS = [
   { id:184, cat:'sentences', pt:'Como se diz ... em português?',   de:'Wie sagt man ... auf Portugiesisch?',   en:'How do you say ... in Portuguese?', pron:'KÓ-mu si DÍS êm por-tu-GUÊS',   ex_pt:'Como se diz "obrigado" em inglês?',        ex_de:'Wie sagt man "obrigado" auf Englisch?',       ex_en:'How do you say "obrigado" in English?' },
   { id:185, cat:'sentences', pt:'Onde posso comprar...?',          de:'Wo kann ich ... kaufen?',               en:'Where can I buy...?',               pron:'ÔN-dʒi PÓ-su kom-PRAR',         ex_pt:'Onde posso comprar um cartão SIM?',        ex_de:'Wo kann ich eine SIM-Karte kaufen?',          ex_en:'Where can I buy a SIM card?' },
   { id:186, cat:'sentences', pt:'Qual é o preço?',                 de:'Was ist der Preis?',                    en:'What is the price?',                pron:'Kuál é u PRÉ-su',                ex_pt:'Qual é o preço deste produto?',            ex_de:'Was ist der Preis dieses Produkts?',          ex_en:'What is the price of this product?' },
+
+  /* ── COLORS (extended) ── */
+  { id:187, cat:'colors', pt:'Cinza',      de:'Grau',    en:'Gray',    pron:'SÎN-za',      ex_pt:'O céu está cinza hoje.',         ex_de:'Der Himmel ist heute grau.',          ex_en:'The sky is gray today.' },
+  { id:188, cat:'colors', pt:'Dourado',    de:'Gold',    en:'Gold',    pron:'dou-RÁ-du',   ex_pt:'A medalha de ouro é dourada.',   ex_de:'Die Goldmedaille ist golden.',        ex_en:'The gold medal is golden.' },
+  { id:189, cat:'colors', pt:'Prata',      de:'Silber',  en:'Silver',  pron:'PRÁ-ta',      ex_pt:'Ela tem cabelo prata.',          ex_de:'Sie hat silbernes Haar.',             ex_en:'She has silver hair.' },
+
+  /* ── FAMILY (extended) ── */
+  { id:190, cat:'family', pt:'Tio',        de:'Onkel',   en:'Uncle',   pron:'TÍ-u',        ex_pt:'Meu tio mora em Brasília.',      ex_de:'Mein Onkel wohnt in Brasília.',       ex_en:'My uncle lives in Brasília.' },
+  { id:191, cat:'family', pt:'Tia',        de:'Tante',   en:'Aunt',    pron:'TÍ-a',        ex_pt:'Minha tia faz ótimas comidas.',  ex_de:'Meine Tante kocht sehr gut.',         ex_en:'My aunt cooks really well.' },
+  { id:192, cat:'family', pt:'Primo / Prima', de:'Cousin / Cousine', en:'Cousin',pron:'PRÍ-mu / PRÍ-ma', ex_pt:'Meu primo é mais velho que eu.', ex_de:'Mein Cousin ist älter als ich.',   ex_en:'My cousin is older than me.' },
+  { id:193, cat:'family', pt:'Bebê',       de:'Baby',    en:'Baby',    pron:'be-BÊ',       ex_pt:'O bebê está dormindo.',          ex_de:'Das Baby schläft.',                   ex_en:'The baby is sleeping.' },
+
+  /* ── FOOD (extended) ── */
+  { id:194, cat:'food', pt:'Batata',    de:'Kartoffel',  en:'Potato',     pron:'ba-TÁ-ta',    ex_pt:'Batata frita com hambúrguer.',    ex_de:'Pommes frites mit Burger.',           ex_en:'French fries with a burger.' },
+  { id:195, cat:'food', pt:'Tomate',    de:'Tomate',     en:'Tomato',     pron:'to-MÁ-tʃi',   ex_pt:'Salada de tomate com azeite.',    ex_de:'Tomatensalat mit Olivenöl.',          ex_en:'Tomato salad with olive oil.' },
+  { id:196, cat:'food', pt:'Maçã',      de:'Apfel',      en:'Apple',      pron:'ma-SÃ',       ex_pt:'Uma maçã por dia faz bem.',       ex_de:'Ein Apfel am Tag hält gesund.',       ex_en:'An apple a day keeps the doctor away.' },
+  { id:197, cat:'food', pt:'Churrasco', de:'Grillfleisch / Barbecue', en:'Barbecue', pron:'shu-RÁS-ku', ex_pt:'Churrasco de domingo em família!', ex_de:'Sonntagsgrill mit der Familie!',  ex_en:'Sunday barbecue with the family!' },
+
+  /* ── TRAVEL (extended) ── */
+  { id:198, cat:'travel', pt:'Museu',     de:'Museum',    en:'Museum',  pron:'mu-ZÉU',     ex_pt:'O museu abre às dez horas.',      ex_de:'Das Museum öffnet um zehn Uhr.',      ex_en:'The museum opens at ten o\'clock.' },
+  { id:199, cat:'travel', pt:'Banco',     de:'Bank',      en:'Bank',    pron:'BÂN-ku',     ex_pt:'Preciso ir ao banco hoje.',       ex_de:'Ich muss heute zur Bank.',            ex_en:'I need to go to the bank today.' },
+  { id:200, cat:'travel', pt:'Farmácia',  de:'Apotheke',  en:'Pharmacy',pron:'far-MÁ-sia', ex_pt:'Tem uma farmácia perto daqui?',   ex_de:'Gibt es eine Apotheke in der Nähe?',  ex_en:'Is there a pharmacy nearby?' },
+
+  /* ── VERBS (extended) ── */
+  { id:201, cat:'verbs', pt:'Trabalhar', de:'Arbeiten',  en:'To work',   pron:'tra-ba-LHAR', ex_pt:'Trabalho de segunda a sexta.',    ex_de:'Ich arbeite von Montag bis Freitag.', ex_en:'I work from Monday to Friday.' },
+  { id:202, cat:'verbs', pt:'Estudar',   de:'Lernen / Studieren', en:'To study', pron:'es-tu-DAR', ex_pt:'Estudo português todos os dias.', ex_de:'Ich lerne jeden Tag Portugiesisch.', ex_en:'I study Portuguese every day.' },
+  { id:203, cat:'verbs', pt:'Dormir',    de:'Schlafen',  en:'To sleep',  pron:'dor-MIR',    ex_pt:'Preciso dormir cedo hoje.',       ex_de:'Ich muss heute früh schlafen.',       ex_en:'I need to sleep early today.' },
+  { id:204, cat:'verbs', pt:'Viajar',    de:'Reisen',    en:'To travel', pron:'vi-a-ZHAR',  ex_pt:'Adoro viajar pelo Brasil.',       ex_de:'Ich liebe es, durch Brasilien zu reisen.', ex_en:'I love traveling around Brazil.' },
+
+  /* ── GREETINGS (extended) ── */
+  { id:205, cat:'greetings', pt:'Parabéns!',            de:'Herzlichen Glückwunsch!', en:'Congratulations!',   pron:'pa-ra-BÊNS',       ex_pt:'Parabéns pelo seu aniversário!',  ex_de:'Herzlichen Glückwunsch zu Ihrem Geburtstag!', ex_en:'Happy birthday / Congratulations!' },
+  { id:206, cat:'greetings', pt:'Feliz aniversário!',   de:'Alles Gute zum Geburtstag!', en:'Happy birthday!', pron:'fe-LÍS a-ni-ver-SÁ-riu', ex_pt:'Feliz aniversário! Muitos anos de vida!', ex_de:'Alles Gute zum Geburtstag! Viele weitere Jahre!', ex_en:'Happy birthday! Many more years!' },
+  { id:207, cat:'greetings', pt:'Saúde!',               de:'Prost! / Gesundheit!',    en:'Cheers! / Bless you!', pron:'sa-Ú-dʒi',       ex_pt:'Saúde! – beim Anstoßen.',        ex_de:'Prost! – beim Anstoßen.',             ex_en:'Cheers! – when toasting.' },
+
+  /* ── NUMBERS (extended) ── */
+  { id:208, cat:'numbers', pt:'Zero',     de:'Null',     en:'Zero',    pron:'ZÉ-ru',        ex_pt:'Zero graus de temperatura.',     ex_de:'Null Grad Temperatur.',               ex_en:'Zero degrees temperature.' },
+  { id:209, cat:'numbers', pt:'Onze',     de:'Elf',      en:'Eleven',  pron:'ÔN-zi',        ex_pt:'Onze horas da manhã.',           ex_de:'Elf Uhr morgens.',                    ex_en:'Eleven in the morning.' },
+  { id:210, cat:'numbers', pt:'Doze',     de:'Zwölf',    en:'Twelve',  pron:'DÓ-zi',        ex_pt:'São doze ao meio-dia.',          ex_de:'Es ist zwölf Uhr mittags.',           ex_en:'It is twelve at noon.' },
+
+  /* ── WEATHER (extended) ── */
+  { id:211, cat:'weather', pt:'Arco-íris',  de:'Regenbogen', en:'Rainbow', pron:'ÁR-ku Í-ris',  ex_pt:'Um arco-íris depois da chuva!',  ex_de:'Ein Regenbogen nach dem Regen!',      ex_en:'A rainbow after the rain!' },
+  { id:212, cat:'weather', pt:'Neblina',    de:'Nebel',      en:'Fog',     pron:'ne-BLÍNA',      ex_pt:'Hoje está com muita neblina.',   ex_de:'Heute ist viel Nebel.',               ex_en:'There is a lot of fog today.' },
+
+  /* ── EMOTIONS (extended) ── */
+  { id:213, cat:'emotions', pt:'Orgulho',   de:'Stolz',     en:'Pride',      pron:'or-GÚ-lhu',   ex_pt:'Tenho muito orgulho de você!',   ex_de:'Ich bin sehr stolz auf dich!',        ex_en:'I am very proud of you!' },
+  { id:214, cat:'emotions', pt:'Vergonha',  de:'Scham / Peinlichkeit', en:'Shame / Embarrassment', pron:'ver-GÔ-nha', ex_pt:'Que vergonha! Isso foi errado.', ex_de:'Wie peinlich! Das war falsch.', ex_en:'How embarrassing! That was wrong.' },
+
+  /* ── CLOTHING (extended) ── */
+  { id:215, cat:'clothing', pt:'Óculos',       de:'Brille',     en:'Glasses',   pron:'Ó-ku-lus',   ex_pt:'Eu uso óculos para ler.',         ex_de:'Ich trage eine Brille zum Lesen.',    ex_en:'I wear glasses for reading.' },
+  { id:216, cat:'clothing', pt:'Cinto',         de:'Gürtel',     en:'Belt',      pron:'SÎN-tu',     ex_pt:'Esse cinto combina com a calça.', ex_de:'Dieser Gürtel passt zur Hose.',       ex_en:'This belt goes with the pants.' },
+  { id:217, cat:'clothing', pt:'Guarda-chuva',  de:'Regenschirm',en:'Umbrella',  pron:'GUÁ-da-SHÚ-va', ex_pt:'Não esqueça o guarda-chuva!',  ex_de:'Vergiss nicht den Regenschirm!',      ex_en:'Don\'t forget your umbrella!' },
+
+  /* ── BODY (extended) ── */
+  { id:218, cat:'body', pt:'Pescoço',  de:'Hals / Nacken', en:'Neck',    pron:'pes-KÓ-su',  ex_pt:'Estou com dor no pescoço.',      ex_de:'Ich habe Nackenschmerzen.',           ex_en:'I have a pain in my neck.' },
+  { id:219, cat:'body', pt:'Barriga',  de:'Bauch',         en:'Belly / Stomach', pron:'ba-HÍ-ga', ex_pt:'Estou com dor de barriga.', ex_de:'Ich habe Bauchschmerzen.',        ex_en:'I have a stomach ache.' },
+
+  /* ── EVERYDAY PHRASES (extended) ── */
+  { id:220, cat:'sentences', pt:'Posso pagar com cartão?',        de:'Kann ich mit Karte zahlen?',             en:'Can I pay by card?',                pron:'PÓ-su pa-GAR kom kar-TÃO',       ex_pt:'Posso pagar com cartão de crédito?',       ex_de:'Kann ich mit Kreditkarte zahlen?',             ex_en:'Can I pay by credit card?' },
+  { id:221, cat:'sentences', pt:'Onde fica o hospital?',          de:'Wo ist das Krankenhaus?',                en:'Where is the hospital?',            pron:'ÔN-dʒi FÍ-ka u os-pi-TÁL',      ex_pt:'Com licença, onde fica o hospital mais próximo?', ex_de:'Entschuldigung, wo ist das nächste Krankenhaus?', ex_en:'Excuse me, where is the nearest hospital?' },
+  { id:222, cat:'sentences', pt:'Tenho uma reserva.',             de:'Ich habe eine Reservierung.',            en:'I have a reservation.',             pron:'TÊ-nhu Ú-ma he-ZER-va',          ex_pt:'Tenho uma reserva no nome João.',          ex_de:'Ich habe eine Reservierung auf den Namen João.', ex_en:'I have a reservation under the name João.' },
+  { id:223, cat:'sentences', pt:'Isso é muito caro.',             de:'Das ist sehr teuer.',                    en:'That is very expensive.',           pron:'Í-su é MÚI-tu KÁ-ru',            ex_pt:'Isso é muito caro! Tem algo mais barato?', ex_de:'Das ist sehr teuer! Haben Sie etwas Günstigeres?', ex_en:'That is very expensive! Do you have something cheaper?' },
+  { id:224, cat:'sentences', pt:'Gostaria de...',                 de:'Ich hätte gerne... / Ich möchte...',     en:'I would like...',                   pron:'gos-ta-RÍ-a dʒi',                ex_pt:'Gostaria de um café, por favor.',          ex_de:'Ich hätte gerne einen Kaffee, bitte.',        ex_en:'I would like a coffee, please.' },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -1660,6 +1837,22 @@ const App = (() => {
     if (name === 'learn') renderLearn();
     if (name === 'progress') renderProgress();
     if (name === 'grammar') renderGrammar();
+    if (name === 'settings') renderSettings();
+  }
+
+  /* ── SETTINGS ───────────────────────────────────────────────────────────── */
+  function renderSettingsLang() {
+    ['de', 'en', 'pt-de', 'pt-en'].forEach(l => {
+      const btn = document.getElementById('settings-lang-' + l);
+      if (btn) btn.classList.toggle('selected', state.lang === l);
+    });
+  }
+
+  function renderSettings() {
+    renderSettingsLang();
+    // Update dynamic word count in app info
+    const infoEl = document.getElementById('settings-word-count');
+    if (infoEl) infoEl.textContent = WORDS.length + ' Vokabeln & Sätze · 13 Kategorien';
   }
 
   /* ── HOME ────────────────────────────────────────────────────────────────── */
@@ -1703,6 +1896,7 @@ const App = (() => {
     state.lang = lang;
     saveState(state);
     renderHome();
+    renderSettingsLang();
   }
 
   /* ── LEARN ───────────────────────────────────────────────────────────────── */

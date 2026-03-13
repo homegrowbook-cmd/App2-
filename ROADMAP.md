@@ -68,7 +68,8 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 - [x] **Portugiesisch → Deutsch/Englisch lernen** – Neue Lernrichtung PT→DE und PT→EN (Flashcards, Quiz, Tipp-Übung, Hörquiz alle unterstützen beide Richtungen)
 - [x] **Erweiterte Kategorien** – 4 neue Themenbereiche: Körper 🧍, Kleidung 👕, Wetter 🌤️, Gefühle 😊
 - [x] **Neue Kategorie: Alltagssätze 💬** – 20 häufig genutzte Sätze für den Alltag (A1-Niveau): Begrüßungsformeln, Orientierung, Restaurant, Hilfe anfordern u. v. m.
-- [x] **Erweiterter Wortschatz** – 184 Vokabeln & Alltagssätze (13 Kategorien): Zahlen erweitert, Essen, Reisen, Verben, Körper mit je 6–9 neuen Einträgen – Ziel: 500+ *(in Arbeit)*
+- [x] **Erweiterter Wortschatz** – 224 Vokabeln & Alltagssätze (13 Kategorien): Farben, Familie, Essen, Reisen, Verben, Begrüßungen, Zahlen, Wetter, Gefühle, Kleidung, Körper mit je 2–5 neuen Einträgen – Ziel: 500+ *(in Arbeit)*
+- [x] **Einstellungen-Seite** – Neue Einstellungen-Ansicht (⚙️ in der Kopfleiste) mit Lernrichtungsauswahl, Fortschritt zurücksetzen und App-Info
 - [ ] **Grammatik-Lektionen** – Strukturierte Einheiten zu: Artikel, Präsens, Vergangenheit, Zukunft, Konjunktiv
 - [ ] **Satz-Builder** – Sätze aus Wörtern zusammensetzen (Drag & Drop)
 - [ ] **Dialog-Übungen** – Typische Alltagsgespräche nachspielen
