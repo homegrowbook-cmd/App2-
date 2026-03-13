@@ -13,6 +13,7 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 
 ### Features
 - [x] Sprachauswahl: Deutsch → Brasilianisches Portugiesisch / Englisch → Brasilianisches Portugiesisch
+  *(ab v3.0: auch Brasilianisches Portugiesisch → Deutsch/Englisch)*
 - [x] 8 Vokabelkategorien: Begrüßungen, Zahlen, Farben, Essen, Reisen, Familie, Wochentage, Verben
 - [x] ~100 Vokabeln mit Ausspracheführer und Beispielsätzen
 - [x] **Karteikarten-Modus** (Flashcard Mode) mit visueller Karte und Bewertung
@@ -59,12 +60,14 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 
 ---
 
-## Phase 3 – Inhalte & Struktur (v3.0)
+## Phase 3 – Inhalte & Struktur (v3.0) 🔄 *In Arbeit*
 
-**Ziel:** Vollständiger A1–B1 Lehrplan
+**Ziel:** Vollständiger A1–B1 Lehrplan + Reverse-Learning
 
 ### Geplante Features
-- [ ] **Erweiterter Wortschatz** – 500+ Vokabeln je Sprache
+- [x] **Portugiesisch → Deutsch/Englisch lernen** – Neue Lernrichtung PT→DE und PT→EN (Flashcards, Quiz, Tipp-Übung, Hörquiz alle unterstützen beide Richtungen)
+- [x] **Erweiterte Kategorien** – 4 neue Themenbereiche: Körper 🧍, Kleidung 👕, Wetter 🌤️, Gefühle 😊
+- [x] **Erweiterter Wortschatz** – 131 Vokabeln (12 Kategorien) – Ziel: 500+ *(in Arbeit)*
 - [ ] **Grammatik-Lektionen** – Strukturierte Einheiten zu: Artikel, Präsens, Vergangenheit, Zukunft, Konjunktiv
 - [ ] **Satz-Builder** – Sätze aus Wörtern zusammensetzen (Drag & Drop)
 - [ ] **Dialog-Übungen** – Typische Alltagsgespräche nachspielen
@@ -115,7 +118,7 @@ LinguaBrasil/
 ```
 1. SRS + tägliche Wiederholung    → IMPLEMENTIERT ✅
 2. Gamification (XP, Streaks)     → IMPLEMENTIERT ✅
-3. Strukturierter Lehrplan        → IMPLEMENTIERT ✅ (8 Kategorien, A1/A2)
+3. Strukturierter Lehrplan        → IMPLEMENTIERT ✅ (12 Kategorien, A1/A2)
 4. Multiple-Choice Übungen        → IMPLEMENTIERT ✅
 5. Aussprache / Audio (TTS)       → IMPLEMENTIERT ✅ (v2.0)
 6. Schreib-Übungen (Tippen)       → IMPLEMENTIERT ✅ (v2.0)
@@ -123,8 +126,9 @@ LinguaBrasil/
 8. Fehler-Analyse                 → IMPLEMENTIERT ✅ (v2.0)
 9. Grammatik-Karten               → IMPLEMENTIERT ✅ (v2.0)
 10. PWA (Offline, Installierbar)  → IMPLEMENTIERT ✅ (v2.0)
-11. Grammatik-Lektionen (Detail)  → Phase 3 🔜
-12. KI-Konversation               → Phase 4 🔜
+11. PT→DE/EN Lernrichtung         → IMPLEMENTIERT ✅ (v3.0)
+12. Grammatik-Lektionen (Detail)  → Phase 3 🔜
+13. KI-Konversation               → Phase 4 🔜
 ```
 
 ---
@@ -135,7 +139,7 @@ LinguaBrasil/
 |-------|-------|--------|
 | v1.0 MVP | 1–2 Tage | ✅ Fertig |
 | v2.0 Audio & Interaktion | 2–3 Wochen | ✅ Fertig |
-| v3.0 Vollständiger Lehrplan | 4–6 Wochen | 🔜 Geplant |
+| v3.0 Vollständiger Lehrplan | 4–6 Wochen | 🔄 In Arbeit |
 | v4.0 Social & KI | 2–3 Monate | 🔜 Geplant |
 
 ---

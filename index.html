@@ -1715,7 +1715,7 @@ const App = (() => {
     const exSource = nativeLang() === 'de' ? word.ex_de : word.ex_en;
     if (isReverse()) {
       document.getElementById('fc-pt-word').textContent = nativeLang() === 'de' ? word.de : word.en;
-      document.getElementById('fc-pronunciation').textContent = '🇧🇷 [ ' + word.pron + ' ]';
+      document.getElementById('fc-pronunciation').textContent = '[ ' + word.pron + ' ] 🇧🇷';
       document.getElementById('fc-example').innerHTML =
         `<span class="ex-pt">${word.pt}</span><span>${exSource}</span>`;
     } else {
