@@ -1077,6 +1077,44 @@
     .settings-info strong {
       color: var(--text);
     }
+
+    /* ─── Dark Mode ─────────────────────────────────────────────────────────────── */
+    body.dark {
+      --bg: #111827; --card: #1f2937; --text: #f9fafb; --text-2: #9ca3af;
+      --border: #374151; --shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    body.dark .app-header { background: linear-gradient(135deg,#1e3a5f 0%,#2a4a7f 100%); }
+    body.dark .bottom-nav { background: #1f2937; border-top-color: #374151; }
+    body.dark .category-card { background: #1f2937; }
+    body.dark .grammar-card { background: #1f2937; }
+    body.dark .progress-card, body.dark .big-stat { background: #1f2937; }
+    body.dark .settings-section { background: #1f2937; }
+    body.dark .quiz-option { background: #1f2937; border-color: #374151; color: #f9fafb; }
+    body.dark .quiz-option:hover { background: #374151; }
+    body.dark .typing-input { background: #1f2937 !important; border-color: #374151 !important; color: #f9fafb !important; }
+    body.dark .error-word-item { background: #2d1a1a; }
+    body.dark .lang-popup-card { background: #1f2937; }
+    body.dark .lang-btn { background: #374151; }
+    body.dark .listen-card { background: linear-gradient(135deg,#1a3a5c,#1e4a7e); }
+    body.dark .grammar-table th { background: #374151; }
+    body.dark .grammar-example { background: rgba(255,255,255,0.05); }
+
+    /* ─── Font Size ──────────────────────────────────────────────────────────────── */
+    body.font-small { font-size: 14px; }
+    body.font-large { font-size: 18px; }
+
+    /* ─── Achievements ───────────────────────────────────────────────────────────── */
+    .achievement-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .achievement-item {
+      display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+      background: var(--card); border-radius: var(--radius-sm);
+      border: 2px solid var(--border); transition: var(--transition);
+    }
+    .achievement-item.unlocked { border-color: var(--yellow); background: rgba(255,223,0,0.08); }
+    .achievement-item.locked { opacity: 0.4; filter: grayscale(1); }
+    .achievement-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .achievement-name { font-size: 0.78rem; font-weight: 700; color: var(--text); }
+    .achievement-desc { font-size: 0.68rem; color: var(--text-2); margin-top: 2px; }
   </style>
 </head>
 <body>
@@ -1143,12 +1181,11 @@
 
   <!-- LEARN (categories) -->
   <div class="view" id="view-learn">
-    <p class="section-title mb-16">Kategorien / Categories</p>
-    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
-      <button class="cta-btn" style="padding:10px 14px;font-size:0.85rem;margin-bottom:0;flex:1;min-width:120px" onclick="App.startTypingSession(null)">✏️ Tipp-Übung</button>
-      <button class="cta-btn" style="padding:10px 14px;font-size:0.85rem;margin-bottom:0;flex:1;min-width:120px;background:linear-gradient(135deg,#6a0dad,#9b30ff);box-shadow:0 4px 16px rgba(106,13,173,0.3)" onclick="App.startListeningQuiz()">👂 Hören</button>
-    </div>
-    <div class="category-grid" id="category-grid"></div>
+    <p class="section-title mb-16">Lernen / Learn</p>
+    <button onclick="App.startWeakWordsSession()" style="width:100%;padding:12px 16px;background:linear-gradient(135deg,#c77b17,#e89c2f);color:#fff;border:none;border-radius:var(--radius-sm);cursor:pointer;font-weight:700;font-size:0.88rem;margin-bottom:14px;box-shadow:0 4px 14px rgba(199,123,23,0.35)">
+      🔁 Schwache Wörter üben / Practice Weak Words (SRS 0–1)
+    </button>
+    <div id="category-grid" class="category-grid"></div>
   </div>
 
   <!-- FLASHCARD -->
@@ -1196,10 +1233,9 @@
       <h2>Lektion abgeschlossen!</h2>
       <p>Super gemacht! Du hast diese Runde beendet.</p>
       <div class="xp-earned" id="session-xp">+0 XP</div>
-      <br><br>
-      <button class="cta-btn" onclick="App.showView('learn')" style="max-width:280px;margin:0 auto">
-        📚 Zurück zu Kategorien
-      </button>
+      <p id="fc-session-summary" style="color:var(--text-2);font-size:0.88rem;margin-top:8px"></p>
+      <br>
+      <button class="cta-btn" onclick="App.exitSession()" style="max-width:280px;margin:0 auto">📚 Kategorien</button>
       <button class="cta-btn" style="max-width:280px;margin:8px auto;background:linear-gradient(135deg,var(--blue),var(--light-blue));box-shadow:0 4px 16px rgba(0,39,118,0.3)" onclick="App.restartSession()">
         🔄 Nochmal üben
       </button>
@@ -1368,6 +1404,11 @@
       <div id="cat-progress-list"></div>
     </div>
 
+    <div class="progress-card">
+      <h3>🏆 Erfolge / Achievements</h3>
+      <div id="achievements-list"></div>
+    </div>
+
     <div style="text-align:center;margin-top:16px">
       <button onclick="App.resetProgress()" style="border:none;background:none;color:var(--danger);font-size:0.82rem;cursor:pointer;text-decoration:underline">
         Fortschritt zurücksetzen
@@ -1378,6 +1419,21 @@
   <!-- SETTINGS -->
   <div class="view" id="view-settings">
     <p class="section-title mb-16">Einstellungen / Settings</p>
+
+    <div class="settings-section">
+      <h3 class="settings-heading">🌙 Erscheinungsbild / Appearance</h3>
+      <button id="settings-dark-btn" onclick="App.toggleDarkMode()" class="settings-update-btn">
+        🌙 Dunkel-Modus aktivieren
+      </button>
+      <div style="margin-top:12px">
+        <p style="font-size:0.82rem;color:var(--text-2);margin-bottom:8px">Schriftgröße / Font Size</p>
+        <div style="display:flex;gap:8px">
+          <button id="font-btn-small"  onclick="App.setFontSize('small')"  class="lang-btn" style="flex:1;padding:8px 4px;font-size:0.82rem">A<small>a</small> Klein</button>
+          <button id="font-btn-normal" onclick="App.setFontSize('normal')" class="lang-btn" style="flex:1;padding:8px 4px;font-size:0.82rem">Aa Normal</button>
+          <button id="font-btn-large"  onclick="App.setFontSize('large')"  class="lang-btn" style="flex:1;padding:8px 4px;font-size:0.82rem">Aa <big>Groß</big></button>
+        </div>
+      </div>
+    </div>
 
     <div class="settings-section">
       <h3 class="settings-heading">🌍 Lernrichtung / Learning Direction</h3>
@@ -1428,7 +1484,7 @@
     <div class="settings-section">
       <h3 class="settings-heading">ℹ️ App-Info</h3>
       <div class="settings-info">
-        <p><strong>LinguaBrasil</strong> v3.1</p>
+        <p><strong>LinguaBrasil</strong> v3.2</p>
         <p id="settings-word-count">222 Vokabeln &amp; Sätze · 13 Kategorien</p>
         <p>🇧🇷 Brasilianisches Portugiesisch lernen</p>
         <p style="margin-top:8px;font-size:0.78rem">Kostenlos · Offline nutzbar · Keine Anmeldung erforderlich</p>
@@ -1510,6 +1566,9 @@ const CATEGORIES = [
   { id: 'weather',   icon: '🌤️', level: 'A1', name: { de: 'Wetter',        en: 'Weather'   } },
   { id: 'emotions',  icon: '😊', level: 'A2', name: { de: 'Gefühle',       en: 'Emotions'  } },
   { id: 'sentences', icon: '💬', level: 'A1', name: { de: 'Alltagssätze',  en: 'Everyday Phrases' } },
+  { id: 'house',     icon: '🏠', level: 'A1', name: { de: 'Zuhause',       en: 'Home'             } },
+  { id: 'jobs',      icon: '👔', level: 'A2', name: { de: 'Berufe',        en: 'Jobs'             } },
+  { id: 'nature',    icon: '🌿', level: 'A1', name: { de: 'Natur',         en: 'Nature'           } },
 ];
 
 // Each word: { id, category, pt, de, en, pron, ex_pt, ex_de, ex_en }
@@ -1868,6 +1927,57 @@ const WORDS = [
   { id:269, cat:'sentences', pt:'Estou perdido/a.',           de:'Ich habe mich verlaufen.',               en:'I am lost.',                        pron:'es-TÔ per-DÍ-du/da',            bedeutung:'Mitteilen, dass man sich verlaufen hat – um Passanten um Hilfe zu bitten.',                    ex_pt:'Estou perdido. Pode me ajudar?',            ex_de:'Ich habe mich verlaufen. Können Sie mir helfen?', ex_en:'I am lost. Can you help me?' },
   { id:270, cat:'sentences', pt:'Pode trazer a conta?',       de:'Können Sie die Rechnung bringen?',       en:'Can you bring the bill?',           pron:'PÓ-dʒi tra-ZÊR a KÔN-ta',       bedeutung:'Im Restaurant höflich nach der Rechnung fragen – am Ende des Essens beim Servicepersonal.',    ex_pt:'Garçom, pode trazer a conta, por favor?',  ex_de:'Herr Ober, können Sie bitte die Rechnung bringen?', ex_en:'Waiter, can you please bring the bill?' },
   { id:271, cat:'sentences', pt:'Que horas são?',             de:'Wie spät ist es?',                       en:'What time is it?',                  pron:'ki Ó-ras SÃO',                   bedeutung:'Nach der aktuellen Uhrzeit fragen – eine der häufigsten Fragen im Alltag.',                    ex_pt:'Com licença, que horas são agora?',         ex_de:'Entschuldigung, wie spät ist es jetzt?',      ex_en:'Excuse me, what time is it now?' },
+
+  /* ── HOUSE / ZUHAUSE (v3.2) ── */
+  { id:272, cat:'house', pt:'Cozinha',    de:'Küche',          en:'Kitchen',      pron:'ko-ZÎ-nha',   ex_pt:'A cozinha é o coração da casa.',    ex_de:'Die Küche ist das Herz des Hauses.',       ex_en:'The kitchen is the heart of the home.' },
+  { id:273, cat:'house', pt:'Quarto',     de:'Schlafzimmer',   en:'Bedroom',      pron:'KWÁR-tu',     ex_pt:'Meu quarto tem uma cama grande.',   ex_de:'Mein Schlafzimmer hat ein großes Bett.',   ex_en:'My bedroom has a large bed.' },
+  { id:274, cat:'house', pt:'Sala',       de:'Wohnzimmer',     en:'Living room',  pron:'SÁ-la',       ex_pt:'Assistimos TV na sala.',            ex_de:'Wir schauen TV im Wohnzimmer.',            ex_en:'We watch TV in the living room.' },
+  { id:275, cat:'house', pt:'Banheiro',   de:'Badezimmer',     en:'Bathroom',     pron:'ban-YÊI-ru',  ex_pt:'O banheiro está no corredor.',      ex_de:'Das Badezimmer ist im Flur.',             ex_en:'The bathroom is in the hallway.' },
+  { id:276, cat:'house', pt:'Janela',     de:'Fenster',        en:'Window',       pron:'zha-NÉ-la',   ex_pt:'Abra a janela para entrar ar.',     ex_de:'Öffne das Fenster zum Lüften.',           ex_en:'Open the window to let in fresh air.' },
+  { id:277, cat:'house', pt:'Porta',      de:'Tür',            en:'Door',         pron:'PÓR-ta',      ex_pt:'Feche a porta, por favor.',         ex_de:'Bitte schließ die Tür.',                  ex_en:'Please close the door.' },
+  { id:278, cat:'house', pt:'Mesa',       de:'Tisch',          en:'Table',        pron:'MÉ-za',       ex_pt:'O jantar está na mesa.',            ex_de:'Das Abendessen steht auf dem Tisch.',     ex_en:'Dinner is on the table.' },
+  { id:279, cat:'house', pt:'Cadeira',    de:'Stuhl',          en:'Chair',        pron:'ka-DÊI-ra',   ex_pt:'Sente-se nessa cadeira.',           ex_de:'Setzen Sie sich auf diesen Stuhl.',       ex_en:'Please sit on this chair.' },
+  { id:280, cat:'house', pt:'Cama',       de:'Bett',           en:'Bed',          pron:'KÂ-ma',       ex_pt:'A cama é muito confortável.',       ex_de:'Das Bett ist sehr bequem.',               ex_en:'The bed is very comfortable.' },
+  { id:281, cat:'house', pt:'Sofá',       de:'Sofa',           en:'Sofa / Couch', pron:'so-FÁ',       ex_pt:'Relaxei no sofá depois do trabalho.', ex_de:'Ich entspannte mich nach der Arbeit auf dem Sofa.', ex_en:'I relaxed on the sofa after work.' },
+  { id:282, cat:'house', pt:'Geladeira',  de:'Kühlschrank',    en:'Refrigerator', pron:'zhe-la-DÊI-ra', ex_pt:'A geladeira está cheia de frutas.', ex_de:'Der Kühlschrank ist voller Früchte.',   ex_en:'The refrigerator is full of fruits.' },
+  { id:283, cat:'house', pt:'Fogão',      de:'Herd',           en:'Stove / Cooker', pron:'fo-GÃO',    ex_pt:'Cozinho no fogão todos os dias.',   ex_de:'Ich koche jeden Tag auf dem Herd.',       ex_en:'I cook on the stove every day.' },
+  { id:284, cat:'house', pt:'Chuveiro',   de:'Dusche',         en:'Shower',       pron:'shu-VÊI-ru',  ex_pt:'Tomo banho no chuveiro de manhã.',  ex_de:'Ich dusche mich morgens.',                ex_en:'I shower in the morning.' },
+  { id:285, cat:'house', pt:'Escada',     de:'Treppe',         en:'Stairs',       pron:'es-KÁ-da',    ex_pt:'Cuidado na escada!',                ex_de:'Vorsicht auf der Treppe!',                ex_en:'Be careful on the stairs!' },
+  { id:286, cat:'house', pt:'Jardim',     de:'Garten',         en:'Garden',       pron:'zhar-DJÎM',   ex_pt:'O jardim tem rosas lindas.',        ex_de:'Der Garten hat wunderschöne Rosen.',      ex_en:'The garden has beautiful roses.' },
+
+  /* ── JOBS / BERUFE (v3.2) ── */
+  { id:287, cat:'jobs', pt:'Médico / Médica',           de:'Arzt / Ärztin',               en:'Doctor',        pron:'MÉ-dʒi-ku/ka',   ex_pt:'O médico chegou ao hospital.',      ex_de:'Der Arzt kam ins Krankenhaus.',           ex_en:'The doctor arrived at the hospital.' },
+  { id:288, cat:'jobs', pt:'Professor / Professora',    de:'Lehrer / Lehrerin',           en:'Teacher',       pron:'pro-fe-SOR/a',    ex_pt:'A professora explica bem a lição.', ex_de:'Die Lehrerin erklärt die Lektion gut.',   ex_en:'The teacher explains the lesson well.' },
+  { id:289, cat:'jobs', pt:'Engenheiro / Engenheira',   de:'Ingenieur / Ingenieurin',     en:'Engineer',      pron:'en-zhe-NHÊI-ru/ra', ex_pt:'O engenheiro projetou a ponte.',   ex_de:'Der Ingenieur entwarf die Brücke.',       ex_en:'The engineer designed the bridge.' },
+  { id:290, cat:'jobs', pt:'Advogado / Advogada',       de:'Rechtsanwalt / -anwältin',    en:'Lawyer',        pron:'ad-vo-GÁ-du/da',  ex_pt:'O advogado defende o cliente.',     ex_de:'Der Anwalt verteidigt den Mandanten.',    ex_en:'The lawyer defends the client.' },
+  { id:291, cat:'jobs', pt:'Policial',                  de:'Polizist / Polizistin',       en:'Police officer',pron:'po-li-SI-ál',      ex_pt:'O policial ajudou o pedestre.',     ex_de:'Der Polizist half dem Fußgänger.',        ex_en:'The police officer helped the pedestrian.' },
+  { id:292, cat:'jobs', pt:'Bombeiro',                  de:'Feuerwehrmann / -frau',       en:'Firefighter',   pron:'bom-BÊI-ru',      ex_pt:'O bombeiro apagou o incêndio.',     ex_de:'Der Feuerwehrmann löschte den Brand.',    ex_en:'The firefighter put out the fire.' },
+  { id:293, cat:'jobs', pt:'Cozinheiro / Cozinheira',   de:'Koch / Köchin',              en:'Chef / Cook',   pron:'ko-zin-YÊI-ru/ra', ex_pt:'O cozinheiro prepara pratos deliciosos.', ex_de:'Der Koch bereitet köstliche Gerichte zu.', ex_en:'The chef prepares delicious dishes.' },
+  { id:294, cat:'jobs', pt:'Motorista',                 de:'Fahrer / Fahrerin',           en:'Driver',        pron:'mo-to-RÍS-ta',    ex_pt:'O motorista conhece bem as ruas.',  ex_de:'Der Fahrer kennt die Straßen gut.',       ex_en:'The driver knows the streets well.' },
+  { id:295, cat:'jobs', pt:'Estudante',                 de:'Student / Studentin',         en:'Student',       pron:'es-tu-DÂNT-ʃi',   ex_pt:'Sou estudante de Português.',       ex_de:'Ich bin Portugiesischstudent.',           ex_en:'I am a student of Portuguese.' },
+  { id:296, cat:'jobs', pt:'Vendedor / Vendedora',      de:'Verkäufer / Verkäuferin',     en:'Salesperson',   pron:'ven-de-DOR/a',     ex_pt:'A vendedora atende bem os clientes.', ex_de:'Die Verkäuferin bedient die Kunden gut.', ex_en:'The salesperson serves customers well.' },
+  { id:297, cat:'jobs', pt:'Enfermeiro / Enfermeira',   de:'Krankenpfleger / -schwester', en:'Nurse',         pron:'en-fer-MÊI-ru/ra', ex_pt:'A enfermeira cuida dos pacientes.',  ex_de:'Die Krankenschwester pflegt die Patienten.', ex_en:'The nurse takes care of the patients.' },
+  { id:298, cat:'jobs', pt:'Arquiteto / Arquiteta',     de:'Architekt / Architektin',     en:'Architect',     pron:'ar-ki-TÉ-tu/ta',  ex_pt:'O arquiteto desenhou o edifício.',  ex_de:'Der Architekt entwarf das Gebäude.',      ex_en:'The architect designed the building.' },
+  { id:299, cat:'jobs', pt:'Jornalista',                de:'Journalist / Journalistin',   en:'Journalist',    pron:'zhor-na-LÍS-ta',  ex_pt:'A jornalista escreveu a reportagem.', ex_de:'Die Journalistin schrieb den Bericht.', ex_en:'The journalist wrote the report.' },
+  { id:300, cat:'jobs', pt:'Ator / Atriz',              de:'Schauspieler / Schauspielerin', en:'Actor / Actress', pron:'a-TOR / a-TRÍZ', ex_pt:'O ator ganhou o prêmio.',         ex_de:'Der Schauspieler gewann den Preis.',      ex_en:'The actor won the award.' },
+  { id:301, cat:'jobs', pt:'Músico / Músicca',          de:'Musiker / Musikerin',         en:'Musician',      pron:'MÚ-zi-ku/ka',     ex_pt:'O músico tocou violão na praça.',   ex_de:'Der Musiker spielte Gitarre auf dem Platz.', ex_en:'The musician played guitar in the square.' },
+
+  /* ── NATURE / NATUR (v3.2) ── */
+  { id:302, cat:'nature', pt:'Árvore',   de:'Baum',    en:'Tree',      pron:'ÁR-vo-ri',   ex_pt:'A árvore tem muitas folhas verdes.',   ex_de:'Der Baum hat viele grüne Blätter.',     ex_en:'The tree has many green leaves.' },
+  { id:303, cat:'nature', pt:'Flor',     de:'Blume',   en:'Flower',    pron:'FLOR',        ex_pt:'As flores do jardim são lindas.',      ex_de:'Die Blumen im Garten sind schön.',      ex_en:'The flowers in the garden are beautiful.' },
+  { id:304, cat:'nature', pt:'Montanha', de:'Berg',    en:'Mountain',  pron:'mon-TÂ-nha',  ex_pt:'A montanha é coberta de neve.',        ex_de:'Der Berg ist schneebedeckt.',           ex_en:'The mountain is covered in snow.' },
+  { id:305, cat:'nature', pt:'Rio',      de:'Fluss',   en:'River',     pron:'HÍ-u',        ex_pt:'O Rio Amazonas é o maior do mundo.',   ex_de:'Der Amazonas ist der größte Fluss der Welt.', ex_en:'The Amazon is the largest river in the world.' },
+  { id:306, cat:'nature', pt:'Praia',    de:'Strand',  en:'Beach',     pron:'PRÂ-ia',      ex_pt:'A praia de Copacabana é famosa.',      ex_de:'Der Strand von Copacabana ist berühmt.', ex_en:'Copacabana beach is famous.' },
+  { id:307, cat:'nature', pt:'Floresta', de:'Wald',    en:'Forest',    pron:'flo-RÉS-ta',  ex_pt:'A Floresta Amazônica é enorme.',       ex_de:'Der Amazonas-Regenwald ist riesig.',    ex_en:'The Amazon rainforest is enormous.' },
+  { id:308, cat:'nature', pt:'Mar',      de:'Meer',    en:'Sea',       pron:'MAR',         ex_pt:'O mar do Brasil é quente e azul.',     ex_de:'Das Meer in Brasilien ist warm und blau.', ex_en:'The sea in Brazil is warm and blue.' },
+  { id:309, cat:'nature', pt:'Lago',     de:'See',     en:'Lake',      pron:'LÁ-gu',       ex_pt:'O lago reflete as montanhas.',         ex_de:'Der See spiegelt die Berge wider.',     ex_en:'The lake reflects the mountains.' },
+  { id:310, cat:'nature', pt:'Peixe',    de:'Fisch',   en:'Fish',      pron:'PÊI-shi',     ex_pt:'O peixe nadou no rio claro.',          ex_de:'Der Fisch schwamm im klaren Fluss.',    ex_en:'The fish swam in the clear river.' },
+  { id:311, cat:'nature', pt:'Pássaro',  de:'Vogel',   en:'Bird',      pron:'PÁ-sa-ru',    ex_pt:'O pássaro canta de manhã cedo.',       ex_de:'Der Vogel singt früh am Morgen.',       ex_en:'The bird sings early in the morning.' },
+  { id:312, cat:'nature', pt:'Pedra',    de:'Stein',   en:'Stone / Rock', pron:'PÉ-dra',  ex_pt:'Encontrei uma pedra bonita na praia.', ex_de:'Ich fand einen schönen Stein am Strand.', ex_en:'I found a beautiful stone on the beach.' },
+  { id:313, cat:'nature', pt:'Sol',      de:'Sonne',   en:'Sun',       pron:'SOL',         ex_pt:'O sol brilha forte no verão.',         ex_de:'Die Sonne scheint stark im Sommer.',    ex_en:'The sun shines brightly in summer.' },
+  { id:314, cat:'nature', pt:'Lua',      de:'Mond',    en:'Moon',      pron:'LÚ-a',        ex_pt:'A lua cheia ilumina a noite.',         ex_de:'Der Vollmond erhellt die Nacht.',       ex_en:'The full moon illuminates the night.' },
+  { id:315, cat:'nature', pt:'Nuvem',    de:'Wolke',   en:'Cloud',     pron:'NÚ-vem',      ex_pt:'As nuvens anunciam chuva.',            ex_de:'Die Wolken kündigen Regen an.',         ex_en:'The clouds announce rain.' },
+  { id:316, cat:'nature', pt:'Vento',    de:'Wind',    en:'Wind',      pron:'VÊN-tu',      ex_pt:'O vento está forte hoje.',             ex_de:'Der Wind ist heute stark.',             ex_en:'The wind is strong today.' },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -1894,7 +2004,10 @@ function loadState() {
     totalCorrect: 0,
     totalAnswered: 0,
     cards: {},       // id -> { level, nextReview, timesStudied, correct }
-    wrongCounts: {}  // id -> number of wrong answers (for error analysis)
+    wrongCounts: {},  // id -> number of wrong answers (for error analysis)
+    darkMode: false,
+    fontSize: 'normal',
+    achievements: {}
   };
 }
 
@@ -2037,18 +2150,56 @@ const App = (() => {
     renderSettingsLang();
     // Update dynamic word count in app info
     const infoEl = document.getElementById('settings-word-count');
-    if (infoEl) infoEl.textContent = WORDS.length + ' Vokabeln & Sätze · 13 Kategorien';
+    if (infoEl) infoEl.textContent = WORDS.length + ' Vokabeln & Sätze · 16 Kategorien';
+    // Dark mode
+    const dmBtn = document.getElementById('settings-dark-btn');
+    if (dmBtn) dmBtn.textContent = state.darkMode ? '☀️ Hell-Modus aktivieren' : '🌙 Dunkel-Modus aktivieren';
+    // Font size
+    ['small','normal','large'].forEach(s => {
+      const b = document.getElementById('font-btn-' + s);
+      if (b) b.classList.toggle('selected', state.fontSize === s);
+    });
+  }
+
+  function toggleDarkMode() {
+    state.darkMode = !state.darkMode;
+    saveState(state);
+    document.body.classList.toggle('dark', state.darkMode);
+    renderSettings();
+  }
+
+  function setFontSize(size) {
+    state.fontSize = size;
+    saveState(state);
+    document.body.classList.remove('font-small','font-large');
+    if (size === 'small') document.body.classList.add('font-small');
+    if (size === 'large') document.body.classList.add('font-large');
+    renderSettings();
   }
 
   /* ── HOME ────────────────────────────────────────────────────────────────── */
   const WORD_OF_DAY_WORDS = [
-    { pt:'Saudade', de:'Sehnsucht', en:'Longing / Missing', pron:'sau-DA-dʒi' },
-    { pt:'Jeitinho', de:'Erfinderischer Weg', en:'Clever little way', pron:'zhei-TÎ-nhu' },
-    { pt:'Bagunça', de:'Durcheinander', en:'Mess / Chaos', pron:'ba-GÛN-sa' },
-    { pt:'Gostoso', de:'Lecker / Schön', en:'Delicious / Gorgeous', pron:'gos-TÓ-zu' },
-    { pt:'Abraço', de:'Umarmung', en:'Hug', pron:'a-BRÁ-su' },
-    { pt:'Caramba!', de:'Meine Güte!', en:'Wow! / Good grief!', pron:'ka-RÂM-ba' },
-    { pt:'Beleza!', de:'Super! / Schön!', en:'Great! / Beautiful!', pron:'be-LÉ-za' },
+    { pt:'Saudade',      de:'Sehnsucht',              en:'Longing / Missing',        pron:'saw-DÁ-dʒi' },
+    { pt:'Jeitinho',     de:'Erfinderischer Weg',     en:'Clever little way',        pron:'zhei-TÎ-nhu' },
+    { pt:'Bagunça',      de:'Durcheinander',          en:'Mess / Chaos',             pron:'ba-GÛN-sa' },
+    { pt:'Gostoso',      de:'Lecker / Schön',         en:'Delicious / Gorgeous',     pron:'gos-TÓ-zu' },
+    { pt:'Abraço',       de:'Umarmung',               en:'Hug',                      pron:'a-BRÁ-su' },
+    { pt:'Caramba!',     de:'Meine Güte!',            en:'Wow! / Good grief!',       pron:'ka-RÂM-ba' },
+    { pt:'Beleza!',      de:'Super! / Schön!',        en:'Great! / Beautiful!',      pron:'be-LÉ-za' },
+    { pt:'Sossegado',    de:'Ruhig / Entspannt',      en:'Relaxed / Easy-going',     pron:'so-se-GÁ-du' },
+    { pt:'Malandro',     de:'Schlaukopf / Charmeur',  en:'Cunning charmer',          pron:'ma-LÂN-dru' },
+    { pt:'Boa-praça',    de:'Gutmütiger Mensch',      en:'Good-natured person',      pron:'BÔ-a-PRÁ-sa' },
+    { pt:'Cafuné',       de:'Haarsstreicheln',        en:'Stroking someone\'s hair', pron:'ka-fu-NÉ' },
+    { pt:'Madrugada',    de:'Frühe Morgenstunden',    en:'Early hours / Dawn',       pron:'ma-dru-GÁ-da' },
+    { pt:'Caprichar',    de:'Sich besonders anstrengen', en:'To do one\'s best',     pron:'ka-pri-SHAR' },
+    { pt:'Engraçado',    de:'Lustig / Witzig',        en:'Funny',                    pron:'en-gra-SÁ-du' },
+    { pt:'Animado',      de:'Aufgeregt / Begeistert', en:'Excited / Lively',        pron:'a-ni-MÁ-du' },
+    { pt:'Tranquilo',    de:'Ruhig / In Ordnung',     en:'Calm / It\'s fine',        pron:'tran-KÍ-lu' },
+    { pt:'Pivô',         de:'Dreh- und Angelpunkt',   en:'Pivot / Key person',       pron:'pi-VÔ' },
+    { pt:'Chato',        de:'Langweilig / Nervig',    en:'Boring / Annoying',        pron:'SHÁ-tu' },
+    { pt:'Grana',        de:'Geld (umgangsspr.)',     en:'Money (slang)',            pron:'GRÂ-na' },
+    { pt:'Mano',         de:'Alter / Kumpel (umgangsspr.)', en:'Dude / Bro (slang)', pron:'MÂ-nu' },
+    { pt:'Valeu!',       de:'Danke! / Super!',        en:'Thanks! / Cool!',          pron:'va-LÉU' },
   ];
 
   function renderHome() {
@@ -2105,6 +2256,7 @@ const App = (() => {
         <div style="display:flex;gap:6px;margin-top:8px;font-size:0.72rem">
           <button onclick="event.stopPropagation();App.startFlashcardSession('${cat.id}')" style="flex:1;padding:5px 4px;background:linear-gradient(135deg,var(--green),var(--light-green));color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.7rem">🃏 Karten</button>
           <button onclick="event.stopPropagation();App.startTypingSession('${cat.id}')" style="flex:1;padding:5px 4px;background:linear-gradient(135deg,#c77b17,#e89c2f);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.7rem">✏️ Tippen</button>
+          <button onclick="event.stopPropagation();App.startCategoryListeningQuiz('${cat.id}')" style="flex:1;padding:5px 4px;background:linear-gradient(135deg,#6a0dad,#9b30ff);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.7rem">🎧 Hören</button>
         </div>
         <div class="cat-progress-bar" style="margin-top:6px">
           <div class="cat-progress-fill" style="width:${pct}%"></div>
@@ -2126,7 +2278,9 @@ const App = (() => {
       queue,
       index: 0,
       xpEarned: 0,
-      flipped: false
+      flipped: false,
+      correctCount: 0,
+      wrongCount: 0
     };
     updateStreak();
     showView('flashcard');
@@ -2137,6 +2291,24 @@ const App = (() => {
 
   function startQuickSession() {
     startFlashcardSession(null);
+  }
+
+  function startWeakWordsSession() {
+    const weak = WORDS.filter(w => {
+      const c = state.cards[w.id];
+      return !c || c.level <= 1;
+    });
+    if (weak.length === 0) {
+      showToast('🌟 Alle Wörter gut bekannt! / All words well known!');
+      return;
+    }
+    const queue = [...weak].sort(() => Math.random() - 0.5).slice(0, 15);
+    session = { type: 'flashcard', catId: null, queue, index: 0, xpEarned: 0, flipped: false, correctCount: 0, wrongCount: 0 };
+    updateStreak();
+    showView('flashcard');
+    document.getElementById('session-complete').classList.add('hidden');
+    document.getElementById('fc-session-area').classList.remove('hidden');
+    renderFlashcard();
   }
 
   function renderFlashcard() {
@@ -2206,11 +2378,14 @@ const App = (() => {
     rateWord(word.id, correct);
 
     if (correct) {
+      session.correctCount = (session.correctCount || 0) + 1;
       const earnedXP = 10 + session.index; // small bonus for later cards
       session.xpEarned += earnedXP;
       const btn = document.querySelector('.rating-btn.good');
       const rect = btn.getBoundingClientRect();
       addXP(earnedXP, rect.left + rect.width / 2, rect.top);
+    } else {
+      session.wrongCount = (session.wrongCount || 0) + 1;
     }
 
     session.index += 1;
@@ -2227,6 +2402,12 @@ const App = (() => {
     document.getElementById('session-xp').textContent = '+' + session.xpEarned + ' XP';
     document.getElementById('fc-progress-fill').style.width = '100%';
     document.getElementById('fc-progress-label').textContent = session.queue.length + ' / ' + session.queue.length;
+    const summEl = document.getElementById('fc-session-summary');
+    if (summEl) {
+      const c = session.correctCount || 0, w = session.wrongCount || 0;
+      summEl.textContent = `✅ ${c} richtig  ❌ ${w} falsch`;
+    }
+    checkAchievements();
     renderHeaderStats();
   }
 
@@ -2339,11 +2520,11 @@ const App = (() => {
       session.xpEarned += earnedXP;
       addXP(earnedXP, btn.getBoundingClientRect().left + btn.getBoundingClientRect().width / 2, btn.getBoundingClientRect().top);
       fb.classList.add('correct-fb');
-      fb.textContent = '✅ Richtig! Korrekt! / Correct!';
+      fb.innerHTML = `✅ Richtig! / Correct! &nbsp;<span style="color:var(--green);font-size:0.82rem">[ ${word.pron} ]</span>`;
       document.getElementById('quiz-score-val').textContent = session.score;
     } else {
       fb.classList.add('wrong-fb');
-      fb.textContent = `❌ Falsch! Die richtige Antwort: ${correct}`;
+      fb.innerHTML = `❌ Falsch! Richtige Antwort: <strong>${correct}</strong> &nbsp;<span style="font-size:0.8rem;color:var(--text-2)">[ ${word.pron} ] – ${word.ex_pt}</span>`;
     }
 
     rateWord(word.id, isCorrect);
@@ -2471,6 +2652,51 @@ const App = (() => {
           </div>
         </div>`;
     });
+    checkAchievements();
+    renderAchievements();
+  }
+
+  /* ── ACHIEVEMENTS ───────────────────────────────────────────────────────────── */
+  const ACHIEVEMENTS = [
+    { id:'first_word',  icon:'🌱', name:'Erster Schritt',      desc:'Erstes Wort gelernt',           check: s => Object.keys(s.cards).length >= 1 },
+    { id:'words_10',    icon:'📖', name:'Fleißiger Lerner',    desc:'10 Wörter gesehen',             check: s => Object.keys(s.cards).length >= 10 },
+    { id:'words_25',    icon:'📚', name:'Wortschatz-Sammler',  desc:'25 Wörter gesehen',             check: s => Object.keys(s.cards).length >= 25 },
+    { id:'words_50',    icon:'🎒', name:'Halbzeit!',           desc:'50 Wörter gelernt',             check: s => Object.keys(s.cards).length >= 50 },
+    { id:'words_100',   icon:'💯', name:'100er Club',          desc:'100 Wörter gelernt',            check: s => Object.keys(s.cards).length >= 100 },
+    { id:'mastered_5',  icon:'⭐', name:'Erste Meisterung',    desc:'5 Wörter gemeistert (Level 5)', check: s => Object.values(s.cards).filter(c=>c.level>=5).length >= 5 },
+    { id:'mastered_20', icon:'🌟', name:'Meisterwortschatz',   desc:'20 Wörter gemeistert',          check: s => Object.values(s.cards).filter(c=>c.level>=5).length >= 20 },
+    { id:'streak_3',    icon:'🔥', name:'3-Tage-Streak',       desc:'3 Tage in Folge gelernt',       check: s => s.streak >= 3 },
+    { id:'streak_7',    icon:'🏅', name:'Eine Woche!',         desc:'7 Tage Streak',                 check: s => s.streak >= 7 },
+    { id:'xp_500',      icon:'🏆', name:'XP-Sammler',          desc:'500 XP verdient',               check: s => s.xp >= 500 },
+  ];
+
+  function checkAchievements() {
+    let newlyUnlocked = [];
+    if (!state.achievements) state.achievements = {};
+    ACHIEVEMENTS.forEach(a => {
+      if (!state.achievements[a.id] && a.check(state)) {
+        state.achievements[a.id] = true;
+        newlyUnlocked.push(a);
+      }
+    });
+    if (newlyUnlocked.length > 0) {
+      saveState(state);
+      newlyUnlocked.forEach(a => showToast('🏆 Erfolg freigeschaltet: ' + a.name + ' ' + a.icon));
+    }
+  }
+
+  function renderAchievements() {
+    const container = document.getElementById('achievements-list');
+    if (!container) return;
+    if (!state.achievements) state.achievements = {};
+    container.innerHTML = '<div class="achievement-grid">' +
+      ACHIEVEMENTS.map(a => {
+        const unlocked = !!state.achievements[a.id];
+        return `<div class="achievement-item ${unlocked ? 'unlocked' : 'locked'}">
+          <div class="achievement-icon">${a.icon}</div>
+          <div><div class="achievement-name">${a.name}</div><div class="achievement-desc">${a.desc}</div></div>
+        </div>`;
+      }).join('') + '</div>';
   }
 
   function resetProgress() {
@@ -2707,6 +2933,49 @@ const App = (() => {
         <div class="grammar-example"><span class="ex-pt">Não faça isso!</span><br><span class="ex-tr">Tun Sie das nicht! / Mach das nicht!</span></div>
         <p>💡 Negative Imperativ: <strong class="pt">não</strong> + Konjunktiv: <span class="pt">Não fale! Não coma!</span></p>`
     },
+    {
+      title: '🎉 Kultur: Karneval & Festa Junina',
+      body: `
+        <p>Brasilien ist bekannt für seine lebendigen Feste und kulturellen Feiern.</p>
+        <table class="grammar-table">
+          <tr><th>Fest</th><th>Tiempo / Wann</th><th>Beschreibung</th></tr>
+          <tr><td>🎭 <strong>Carnaval</strong></td><td>Februar / März</td><td>Weltberühmter Umzug mit Samba, Kostümen und Straßenfeiern. Rio de Janeiro ist das Epizentrum.</td></tr>
+          <tr><td>🌽 <strong>Festa Junina</strong></td><td>Juni</td><td>Nordöstliches Volksfest mit Musik (forró), Tanz (quadrilha), Maisgerichten und bunten Kostümen.</td></tr>
+          <tr><td>⚽ <strong>Dia do Futebol</strong></td><td>ganzjährig</td><td>Fußball ist in Brasilien mehr als Sport – er ist Kultur, Religion und Identität.</td></tr>
+        </table>
+        <div class="grammar-example"><span class="ex-pt">Vamos ao carnaval!</span><br><span class="ex-tr">Wir gehen zum Karneval!</span></div>
+        <div class="grammar-example"><span class="ex-pt">A quadrilha é uma dança folclórica.</span><br><span class="ex-tr">Die Quadrilha ist ein Volkstanz.</span></div>`
+    },
+    {
+      title: '🍹 Kultur: Brasilianische Küche & Getränke',
+      body: `
+        <p>Die brasilianische Küche ist vielfältig und von afrikanischen, indigenen und europäischen Einflüssen geprägt.</p>
+        <table class="grammar-table">
+          <tr><th>Gericht / Getränk</th><th>Português</th><th>Beschreibung</th></tr>
+          <tr><td>🥩 Grillfleisch</td><td class="pt">Churrasco</td><td>Brasilianisches Barbecue – oft am Sonntag mit Familie</td></tr>
+          <tr><td>🍚 Schwarze Bohnen & Reis</td><td class="pt">Feijão com arroz</td><td>Das tägliche Nationalgericht Brasiliens</td></tr>
+          <tr><td>🥘 Schwarze Bohneneintopf</td><td class="pt">Feijoada</td><td>Nationalgericht: Bohneneintopf mit Schweinefleisch</td></tr>
+          <tr><td>🍹 Caipirinha</td><td class="pt">Caipirinha</td><td>Nationalcocktail: Cachaça, Limette, Zucker und Eis</td></tr>
+          <tr><td>☕ Kaffee</td><td class="pt">Cafezinho</td><td>Kleiner starker Espresso – ein tägliches Ritual</td></tr>
+          <tr><td>🥤 Açaí</td><td class="pt">Açaí na tigela</td><td>Açaí-Beeren in einer Schale – Superfood aus dem Amazonas</td></tr>
+        </table>
+        <div class="grammar-example"><span class="ex-pt">Um cafezinho, por favor!</span><br><span class="ex-tr">Einen kleinen Kaffee, bitte!</span></div>`
+    },
+    {
+      title: '🌍 Kultur: Brasilien – Geografie & Fakten',
+      body: `
+        <p>Brasilien ist das größte Land Südamerikas und fünftgrößte der Welt.</p>
+        <table class="grammar-table">
+          <tr><th>Fakt</th><th>Details</th></tr>
+          <tr><td>🗺️ Hauptstadt</td><td><span class="pt">Brasília</span> – gegründet 1960 als Planhauptstadt</td></tr>
+          <tr><td>👥 Größte Stadt</td><td><span class="pt">São Paulo</span> – ~22 Millionen Einwohner</td></tr>
+          <tr><td>🏖️ Küste</td><td>7.491 km Küstenlinie am Atlantik</td></tr>
+          <tr><td>🌿 Amazonas</td><td><span class="pt">Floresta Amazônica</span> – 60% des Landes ist Regenwald</td></tr>
+          <tr><td>💚💛 Farben</td><td>Grün (Wälder) + Gelb (Gold/Sonne) + Blau (Himmel/Flüsse)</td></tr>
+          <tr><td>🗣️ Sprache</td><td>Brasilianisches Portugiesisch – gesprochen von ~215 Mio. Menschen</td></tr>
+        </table>
+        <div class="grammar-example"><span class="ex-pt">O Brasil é um país lindo e diversificado.</span><br><span class="ex-tr">Brasilien ist ein wunderschönes und vielfältiges Land.</span></div>`
+    },
   ];
 
   function renderGrammar() {
@@ -2851,6 +3120,20 @@ const App = (() => {
     renderHeaderStats();
   }
 
+  function startCategoryListeningQuiz(catId) {
+    const pool = catId ? WORDS.filter(w => w.cat === catId) : [...WORDS];
+    if (pool.length === 0) { showToast('Keine Wörter verfügbar!'); return; }
+    const queue = [...pool].sort(() => Math.random() - 0.5).slice(0, 10);
+    session = { type: 'listening', queue, index: 0, score: 0, xpEarned: 0, answered: false };
+    updateStreak();
+    document.getElementById('listen-session-area').classList.remove('hidden');
+    document.getElementById('listen-complete').classList.add('hidden');
+    document.getElementById('listen-score-val').textContent = '0';
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    showView('listening');
+    renderListenQuestion();
+  }
+
   /* ── LISTENING QUIZ ──────────────────────────────────────────────────────── */
   function startListeningQuiz() {
     const pool = [...WORDS].sort(() => Math.random() - 0.5).slice(0, 10);
@@ -2984,6 +3267,11 @@ const App = (() => {
     updateStreak();
     renderHeaderStats();
     renderHome();
+    // Apply dark mode and font size from saved state
+    if (state.darkMode) document.body.classList.add('dark');
+    document.body.classList.remove('font-small','font-large');
+    if (state.fontSize === 'small') document.body.classList.add('font-small');
+    if (state.fontSize === 'large') document.body.classList.add('font-large');
 
     // Show language selection popup on first launch
     if (!state.langSelected) {
@@ -3042,7 +3330,10 @@ const App = (() => {
       speak, speakWord,
       startTypingSession, checkTypingAnswer, nextTypingCard, typeListenHint,
       startListeningQuiz, playListenWord, nextListenQuestion,
-      nativeLang, isReverse
+      nativeLang, isReverse,
+      toggleDarkMode, setFontSize,
+      startWeakWordsSession, startCategoryListeningQuiz,
+      checkAchievements, renderAchievements
     };
   }
 
