@@ -1053,6 +1053,22 @@
     .settings-danger-btn:active {
       background: rgba(239,71,111,0.08);
     }
+    .settings-update-btn {
+      width: 100%;
+      padding: 12px;
+      background: none;
+      border: 2px solid var(--blue);
+      color: var(--blue);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .settings-update-btn:hover,
+    .settings-update-btn:active {
+      background: rgba(0,39,118,0.08);
+    }
     .settings-info {
       font-size: 0.85rem;
       color: var(--text-2);
@@ -1396,6 +1412,16 @@
       <h3 class="settings-heading">📊 Lernfortschritt / Learning Progress</h3>
       <button onclick="App.resetProgress()" class="settings-danger-btn">
         🗑️ Fortschritt zurücksetzen / Reset Progress
+      </button>
+    </div>
+
+    <div class="settings-section">
+      <h3 class="settings-heading">🔄 App-Update / Force Update</h3>
+      <p style="font-size:0.82rem;color:var(--text-2);margin-bottom:12px">
+        Neue Version verfügbar? Cache leeren und App neu laden. / New version available? Clear cache and reload app.
+      </p>
+      <button onclick="App.forceUpdate()" class="settings-update-btn">
+        🔄 App jetzt aktualisieren / Force Update Now
       </button>
     </div>
 
@@ -2457,6 +2483,23 @@ const App = (() => {
     }
   }
 
+  async function forceUpdate() {
+    if (!confirm('App-Cache leeren und neu laden?\nAlle Offline-Daten werden aktualisiert.\n\nClear app cache and reload?\nAll offline data will be refreshed.')) return;
+    try {
+      if ('serviceWorker' in navigator) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(registrations.map(r => r.unregister()));
+      }
+      if ('caches' in window) {
+        const keys = await caches.keys();
+        await Promise.all(keys.map(k => caches.delete(k)));
+      }
+    } catch (e) {
+      console.warn('LinguaBrasil: forceUpdate cleanup error', e);
+    }
+    location.reload();
+  }
+
   /* ── UI helpers ─────────────────────────────────────────────────────────── */
   let toastTimer = null;
   function showToast(msg) {
@@ -2975,7 +3018,7 @@ const App = (() => {
       startFlashcardSession, flipCard, rateCard,
       exitSession, restartSession,
       startQuizSession, nextQuizQuestion,
-      resetProgress,
+      resetProgress, forceUpdate,
       speak, speakWord,
       startTypingSession, checkTypingAnswer, nextTypingCard, typeListenHint,
       startListeningQuiz, playListenWord, nextListenQuestion,
