@@ -5,7 +5,9 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 
 ---
 
-## Phase 1 – MVP (v1.0) ✅ *Aktueller Stand*
+## Phase 1 – MVP (v1.0) ✅ *Erledigt*
+
+> **Abgeschlossen** – App läuft live unter: [https://homegrowbook-cmd.github.io/App2-/](https://homegrowbook-cmd.github.io/App2-/)
 
 **Ziel:** Funktionsfähige Basis-App mit den wichtigsten Lernfunktionen
 

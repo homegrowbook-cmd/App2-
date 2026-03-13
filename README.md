@@ -7,9 +7,11 @@ Eine kostenlose, browserbasierte HTML-App ohne Installation, die wissenschaftlic
 
 ---
 
-## 🚀 Schnellstart / Quick Start
+## 🚀 App starten / Launch App
 
-Öffne einfach `index.html` in deinem Browser – keine Installation nötig!
+👉 **[LinguaBrasil direkt im Browser öffnen](https://homegrowbook-cmd.github.io/App2-/)** *(GitHub Pages)*
+
+Oder lokal: Lade `index.html` herunter und öffne sie in deinem Browser – keine Installation nötig!
 
 ```
 open index.html
