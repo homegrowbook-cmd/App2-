@@ -71,6 +71,7 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 - [x] **Erweiterter Wortschatz** – 271 Vokabeln & Alltagssätze (13 Kategorien): alle Kategorien um je 2–5 neue Einträge erweitert – Ziel: 500+ *(in Arbeit)*
 - [x] **Einstellungen-Seite** – Neue Einstellungen-Ansicht (⚙️ in der Kopfleiste) mit Lernrichtungsauswahl, Fortschritt zurücksetzen und App-Info
 - [x] **Grammatik-Lektionen** – 4 neue strukturierte Grammatikkarten: Verben -er/-ir (Präsens), Pretérito Perfeito (Vergangenheit), Futuro (Zukunft: ir + Infinitiv), Imperativ (Befehlsform) – jetzt 11 Grammatikkarten gesamt
+- [x] **Wichtige Alltagssätze mit Bedeutung** – Alle Alltagssätze (💬 30 Sätze) enthalten jetzt eine kontextuelle Bedeutungserklärung (wann & warum man den Satz benutzt), Ausspracheführer und Übersetzung – sichtbar auf der Rückseite der Lernkarte
 - [ ] **Satz-Builder** – Sätze aus Wörtern zusammensetzen (Drag & Drop)
 - [ ] **Dialog-Übungen** – Typische Alltagsgespräche nachspielen
 - [ ] **Thematische Geschichten** – Kurze Texte auf Portugiesisch mit Vokabel-Highlighting
@@ -131,7 +132,8 @@ LinguaBrasil/
 11. PT→DE/EN Lernrichtung         → IMPLEMENTIERT ✅ (v3.0)
 12. Alltagssätze-Kategorie         → IMPLEMENTIERT ✅ (v3.0)
 13. Grammatik-Lektionen (Detail)  → IMPLEMENTIERT ✅ (v3.1)
-14. KI-Konversation               → Phase 4 🔜
+14. Alltagssätze mit Bedeutung    → IMPLEMENTIERT ✅ (v3.1)
+15. KI-Konversation               → Phase 4 🔜
 ```
 
 ---
