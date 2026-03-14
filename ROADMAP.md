@@ -87,13 +87,24 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 - [x] **XP-Strafpunkte (v3.4)** – XP-Abzug bei falschen Antworten
 - [x] **Streak-Multiplikator (v3.4)** – Bonus-XP für lange Streaks
 - [x] **Tägliches XP-Ziel (v3.4)** – Konfigurierbares Tagesziel mit Fortschrittsbalken
-- [ ] **Thematische Geschichten** – Kurze Texte auf Portugiesisch mit Vokabel-Highlighting
-- [ ] **Leistungsnachweise** – Level-Tests, Zertifikate (A1, A2)
+- [x] **Thematische Geschichten (v3.5)** – 5 interaktive A1/A2 Lesetexte mit tippbaren Vokabel-Highlights, Popup mit Übersetzung + Aussprache + TTS
+- [x] **Leistungsnachweise / Level-Tests (v3.5)** – A1- und A2-Test (je 20 Fragen, Multiple Choice); Zertifikat bei ≥70% im Fortschritts-Tab
 - [ ] **IndexedDB** – Größere Datensätze effizient speichern
 
 ---
 
-## v3.2 – 5 Ausbau-Vorschläge (implementiert ✅)
+## v3.5 – Neue Inhalte & Features (implementiert ✅)
+
+> Vocabulary-Erweiterung, Story-Reader, Level-Tests, Favoriten, Wortliste
+
+1. ✅ **+80 neue Vokabeln** – Je 5 neue Wörter pro Kategorie (IDs 317–396); jetzt 396 Einträge in 16 Kategorien
+2. ✅ **Thematische Geschichten (Story Reader)** – 5 interaktive A1/A2 Lesetexte; markierte Vokabeln antippen → Popup mit Portugiesisch, Übersetzung, Aussprache + TTS-Wiedergabe
+3. ✅ **Level-Tests mit Zertifikat** – A1- und A2-Einstufungstest (je 20 Multiple-Choice-Fragen); bei ≥70% Erfüllung: Zertifikat im Fortschritts-Tab; +10 XP pro richtige Antwort
+4. ✅ **Favoriten-System** – Wörter beim Lernen mit ⭐ markieren; „Favoriten üben"-Modus im Lern-Tab; Favoriten werden im localStorage gespeichert
+5. ✅ **Wortliste mit Suchfunktion** – Alle 396 Vokabeln durchsuchbar; Kategorie-Filter; SRS-Level-Badges; TTS-Wiedergabe per Klick; von der Startseite aus erreichbar
+
+---
+
 
 > Eigenständig umsetzbare Erweiterungen zum Ausbau des Lernumfangs
 
@@ -194,7 +205,11 @@ LinguaBrasil/
 22. XP-Strafpunkte                → IMPLEMENTIERT ✅ (v3.4)
 23. Streak-Multiplikator          → IMPLEMENTIERT ✅ (v3.4)
 24. Tägliches XP-Ziel             → IMPLEMENTIERT ✅ (v3.4)
-25. KI-Konversation               → Phase 4 🔜
+25. **Thematische Geschichten**        → IMPLEMENTIERT ✅ (v3.5)
+26. **Level-Tests + Zertifikate**       → IMPLEMENTIERT ✅ (v3.5)
+27. **Favoriten-System**               → IMPLEMENTIERT ✅ (v3.5)
+28. **Wortliste mit Suche**            → IMPLEMENTIERT ✅ (v3.5)
+29. KI-Konversation               → Phase 4 🔜
 ```
 
 ---

@@ -689,6 +689,42 @@
       transition: width 0.7s ease;
     }
 
+    /* ─── Story Reader ──────────────────────────────────────────────────────── */
+    .story-card { background:var(--card);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow);cursor:pointer;transition:transform var(--transition); }
+    .story-card:active { transform:scale(0.98); }
+    .story-card-level { font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--blue);color:#fff;display:inline-block;margin-bottom:6px; }
+    .story-card-title { font-size:1rem;font-weight:700;color:var(--text);margin-bottom:4px; }
+    .story-card-desc { font-size:0.82rem;color:var(--text-2); }
+    .story-text-card { background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);line-height:1.9;font-size:1rem; }
+    .story-word { color:var(--blue);font-weight:600;cursor:pointer;border-bottom:1.5px dotted var(--blue);transition:color var(--transition); }
+    .story-word:hover, .story-word:active { color:var(--green); }
+    .story-vocab-popup { background:var(--card);border:2px solid var(--blue);border-radius:var(--radius);padding:14px 16px;margin-top:16px;box-shadow:var(--shadow); }
+
+    /* ─── Level Test ─────────────────────────────────────────────────────────── */
+    .lt-certificate { background:linear-gradient(135deg,var(--yellow) 0%,#fff8c0 100%);border:3px solid var(--blue);border-radius:var(--radius);padding:20px;text-align:center;margin:16px 0; }
+    .lt-certificate h3 { color:var(--blue);font-size:1.2rem;margin-bottom:8px; }
+    .lt-certificate .lt-cert-level { font-size:2rem;font-weight:900;color:var(--blue); }
+    .lt-certificate p { font-size:0.85rem;color:var(--text-2); }
+
+    /* ─── Word List ──────────────────────────────────────────────────────────── */
+    .wl-cat-btn { padding:5px 12px;border:1.5px solid var(--border);border-radius:20px;background:var(--card);cursor:pointer;font-size:0.78rem;white-space:nowrap;color:var(--text);transition:all var(--transition); }
+    .wl-cat-btn.active { background:var(--blue);color:#fff;border-color:var(--blue); }
+    .wl-item { background:var(--card);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:6px;box-shadow:0 2px 8px rgba(0,39,118,0.06); }
+    .wl-item-main { display:flex;align-items:center;gap:8px;flex-wrap:wrap; }
+    .wl-front { font-weight:700;font-size:0.95rem;color:var(--text); }
+    .wl-arrow { color:var(--text-2);font-size:0.85rem; }
+    .wl-back { font-size:0.9rem;color:var(--blue); }
+    .wl-item-meta { display:flex;align-items:center;gap:8px;margin-top:4px;flex-wrap:wrap; }
+    .wl-cat { font-size:0.85rem; }
+    .wl-pron { font-size:0.75rem;color:var(--text-2);font-style:italic; }
+    .wl-srs { font-size:0.72rem;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--border); }
+    .wl-srs.srs-0 { background:#fee2e2;color:#dc2626; }
+    .wl-srs.srs-1 { background:#fef3c7;color:#d97706; }
+    .wl-srs.srs-2 { background:#fef9c3;color:#ca8a04; }
+    .wl-srs.srs-3 { background:#dcfce7;color:#16a34a; }
+    .wl-srs.srs-4 { background:#bbf7d0;color:#15803d; }
+    .wl-srs.srs-5 { background:#86efac;color:#15803d;font-weight:900; }
+
     /* ─── Toast Notification ────────────────────────────────────────────────── */
     #toast {
       position: fixed;
@@ -1343,13 +1379,18 @@
     <button class="cta-btn" style="background:linear-gradient(135deg,#c77b17,#e89c2f);box-shadow:0 4px 16px rgba(199,123,23,0.3)" onclick="App.startTypingSession(null)">✏️ Tipp-Übung</button>
     <button class="cta-btn" style="background:linear-gradient(135deg,var(--green),var(--light-green));box-shadow:0 4px 16px rgba(0,156,59,0.3)" onclick="App.startSentenceBuilder()">🔤 Satz-Builder</button>
     <button class="cta-btn" style="background:linear-gradient(135deg,#e84393,#ff69b4);box-shadow:0 4px 16px rgba(232,67,147,0.3)" onclick="App.startDialogSession()">💬 Dialog-Übungen</button>
+    <button class="cta-btn" onclick="App.showView('stories')" style="background:linear-gradient(135deg,#5b21b6,#7c3aed);box-shadow:0 4px 16px rgba(91,33,182,0.3)">📖 Geschichten / Stories</button>
+    <button class="cta-btn" onclick="App.showView('wordlist')" style="background:linear-gradient(135deg,#0e7490,#0891b2);box-shadow:0 4px 16px rgba(14,116,144,0.3)">📋 Wortliste / Word List</button>
   </div>
 
   <!-- LEARN (categories) -->
   <div class="view" id="view-learn">
     <p class="section-title mb-16">Lernen / Learn</p>
-    <button onclick="App.startWeakWordsSession()" style="width:100%;padding:12px 16px;background:linear-gradient(135deg,#c77b17,#e89c2f);color:#fff;border:none;border-radius:var(--radius-sm);cursor:pointer;font-weight:700;font-size:0.88rem;margin-bottom:14px;box-shadow:0 4px 14px rgba(199,123,23,0.35)">
+    <button onclick="App.startWeakWordsSession()" style="width:100%;padding:12px 16px;background:linear-gradient(135deg,#c77b17,#e89c2f);color:#fff;border:none;border-radius:var(--radius-sm);cursor:pointer;font-weight:700;font-size:0.88rem;margin-bottom:8px;box-shadow:0 4px 14px rgba(199,123,23,0.35)">
       🔁 Schwache Wörter üben / Practice Weak Words (SRS 0–1)
+    </button>
+    <button onclick="App.startFavoritesSession()" style="width:100%;padding:12px 16px;background:linear-gradient(135deg,#f7b731,#f0a500);color:#fff;border:none;border-radius:var(--radius-sm);cursor:pointer;font-weight:700;font-size:0.88rem;margin-bottom:14px;box-shadow:0 4px 14px rgba(247,183,49,0.35)">
+      ⭐ Favoriten üben / Practice Favorites
     </button>
     <div id="category-grid" class="category-grid"></div>
   </div>
@@ -1380,6 +1421,7 @@
             <div class="card-pt-word" id="fc-pt-word">—</div>
             <div class="card-pronunciation" id="fc-pronunciation">—</div>
             <button class="speak-btn" id="fc-speak-btn" onclick="event.stopPropagation();App.speak()" title="Aussprechen / Speak">🔊</button>
+            <button id="fc-fav-btn" onclick="event.stopPropagation();App.toggleFavorite()" style="border:none;background:none;font-size:1.5rem;cursor:pointer;padding:4px" title="Favorit / Favorite">☆</button>
             <div class="card-bedeutung" id="fc-bedeutung"></div>
             <div class="card-example" id="fc-example"></div>
           </div>
@@ -1575,6 +1617,13 @@
       <div id="achievements-list"></div>
     </div>
 
+    <div class="progress-card">
+      <h3>🎓 Level-Test / Placement Test</h3>
+      <p style="font-size:0.82rem;color:var(--text-2);margin-bottom:12px">Teste dein Niveau! Beantworte 20 Fragen und erhalte ein A1- oder A2-Zertifikat.</p>
+      <button class="cta-btn" onclick="App.startLevelTest('A1')" style="max-width:280px;background:linear-gradient(135deg,var(--green),var(--light-green))">🎓 A1 Test starten</button>
+      <button class="cta-btn" onclick="App.startLevelTest('A2')" style="max-width:280px;margin-top:8px;background:linear-gradient(135deg,var(--blue),var(--light-blue))">🎓 A2 Test starten</button>
+    </div>
+
     <div style="text-align:center;margin-top:16px">
       <button onclick="App.resetProgress()" style="border:none;background:none;color:var(--danger);font-size:0.82rem;cursor:pointer;text-decoration:underline">
         Fortschritt zurücksetzen
@@ -1680,8 +1729,8 @@
     <div class="settings-section">
       <h3 class="settings-heading">ℹ️ App-Info</h3>
       <div class="settings-info">
-        <p><strong>LinguaBrasil</strong> v3.4</p>
-        <p id="settings-word-count">222 Vokabeln &amp; Sätze · 13 Kategorien</p>
+        <p><strong>LinguaBrasil</strong> v3.5</p>
+        <p id="settings-word-count">396 Vokabeln &amp; Sätze · 16 Kategorien</p>
         <p>🇧🇷 Brasilianisches Portugiesisch lernen</p>
         <p style="margin-top:8px;font-size:0.78rem">Kostenlos · Offline nutzbar · Keine Anmeldung erforderlich</p>
       </div>
@@ -1760,6 +1809,80 @@
       <br><br>
       <button class="cta-btn" onclick="App.showView('home')" style="max-width:280px;margin:0 auto">🏠 Startseite</button>
       <button class="cta-btn" style="max-width:280px;margin:8px auto;background:linear-gradient(135deg,#e84393,#ff69b4);box-shadow:0 4px 16px rgba(232,67,147,0.3)" onclick="App.startDialogSession()">🔄 Nochmal</button>
+    </div>
+  </div>
+
+  <!-- STORY READER -->
+  <div class="view" id="view-stories">
+    <p class="section-title mb-16">📖 Geschichten / Stories</p>
+    <div id="stories-list-area">
+      <p style="font-size:0.85rem;color:var(--text-2);margin-bottom:16px">Lies kurze Texte auf Portugiesisch und tippe auf markierte Vokabeln, um ihre Bedeutung zu sehen.</p>
+      <div id="stories-cards"></div>
+    </div>
+    <div class="hidden" id="story-reader-area" style="padding:0">
+      <div class="flashcard-header">
+        <button class="back-btn" onclick="App.showStoriesList()">←</button>
+        <div style="font-size:0.9rem;font-weight:600;color:#fff" id="story-reader-title">Geschichte</div>
+      </div>
+      <div style="padding:16px">
+        <div class="story-text-card" id="story-text-area"></div>
+        <div class="story-vocab-popup hidden" id="story-vocab-popup">
+          <div id="story-vocab-pt" style="font-size:1.2rem;font-weight:800;color:var(--blue)"></div>
+          <div id="story-vocab-de" style="font-size:0.95rem;color:var(--text);margin:4px 0"></div>
+          <div id="story-vocab-pron" style="font-size:0.82rem;color:var(--text-2)"></div>
+          <button onclick="App.speakStoryWord()" style="border:none;background:none;font-size:1.4rem;cursor:pointer;margin-top:4px">🔊</button>
+          <button onclick="App.closeStoryVocabPopup()" style="border:none;background:var(--border);border-radius:8px;padding:4px 12px;cursor:pointer;font-size:0.82rem;margin-left:8px">✕</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORD LIST -->
+  <div class="view" id="view-wordlist">
+    <p class="section-title mb-16">📋 Wortliste / Word List</p>
+    <div style="position:sticky;top:0;z-index:10;background:var(--bg);padding-bottom:8px">
+      <input type="search" id="wordlist-search" placeholder="🔍 Suchen / Search..."
+        oninput="App.filterWordList(this.value)"
+        style="width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:0.95rem;background:var(--card);color:var(--text);outline:none">
+      <div class="wl-cat-filters" style="display:flex;gap:6px;margin-top:8px;overflow-x:auto;padding-bottom:4px"></div>
+    </div>
+    <div id="wordlist-items" style="margin-top:4px"></div>
+  </div>
+
+  <!-- LEVEL TEST -->
+  <div class="view" id="view-leveltest">
+    <div class="flashcard-header">
+      <button class="back-btn" onclick="App.exitLevelTest()">←</button>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-label" id="lt-progress-label">Frage 0 / 20</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="lt-progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+    <div id="lt-session-area">
+      <div class="quiz-score-bar">
+        <span id="lt-level-badge" style="font-weight:700;font-size:1rem">A1</span>
+        <span class="quiz-score-val" id="lt-score-val">0 / 0</span>
+      </div>
+      <div class="quiz-question-card">
+        <div class="q-label" id="lt-q-label">Übersetze ins Portugiesische</div>
+        <div class="q-word" id="lt-q-word">—</div>
+        <div class="q-category" id="lt-q-category">—</div>
+      </div>
+      <div class="quiz-options" id="lt-options"></div>
+      <div class="quiz-feedback" id="lt-feedback"></div>
+      <button class="cta-btn hidden" id="lt-next-btn" onclick="App.nextLevelTestQuestion()">Weiter →</button>
+    </div>
+    <div class="session-complete hidden" id="lt-complete">
+      <div class="trophy" id="lt-trophy">🎓</div>
+      <h2 id="lt-complete-title">Level-Test abgeschlossen!</h2>
+      <p id="lt-complete-msg">Gut gemacht!</p>
+      <div class="xp-earned" id="lt-xp">+0 XP</div>
+      <div id="lt-certificate" class="lt-certificate hidden"></div>
+      <br>
+      <button class="cta-btn" onclick="App.showView('progress')" style="max-width:280px;margin:8px auto">📈 Fortschritt</button>
+      <button class="cta-btn" onclick="App.showView('home')" style="max-width:280px;margin:0 auto;background:linear-gradient(135deg,var(--blue),var(--light-blue))">🏠 Startseite</button>
     </div>
   </div>
 
@@ -2249,6 +2372,241 @@ const WORDS = [
   { id:314, cat:'nature', pt:'Lua',      de:'Mond',    en:'Moon',      pron:'LÚ-a',        ex_pt:'A lua cheia ilumina a noite.',         ex_de:'Der Vollmond erhellt die Nacht.',       ex_en:'The full moon illuminates the night.' },
   { id:315, cat:'nature', pt:'Nuvem',    de:'Wolke',   en:'Cloud',     pron:'NÚ-vem',      ex_pt:'As nuvens anunciam chuva.',            ex_de:'Die Wolken kündigen Regen an.',         ex_en:'The clouds announce rain.' },
   { id:316, cat:'nature', pt:'Vento',    de:'Wind',    en:'Wind',      pron:'VÊN-tu',      ex_pt:'O vento está forte hoje.',             ex_de:'Der Wind ist heute stark.',             ex_en:'The wind is strong today.' },
+
+  /* ── GREETINGS (v3.5) ── */
+  { id:317, cat:'greetings', pt:'Até amanhã!',        de:'Bis morgen!',              en:'See you tomorrow!',          pron:'a-TÉ a-ma-NHÃN',     ex_pt:'Foi ótimo! Até amanhã!',          ex_de:'Es war toll! Bis morgen!',            ex_en:'It was great! See you tomorrow!' },
+  { id:318, cat:'greetings', pt:'Bem-vindo/a!',       de:'Willkommen!',              en:'Welcome!',                   pron:'bêm-VÎN-du/da',       ex_pt:'Bem-vindo ao Brasil!',            ex_de:'Willkommen in Brasilien!',            ex_en:'Welcome to Brazil!' },
+  { id:319, cat:'greetings', pt:'Com licença.',       de:'Entschuldigung.',          en:'Excuse me.',                 pron:'Kom li-SÊN-sa',        ex_pt:'Com licença, posso passar?',      ex_de:'Entschuldigung, darf ich durch?',     ex_en:'Excuse me, may I pass?' },
+  { id:320, cat:'greetings', pt:'Tudo ótimo!',        de:'Alles prima!',             en:'Everything great!',          pron:'TU-du Ó-tʃi-mu',      ex_pt:'Tudo ótimo por aqui!',            ex_de:'Alles prima bei mir!',                ex_en:'Everything is great here!' },
+  { id:321, cat:'greetings', pt:'Até mais!',          de:'Tschüss! / Bis dann!',     en:'Bye! / Until next time!',    pron:'a-TÉ MÁIS',           ex_pt:'Até mais, cuide-se bem!',         ex_de:'Tschüss, pass auf dich auf!',         ex_en:'Bye, take care!' },
+
+  /* ── NUMBERS (v3.5) ── */
+  { id:322, cat:'numbers', pt:'Sessenta',    de:'Sechzig',     en:'Sixty',       pron:'se-SÊNT-a',   ex_pt:'Sessenta anos de história.',      ex_de:'Sechzig Jahre Geschichte.',           ex_en:'Sixty years of history.' },
+  { id:323, cat:'numbers', pt:'Setenta',     de:'Siebzig',     en:'Seventy',     pron:'se-TÊNT-a',   ex_pt:'Setenta quilômetros por hora.',   ex_de:'Siebzig Kilometer pro Stunde.',       ex_en:'Seventy kilometers per hour.' },
+  { id:324, cat:'numbers', pt:'Oitenta',     de:'Achtzig',     en:'Eighty',      pron:'oi-TÊNT-a',   ex_pt:'Oitenta por cento de desconto.',  ex_de:'Achtzig Prozent Rabatt.',             ex_en:'Eighty percent discount.' },
+  { id:325, cat:'numbers', pt:'Noventa',     de:'Neunzig',     en:'Ninety',      pron:'no-VÊNT-a',   ex_pt:'Noventa dias de férias.',         ex_de:'Neunzig Tage Urlaub.',                ex_en:'Ninety days of vacation.' },
+  { id:326, cat:'numbers', pt:'Segundo',     de:'Zweite/r/s',  en:'Second',      pron:'se-GÛN-du',   ex_pt:'Ele chegou em segundo lugar.',    ex_de:'Er kam auf dem zweiten Platz an.',    ex_en:'He arrived in second place.' },
+
+  /* ── COLORS (v3.5) ── */
+  { id:327, cat:'colors', pt:'Claro',       de:'Hell',         en:'Light',       pron:'KLÁ-ru',      ex_pt:'Um azul claro e bonito.',         ex_de:'Ein schönes Hellblau.',               ex_en:'A beautiful light blue.' },
+  { id:328, cat:'colors', pt:'Escuro',      de:'Dunkel',       en:'Dark',        pron:'es-KÚ-ru',    ex_pt:'Prefiro cores escuras.',          ex_de:'Ich bevorzuge dunkle Farben.',        ex_en:'I prefer dark colors.' },
+  { id:329, cat:'colors', pt:'Transparente',de:'Transparent',  en:'Transparent', pron:'trans-pa-RÊN-tʃi', ex_pt:'O vidro é transparente.',    ex_de:'Das Glas ist transparent.',          ex_en:'The glass is transparent.' },
+  { id:330, cat:'colors', pt:'Colorido',    de:'Bunt',         en:'Colorful',    pron:'ko-lo-RÍ-du', ex_pt:'Uma festa muito colorida!',       ex_de:'Eine sehr bunte Party!',              ex_en:'A very colorful party!' },
+  { id:331, cat:'colors', pt:'Multicolorido', de:'Mehrfarbig', en:'Multicolored',pron:'mul-tʃi-ko-lo-RÍ-du', ex_pt:'Uma bandeira multicolorida.', ex_de:'Eine mehrfarbige Flagge.',          ex_en:'A multicolored flag.' },
+
+  /* ── FOOD (v3.5) ── */
+  { id:332, cat:'food', pt:'Abacate',     de:'Avocado',       en:'Avocado',      pron:'a-ba-KÁ-tʃi', ex_pt:'Vitamina de abacate é deliciosa.',  ex_de:'Avocado-Smoothie ist köstlich.',      ex_en:'Avocado smoothie is delicious.' },
+  { id:333, cat:'food', pt:'Coco',        de:'Kokosnuss',     en:'Coconut',      pron:'KÓ-ku',       ex_pt:'Água de coco fresca na praia.',     ex_de:'Frisches Kokoswasser am Strand.',     ex_en:'Fresh coconut water on the beach.' },
+  { id:334, cat:'food', pt:'Camarão',     de:'Garnele',       en:'Shrimp',       pron:'ka-ma-RÃO',   ex_pt:'Moqueca de camarão é típica.',      ex_de:'Garnelen-Eintopf ist typisch.',       ex_en:'Shrimp stew is typical.' },
+  { id:335, cat:'food', pt:'Azeite',      de:'Olivenöl',      en:'Olive oil',    pron:'a-ZÊI-tʃi',  ex_pt:'Um fio de azeite na salada.',       ex_de:'Ein Schuss Olivenöl im Salat.',       ex_en:'A drizzle of olive oil on the salad.' },
+  { id:336, cat:'food', pt:'Mel',         de:'Honig',         en:'Honey',        pron:'MÊL',         ex_pt:'Mel no iogurte de manhã.',          ex_de:'Honig im Joghurt morgens.',           ex_en:'Honey in yogurt in the morning.' },
+
+  /* ── TRAVEL (v3.5) ── */
+  { id:337, cat:'travel', pt:'Pousada',      de:'Pension / Gästehaus', en:'Inn / Guesthouse', pron:'pou-ZÁ-da',  ex_pt:'Ficamos numa pousada charmosa.',    ex_de:'Wir übernachteten in einer charmanten Pension.', ex_en:'We stayed at a charming guesthouse.' },
+  { id:338, cat:'travel', pt:'Fronteira',    de:'Grenze',               en:'Border',           pron:'fron-TÊI-ra', ex_pt:'A fronteira fica a 10 km daqui.',  ex_de:'Die Grenze ist 10 km von hier.',      ex_en:'The border is 10 km from here.' },
+  { id:339, cat:'travel', pt:'Aluguel de carro', de:'Autovermietung',   en:'Car rental',       pron:'a-lu-GÊL dʒi KÁ-hu', ex_pt:'Quero um aluguel de carro.',  ex_de:'Ich möchte ein Auto mieten.',         ex_en:'I want a car rental.' },
+  { id:340, cat:'travel', pt:'Reserva',      de:'Reservierung',         en:'Reservation',      pron:'he-ZÊR-va',   ex_pt:'Tenho uma reserva de hotel.',       ex_de:'Ich habe eine Hotelreservierung.',     ex_en:'I have a hotel reservation.' },
+  { id:341, cat:'travel', pt:'Turista',      de:'Tourist / Touristin',  en:'Tourist',          pron:'tu-RÍS-ta',   ex_pt:'Sou turista e preciso de ajuda.',   ex_de:'Ich bin Tourist und brauche Hilfe.',  ex_en:'I am a tourist and need help.' },
+
+  /* ── FAMILY (v3.5) ── */
+  { id:342, cat:'family', pt:'Marido',        de:'Ehemann',       en:'Husband',      pron:'ma-RÍ-du',   ex_pt:'Meu marido é muito carinhoso.',     ex_de:'Mein Ehemann ist sehr liebevoll.',    ex_en:'My husband is very affectionate.' },
+  { id:343, cat:'family', pt:'Esposa',        de:'Ehefrau',       en:'Wife',         pron:'es-PÓ-za',   ex_pt:'Minha esposa é minha melhor amiga.', ex_de:'Meine Ehefrau ist meine beste Freundin.', ex_en:'My wife is my best friend.' },
+  { id:344, cat:'family', pt:'Neto / Neta',   de:'Enkel / Enkelin', en:'Grandson / Granddaughter', pron:'NÉ-tu / NÉ-ta', ex_pt:'Meu neto tem dois anos.', ex_de:'Mein Enkel ist zwei Jahre alt.', ex_en:'My grandson is two years old.' },
+  { id:345, cat:'family', pt:'Genro / Nora',  de:'Schwiegersohn / Schwiegertochter', en:'Son-in-law / Daughter-in-law', pron:'ZHÊN-ru / NÓ-ra', ex_pt:'Minha nora é muito atenciosa.', ex_de:'Meine Schwiegertochter ist sehr aufmerksam.', ex_en:'My daughter-in-law is very attentive.' },
+  { id:346, cat:'family', pt:'Padrinho / Madrinha', de:'Pate / Patin', en:'Godfather / Godmother', pron:'pa-DRÎN-hu / ma-DRÎN-ha', ex_pt:'Meu padrinho me ensinou muito.', ex_de:'Mein Pate hat mir viel beigebracht.', ex_en:'My godfather taught me a lot.' },
+
+  /* ── DAYS / TIME (v3.5) ── */
+  { id:347, cat:'days', pt:'Semana',     de:'Woche',         en:'Week',          pron:'se-MÂ-na',    ex_pt:'Esta semana está correndo rápido.',  ex_de:'Diese Woche vergeht schnell.',        ex_en:'This week is going by fast.' },
+  { id:348, cat:'days', pt:'Mês',        de:'Monat',         en:'Month',         pron:'Mêis',        ex_pt:'Este mês é muito quente.',          ex_de:'Dieser Monat ist sehr heiß.',         ex_en:'This month is very hot.' },
+  { id:349, cat:'days', pt:'Ano',        de:'Jahr',          en:'Year',          pron:'Â-nu',        ex_pt:'Que ano incrível foi esse!',         ex_de:'Was für ein unglaubliches Jahr war das!', ex_en:'What an incredible year that was!' },
+  { id:350, cat:'days', pt:'Hora',       de:'Stunde / Uhr',  en:'Hour / Time',   pron:'Ó-ra',        ex_pt:'Que horas são agora?',              ex_de:'Wie viel Uhr ist es jetzt?',          ex_en:'What time is it now?' },
+  { id:351, cat:'days', pt:'Minuto',     de:'Minute',        en:'Minute',        pron:'mi-NÚ-tu',    ex_pt:'Espere um minuto, por favor.',       ex_de:'Warten Sie eine Minute, bitte.',      ex_en:'Wait a minute, please.' },
+
+  /* ── VERBS (v3.5) ── */
+  { id:352, cat:'verbs', pt:'Aprender',  de:'Lernen',              en:'To learn',    pron:'a-pren-DER',  ex_pt:'Quero aprender português fluentemente.', ex_de:'Ich möchte fließend Portugiesisch lernen.', ex_en:'I want to learn Portuguese fluently.' },
+  { id:353, cat:'verbs', pt:'Entender',  de:'Verstehen',           en:'To understand', pron:'en-ten-DER', ex_pt:'Não entendo esta palavra.',         ex_de:'Ich verstehe dieses Wort nicht.',     ex_en:'I don\'t understand this word.' },
+  { id:354, cat:'verbs', pt:'Precisar',  de:'Brauchen / Benötigen',en:'To need',     pron:'pre-si-ZAR', ex_pt:'Preciso de mais tempo.',            ex_de:'Ich brauche mehr Zeit.',              ex_en:'I need more time.' },
+  { id:355, cat:'verbs', pt:'Perguntar', de:'Fragen',              en:'To ask',      pron:'per-gun-TAR', ex_pt:'Posso perguntar uma coisa?',        ex_de:'Darf ich etwas fragen?',              ex_en:'May I ask something?' },
+  { id:356, cat:'verbs', pt:'Responder', de:'Antworten',           en:'To answer',   pron:'res-pon-DER', ex_pt:'Precisa responder à pergunta.',     ex_de:'Du musst die Frage beantworten.',     ex_en:'You need to answer the question.' },
+
+  /* ── BODY (v3.5) ── */
+  { id:357, cat:'body', pt:'Testa',      de:'Stirn',         en:'Forehead',     pron:'TÉS-ta',      ex_pt:'Ela tem uma testa bem larga.',       ex_de:'Sie hat eine breite Stirn.',          ex_en:'She has a wide forehead.' },
+  { id:358, cat:'body', pt:'Queixo',     de:'Kinn',          en:'Chin',         pron:'KÊI-shu',     ex_pt:'Ele tem um queixo forte.',           ex_de:'Er hat ein starkes Kinn.',            ex_en:'He has a strong chin.' },
+  { id:359, cat:'body', pt:'Peito',      de:'Brust',         en:'Chest',        pron:'PÊI-tu',      ex_pt:'Sinto dor no peito.',               ex_de:'Ich spüre Schmerzen in der Brust.',   ex_en:'I feel pain in my chest.' },
+  { id:360, cat:'body', pt:'Polegar',    de:'Daumen',        en:'Thumb',        pron:'po-le-GAR',   ex_pt:'Dei um sinal de positivo com o polegar.', ex_de:'Ich zeigte einen Daumen hoch.', ex_en:'I gave a thumbs up.' },
+  { id:361, cat:'body', pt:'Pulso',      de:'Handgelenk / Puls', en:'Wrist / Pulse', pron:'PÚL-su', ex_pt:'Ele verificou o pulso do paciente.', ex_de:'Er prüfte den Puls des Patienten.', ex_en:'He checked the patient\'s pulse.' },
+
+  /* ── CLOTHING (v3.5) ── */
+  { id:362, cat:'clothing', pt:'Cueca / Calcinha', de:'Unterhose',       en:'Underwear',  pron:'ku-É-ka / kal-SÎN-ha', ex_pt:'Cueca de algodão é mais confortável.', ex_de:'Baumwollunterwäsche ist bequemer.', ex_en:'Cotton underwear is more comfortable.' },
+  { id:363, cat:'clothing', pt:'Blusa',             de:'Bluse / Oberteil', en:'Blouse / Top', pron:'BLÚ-za', ex_pt:'Esta blusa combina com a saia.', ex_de:'Diese Bluse passt zum Rock.',  ex_en:'This blouse matches the skirt.' },
+  { id:364, cat:'clothing', pt:'Saia',              de:'Rock',             en:'Skirt',       pron:'SÁI-a',     ex_pt:'Ela usa uma saia floral linda.',      ex_de:'Sie trägt einen schönen Blumenrock.',  ex_en:'She wears a beautiful floral skirt.' },
+  { id:365, cat:'clothing', pt:'Tênis',             de:'Sneaker / Turnschuhe', en:'Sneakers', pron:'TÊ-nis',   ex_pt:'Comprei um tênis novo.',             ex_de:'Ich kaufte neue Sneaker.',             ex_en:'I bought new sneakers.' },
+  { id:366, cat:'clothing', pt:'Moletom',           de:'Kapuzenpulli / Hoodie', en:'Hoodie / Sweatshirt', pron:'mo-le-TOM', ex_pt:'Vou de moletom hoje, está frio.', ex_de:'Ich trage heute einen Hoodie, es ist kalt.', ex_en:'I\'m wearing a hoodie today, it\'s cold.' },
+
+  /* ── WEATHER (v3.5) ── */
+  { id:367, cat:'weather', pt:'Enchente',    de:'Überschwemmung', en:'Flood',       pron:'en-SHÊN-tʃi',  ex_pt:'A enchente causou muitos danos.',    ex_de:'Die Überschwemmung verursachte große Schäden.', ex_en:'The flood caused a lot of damage.' },
+  { id:368, cat:'weather', pt:'Seca',        de:'Dürre',          en:'Drought',     pron:'SÉ-ka',        ex_pt:'A seca afetou a plantação.',         ex_de:'Die Dürre hat die Ernte beeinträchtigt.',       ex_en:'The drought affected the harvest.' },
+  { id:369, cat:'weather', pt:'Terremoto',   de:'Erdbeben',       en:'Earthquake',  pron:'te-he-MÓ-tu',  ex_pt:'O terremoto sacudiu a cidade.',      ex_de:'Das Erdbeben erschütterte die Stadt.',           ex_en:'The earthquake shook the city.' },
+  { id:370, cat:'weather', pt:'Primavera',   de:'Frühling',       en:'Spring',      pron:'pri-ma-VÉ-ra', ex_pt:'Na primavera as flores desabrocham.', ex_de:'Im Frühling blühen die Blumen.',               ex_en:'In spring the flowers bloom.' },
+  { id:371, cat:'weather', pt:'Outono',      de:'Herbst',         en:'Autumn / Fall', pron:'ou-TÔ-nu',   ex_pt:'No outono as folhas ficam amarelas.', ex_de:'Im Herbst werden die Blätter gelb.',           ex_en:'In autumn the leaves turn yellow.' },
+
+  /* ── EMOTIONS (v3.5) ── */
+  { id:372, cat:'emotions', pt:'Gratidão',    de:'Dankbarkeit',   en:'Gratitude',     pron:'gra-tʃi-DÃO',  ex_pt:'Sinto muita gratidão por tudo.',    ex_de:'Ich fühle große Dankbarkeit für alles.', ex_en:'I feel a lot of gratitude for everything.' },
+  { id:373, cat:'emotions', pt:'Confiante',   de:'Selbstbewusst', en:'Confident',     pron:'kon-fi-ÂN-tʃi', ex_pt:'Me sinto muito confiante hoje!',   ex_de:'Ich fühle mich heute sehr selbstbewusst!', ex_en:'I feel very confident today!' },
+  { id:374, cat:'emotions', pt:'Solitário',   de:'Einsam',        en:'Lonely',        pron:'so-li-TÁ-riu', ex_pt:'Me sinto solitário às vezes.',      ex_de:'Ich fühle mich manchmal einsam.',        ex_en:'I feel lonely sometimes.' },
+  { id:375, cat:'emotions', pt:'Entediado',   de:'Gelangweilt',   en:'Bored',         pron:'en-te-dʒi-Á-du', ex_pt:'Estou entediado em casa.',        ex_de:'Ich bin zu Hause gelangweilt.',          ex_en:'I am bored at home.' },
+  { id:376, cat:'emotions', pt:'Apaixonado',  de:'Verliebt',      en:'In love',       pron:'a-pai-sho-NÁ-du', ex_pt:'Estou apaixonado por você.',     ex_de:'Ich bin in dich verliebt.',               ex_en:'I am in love with you.' },
+
+  /* ── EVERYDAY PHRASES (v3.5) ── */
+  { id:377, cat:'sentences', pt:'Boa viagem!',              de:'Gute Reise!',                           en:'Have a good trip!',                 pron:'BÔ-a vi-Á-zhem',                bedeutung:'Jemandem eine gute Reise wünschen – beim Abschied vor einer Reise oder einem Ausflug.',       ex_pt:'Boa viagem e volte logo!',                 ex_de:'Gute Reise und komm bald zurück!',             ex_en:'Have a good trip and come back soon!' },
+  { id:378, cat:'sentences', pt:'Me dê um minuto.',         de:'Geben Sie mir eine Minute.',            en:'Give me a minute.',                 pron:'mi DÊ um mi-NÚ-tu',             bedeutung:'Etwas Zeit erbitten – wenn man gefragt wird und noch nachdenken oder etwas erledigen muss.',  ex_pt:'Me dê um minuto, já volto.',               ex_de:'Geben Sie mir eine Minute, ich bin gleich zurück.', ex_en:'Give me a minute, I\'ll be right back.' },
+  { id:379, cat:'sentences', pt:'Fica tranquilo/a!',        de:'Bleib ruhig! / Keine Sorge!',           en:'Stay calm! / Don\'t worry!',        pron:'FÍ-ka tran-KÍ-lu/la',           bedeutung:'Jemanden beruhigen – wenn er/sie sich sorgt, aufgeregt oder ängstlich ist.',                  ex_pt:'Fica tranquilo, vai dar tudo certo!',      ex_de:'Bleib ruhig, alles wird gut!',                ex_en:'Stay calm, everything will be fine!' },
+  { id:380, cat:'sentences', pt:'Parabéns pelo seu trabalho!', de:'Herzlichen Glückwunsch zu Ihrer Arbeit!', en:'Congratulations on your work!', pron:'pa-ra-BÊNS PÉ-lu seu tra-BÁ-lhu', bedeutung:'Jemanden für seine Arbeit oder Leistung loben – im Beruf oder bei einer Aufgabe.',         ex_pt:'Parabéns pelo seu trabalho excelente!',    ex_de:'Herzlichen Glückwunsch zu Ihrer hervorragenden Arbeit!', ex_en:'Congratulations on your excellent work!' },
+  { id:381, cat:'sentences', pt:'Vamos embora!',            de:'Lass uns gehen!',                       en:'Let\'s go!',                        pron:'VÂ-mus êm-BÔ-ra',               bedeutung:'Zum Aufbruch auffordern – wenn man zusammen mit anderen irgendwo losgehen möchte.',           ex_pt:'Vamos embora, está ficando tarde!',        ex_de:'Lass uns gehen, es wird spät!',               ex_en:'Let\'s go, it\'s getting late!' },
+
+  /* ── HOUSE (v3.5) ── */
+  { id:382, cat:'house', pt:'Corredor',   de:'Flur / Gang',    en:'Hallway / Corridor', pron:'ko-he-DOR',  ex_pt:'O corredor conecta os quartos.',    ex_de:'Der Flur verbindet die Zimmer.',       ex_en:'The hallway connects the rooms.' },
+  { id:383, cat:'house', pt:'Garagem',    de:'Garage',         en:'Garage',             pron:'ga-RÁ-zhem', ex_pt:'O carro está na garagem.',          ex_de:'Das Auto ist in der Garage.',          ex_en:'The car is in the garage.' },
+  { id:384, cat:'house', pt:'Varanda',    de:'Veranda / Balkon', en:'Balcony / Porch',  pron:'va-RÂN-da',  ex_pt:'Tomo café na varanda de manhã.',    ex_de:'Ich trinke Kaffee morgens auf dem Balkon.', ex_en:'I drink coffee on the balcony in the morning.' },
+  { id:385, cat:'house', pt:'Armário',    de:'Schrank',        en:'Wardrobe / Cabinet', pron:'ar-MÁ-riu',  ex_pt:'Guardo minhas roupas no armário.',  ex_de:'Ich lagere meine Kleidung im Schrank.', ex_en:'I store my clothes in the wardrobe.' },
+  { id:386, cat:'house', pt:'Tapete',     de:'Teppich',        en:'Rug / Carpet',       pron:'ta-PÉ-tʃi',  ex_pt:'O tapete da sala é muito bonito.',  ex_de:'Der Teppich im Wohnzimmer ist sehr schön.', ex_en:'The rug in the living room is very nice.' },
+
+  /* ── JOBS (v3.5) ── */
+  { id:387, cat:'jobs', pt:'Programador / Programadora', de:'Programmierer / Programmiererin', en:'Programmer / Developer', pron:'pro-gra-ma-DOR/a', ex_pt:'O programador criou o aplicativo.', ex_de:'Der Programmierer erstellte die App.', ex_en:'The programmer created the app.' },
+  { id:388, cat:'jobs', pt:'Dentista',                   de:'Zahnarzt / Zahnärztin',           en:'Dentist',               pron:'den-TÍS-ta',      ex_pt:'Preciso ir ao dentista hoje.',      ex_de:'Ich muss heute zum Zahnarzt.',         ex_en:'I need to go to the dentist today.' },
+  { id:389, cat:'jobs', pt:'Veterinário / Veterinária',  de:'Tierarzt / Tierärztin',           en:'Veterinarian',          pron:'ve-te-ri-NÁ-riu/a', ex_pt:'O veterinário cuidou do meu cão.', ex_de:'Der Tierarzt kümmerte sich um meinen Hund.', ex_en:'The veterinarian took care of my dog.' },
+  { id:390, cat:'jobs', pt:'Contador / Contadora',       de:'Buchhalter / Buchhalterin',       en:'Accountant',            pron:'kon-ta-DOR/a',     ex_pt:'O contador fez a declaração.',      ex_de:'Der Buchhalter erstellte die Steuererklärung.', ex_en:'The accountant filed the tax return.' },
+  { id:391, cat:'jobs', pt:'Designer',                   de:'Designer / Designerin',           en:'Designer',              pron:'dʒi-ZÁI-ner',     ex_pt:'O designer criou o logotipo.',      ex_de:'Der Designer erstellte das Logo.',      ex_en:'The designer created the logo.' },
+
+  /* ── NATURE (v3.5) ── */
+  { id:392, cat:'nature', pt:'Cachoeira',  de:'Wasserfall',   en:'Waterfall',    pron:'ka-sho-ÊI-ra', ex_pt:'A cachoeira é linda e refrescante.',  ex_de:'Der Wasserfall ist wunderschön und erfrischend.', ex_en:'The waterfall is beautiful and refreshing.' },
+  { id:393, cat:'nature', pt:'Deserto',    de:'Wüste',        en:'Desert',       pron:'de-ZÉR-tu',    ex_pt:'O deserto é um lugar fascinante.',    ex_de:'Die Wüste ist ein faszinierender Ort.',           ex_en:'The desert is a fascinating place.' },
+  { id:394, cat:'nature', pt:'Selva',      de:'Dschungel',    en:'Jungle',       pron:'SÉL-va',       ex_pt:'A selva amazônica abriga animais raros.', ex_de:'Der Amazonasdschungel beherbergt seltene Tiere.', ex_en:'The Amazon jungle is home to rare animals.' },
+  { id:395, cat:'nature', pt:'Vulcão',     de:'Vulkan',       en:'Volcano',      pron:'vul-KÃO',      ex_pt:'O vulcão entrou em erupção.',         ex_de:'Der Vulkan ist ausgebrochen.',                    ex_en:'The volcano erupted.' },
+  { id:396, cat:'nature', pt:'Oceano',     de:'Ozean',        en:'Ocean',        pron:'o-se-Â-nu',    ex_pt:'O oceano é cheio de vida.',           ex_de:'Der Ozean ist voller Leben.',                     ex_en:'The ocean is full of life.' },
+];
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   STORIES DATA – Short texts for reading comprehension
+═══════════════════════════════════════════════════════════════════════════ */
+const STORIES = [
+  {
+    id: 'story1',
+    level: 'A1',
+    title: { de: 'Mein Alltag', en: 'My Daily Routine' },
+    desc: { de: 'Eine typische Tagesbeschreibung auf Portugiesisch', en: 'A typical day description in Portuguese' },
+    text: 'Eu me {{chamo}} Ana. Toda {{manhã}}, eu tomo {{café}} com {{leite}} e como {{pão}}. Depois, eu {{vou}} ao {{trabalho}} de {{ônibus}}. Meu {{trabalho}} fica na {{cidade}}. Eu {{chego}} às nove {{horas}}. À {{tarde}}, eu {{como}} {{arroz}} e {{feijão}} no {{restaurante}}. À {{noite}}, eu {{leio}} um {{livro}} e {{durmo}} cedo.',
+    vocab: {
+      'chamo': { pt:'chamo (me chamo)', de:'ich heiße', pron:'SHÂ-mu' },
+      'manhã': { pt:'manhã', de:'Morgen', pron:'ma-NHÃN' },
+      'café': { pt:'café', de:'Kaffee', pron:'ka-FÉ' },
+      'leite': { pt:'leite', de:'Milch', pron:'LÉI-tʃi' },
+      'pão': { pt:'pão', de:'Brot', pron:'Pão' },
+      'vou': { pt:'vou (ir)', de:'ich gehe / fahre', pron:'Vou' },
+      'trabalho': { pt:'trabalho', de:'Arbeit / arbeite', pron:'tra-BÁ-lhu' },
+      'ônibus': { pt:'ônibus', de:'Bus', pron:'Ô-ni-bus' },
+      'cidade': { pt:'cidade', de:'Stadt', pron:'si-DÁ-dʒi' },
+      'chego': { pt:'chego (chegar)', de:'ich komme an', pron:'SHÉ-gu' },
+      'horas': { pt:'horas', de:'Uhr / Stunden', pron:'Ó-ras' },
+      'tarde': { pt:'tarde', de:'Nachmittag', pron:'TAR-dʒi' },
+      'como': { pt:'como (comer)', de:'ich esse', pron:'KÓ-mu' },
+      'arroz': { pt:'arroz', de:'Reis', pron:'a-RÔS' },
+      'feijão': { pt:'feijão', de:'Bohnen', pron:'fei-ZHÃO' },
+      'restaurante': { pt:'restaurante', de:'Restaurant', pron:'hes-tau-RÂN-tʃi' },
+      'noite': { pt:'noite', de:'Abend / Nacht', pron:'NOI-tʃi' },
+      'leio': { pt:'leio (ler)', de:'ich lese', pron:'LÉI-u' },
+      'livro': { pt:'livro', de:'Buch', pron:'LÍV-ru' },
+      'durmo': { pt:'durmo (dormir)', de:'ich schlafe', pron:'DÚR-mu' },
+    }
+  },
+  {
+    id: 'story2',
+    level: 'A1',
+    title: { de: 'No Restaurante', en: 'At the Restaurant' },
+    desc: { de: 'Ein Dialog in einem brasilianischen Restaurant', en: 'A dialogue in a Brazilian restaurant' },
+    text: 'Carlos entra no {{restaurante}} e senta em uma {{mesa}}. O {{garçom}} chega e pergunta: "Boa {{tarde}}! O que você vai {{querer}}?" Carlos responde: "Quero {{arroz}} com {{frango}}, por {{favor}}." O garçom anota o {{pedido}}. Depois, Carlos pede a {{conta}}. "{{Quanto}} {{custa}}?" "Trinta {{reais}}." "{{Obrigado}}!"',
+    vocab: {
+      'restaurante': { pt:'restaurante', de:'Restaurant', pron:'hes-tau-RÂN-tʃi' },
+      'mesa': { pt:'mesa', de:'Tisch', pron:'MÉ-za' },
+      'garçom': { pt:'garçom', de:'Kellner', pron:'gar-SOM' },
+      'tarde': { pt:'tarde', de:'Nachmittag / Tag', pron:'TAR-dʒi' },
+      'querer': { pt:'querer', de:'wollen / möchten', pron:'ke-RER' },
+      'arroz': { pt:'arroz', de:'Reis', pron:'a-RÔS' },
+      'frango': { pt:'frango', de:'Hähnchen', pron:'FRÂN-gu' },
+      'favor': { pt:'por favor', de:'bitte', pron:'fa-VOR' },
+      'pedido': { pt:'pedido', de:'Bestellung', pron:'pe-DÍ-du' },
+      'conta': { pt:'conta', de:'Rechnung', pron:'KÔN-ta' },
+      'Quanto': { pt:'quanto', de:'wie viel', pron:'KUÂ-tu' },
+      'custa': { pt:'custa', de:'kostet', pron:'KÚS-ta' },
+      'reais': { pt:'reais', de:'Reais (brasilianische Währung)', pron:'he-AIS' },
+      'Obrigado': { pt:'obrigado', de:'Danke', pron:'ob-ri-GÁ-du' },
+    }
+  },
+  {
+    id: 'story3',
+    level: 'A2',
+    title: { de: 'Urlaub in Rio', en: 'Vacation in Rio' },
+    desc: { de: 'Ein Reisebericht über Rio de Janeiro', en: 'A travel report about Rio de Janeiro' },
+    text: 'Maria viajou para o {{Brasil}} no verão. Ela foi ao {{Rio}} de Janeiro com sua {{família}}. Chegaram no {{aeroporto}} e foram ao {{hotel}} de {{táxi}}. No dia seguinte, foram à {{praia}} de Copacabana. O {{sol}} estava forte e o {{mar}} estava {{azul}}. Maria tomou {{água}} de coco e comeu {{fruta}}. À noite, viram o {{Cristo}} Redentor. Foi uma {{viagem}} inesquecível!',
+    vocab: {
+      'Brasil': { pt:'Brasil', de:'Brasilien', pron:'bra-ZÎL' },
+      'Rio': { pt:'Rio (de Janeiro)', de:'Rio (de Janeiro)', pron:'HÍ-u' },
+      'família': { pt:'família', de:'Familie', pron:'fa-MÍ-lia' },
+      'aeroporto': { pt:'aeroporto', de:'Flughafen', pron:'a-e-ro-POR-tu' },
+      'hotel': { pt:'hotel', de:'Hotel', pron:'o-TÉL' },
+      'táxi': { pt:'táxi', de:'Taxi', pron:'TÁK-si' },
+      'praia': { pt:'praia', de:'Strand', pron:'PRÂ-ia' },
+      'sol': { pt:'sol', de:'Sonne', pron:'SÓL' },
+      'mar': { pt:'mar', de:'Meer', pron:'MAR' },
+      'azul': { pt:'azul', de:'blau', pron:'a-ZUL' },
+      'água': { pt:'água', de:'Wasser', pron:'Á-gua' },
+      'fruta': { pt:'fruta', de:'Obst', pron:'FRÚ-ta' },
+      'Cristo': { pt:'Cristo Redentor', de:'Christus der Erlöser', pron:'KRÍS-tu he-den-TOR' },
+      'viagem': { pt:'viagem', de:'Reise', pron:'vi-Á-zhem' },
+    }
+  },
+  {
+    id: 'story4',
+    level: 'A2',
+    title: { de: 'Beim Arzt', en: 'At the Doctor' },
+    desc: { de: 'Ein Gespräch mit dem Arzt auf Portugiesisch', en: 'A conversation with the doctor in Portuguese' },
+    text: 'João está com {{febre}} e {{dor}} de {{cabeça}}. Ele vai ao {{médico}}. A {{médica}} pergunta: "Onde está a {{dor}}?" João responde: "Tenho dor de {{cabeça}} e {{garganta}}." A médica examina e diz: "Você está com uma {{gripe}}. Precisa {{descansar}} e tomar muito {{água}}." Ela receita um {{remédio}} e diz: "Tome este {{comprimido}} de oito em oito {{horas}}." João agradece e vai para {{casa}}.',
+    vocab: {
+      'febre': { pt:'febre', de:'Fieber', pron:'FÉ-bri' },
+      'dor': { pt:'dor', de:'Schmerz', pron:'DOR' },
+      'cabeça': { pt:'cabeça', de:'Kopf', pron:'ka-BÉ-sa' },
+      'médico': { pt:'médico / médica', de:'Arzt / Ärztin', pron:'MÉ-dʒi-ku/ka' },
+      'médica': { pt:'médica', de:'Ärztin', pron:'MÉ-dʒi-ka' },
+      'garganta': { pt:'garganta', de:'Hals', pron:'gar-GÂN-ta' },
+      'gripe': { pt:'gripe', de:'Grippe / Erkältung', pron:'GRÎP-i' },
+      'descansar': { pt:'descansar', de:'sich ausruhen', pron:'des-kan-ZAR' },
+      'água': { pt:'água', de:'Wasser', pron:'Á-gua' },
+      'remédio': { pt:'remédio', de:'Medikament', pron:'he-MÉ-dʒi-u' },
+      'comprimido': { pt:'comprimido', de:'Tablette', pron:'kom-pri-MÍ-du' },
+      'horas': { pt:'horas', de:'Stunden', pron:'Ó-ras' },
+      'casa': { pt:'casa', de:'Haus / nach Hause', pron:'KÂ-za' },
+    }
+  },
+  {
+    id: 'story5',
+    level: 'A1',
+    title: { de: 'Meine Familie', en: 'My Family' },
+    desc: { de: 'Jemand beschreibt seine Familie', en: 'Someone describes their family' },
+    text: 'Olá! Meu {{nome}} é Pedro. Tenho uma {{família}} grande. Meu {{pai}} se chama Roberto e minha {{mãe}} se chama Lucia. Tenho dois {{irmãos}}: Lucas e Felipe. Minha {{irmã}} se chama Sofia. Meus {{avós}} moram em São Paulo. Meu {{avô}} tem setenta anos e minha {{avó}} tem sessenta e cinco anos. Nós nos reunimos todo {{domingo}} para o {{almoço}}. É um momento especial!',
+    vocab: {
+      'nome': { pt:'nome', de:'Name', pron:'NÓ-mi' },
+      'família': { pt:'família', de:'Familie', pron:'fa-MÍ-lia' },
+      'pai': { pt:'pai', de:'Vater', pron:'Pái' },
+      'mãe': { pt:'mãe', de:'Mutter', pron:'Mãe' },
+      'irmãos': { pt:'irmãos', de:'Brüder', pron:'ir-MÃOS' },
+      'irmã': { pt:'irmã', de:'Schwester', pron:'ir-MÃ' },
+      'avós': { pt:'avós', de:'Großeltern', pron:'a-VÓS' },
+      'avô': { pt:'avô', de:'Großvater', pron:'a-VÔ' },
+      'avó': { pt:'avó', de:'Großmutter', pron:'a-VÓ' },
+      'domingo': { pt:'domingo', de:'Sonntag', pron:'do-MÎN-gu' },
+      'almoço': { pt:'almoço', de:'Mittagessen', pron:'al-MÔ-su' },
+    }
+  },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -2283,7 +2641,8 @@ function loadState() {
     streakMultiplierEnabled: true,
     dailyGoal: 50,
     dailyXP: 0,
-    dailyXPDate: null
+    dailyXPDate: null,
+    favorites: {}
   };
 }
 
@@ -2474,6 +2833,8 @@ const App = (() => {
     if (name === 'progress') renderProgress();
     if (name === 'grammar') renderGrammar();
     if (name === 'settings') renderSettings();
+    if (name === 'stories') { renderStoriesCards(); showStoriesList(); }
+    if (name === 'wordlist') initWordList();
   }
 
   /* ── SETTINGS ───────────────────────────────────────────────────────────── */
@@ -2847,6 +3208,7 @@ const App = (() => {
     session.flipped = false;
     document.getElementById('flip-hint').classList.remove('hidden');
     document.getElementById('rating-buttons').classList.add('hidden');
+    updateFavBtn(word.id);
   }
 
   function flipCard() {
@@ -3928,6 +4290,304 @@ const App = (() => {
     checkAchievements();
   }
 
+  /* ── Stories ────────────────────────────────────────────────────────────── */
+  let currentStory = null;
+  let currentStoryVocabWord = null;
+
+  function renderStoriesCards() {
+    const lang = nativeLang();
+    const container = document.getElementById('stories-cards');
+    if (!container) return;
+    container.innerHTML = STORIES.map(s => `
+      <div class="story-card" onclick="App.openStory('${s.id}')">
+        <div class="story-card-level">${s.level}</div>
+        <div class="story-card-title">${s.title[lang] || s.title['de']}</div>
+        <div class="story-card-desc">${s.desc[lang] || s.desc['de']}</div>
+      </div>
+    `).join('');
+  }
+
+  function openStory(id) {
+    currentStory = STORIES.find(s => s.id === id);
+    if (!currentStory) return;
+    const lang = nativeLang();
+    document.getElementById('story-reader-title').textContent = currentStory.title[lang] || currentStory.title['de'];
+    let html = currentStory.text.replace(/\{\{([^}]+)\}\}/g, (match, word) => {
+      const v = currentStory.vocab[word];
+      const display = v ? v.pt.split(' ')[0] : word;
+      return `<span class="story-word" onclick="App.showStoryVocab('${word}')">${display}</span>`;
+    });
+    document.getElementById('story-text-area').innerHTML = html;
+    document.getElementById('story-vocab-popup').classList.add('hidden');
+    document.getElementById('stories-list-area').classList.add('hidden');
+    document.getElementById('story-reader-area').classList.remove('hidden');
+  }
+
+  function showStoriesList() {
+    document.getElementById('stories-list-area').classList.remove('hidden');
+    document.getElementById('story-reader-area').classList.add('hidden');
+    currentStory = null;
+  }
+
+  function showStoryVocab(word) {
+    if (!currentStory) return;
+    const v = currentStory.vocab[word];
+    if (!v) return;
+    currentStoryVocabWord = v;
+    document.getElementById('story-vocab-pt').textContent = v.pt;
+    document.getElementById('story-vocab-de').textContent = '🇩🇪 ' + v.de;
+    document.getElementById('story-vocab-pron').textContent = v.pron ? `[ ${v.pron} ]` : '';
+    document.getElementById('story-vocab-popup').classList.remove('hidden');
+  }
+
+  function speakStoryWord() {
+    if (!currentStoryVocabWord) return;
+    const utter = new SpeechSynthesisUtterance(currentStoryVocabWord.pt.split('(')[0].trim());
+    utter.lang = 'pt-BR';
+    utter.rate = 0.85;
+    speechSynthesis.speak(utter);
+  }
+
+  function closeStoryVocabPopup() {
+    document.getElementById('story-vocab-popup').classList.add('hidden');
+  }
+
+  /* ── Level Test ─────────────────────────────────────────────────────────── */
+  let ltSession = null;
+
+  function startLevelTest(level) {
+    updateStreak();
+    const levelCats = level === 'A1'
+      ? ['greetings','numbers','colors','food','family','days','body','clothing','weather','sentences','house']
+      : ['travel','verbs','emotions','jobs','nature'];
+    const pool = WORDS.filter(w => levelCats.includes(w.cat));
+    const questions = shuffle(pool).slice(0, 20);
+    ltSession = { level, questions, current: 0, correct: 0, answered: 0, xpEarned: 0 };
+    document.getElementById('lt-level-badge').textContent = level + ' Test';
+    document.getElementById('lt-session-area').classList.remove('hidden');
+    document.getElementById('lt-complete').classList.add('hidden');
+    showView('leveltest');
+    renderLevelTestQuestion();
+  }
+
+  function renderLevelTestQuestion() {
+    if (!ltSession || ltSession.current >= ltSession.questions.length) {
+      finishLevelTest();
+      return;
+    }
+    const q = ltSession.questions[ltSession.current];
+    const lang = nativeLang();
+    const total = ltSession.questions.length;
+    const num = ltSession.current + 1;
+    document.getElementById('lt-progress-label').textContent = `Frage ${num} / ${total}`;
+    document.getElementById('lt-progress-fill').style.width = `${((num-1)/total)*100}%`;
+    document.getElementById('lt-score-val').textContent = `${ltSession.correct} / ${ltSession.answered}`;
+    document.getElementById('lt-feedback').textContent = '';
+    document.getElementById('lt-next-btn').classList.add('hidden');
+    document.getElementById('lt-next-btn').textContent = 'Weiter →';
+
+    const isRev = isReverse();
+    const questionText = isRev ? q.pt : (q[lang] || q.de);
+    const correctAnswer = isRev ? (q[lang] || q.de) : q.pt;
+
+    document.getElementById('lt-q-label').textContent = isRev ? 'Übersetze ins Deutsche' : 'Übersetze ins Portugiesische';
+    document.getElementById('lt-q-word').textContent = questionText;
+    const cat = CATEGORIES.find(c => c.id === q.cat);
+    document.getElementById('lt-q-category').textContent = cat ? cat.name[lang] || cat.name.de : q.cat;
+
+    const otherWords = shuffle(WORDS.filter(w => w.id !== q.id)).slice(0, 3);
+    const options = shuffle([
+      correctAnswer,
+      ...otherWords.map(w => isRev ? (w[lang] || w.de) : w.pt)
+    ]);
+
+    const optionsEl = document.getElementById('lt-options');
+    optionsEl.innerHTML = options.map(opt => `
+      <button class="quiz-option" onclick="App.answerLevelTest(this,${JSON.stringify(opt)},${JSON.stringify(correctAnswer)})">${esc(opt)}</button>
+    `).join('');
+  }
+
+  function answerLevelTest(btn, chosen, correct) {
+    if (!ltSession) return;
+    const isCorrect = chosen === correct;
+    const allBtns = document.querySelectorAll('#lt-options .quiz-option');
+    allBtns.forEach(b => {
+      b.disabled = true;
+      if (b.textContent === correct) b.classList.add('correct');
+    });
+    const fb = document.getElementById('lt-feedback');
+    if (isCorrect) {
+      btn.classList.add('correct');
+      ltSession.correct++;
+      ltSession.xpEarned += 10;
+      addXP(10);
+      fb.innerHTML = '<span style="color:var(--success)">✅ Richtig! / Correct!</span>';
+    } else {
+      btn.classList.add('wrong');
+      penaltyXP();
+      fb.innerHTML = `<span style="color:var(--danger)">❌ Falsch! Richtig: <strong>${esc(correct)}</strong></span>`;
+    }
+    ltSession.answered++;
+    document.getElementById('lt-score-val').textContent = `${ltSession.correct} / ${ltSession.answered}`;
+    document.getElementById('lt-next-btn').classList.remove('hidden');
+    if (ltSession.current >= ltSession.questions.length - 1) {
+      document.getElementById('lt-next-btn').textContent = 'Auswertung →';
+    }
+  }
+
+  function nextLevelTestQuestion() {
+    if (!ltSession) return;
+    ltSession.current++;
+    if (ltSession.current >= ltSession.questions.length) {
+      finishLevelTest();
+    } else {
+      renderLevelTestQuestion();
+    }
+  }
+
+  function finishLevelTest() {
+    if (!ltSession) return;
+    const pct = Math.round((ltSession.correct / ltSession.questions.length) * 100);
+    const passed = pct >= 70;
+    document.getElementById('lt-session-area').classList.add('hidden');
+    const completeEl = document.getElementById('lt-complete');
+    completeEl.classList.remove('hidden');
+    document.getElementById('lt-trophy').textContent = passed ? '🏆' : '📚';
+    document.getElementById('lt-complete-title').textContent = passed
+      ? `${ltSession.level} bestanden! / ${ltSession.level} Passed!`
+      : `${ltSession.level} nicht bestanden / Not Passed`;
+    document.getElementById('lt-complete-msg').textContent = passed
+      ? `${ltSession.correct} / ${ltSession.questions.length} richtig (${pct}%) – Herzlichen Glückwunsch!`
+      : `${ltSession.correct} / ${ltSession.questions.length} richtig (${pct}%) – Weiterüben und nochmal versuchen!`;
+    document.getElementById('lt-xp').textContent = `+${ltSession.xpEarned} XP`;
+    const certEl = document.getElementById('lt-certificate');
+    if (passed) {
+      certEl.classList.remove('hidden');
+      certEl.innerHTML = `
+        <h3>🎓 Zertifikat / Certificate</h3>
+        <div class="lt-cert-level">${ltSession.level}</div>
+        <p>Niveau ${ltSession.level} Brasilianisches Portugiesisch<br><em>Brazilian Portuguese Level ${ltSession.level}</em></p>
+        <p style="margin-top:8px;font-size:0.75rem">Ergebnis: ${pct}% · LinguaBrasil</p>
+      `;
+    } else {
+      certEl.classList.add('hidden');
+    }
+    ltSession = null;
+  }
+
+  function exitLevelTest() {
+    ltSession = null;
+    document.getElementById('lt-session-area').classList.remove('hidden');
+    document.getElementById('lt-complete').classList.add('hidden');
+    showView('progress');
+  }
+
+  /* ── Favorites ──────────────────────────────────────────────────────────── */
+  function toggleFavorite() {
+    const w = (session && session.queue) ? session.queue[session.index] : null;
+    if (!w) return;
+    if (!state.favorites) state.favorites = {};
+    if (state.favorites[w.id]) {
+      delete state.favorites[w.id];
+      showToast('⭐ Aus Favoriten entfernt');
+    } else {
+      state.favorites[w.id] = true;
+      showToast('⭐ Zu Favoriten hinzugefügt');
+    }
+    saveState(state);
+    updateFavBtn(w.id);
+  }
+
+  function updateFavBtn(id) {
+    const btn = document.getElementById('fc-fav-btn');
+    if (btn) btn.textContent = (state.favorites && state.favorites[id]) ? '★' : '☆';
+  }
+
+  function startFavoritesSession() {
+    if (!state.favorites || Object.keys(state.favorites).length === 0) {
+      showToast('⭐ Noch keine Favoriten! Markiere Wörter beim Lernen.');
+      return;
+    }
+    const favIds = Object.keys(state.favorites).map(Number);
+    const favWords = WORDS.filter(w => favIds.includes(w.id));
+    if (favWords.length === 0) {
+      showToast('⭐ Keine Favoriten gefunden.');
+      return;
+    }
+    updateStreak();
+    session = { type:'flashcard', catId:null, queue:shuffle(favWords), index:0, xpEarned:0, flipped:false, correctCount:0, wrongCount:0 };
+    showView('flashcard');
+    renderFlashcard();
+  }
+
+  /* ── Word List ──────────────────────────────────────────────────────────── */
+  let wlFilter = { text: '', cat: '' };
+
+  function initWordList() {
+    const lang = nativeLang();
+    const catBtnsHtml = CATEGORIES.map(c =>
+      `<button class="wl-cat-btn" onclick="App.filterWordCat('${c.id}')" data-cat="${c.id}">${c.icon} ${c.name[lang] || c.name.de}</button>`
+    ).join('');
+    const filterArea = document.querySelector('#view-wordlist .wl-cat-filters');
+    if (filterArea) filterArea.innerHTML = `<button class="wl-cat-btn active" onclick="App.filterWordCat('')" data-cat="">Alle</button>${catBtnsHtml}`;
+    wlFilter = { text: '', cat: '' };
+    const searchEl = document.getElementById('wordlist-search');
+    if (searchEl) searchEl.value = '';
+    renderWordList();
+  }
+
+  function filterWordList(text) {
+    wlFilter.text = (text || '').toLowerCase();
+    renderWordList();
+  }
+
+  function filterWordCat(cat) {
+    if (wlFilter.cat === cat) return;
+    wlFilter.cat = cat;
+    document.querySelectorAll('.wl-cat-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.cat === cat);
+    });
+    renderWordList();
+  }
+
+  function renderWordList() {
+    const lang = nativeLang();
+    const isRev = isReverse();
+    let words = WORDS;
+    if (wlFilter.cat) words = words.filter(w => w.cat === wlFilter.cat);
+    if (wlFilter.text) {
+      words = words.filter(w =>
+        w.pt.toLowerCase().includes(wlFilter.text) ||
+        (w[lang]||w.de||'').toLowerCase().includes(wlFilter.text)
+      );
+    }
+    const container = document.getElementById('wordlist-items');
+    if (!container) return;
+    if (words.length === 0) {
+      container.innerHTML = '<p style="text-align:center;color:var(--text-2);margin-top:32px">Keine Wörter gefunden.</p>';
+      return;
+    }
+    container.innerHTML = words.map(w => {
+      const front = isRev ? w.pt : (w[lang] || w.de);
+      const back  = isRev ? (w[lang] || w.de) : w.pt;
+      const lvl = getCard(w.id).level;
+      const cat = CATEGORIES.find(c => c.id === w.cat);
+      return `<div class="wl-item">
+        <div class="wl-item-main">
+          <span class="wl-front">${esc(front)}</span>
+          <span class="wl-arrow">→</span>
+          <span class="wl-back">${esc(back)}</span>
+        </div>
+        <div class="wl-item-meta">
+          <span class="wl-cat">${cat ? cat.icon : ''}</span>
+          <span class="wl-pron">[ ${esc(w.pron||'')} ]</span>
+          <span class="wl-srs srs-${lvl}" title="SRS Level ${lvl}">L${lvl}</span>
+          <button onclick="App.speakWord(${w.id})" style="border:none;background:none;cursor:pointer;font-size:0.95rem;padding:0 4px" title="Anhören">🔊</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
   /* ── DIALOG-ÜBUNGEN ──────────────────────────────────────────────────────── */
   function startDialogSession() {
     const queue = shuffle(DIALOGS);
@@ -4161,7 +4821,11 @@ const App = (() => {
       checkAchievements, renderAchievements,
       startSentenceBuilder, checkSentenceAnswer, nextSentenceRound,
       addSentenceChip, removeSentenceChip,
-      startDialogSession, nextDialogQuestion
+      startDialogSession, nextDialogQuestion,
+      openStory, showStoriesList, showStoryVocab, speakStoryWord, closeStoryVocabPopup,
+      startLevelTest, answerLevelTest, nextLevelTestQuestion, exitLevelTest,
+      toggleFavorite, startFavoritesSession,
+      filterWordList, filterWordCat
     };
   }
 
