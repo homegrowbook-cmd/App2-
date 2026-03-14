@@ -1438,6 +1438,75 @@
       border-radius: 6px; transition: width 0.5s ease;
     }
     .xp-level-label { font-size: 0.7rem; opacity: 0.75; text-align: right; }
+
+    /* ─── Lückentext / Fill-in-the-Blank ───────────────────────────────────── */
+    .lt-sentence-card {
+      background: linear-gradient(135deg, #f0fff8, #e8f8ef);
+      border: 2px solid var(--green);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .lt-sentence {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.6;
+      margin: 10px 0;
+    }
+    .lt-blank {
+      display: inline-block;
+      min-width: 90px;
+      border-bottom: 3px solid var(--blue);
+      color: var(--blue);
+      font-weight: 900;
+      padding: 0 6px;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+    .lt-blank.revealed { border-color: var(--green); color: var(--green); }
+    .lt-blank.wrong-blank { border-color: var(--danger); color: var(--danger); }
+    .lt-translation {
+      font-size: 0.88rem;
+      color: var(--text-2);
+      font-style: italic;
+      margin-top: 6px;
+    }
+
+    /* ─── Home Quick-Buttons Grid ───────────────────────────────────────────── */
+    .home-section-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-2);
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      margin: 18px 0 10px;
+    }
+    .quick-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .quick-btn {
+      border: none;
+      border-radius: var(--radius);
+      padding: 14px 10px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      transition: transform var(--transition), box-shadow var(--transition);
+      text-align: left;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    }
+    .quick-btn:hover  { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.22); }
+    .quick-btn:active { transform: translateY(0); }
+    .qb-icon  { font-size: 1.6rem; line-height: 1; }
+    .qb-title { font-size: 0.9rem; font-weight: 700; }
+    .qb-desc  { font-size: 0.7rem; opacity: 0.85; font-weight: 500; }
   </style>
 </head>
 <body>
@@ -1504,13 +1573,50 @@
 
     <!-- Daily Missions -->
     <div id="missions-card" class="missions-card" style="display:none"></div>
-    <button class="cta-btn" style="background:linear-gradient(135deg,var(--blue),var(--light-blue));box-shadow:0 4px 16px rgba(0,39,118,0.3)" onclick="App.showView('learn')">📚 Alle Kategorien</button>
-    <button class="cta-btn" style="background:linear-gradient(135deg,#6a0dad,#9b30ff);box-shadow:0 4px 16px rgba(106,13,173,0.3)" onclick="App.startListeningQuiz()">👂 Hörverständnis-Quiz</button>
-    <button class="cta-btn" style="background:linear-gradient(135deg,#c77b17,#e89c2f);box-shadow:0 4px 16px rgba(199,123,23,0.3)" onclick="App.startTypingSession(null)">✏️ Tipp-Übung</button>
-    <button class="cta-btn" style="background:linear-gradient(135deg,var(--green),var(--light-green));box-shadow:0 4px 16px rgba(0,156,59,0.3)" onclick="App.startSentenceBuilder()">🔤 Satz-Builder</button>
-    <button class="cta-btn" style="background:linear-gradient(135deg,#e84393,#ff69b4);box-shadow:0 4px 16px rgba(232,67,147,0.3)" onclick="App.startDialogSession()">💬 Dialog-Übungen</button>
-    <button class="cta-btn" onclick="App.showView('stories')" style="background:linear-gradient(135deg,#5b21b6,#7c3aed);box-shadow:0 4px 16px rgba(91,33,182,0.3)">📖 Geschichten / Stories</button>
-    <button class="cta-btn" onclick="App.showView('wordlist')" style="background:linear-gradient(135deg,#0e7490,#0891b2);box-shadow:0 4px 16px rgba(14,116,144,0.3)">📋 Wortliste / Word List</button>
+
+    <p class="home-section-title">Übungstypen / Exercise Types</p>
+    <div class="quick-grid">
+      <button class="quick-btn" style="background:linear-gradient(135deg,var(--blue),var(--light-blue))" onclick="App.showView('learn')">
+        <span class="qb-icon">📚</span>
+        <span class="qb-title">Kategorien</span>
+        <span class="qb-desc">Alle Themen lernen</span>
+      </button>
+      <button class="quick-btn" style="background:linear-gradient(135deg,#6a0dad,#9b30ff)" onclick="App.startListeningQuiz()">
+        <span class="qb-icon">👂</span>
+        <span class="qb-title">Hören</span>
+        <span class="qb-desc">Hörverständnis-Quiz</span>
+      </button>
+      <button class="quick-btn" style="background:linear-gradient(135deg,#c77b17,#e89c2f)" onclick="App.startTypingSession(null)">
+        <span class="qb-icon">✏️</span>
+        <span class="qb-title">Tippen</span>
+        <span class="qb-desc">Wörter eintippen</span>
+      </button>
+      <button class="quick-btn" style="background:linear-gradient(135deg,#0e7490,#0891b2)" onclick="App.startLueckentext()">
+        <span class="qb-icon">📝</span>
+        <span class="qb-title">Lückentext</span>
+        <span class="qb-desc">Fehlende Wörter ergänzen</span>
+      </button>
+      <button class="quick-btn" style="background:linear-gradient(135deg,var(--green),var(--light-green))" onclick="App.startSentenceBuilder()">
+        <span class="qb-icon">🔤</span>
+        <span class="qb-title">Satz-Builder</span>
+        <span class="qb-desc">Sätze zusammenbauen</span>
+      </button>
+      <button class="quick-btn" style="background:linear-gradient(135deg,#e84393,#ff69b4)" onclick="App.startDialogSession()">
+        <span class="qb-icon">💬</span>
+        <span class="qb-title">Dialoge</span>
+        <span class="qb-desc">Alltagsgespräche üben</span>
+      </button>
+      <button class="quick-btn" style="background:linear-gradient(135deg,#5b21b6,#7c3aed)" onclick="App.showView('stories')">
+        <span class="qb-icon">📖</span>
+        <span class="qb-title">Geschichten</span>
+        <span class="qb-desc">Texte auf Portugiesisch</span>
+      </button>
+      <button class="quick-btn" style="background:linear-gradient(135deg,#374151,#6b7280)" onclick="App.showView('wordlist')">
+        <span class="qb-icon">📋</span>
+        <span class="qb-title">Wortliste</span>
+        <span class="qb-desc" id="home-wl-desc">Alle 563 Vokabeln</span>
+      </button>
+    </div>
   </div>
 
   <!-- LEARN (categories) -->
@@ -1877,11 +1983,55 @@
     <div class="settings-section">
       <h3 class="settings-heading">ℹ️ App-Info</h3>
       <div class="settings-info">
-        <p><strong>LinguaBrasil</strong> v3.5</p>
-        <p id="settings-word-count">396 Vokabeln &amp; Sätze · 16 Kategorien</p>
+        <p><strong>LinguaBrasil</strong> v4.0</p>
+        <p id="settings-word-count">563 Vokabeln &amp; Sätze · 19 Kategorien</p>
         <p>🇧🇷 Brasilianisches Portugiesisch lernen</p>
         <p style="margin-top:8px;font-size:0.78rem">Kostenlos · Offline nutzbar · Keine Anmeldung erforderlich</p>
       </div>
+    </div>
+  </div>
+
+
+  <!-- LÜCKENTEXT / FILL-IN-THE-BLANK -->
+  <div class="view" id="view-lueckentext">
+    <div class="flashcard-header">
+      <button class="back-btn" onclick="App.exitSession()">←</button>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-label" id="lt-progress-label">0 / 0</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="lt-progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+    <div id="lt-session-area">
+      <div class="quiz-score-bar">
+        <span>Richtig / Correct</span>
+        <span class="quiz-score-val" id="lt-score-val">0</span>
+      </div>
+      <div class="lt-sentence-card" id="lt-sentence-card">
+        <div class="q-label" id="lt-prompt-label">Ergänze den fehlenden Begriff</div>
+        <div class="lt-sentence" id="lt-sentence">—</div>
+        <div class="lt-translation" id="lt-translation">—</div>
+        <div class="q-category" id="lt-category">—</div>
+      </div>
+      <div class="typing-input-wrap" style="margin-top:16px">
+        <input class="typing-input" id="lt-input" type="text" placeholder="Fehlendes Wort eingeben…"
+          autocomplete="off" autocorrect="off" spellcheck="false"
+          onkeydown="if(event.key==='Enter')App.checkLueckentext()" />
+        <button class="speak-btn" id="lt-hint-btn" onclick="App.ltHint()" title="Tipp / Hint">💡</button>
+      </div>
+      <div class="typing-reveal" id="lt-reveal"></div>
+      <button class="cta-btn" id="lt-check-btn" onclick="App.checkLueckentext()">Prüfen ✓</button>
+      <button class="cta-btn hidden" id="lt-next-btn" style="background:linear-gradient(135deg,var(--blue),var(--light-blue));box-shadow:0 4px 16px rgba(0,39,118,0.3)" onclick="App.nextLueckentext()">Weiter →</button>
+    </div>
+    <div class="session-complete hidden" id="lt-complete">
+      <div class="trophy">📝</div>
+      <h2>Lückentext beendet!</h2>
+      <p id="lt-complete-msg">Gut gemacht!</p>
+      <div class="xp-earned" id="lt-xp">+0 XP</div>
+      <br><br>
+      <button class="cta-btn" onclick="App.showView('home')" style="max-width:280px;margin:0 auto">🏠 Startseite</button>
+      <button class="cta-btn" style="max-width:280px;margin:8px auto;background:linear-gradient(135deg,#0e7490,#0891b2);box-shadow:0 4px 16px rgba(14,116,144,0.3)" onclick="App.startLueckentext()">🔄 Nochmal</button>
     </div>
   </div>
 
@@ -2124,6 +2274,9 @@ const CATEGORIES = [
   { id: 'house',     icon: '🏠', level: 'A1', name: { de: 'Zuhause',       en: 'Home'             } },
   { id: 'jobs',      icon: '👔', level: 'A2', name: { de: 'Berufe',        en: 'Jobs'             } },
   { id: 'nature',    icon: '🌿', level: 'A1', name: { de: 'Natur',         en: 'Nature'           } },
+  { id: 'health',    icon: '🏥', level: 'A2', name: { de: 'Gesundheit',    en: 'Health'           } },
+  { id: 'tech',      icon: '💻', level: 'B1', name: { de: 'Technologie',   en: 'Technology'       } },
+  { id: 'sports',    icon: '⚽', level: 'A2', name: { de: 'Sport',         en: 'Sports'           } },
 ];
 
 // Each word: { id, category, pt, de, en, pron, ex_pt, ex_de, ex_en }
@@ -2772,6 +2925,72 @@ const WORDS = [
   { id:503, cat:'body', pt:'Nuca',        de:'Nacken',       en:'Nape of the neck', pron:'NÚ-ka',          ex_pt:'Tenho dor na nuca depois de trabalhar.',  ex_de:'Ich habe Nackenschmerzen nach der Arbeit.', ex_en:'I have neck pain after working.' },
   { id:504, cat:'body', pt:'Cintura',     de:'Taille',       en:'Waist',            pron:'sin-TÚ-ra',      ex_pt:'Ela tem uma cintura fina.',               ex_de:'Sie hat eine schmale Taille.',             ex_en:'She has a slim waist.' },
   { id:505, cat:'body', pt:'Pulmão',      de:'Lunge',        en:'Lung',             pron:'pul-MÃO',        ex_pt:'O pulmão é vital para a respiração.',     ex_de:'Die Lunge ist lebenswichtig für die Atmung.', ex_en:'The lung is vital for breathing.' },
+
+  /* ── GESUNDHEIT / HEALTH (v4.0) ── */
+  { id:506, cat:'health', pt:'Saúde',        de:'Gesundheit',        en:'Health',          pron:'sa-Ú-dʒi',        ex_pt:'A saúde é o bem mais precioso.',              ex_de:'Gesundheit ist das wertvollste Gut.',             ex_en:'Health is the most precious asset.' },
+  { id:507, cat:'health', pt:'Médico',       de:'Arzt / Ärztin',     en:'Doctor',          pron:'MÉ-dʒi-ku',       ex_pt:'Fui ao médico esta semana.',                  ex_de:'Ich war diese Woche beim Arzt.',                  ex_en:'I went to the doctor this week.' },
+  { id:508, cat:'health', pt:'Hospital',     de:'Krankenhaus',       en:'Hospital',        pron:'os-pi-TAL',       ex_pt:'O hospital fica perto daqui.',                ex_de:'Das Krankenhaus ist in der Nähe.',                ex_en:'The hospital is nearby.' },
+  { id:509, cat:'health', pt:'Remédio',      de:'Medikament',        en:'Medicine',        pron:'he-MÉ-dʒi-u',     ex_pt:'Tome o remédio depois de comer.',              ex_de:'Nehmen Sie das Medikament nach dem Essen.',       ex_en:'Take the medicine after eating.' },
+  { id:510, cat:'health', pt:'Dor',          de:'Schmerz',           en:'Pain',            pron:'DOR',             ex_pt:'Sinto muita dor nas costas.',                 ex_de:'Ich habe starke Rückenschmerzen.',                ex_en:'I have a lot of back pain.' },
+  { id:511, cat:'health', pt:'Febre',        de:'Fieber',            en:'Fever',           pron:'FÉ-bri',          ex_pt:'Estou com febre alta.',                       ex_de:'Ich habe hohes Fieber.',                          ex_en:'I have a high fever.' },
+  { id:512, cat:'health', pt:'Alergia',      de:'Allergie',          en:'Allergy',         pron:'a-ler-ZHÍ-a',     ex_pt:'Tenho alergia a amendoim.',                   ex_de:'Ich bin allergisch gegen Erdnüsse.',              ex_en:'I have a peanut allergy.' },
+  { id:513, cat:'health', pt:'Vacina',       de:'Impfstoff / Impfung', en:'Vaccine',       pron:'va-SÍ-na',        ex_pt:'Tomei a vacina contra a gripe.',               ex_de:'Ich habe die Grippeimpfung bekommen.',            ex_en:'I got the flu vaccine.' },
+  { id:514, cat:'health', pt:'Consulta',     de:'Arzttermin',        en:'Appointment',     pron:'kon-SUL-ta',      ex_pt:'Tenho uma consulta amanhã.',                  ex_de:'Ich habe morgen einen Arzttermin.',               ex_en:'I have an appointment tomorrow.' },
+  { id:515, cat:'health', pt:'Pressão',      de:'Blutdruck / Druck', en:'Blood pressure',  pron:'pre-SÃO',         ex_pt:'Minha pressão está alta.',                    ex_de:'Mein Blutdruck ist erhöht.',                     ex_en:'My blood pressure is high.' },
+  { id:516, cat:'health', pt:'Diabetes',     de:'Diabetes',          en:'Diabetes',        pron:'dʒi-a-BÉ-tʃis',  ex_pt:'Ele controla bem o diabetes.',                ex_de:'Er kontrolliert seinen Diabetes gut.',            ex_en:'He manages his diabetes well.' },
+  { id:517, cat:'health', pt:'Cirurgia',     de:'Operation / OP',    en:'Surgery',         pron:'si-rur-ZHÍ-a',    ex_pt:'A cirurgia foi bem-sucedida.',                ex_de:'Die Operation war erfolgreich.',                  ex_en:'The surgery was successful.' },
+  { id:518, cat:'health', pt:'Fratura',      de:'Knochenbruch',      en:'Fracture',        pron:'fra-TÚ-ra',       ex_pt:'Ele teve uma fratura no braço.',               ex_de:'Er hatte einen Armbruch.',                        ex_en:'He had a fracture in his arm.' },
+  { id:519, cat:'health', pt:'Receita',      de:'Rezept',            en:'Prescription',    pron:'he-SÊI-ta',       ex_pt:'O médico passou uma receita.',                ex_de:'Der Arzt hat ein Rezept ausgestellt.',            ex_en:'The doctor wrote a prescription.' },
+  { id:520, cat:'health', pt:'Farmácia',     de:'Apotheke',          en:'Pharmacy',        pron:'far-MÁ-si-a',     ex_pt:'Comprei o remédio na farmácia.',               ex_de:'Ich habe das Medikament in der Apotheke gekauft.', ex_en:'I bought the medicine at the pharmacy.' },
+  { id:521, cat:'health', pt:'Sintoma',      de:'Symptom',           en:'Symptom',         pron:'sin-TÔ-ma',       ex_pt:'Quais são seus sintomas?',                    ex_de:'Was sind Ihre Symptome?',                         ex_en:'What are your symptoms?' },
+  { id:522, cat:'health', pt:'Exame',        de:'Untersuchung / Test', en:'Exam / Test',   pron:'e-ZÂ-mi',         ex_pt:'Preciso fazer um exame de sangue.',            ex_de:'Ich muss einen Bluttest machen.',                 ex_en:'I need to do a blood test.' },
+  { id:523, cat:'health', pt:'Dieta',        de:'Diät / Ernährung',  en:'Diet',            pron:'dʒi-É-ta',        ex_pt:'Estou fazendo dieta saudável.',                ex_de:'Ich mache eine gesunde Diät.',                    ex_en:'I am doing a healthy diet.' },
+  { id:524, cat:'health', pt:'Estresse',     de:'Stress',            en:'Stress',          pron:'es-TRÉSS-i',      ex_pt:'O estresse afeta a saúde.',                   ex_de:'Stress beeinflusst die Gesundheit.',              ex_en:'Stress affects health.' },
+  { id:525, cat:'health', pt:'Gripe',        de:'Grippe',            en:'Flu',             pron:'GRÎP-i',          ex_pt:'Estou com gripe há três dias.',                ex_de:'Ich habe seit drei Tagen Grippe.',                ex_en:'I have had the flu for three days.' },
+
+  /* ── TECHNOLOGIE / TECHNOLOGY (v4.0) ── */
+  { id:526, cat:'tech', pt:'Computador',     de:'Computer',          en:'Computer',        pron:'kom-pu-ta-DOR',   ex_pt:'Meu computador está lento.',                  ex_de:'Mein Computer ist langsam.',                      ex_en:'My computer is slow.' },
+  { id:527, cat:'tech', pt:'Celular',        de:'Handy / Smartphone', en:'Cell phone',     pron:'se-lu-LAR',       ex_pt:'Meu celular ficou sem bateria.',               ex_de:'Mein Handy ist leer.',                            ex_en:'My cell phone ran out of battery.' },
+  { id:528, cat:'tech', pt:'Internet',       de:'Internet',          en:'Internet',        pron:'in-ter-NÊT',      ex_pt:'A internet está fora do ar.',                  ex_de:'Das Internet ist ausgefallen.',                   ex_en:'The internet is down.' },
+  { id:529, cat:'tech', pt:'Aplicativo',     de:'App / Anwendung',   en:'App',             pron:'a-pli-ka-TÎ-vu',  ex_pt:'Baixei um aplicativo de idiomas.',             ex_de:'Ich habe eine Sprach-App heruntergeladen.',       ex_en:'I downloaded a language app.' },
+  { id:530, cat:'tech', pt:'Senha',          de:'Passwort',          en:'Password',        pron:'SÊN-ha',          ex_pt:'Esqueci minha senha do e-mail.',               ex_de:'Ich habe mein E-Mail-Passwort vergessen.',        ex_en:'I forgot my email password.' },
+  { id:531, cat:'tech', pt:'Rede',           de:'Netzwerk',          en:'Network',         pron:'HÉ-dʒi',          ex_pt:'Estou conectado à rede Wi-Fi.',                ex_de:'Ich bin mit dem WLAN-Netzwerk verbunden.',        ex_en:'I am connected to the Wi-Fi network.' },
+  { id:532, cat:'tech', pt:'Tela',           de:'Bildschirm / Display', en:'Screen',       pron:'TÉ-la',           ex_pt:'A tela do meu celular quebrou.',               ex_de:'Das Display meines Handys ist kaputt.',           ex_en:'My phone screen broke.' },
+  { id:533, cat:'tech', pt:'Bateria',        de:'Akku / Batterie',   en:'Battery',         pron:'ba-te-RÍ-a',      ex_pt:'A bateria do notebook está fraca.',            ex_de:'Der Laptop-Akku ist schwach.',                    ex_en:'The laptop battery is weak.' },
+  { id:534, cat:'tech', pt:'Arquivo',        de:'Datei',             en:'File',            pron:'ar-KÍ-vu',        ex_pt:'Salva o arquivo antes de sair.',               ex_de:'Speichern Sie die Datei vor dem Beenden.',        ex_en:'Save the file before closing.' },
+  { id:535, cat:'tech', pt:'Câmera',         de:'Kamera',            en:'Camera',          pron:'KÂ-me-ra',        ex_pt:'A câmera do celular tirou ótimas fotos.',      ex_de:'Die Handykamera hat tolle Fotos gemacht.',        ex_en:'The phone camera took great photos.' },
+  { id:536, cat:'tech', pt:'Inteligência artificial', de:'Künstliche Intelligenz', en:'Artificial intelligence', pron:'in-te-li-ZHÊN-si-a ar-ti-fi-SI-ál', ex_pt:'A inteligência artificial está mudando o mundo.', ex_de:'Die KI verändert die Welt.', ex_en:'Artificial intelligence is changing the world.' },
+  { id:537, cat:'tech', pt:'Atualização',    de:'Update / Aktualisierung', en:'Update',    pron:'a-tu-a-li-za-SÃO', ex_pt:'Instala a atualização do sistema.',            ex_de:'Installiere das Systemupdate.',                   ex_en:'Install the system update.' },
+  { id:538, cat:'tech', pt:'Vírus',          de:'Virus',             en:'Virus',           pron:'VÍ-rus',          ex_pt:'Um vírus infectou meu computador.',             ex_de:'Ein Virus hat meinen Computer infiziert.',        ex_en:'A virus infected my computer.' },
+  { id:539, cat:'tech', pt:'Nuvem',          de:'Cloud / Wolke',     en:'Cloud',           pron:'NÚ-vem',          ex_pt:'Salvo meus dados na nuvem.',                   ex_de:'Ich speichere meine Daten in der Cloud.',         ex_en:'I save my data in the cloud.' },
+  { id:540, cat:'tech', pt:'Carregador',     de:'Ladegerät',         en:'Charger',         pron:'ka-he-ga-DOR',    ex_pt:'Esqueci meu carregador em casa.',              ex_de:'Ich habe mein Ladegerät zu Hause vergessen.',     ex_en:'I forgot my charger at home.' },
+  { id:541, cat:'tech', pt:'Fone de ouvido', de:'Kopfhörer',        en:'Headphones',      pron:'FÔ-ni dʒi ou-VÍ-du', ex_pt:'Uso fone de ouvido para concentrar.',       ex_de:'Ich nutze Kopfhörer zur Konzentration.',          ex_en:'I use headphones to concentrate.' },
+  { id:542, cat:'tech', pt:'Impressora',     de:'Drucker',           en:'Printer',         pron:'im-pre-SÔ-ra',    ex_pt:'A impressora está sem papel.',                ex_de:'Der Drucker hat kein Papier.',                    ex_en:'The printer is out of paper.' },
+  { id:543, cat:'tech', pt:'Download',       de:'Herunterladen',     en:'Download',        pron:'daun-LÔUD',       ex_pt:'Faça o download do aplicativo.',               ex_de:'Laden Sie die App herunter.',                     ex_en:'Download the app.' },
+  { id:544, cat:'tech', pt:'Notificação',    de:'Benachrichtigung',  en:'Notification',    pron:'no-tʃi-fi-ka-SÃO', ex_pt:'Recebi uma notificação nova.',                ex_de:'Ich habe eine neue Benachrichtigung erhalten.',   ex_en:'I received a new notification.' },
+  { id:545, cat:'tech', pt:'Privacidade',    de:'Datenschutz / Privatsphäre', en:'Privacy', pron:'pri-va-si-DÁ-dʒi', ex_pt:'A privacidade online é muito importante.',   ex_de:'Online-Datenschutz ist sehr wichtig.',            ex_en:'Online privacy is very important.' },
+
+  /* ── SPORT (v4.0) ── */
+  { id:546, cat:'sports', pt:'Futebol',      de:'Fußball',           en:'Football / Soccer', pron:'fut-chi-BOL',  ex_pt:'O futebol é a paixão do Brasil.',              ex_de:'Fußball ist die Leidenschaft Brasiliens.',        ex_en:'Football is Brazil\'s passion.' },
+  { id:547, cat:'sports', pt:'Treinar',      de:'Trainieren',        en:'To train',        pron:'trei-NAR',        ex_pt:'Eu treino todo dia de manhã.',                 ex_de:'Ich trainiere jeden Morgen.',                     ex_en:'I train every morning.' },
+  { id:548, cat:'sports', pt:'Academia',     de:'Fitnessstudio / Gym', en:'Gym',           pron:'a-ka-dʒe-MÍ-a',  ex_pt:'Vou à academia três vezes por semana.',        ex_de:'Ich gehe dreimal pro Woche ins Fitnessstudio.',   ex_en:'I go to the gym three times a week.' },
+  { id:549, cat:'sports', pt:'Campeão',      de:'Meister / Champion', en:'Champion',       pron:'kam-pi-ÃO',       ex_pt:'Ele é o campeão do torneio.',                  ex_de:'Er ist der Meister des Turniers.',                ex_en:'He is the champion of the tournament.' },
+  { id:550, cat:'sports', pt:'Gol',          de:'Tor / Treffer',     en:'Goal',            pron:'GOL',             ex_pt:'O time marcou três gols!',                     ex_de:'Das Team hat drei Tore geschossen!',              ex_en:'The team scored three goals!' },
+  { id:551, cat:'sports', pt:'Corrida',      de:'Lauf / Rennen',     en:'Race / Run',      pron:'ko-HÍ-da',        ex_pt:'Participei da corrida de 10 km.',              ex_de:'Ich habe am 10-km-Lauf teilgenommen.',            ex_en:'I participated in the 10 km race.' },
+  { id:552, cat:'sports', pt:'Natação',      de:'Schwimmen',         en:'Swimming',        pron:'na-ta-SÃO',       ex_pt:'Faço natação para relaxar.',                  ex_de:'Ich schwimme zur Entspannung.',                   ex_en:'I swim to relax.' },
+  { id:553, cat:'sports', pt:'Bicicleta',    de:'Fahrrad',           en:'Bicycle',         pron:'bi-si-KLÉ-ta',    ex_pt:'Ando de bicicleta no parque.',                ex_de:'Ich fahre im Park Fahrrad.',                      ex_en:'I ride a bicycle in the park.' },
+  { id:554, cat:'sports', pt:'Tênis',        de:'Tennis',            en:'Tennis',          pron:'TÊ-nis',          ex_pt:'Jogo tênis aos finais de semana.',             ex_de:'Ich spiele am Wochenende Tennis.',                ex_en:'I play tennis on weekends.' },
+  { id:555, cat:'sports', pt:'Vôlei',        de:'Volleyball',        en:'Volleyball',      pron:'VÔ-lei',          ex_pt:'O vôlei de praia é muito popular no Brasil.',  ex_de:'Beachvolleyball ist in Brasilien sehr beliebt.',  ex_en:'Beach volleyball is very popular in Brazil.' },
+  { id:556, cat:'sports', pt:'Basquete',     de:'Basketball',        en:'Basketball',      pron:'bas-KÉ-tʃi',      ex_pt:'O Brasil tem bons jogadores de basquete.',     ex_de:'Brasilien hat gute Basketballspieler.',           ex_en:'Brazil has good basketball players.' },
+  { id:557, cat:'sports', pt:'Atletismo',    de:'Leichtathletik',    en:'Athletics',       pron:'at-le-TÍSS-mu',   ex_pt:'Pratico atletismo há dois anos.',              ex_de:'Ich betreibe seit zwei Jahren Leichtathletik.',   ex_en:'I have been doing athletics for two years.' },
+  { id:558, cat:'sports', pt:'Ginástica',    de:'Turnen / Gymnastik', en:'Gymnastics',     pron:'zhi-NÁS-tʃi-ka',  ex_pt:'A ginástica melhora a flexibilidade.',          ex_de:'Turnen verbessert die Flexibilität.',             ex_en:'Gymnastics improves flexibility.' },
+  { id:559, cat:'sports', pt:'Caminhada',    de:'Wandern / Gehen',   en:'Walking / Hiking', pron:'ka-min-HÁ-da',  ex_pt:'Faço caminhada todos os dias.',                ex_de:'Ich gehe jeden Tag spazieren.',                   ex_en:'I go for a walk every day.' },
+  { id:560, cat:'sports', pt:'Torneio',      de:'Turnier',           en:'Tournament',      pron:'tor-NÊI-u',       ex_pt:'Participamos do torneio regional.',            ex_de:'Wir haben am regionalen Turnier teilgenommen.',   ex_en:'We participated in the regional tournament.' },
+  { id:561, cat:'sports', pt:'Medalha',      de:'Medaille',          en:'Medal',           pron:'me-DÁ-lha',       ex_pt:'Ela ganhou a medalha de ouro.',                ex_de:'Sie hat die Goldmedaille gewonnen.',              ex_en:'She won the gold medal.' },
+  { id:562, cat:'sports', pt:'Estádio',      de:'Stadion',           en:'Stadium',         pron:'es-TÁ-dʒi-u',     ex_pt:'O estádio estava lotado.',                     ex_de:'Das Stadion war voll.',                           ex_en:'The stadium was packed.' },
+  { id:563, cat:'sports', pt:'Time',         de:'Team / Mannschaft', en:'Team',            pron:'TÎM-i',           ex_pt:'Nosso time ganhou hoje!',                      ex_de:'Unser Team hat heute gewonnen!',                  ex_en:'Our team won today!' },
+  { id:564, cat:'sports', pt:'Árbitro',      de:'Schiedsrichter/in', en:'Referee',         pron:'ÁR-bi-tru',       ex_pt:'O árbitro marcou pênalti.',                    ex_de:'Der Schiedsrichter pfiff Elfmeter.',              ex_en:'The referee called a penalty.' },
+  { id:565, cat:'sports', pt:'Campeonato',   de:'Meisterschaft',     en:'Championship',    pron:'kam-pi-u-NÁ-tu',  ex_pt:'O Brasil venceu o campeonato mundial.',        ex_de:'Brasilien hat die Weltmeisterschaft gewonnen.',   ex_en:'Brazil won the world championship.' },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -3398,6 +3617,9 @@ const App = (() => {
 
     // daily missions
     renderDailyMissions();
+    // update Wortliste button description dynamically
+    const wlDesc = document.getElementById('home-wl-desc');
+    if (wlDesc) wlDesc.textContent = `Alle ${WORDS.length} Vokabeln`;
   }
 
   function setLang(lang) {
@@ -3435,6 +3657,7 @@ const App = (() => {
           <button onclick="event.stopPropagation();App.startFlashcardSession('${cat.id}')" style="flex:1;padding:5px 4px;background:linear-gradient(135deg,var(--green),var(--light-green));color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.7rem">🃏 Karten</button>
           <button onclick="event.stopPropagation();App.startTypingSession('${cat.id}')" style="flex:1;padding:5px 4px;background:linear-gradient(135deg,#c77b17,#e89c2f);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.7rem">✏️ Tippen</button>
           <button onclick="event.stopPropagation();App.startCategoryListeningQuiz('${cat.id}')" style="flex:1;padding:5px 4px;background:linear-gradient(135deg,#6a0dad,#9b30ff);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.7rem">🎧 Hören</button>
+          <button onclick="event.stopPropagation();App.startLueckentext('${cat.id}')" style="flex:1;padding:5px 4px;background:linear-gradient(135deg,#0e7490,#0891b2);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.7rem">📝 Lücken</button>
         </div>
         <div class="cat-progress-bar" style="margin-top:6px">
           <div class="cat-progress-fill" style="width:${pct}%"></div>
@@ -3616,6 +3839,7 @@ const App = (() => {
     }
     if (session.type === 'favorites') { startFavoritesSession(); return; }
     if (session.type === 'weakwords') { startWeakWordsSession(); return; }
+    if (session.type === 'lueckentext') { startLueckentext(session.catId); return; }
     // default: flashcard with the same category
     startFlashcardSession(session.catId ?? null);
   }
@@ -5301,6 +5525,167 @@ const App = (() => {
     checkAchievements();
   }
 
+  /* ── LÜCKENTEXT / FILL-IN-THE-BLANK ─────────────────────────────────────── */
+  function startLueckentext(catId) {
+    // Build pool: words that have an ex_pt sentence with the word appearing in it
+    // Use accent-insensitive matching to catch words like "irmão" in sentences
+    function normAccent(s) {
+      return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    }
+    const pool = shuffle(
+      WORDS.filter(w => {
+        if (catId && w.cat !== catId) return false;
+        // ensure the target word (first token) appears in the example sentence
+        const target = w.pt.split(/[/ ,]/)[0].trim();
+        return w.ex_pt && normAccent(w.ex_pt).includes(normAccent(target)) && target.length >= 3;
+      })
+    ).slice(0, 12);
+    if (pool.length < 3) { showToast('Nicht genug Beispielsätze in dieser Kategorie!'); return; }
+    session = {
+      type: 'lueckentext',
+      catId: catId || null,
+      queue: pool,
+      index: 0,
+      score: 0,
+      xpEarned: 0,
+      checked: false,
+      hintUsed: false
+    };
+    updateStreak();
+    checkMissions('streak', 1);
+    document.getElementById('lt-session-area').classList.remove('hidden');
+    document.getElementById('lt-complete').classList.add('hidden');
+    document.getElementById('lt-score-val').textContent = '0';
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    showView('lueckentext');
+    renderLueckentextRound();
+  }
+
+  function renderLueckentextRound() {
+    const { queue, index } = session;
+    const word = queue[index];
+    const total = queue.length;
+    const lang = nativeLang();
+
+    document.getElementById('lt-progress-label').textContent = `${index + 1} / ${total}`;
+    document.getElementById('lt-progress-fill').style.width = Math.round((index / total) * 100) + '%';
+
+    const target = word.pt.split(/[/ ,]/)[0].trim();
+    // Replace the target in the sentence with a blank placeholder
+    const re = new RegExp(target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+    const sentenceWithBlank = word.ex_pt.replace(re, `<span class="lt-blank" id="lt-blank">${'_'.repeat(Math.min(target.length, 8))}</span>`);
+
+    document.getElementById('lt-sentence').innerHTML = sentenceWithBlank;
+    document.getElementById('lt-translation').textContent = lang === 'de' ? word.ex_de : word.ex_en;
+    const cat = CATEGORIES.find(c => c.id === word.cat);
+    document.getElementById('lt-category').textContent = cat ? cat.icon + ' ' + cat.name[lang] : '';
+    document.getElementById('lt-prompt-label').textContent =
+      lang === 'de' ? 'Ergänze das fehlende Wort auf Portugiesisch' : 'Fill in the missing word in Portuguese';
+
+    const input = document.getElementById('lt-input');
+    input.value = '';
+    input.disabled = false;
+    input.className = 'typing-input';
+    const revEl = document.getElementById('lt-reveal');
+    revEl.textContent = '';
+    revEl.className = 'typing-reveal';
+    revEl.style.background = '';
+    revEl.style.color = '';
+    document.getElementById('lt-check-btn').classList.remove('hidden');
+    document.getElementById('lt-next-btn').classList.add('hidden');
+    document.getElementById('lt-hint-btn').style.opacity = '1';
+    session.checked = false;
+    session.hintUsed = false;
+    setTimeout(() => input.focus(), 80);
+  }
+
+  function checkLueckentext() {
+    if (session.checked) return;
+    session.checked = true;
+    const word = session.queue[session.index];
+    const target = word.pt.split(/[/ ,]/)[0].trim();
+    const input = document.getElementById('lt-input');
+    const raw = (input.value || '').trim();
+
+    // Accent-insensitive comparison (same as typing exercise)
+    function norm(s) {
+      return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+    }
+    const isCorrect = norm(raw) === norm(target);
+
+    input.disabled = true;
+    const blankEl = document.getElementById('lt-blank');
+    const revealEl = document.getElementById('lt-reveal');
+
+    if (isCorrect) {
+      session.score += 1;
+      const earnedXP = session.hintUsed ? 10 : 20;
+      session.xpEarned += earnedXP;
+      const rect = input.getBoundingClientRect();
+      addXP(earnedXP, rect.left + rect.width / 2, rect.top);
+      if (blankEl) { blankEl.textContent = target; blankEl.classList.add('revealed'); }
+      revealEl.textContent = `✅ Richtig! ${target} [ ${word.pron} ]`;
+      revealEl.style.background = '#e8fff2';
+      revealEl.style.color = 'var(--green)';
+      revealEl.classList.add('visible');
+      document.getElementById('lt-score-val').textContent = session.score;
+      checkMissions('correct', 1);
+    } else {
+      if (blankEl) { blankEl.textContent = target; blankEl.classList.add('wrong-blank'); }
+      revealEl.innerHTML = `❌ Richtig: <strong>${esc(target)}</strong> [ ${esc(word.pron)} ]`;
+      revealEl.style.background = '#fff0f3';
+      revealEl.style.color = 'var(--danger)';
+      revealEl.classList.add('visible');
+      penaltyXP(document.getElementById('lt-input').getBoundingClientRect().left + 60,
+                document.getElementById('lt-input').getBoundingClientRect().top);
+    }
+    rateWord(word.id, isCorrect);
+    speakWord(target);
+    document.getElementById('lt-check-btn').classList.add('hidden');
+    document.getElementById('lt-next-btn').classList.remove('hidden');
+  }
+
+  function nextLueckentext() {
+    session.index += 1;
+    if (session.index >= session.queue.length) {
+      endLueckentext();
+    } else {
+      renderLueckentextRound();
+    }
+  }
+
+  function endLueckentext() {
+    document.getElementById('lt-session-area').classList.add('hidden');
+    document.getElementById('lt-complete').classList.remove('hidden');
+    document.getElementById('lt-progress-fill').style.width = '100%';
+    const total = session.queue.length;
+    document.getElementById('lt-progress-label').textContent = `${total} / ${total}`;
+    document.getElementById('lt-xp').textContent = '+' + session.xpEarned + ' XP';
+    const pct = Math.round((session.score / total) * 100);
+    document.getElementById('lt-complete-msg').textContent =
+      pct >= 90 ? `Exzellent! ${pct}% richtig 🌟` :
+      pct >= 70 ? `Gut gemacht! ${pct}% richtig 💪` :
+      pct >= 50 ? `Weiter so! ${pct}% richtig 📚` :
+                  `Weiter üben! ${pct}% richtig 🔁`;
+    trackSessionCompleted();
+    checkMissions('sentence_builder', 1);
+    renderHeaderStats();
+    checkAchievements();
+  }
+
+  function ltHint() {
+    if (session.checked || session.hintUsed) return;
+    session.hintUsed = true;
+    const word = session.queue[session.index];
+    const target = word.pt.split(/[/ ,]/)[0].trim();
+    // Show first letter + underscores
+    const hint = target[0] + '_'.repeat(Math.max(target.length - 1, 1));
+    document.getElementById('lt-input').value = target[0];
+    document.getElementById('lt-input').focus();
+    document.getElementById('lt-hint-btn').style.opacity = '0.4';
+    showToast(`💡 Tipp: "${hint}" (${word.pron})`);
+  }
+
   function init() {
     // Migrate older state objects that lack new fields
     if (state.xpPenaltyEnabled === undefined) state.xpPenaltyEnabled = true;
@@ -5437,7 +5822,8 @@ const App = (() => {
       toggleFavorite, startFavoritesSession,
       filterWordList, filterWordCat,
       closeLevelUp,
-      toggleGrammarCard
+      toggleGrammarCard,
+      startLueckentext, checkLueckentext, nextLueckentext, ltHint
     };
   }
 
