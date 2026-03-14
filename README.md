@@ -1,4 +1,4 @@
-# LinguaBrasil 🇧🇷
+# LuiBrasil 🇧🇷
 
 **Brasilianisches Portugiesisch lernen – für Deutsch- und Englischsprachige**  
 *Learn Brazilian Portuguese – for German and English speakers*
@@ -11,11 +11,11 @@ Eine kostenlose, browserbasierte HTML-App ohne Installation, die wissenschaftlic
 
 ## 🚀 App starten / Launch App
 
-👉 **[LinguaBrasil direkt im Browser öffnen](https://homegrowbook-cmd.github.io/App2-/)** *(GitHub Pages)*
+👉 **[LuiBrasil direkt im Browser öffnen](https://homegrowbook-cmd.github.io/App2-/)** *(GitHub Pages)*
 
 ### 📱 Als PWA installieren (iOS & Android)
 
-LinguaBrasil funktioniert auf Smartphone und Tablet als vollwertige Offline-App:
+LuiBrasil funktioniert auf Smartphone und Tablet als vollwertige Offline-App:
 
 **iOS (Safari):**
 1. Öffne **[https://homegrowbook-cmd.github.io/App2-/](https://homegrowbook-cmd.github.io/App2-/)** in **Safari**

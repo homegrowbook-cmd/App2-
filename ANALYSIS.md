@@ -2,7 +2,7 @@
 
 ## Zusammenfassung der Recherche
 
-Für den Aufbau von **LinguaBrasil** wurden die folgenden 10 führenden Sprachenlern-Plattformen analysiert, um die wirkungsvollsten Inhalte und Lernmethoden zu identifizieren.
+Für den Aufbau von **LuiBrasil** wurden die folgenden 10 führenden Sprachenlern-Plattformen analysiert, um die wirkungsvollsten Inhalte und Lernmethoden zu identifizieren.
 
 ---
 
@@ -29,43 +29,43 @@ Für den Aufbau von **LinguaBrasil** wurden die folgenden 10 führenden Sprachen
 - **Was:** Wiederholung von Vokabeln in wachsenden Zeitabständen (1 → 3 → 7 → 14 → 30 Tage)
 - **Warum:** Basiert auf Ebbinghaus' Vergessenskurve – man lernt genau dann, wenn man kurz vor dem Vergessen ist
 - **Wer nutzt es:** Anki, Memrise, Babbel, Quizlet
-- **Implementierung in LinguaBrasil:** SRS-Level 0–5 für jede Vokabel, gespeichert im LocalStorage
+- **Implementierung in LuiBrasil:** SRS-Level 0–5 für jede Vokabel, gespeichert im LocalStorage
 
 ### 2. 🎮 Gamification
 - **Was:** Punkte (XP), Streaks, Levels, Leaderboards, Badges
 - **Warum:** Motiviert zur täglichen Nutzung; Duolingo hat bewiesen, dass Streaks Nutzer 3× häufiger zurückbringen
 - **Wer nutzt es:** Duolingo (Marktführer), Memrise, Drops
-- **Implementierung in LinguaBrasil:** XP-System, tägliche Streaks, Lernlevel
+- **Implementierung in LuiBrasil:** XP-System, tägliche Streaks, Lernlevel
 
 ### 3. 📚 Strukturierter Lehrplan nach Themen
 - **Was:** Vokabeln nach Kategorien (Begrüßungen → Zahlen → Farben → Essen → Reisen …)
 - **Warum:** Ermöglicht schnelle praktische Anwendung; Lernende sehen sofortigen Nutzen
 - **Wer nutzt es:** Babbel, Busuu, Rosetta Stone
-- **Implementierung in LinguaBrasil:** 8 Kategorien, von Basics bis Verben
+- **Implementierung in LuiBrasil:** 8 Kategorien, von Basics bis Verben
 
 ### 4. 🔊 Aussprache & Audio
 - **Was:** Lautschrift, Sprecherübungen, Audiobeispiele
 - **Warum:** Portugiesisch (BR) hat viele spezifische Laute (ã, ç, nasale Diphthonge), die schriftlich schwer erlernbar sind
 - **Wer nutzt es:** Pimsleur (rein audio), Rosetta Stone, Babbel
-- **Implementierung in LinguaBrasil:** Lautschrift bei jeder Vokabel, Browser-TTS (Web Speech API)
+- **Implementierung in LuiBrasil:** Lautschrift bei jeder Vokabel, Browser-TTS (Web Speech API)
 
 ### 5. 🧠 Multiple-Choice & Übersetzungsübungen
 - **Was:** Kombinierte Übungstypen für Wiedererkennung und aktiven Abruf
 - **Warum:** Verschiedene Abfragetypen aktivieren unterschiedliche Gedächtnispfade
 - **Wer nutzt es:** Duolingo (vielfältigste Übungstypen), Busuu
-- **Implementierung in LinguaBrasil:** Karteikarten + Multiple Choice + Übersetzungsmodus
+- **Implementierung in LuiBrasil:** Karteikarten + Multiple Choice + Übersetzungsmodus
 
 ### 6. 📈 Fortschrittsverfolgung
 - **Was:** Visuelle Statistiken zu gelernten Wörtern, Genauigkeit, Zeit
 - **Warum:** Erfolgserlebnisse motivieren und zeigen Lücken auf
 - **Wer nutzt es:** Alle Top-Apps
-- **Implementierung in LinguaBrasil:** Fortschrittsbildschirm mit Kategorie-Balken und SRS-Level-Übersicht
+- **Implementierung in LuiBrasil:** Fortschrittsbildschirm mit Kategorie-Balken und SRS-Level-Übersicht
 
 ### 7. 🌍 Kultureller Kontext
 - **Was:** Beispielsätze aus dem echten Leben, kulturelle Hinweise
 - **Warum:** Sprache ist untrennbar mit Kultur verbunden; Brasilianisches Portugiesisch unterscheidet sich stark vom europäischen
 - **Wer nutzt es:** Mango Languages, Babbel
-- **Implementierung in LinguaBrasil:** Beispielsätze im brasilianischen Kontext bei jeder Vokabel
+- **Implementierung in LuiBrasil:** Beispielsätze im brasilianischen Kontext bei jeder Vokabel
 
 ---
 

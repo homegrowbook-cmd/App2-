@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>LinguaBrasil – Brasilianisches Portugiesisch lernen</title>
+  <title>LuiBrasil – Brasilianisches Portugiesisch lernen</title>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#002776" />
   <!-- iOS PWA -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="LinguaBrasil" />
+  <meta name="apple-mobile-web-app-title" content="LuiBrasil" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <style>
@@ -1517,7 +1517,7 @@
     <div class="ios-banner-text">
       <div class="ios-banner-title">App zum Home-Bildschirm hinzufügen</div>
       <div class="ios-banner-steps">
-        Tippe auf <strong>Teilen</strong> <span style="font-size:1.1em">⬆️</span> → <strong>„Zum Home-Bildschirm"</strong> → so startet LinguaBrasil wie eine App.
+        Tippe auf <strong>Teilen</strong> <span style="font-size:1.1em">⬆️</span> → <strong>„Zum Home-Bildschirm"</strong> → so startet LuiBrasil wie eine App.
       </div>
     </div>
     <button class="ios-banner-close" id="ios-banner-close-btn" aria-label="Schließen">✕</button>
@@ -1528,7 +1528,7 @@
   <header class="app-header">
     <div class="header-brand">
       <span class="flag">🇧🇷</span>
-      <span>LinguaBrasil</span>
+      <span>LuiBrasil</span>
     </div>
     <div class="header-stats">
       <div class="stat-pill" id="header-streak">🔥 <span id="streak-val">0</span></div>
@@ -1983,7 +1983,7 @@
     <div class="settings-section">
       <h3 class="settings-heading">ℹ️ App-Info</h3>
       <div class="settings-info">
-        <p><strong>LinguaBrasil</strong> v4.0</p>
+        <p><strong>LuiBrasil</strong> v4.0</p>
         <p id="settings-word-count">563 Vokabeln &amp; Sätze · 19 Kategorien</p>
         <p>🇧🇷 Brasilianisches Portugiesisch lernen</p>
         <p style="margin-top:8px;font-size:0.78rem">Kostenlos · Offline nutzbar · Keine Anmeldung erforderlich</p>
@@ -4102,7 +4102,7 @@ const App = (() => {
               <h3 style="font-size:0.95rem">🎓 Zertifikat – Niveau ${esc(level)}</h3>
               <div class="lt-cert-level" style="font-size:1.4rem">${esc(level)}</div>
               <p>Brasilianisches Portugiesisch / Brazilian Portuguese</p>
-              <p style="font-size:0.75rem;margin-top:4px">Ergebnis: ${res.pct}% · ${res.date || ''} · LinguaBrasil</p>
+              <p style="font-size:0.75rem;margin-top:4px">Ergebnis: ${res.pct}% · ${res.date || ''} · LuiBrasil</p>
             </div>`).join('');
       } else {
         certsDiv.innerHTML = '<p style="font-size:0.82rem;color:var(--text-2)">Noch kein Zertifikat – bestehe einen Level-Test mit ≥70%!</p>';
@@ -4202,7 +4202,7 @@ const App = (() => {
         await Promise.all(keys.map(k => caches.delete(k)));
       }
     } catch (e) {
-      console.warn('LinguaBrasil: forceUpdate cleanup error', e);
+      console.warn('LuiBrasil: forceUpdate cleanup error', e);
     }
     location.reload();
   }
@@ -5277,7 +5277,7 @@ const App = (() => {
         <h3>🎓 Zertifikat / Certificate</h3>
         <div class="lt-cert-level">${ltSession.level}</div>
         <p>Niveau ${ltSession.level} Brasilianisches Portugiesisch<br><em>Brazilian Portuguese Level ${ltSession.level}</em></p>
-        <p style="margin-top:8px;font-size:0.75rem">Ergebnis: ${pct}% · LinguaBrasil</p>
+        <p style="margin-top:8px;font-size:0.75rem">Ergebnis: ${pct}% · LuiBrasil</p>
       `;
       // Persist the best result for this level
       if (!state.levelTestCerts) state.levelTestCerts = {};
@@ -5775,7 +5775,7 @@ const App = (() => {
           });
         });
       }).catch(err => {
-        console.info('LinguaBrasil: Service Worker nicht verfügbar – Offline-Modus deaktiviert.', err);
+        console.info('LuiBrasil: Service Worker nicht verfügbar – Offline-Modus deaktiviert.', err);
       });
       // Reload the page once the new SW has taken control
       let refreshing = false;

@@ -1,4 +1,4 @@
-# LinguaBrasil – App Roadmap
+# LuiBrasil – App Roadmap
 
 ## Vision
 Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portugiesisch für Deutsch- und Englischsprachige – wissenschaftlich fundiert, gamifiziert und ohne Installation nutzbar.
@@ -153,7 +153,7 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 ## 🏗️ Technische Architektur (aktuell)
 
 ```
-LinguaBrasil/
+LuiBrasil/
 ├── index.html          # Haupt-App (alle Features in einer Datei, v3.5)
 ├── manifest.json       # PWA Manifest ✅
 ├── service-worker.js   # Offline-Support, Network-First-Strategie ✅
@@ -165,7 +165,7 @@ LinguaBrasil/
 
 **Geplant für v4.5 (Code-Aufteilung):**
 ```
-LinguaBrasil/
+LuiBrasil/
 ├── index.html
 ├── app.js              # App-Logik (Controller, Sessions, XP, SRS)
 ├── data.js             # WORDS, CATEGORIES, STORIES, DIALOGS
