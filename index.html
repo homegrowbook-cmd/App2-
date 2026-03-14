@@ -60,6 +60,7 @@
       background: linear-gradient(135deg, var(--blue) 0%, #1a4a9e 100%);
       color: #fff;
       padding: 14px 18px 12px;
+      padding-top: calc(14px + env(safe-area-inset-top));
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -107,6 +108,7 @@
       bottom: 0;
       z-index: 100;
       box-shadow: 0 -2px 12px rgba(0,39,118,0.07);
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
     .nav-btn {
@@ -3282,6 +3284,44 @@ const App = (() => {
     if (!state.langSelected) {
       document.getElementById('lang-popup-overlay').classList.remove('hidden');
     }
+
+    // Swipe left/right to navigate between main tabs
+    (function() {
+      const NAV_VIEWS = ['home', 'learn', 'quiz', 'grammar', 'progress'];
+      let touchStartX = 0;
+      let touchStartY = 0;
+      function navigateToTab(name) {
+        if (name === 'quiz') startQuizSession();
+        else showView(name);
+      }
+      const appEl = document.getElementById('app');
+      appEl.addEventListener('touchstart', function(e) {
+        touchStartX = e.changedTouches[0].clientX;
+        touchStartY = e.changedTouches[0].clientY;
+      }, { passive: true });
+      appEl.addEventListener('touchend', function(e) {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        // Only react to clearly horizontal swipes (min 50 px, more horizontal than vertical)
+        if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+        // Determine which nav tab is currently active
+        let currentIdx = -1;
+        NAV_VIEWS.forEach(function(name, i) {
+          const btn = document.getElementById('nav-' + name);
+          if (btn && btn.classList.contains('active')) currentIdx = i;
+        });
+        if (currentIdx === -1) return; // non-nav view active – don't interfere
+        if (dx < 0) {
+          // Swipe left → next tab
+          const nextIdx = Math.min(currentIdx + 1, NAV_VIEWS.length - 1);
+          if (nextIdx !== currentIdx) navigateToTab(NAV_VIEWS[nextIdx]);
+        } else {
+          // Swipe right → previous tab
+          const prevIdx = Math.max(currentIdx - 1, 0);
+          if (prevIdx !== currentIdx) navigateToTab(NAV_VIEWS[prevIdx]);
+        }
+      }, { passive: true });
+    })();
 
     // Register service worker for PWA – force-update on mobile
     if ('serviceWorker' in navigator) {
