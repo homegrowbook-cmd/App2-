@@ -1573,6 +1573,52 @@
     .conj-tense-btn.active {
       border-color: var(--blue); background: var(--blue); color: #fff;
     }
+
+    /* ─── Voice Translate ──────────────────────────────────────────────────── */
+    .voice-mic-btn {
+      width: 100px; height: 100px; border-radius: 50%;
+      border: none; background: linear-gradient(135deg, var(--green), var(--light-green));
+      color: #fff; font-size: 2.4rem; cursor: pointer;
+      box-shadow: 0 6px 24px rgba(0,156,59,0.4);
+      transition: transform var(--transition), box-shadow var(--transition);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .voice-mic-btn:hover { transform: scale(1.06); }
+    .voice-mic-btn:active { transform: scale(0.96); }
+    .voice-mic-btn.listening {
+      background: linear-gradient(135deg, var(--danger), #ff6b8a);
+      box-shadow: 0 6px 28px rgba(239,71,111,0.5);
+      animation: voice-pulse 1.4s ease-in-out infinite;
+    }
+    @keyframes voice-pulse {
+      0%, 100% { box-shadow: 0 6px 28px rgba(239,71,111,0.5); }
+      50% { box-shadow: 0 6px 44px rgba(239,71,111,0.85); }
+    }
+    .voice-result-card {
+      background: var(--card); border-radius: var(--radius);
+      padding: 18px 20px; border: 1.5px solid var(--border);
+      box-shadow: var(--shadow); width: 100%; max-width: 360px;
+      text-align: center;
+    }
+
+    /* ─── Dialog NPC Reaction ──────────────────────────────────────────────── */
+    .dlg-reaction {
+      display: flex; align-items: flex-start; gap: 8px;
+      padding: 10px 14px; border-radius: var(--radius-sm);
+      margin-top: 6px; font-size: 0.88rem; font-style: italic;
+      animation: fadein 0.3s ease;
+    }
+    .dlg-reaction.reaction-correct {
+      background: rgba(6,214,160,0.12); border-left: 3px solid var(--success);
+      color: var(--text);
+    }
+    .dlg-reaction.reaction-wrong {
+      background: rgba(239,71,111,0.09); border-left: 3px solid var(--danger);
+      color: var(--text);
+    }
+    .dlg-reaction-who { font-weight: 700; font-style: normal; color: var(--blue); margin-right: 4px; }
+    @keyframes fadein { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
   </style>
 </head>
 <body>
@@ -1686,6 +1732,11 @@
         <span class="qb-icon">🔤</span>
         <span class="qb-title">Konjugation</span>
         <span class="qb-desc">Verbformen üben</span>
+      </button>
+      <button class="quick-btn" style="background:linear-gradient(135deg,#059669,#10b981)" onclick="App.showView('voice-translate')" aria-label="Live Sprachübersetzer öffnen">
+        <span class="qb-icon">🎙️</span>
+        <span class="qb-title">Stimme</span>
+        <span class="qb-desc">Live übersetzen</span>
       </button>
     </div>
   </div>
@@ -1919,6 +1970,14 @@
         <div class="bs-value" id="prog-fav-count">0</div>
         <div class="bs-label">⭐ Favoriten</div>
       </div>
+      <div class="big-stat">
+        <div class="bs-value" id="prog-dialogs">0</div>
+        <div class="bs-label">💬 Dialoge</div>
+      </div>
+      <div class="big-stat">
+        <div class="bs-value" id="prog-voice">0</div>
+        <div class="bs-label">🎙️ Stimme</div>
+      </div>
     </div>
 
     <div class="progress-card">
@@ -1934,6 +1993,11 @@
     <div class="progress-card">
       <h3>📊 Kategorie-Fortschritt</h3>
       <div id="cat-progress-list"></div>
+    </div>
+
+    <div class="progress-card">
+      <h3>🎯 Neue Ziele / New Goals</h3>
+      <div id="new-goals-list"></div>
     </div>
 
     <div class="progress-card">
@@ -2045,7 +2109,7 @@
     <div class="settings-section">
       <h3 class="settings-heading">ℹ️ App-Info</h3>
       <div class="settings-info">
-        <p><strong>LuiBrasil</strong> v6.0</p>
+        <p><strong>LuiBrasil</strong> v7.0</p>
         <p id="settings-word-count">665 Vokabeln &amp; Sätze · 21 Kategorien</p>
         <p>🇧🇷 Brasilianisches Portugiesisch lernen</p>
         <p style="margin-top:8px;font-size:0.78rem">Kostenlos · Offline nutzbar · Keine Anmeldung erforderlich</p>
@@ -2169,6 +2233,43 @@
       <br><br>
       <button class="cta-btn" onclick="App.showView('home')" style="max-width:280px;margin:0 auto">🏠 Startseite</button>
       <button class="cta-btn" style="max-width:280px;margin:8px auto;background:linear-gradient(135deg,#e84393,#ff69b4);box-shadow:0 4px 16px rgba(232,67,147,0.3)" onclick="App.startDialogSession()">🔄 Nochmal</button>
+    </div>
+  </div>
+
+  <!-- VOICE TRANSLATE -->
+  <div class="view" id="view-voice-translate">
+    <div class="flashcard-header">
+      <button class="back-btn" onclick="App.showView('home')">←</button>
+      <div style="font-size:0.9rem;font-weight:600;color:#fff">🎙️ Live-Sprachübersetzer</div>
+    </div>
+    <div style="padding:16px;display:flex;flex-direction:column;align-items:center;gap:16px">
+      <p style="font-size:0.85rem;color:var(--text-2);text-align:center;line-height:1.6">
+        Sprich Portugiesisch – die App zeigt die Übersetzung.<br>
+        <em>Speak Portuguese – see the German translation.</em>
+      </p>
+
+      <button id="voice-mic-btn" class="voice-mic-btn" onclick="App.toggleVoiceTranslate()">🎙️</button>
+      <div id="voice-status" style="font-size:0.85rem;color:var(--text-2);text-align:center;min-height:1.4em">Tippe auf das Mikrofon</div>
+
+      <div class="voice-result-card" id="voice-result-card" style="display:none">
+        <div style="font-size:0.78rem;font-weight:700;color:var(--text-2);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px">🇧🇷 Erkannt / Recognized</div>
+        <div id="voice-recognized" style="font-size:1.35rem;font-weight:800;color:var(--blue);margin:4px 0 8px"></div>
+        <button onclick="App.speakWord(document.getElementById('voice-recognized').textContent)" style="border:none;background:rgba(0,156,59,0.12);border-radius:8px;padding:5px 12px;cursor:pointer;font-size:0.9rem;margin-bottom:10px">🔊 Anhören</button>
+        <hr style="border:none;border-top:1px solid var(--border);margin:4px 0 10px">
+        <div style="font-size:0.78rem;font-weight:700;color:var(--text-2);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px">🇩🇪 Übersetzung / Translation</div>
+        <div id="voice-translation" style="font-size:1.05rem;font-weight:600;color:var(--text);margin:4px 0"></div>
+        <div id="voice-alt-translation" style="font-size:0.8rem;color:var(--text-2);margin-top:4px"></div>
+      </div>
+
+      <div style="background:var(--card);border-radius:var(--radius-sm);padding:14px 16px;border:1.5px solid var(--border);width:100%;max-width:360px">
+        <p style="font-size:0.82rem;font-weight:700;margin-bottom:8px;color:var(--text)">💡 Tipps / Tips</p>
+        <p style="font-size:0.78rem;color:var(--text-2);line-height:1.7">
+          • Sprich deutlich und in normalem Tempo<br>
+          • Einzelne Wörter oder kurze Sätze<br>
+          • Beste Unterstützung in Chrome / Edge<br>
+          • Benötigt Mikrofonerlaubnis im Browser
+        </p>
+      </div>
     </div>
   </div>
 
@@ -3963,7 +4064,8 @@ const App = (() => {
       prompt: { de: 'Du möchtest einen Kaffee bestellen.', en: 'You want to order a coffee.' },
       correct: 'Quero um café, por favor.',
       wrong: ['Obrigado, tchau!', 'Onde fica o banheiro?'],
-      translation: { de: 'Ich möchte einen Kaffee, bitte.', en: 'I would like a coffee, please.' }
+      translation: { de: 'Ich möchte einen Kaffee, bitte.', en: 'I would like a coffee, please.' },
+      reactions: { correct: { who: 'Kellner', text: 'Claro! Um cafezinho já vem! ☕😊' }, wrong: { who: 'Kellner', text: 'Desculpe, não entendi... O que você deseja? 😕' } }
     },
     {
       icon: '👋', context: { de: 'Jemanden kennenlernen', en: 'Meeting someone new' },
@@ -3971,7 +4073,8 @@ const App = (() => {
       prompt: { de: 'Stell dich vor und frag wie es ihr geht.', en: 'Introduce yourself and ask how she is.' },
       correct: 'Tudo bem! Eu me chamo João. E você?',
       wrong: ['Não entendo.', 'Onde fica o metrô?'],
-      translation: { de: 'Alles gut! Ich heiße João. Und du?', en: 'All good! My name is João. And you?' }
+      translation: { de: 'Alles gut! Ich heiße João. Und du?', en: 'All good! My name is João. And you?' },
+      reactions: { correct: { who: 'Ana', text: 'Que prazer, João! Eu estou ótima, obrigada! 😄' }, wrong: { who: 'Ana', text: 'Hmm, tudo bem? Você está bem? 😟' } }
     },
     {
       icon: '🛍️', context: { de: 'Im Geschäft', en: 'At the shop' },
@@ -3979,7 +4082,8 @@ const App = (() => {
       prompt: { de: 'Du möchtest wissen, wie viel etwas kostet.', en: 'You want to know how much something costs.' },
       correct: 'Quanto custa isso?',
       wrong: ['Eu não falo português.', 'Um suco de laranja, por favor.'],
-      translation: { de: 'Wie viel kostet das?', en: 'How much does this cost?' }
+      translation: { de: 'Wie viel kostet das?', en: 'How much does this cost?' },
+      reactions: { correct: { who: 'Vendedor', text: 'Isso custa vinte reais. Boa escolha! 💰' }, wrong: { who: 'Vendedor', text: 'Não entendi. Posso ajudar com algo mais? 🤔' } }
     },
     {
       icon: '🗺️', context: { de: 'Nach dem Weg fragen', en: 'Asking for directions' },
@@ -3990,7 +4094,8 @@ const App = (() => {
       prompt: { de: 'Du möchtest nach dem Bahnhof fragen.', en: 'You want to ask about the train station.' },
       correct: 'Onde fica a estação de trem?',
       wrong: ['Quero uma mesa para dois.', 'A conta, por favor.'],
-      translation: { de: 'Wo ist der Bahnhof?', en: 'Where is the train station?' }
+      translation: { de: 'Wo ist der Bahnhof?', en: 'Where is the train station?' },
+      reactions: { correct: { who: 'Morador', text: 'A estação fica ali na segunda rua à direita! 🗺️' }, wrong: { who: 'Morador', text: 'Hmm, não entendi. Pode repetir? 😕' } }
     },
     {
       icon: '🍽️', context: { de: 'Im Restaurant', en: 'At the restaurant' },
@@ -3998,7 +4103,8 @@ const App = (() => {
       prompt: { de: 'Du bist mit einer weiteren Person da.', en: 'You are there with one other person.' },
       correct: 'Para duas pessoas, por favor.',
       wrong: ['Sem açúcar, por favor.', 'Você fala inglês?'],
-      translation: { de: 'Für zwei Personen, bitte.', en: 'For two people, please.' }
+      translation: { de: 'Für zwei Personen, bitte.', en: 'For two people, please.' },
+      reactions: { correct: { who: 'Garçom', text: 'Perfeito! Por aqui, por favor. Sua mesa está pronta! 🍽️' }, wrong: { who: 'Garçom', text: 'Desculpe, quantas pessoas são? 😕' } }
     },
     {
       icon: '🚕', context: { de: 'Im Taxi', en: 'In a taxi' },
@@ -4006,7 +4112,8 @@ const App = (() => {
       prompt: { de: 'Du willst zum Flughafen fahren.', en: 'You want to go to the airport.' },
       correct: 'Para o aeroporto, por favor.',
       wrong: ['Quero comprar uma passagem.', 'Tem ar-condicionado?'],
-      translation: { de: 'Zum Flughafen, bitte.', en: 'To the airport, please.' }
+      translation: { de: 'Zum Flughafen, bitte.', en: 'To the airport, please.' },
+      reactions: { correct: { who: 'Motorista', text: 'Certo! Aeroporto em uns vinte minutos. Pode deixar! 🚕' }, wrong: { who: 'Motorista', text: 'Para onde mesmo? Não entendi bem. 🤔' } }
     },
     {
       icon: '🏨', context: { de: 'Im Hotel', en: 'At the hotel' },
@@ -4014,7 +4121,8 @@ const App = (() => {
       prompt: { de: 'Du hast eine Reservierung unter deinem Namen.', en: 'You have a reservation under your name.' },
       correct: 'Sim, tenho uma reserva no meu nome.',
       wrong: ['Preciso de ajuda.', 'Onde fica o restaurante?'],
-      translation: { de: 'Ja, ich habe eine Reservierung auf meinen Namen.', en: 'Yes, I have a reservation under my name.' }
+      translation: { de: 'Ja, ich habe eine Reservierung auf meinen Namen.', en: 'Yes, I have a reservation under my name.' },
+      reactions: { correct: { who: 'Recepcionista', text: 'Ótimo! Encontrei aqui. Seu quarto é o 204. Bem-vindo! 🏨' }, wrong: { who: 'Recepcionista', text: 'Hmm, tem reserva? Pode me dizer o nome? 🤔' } }
     },
     {
       icon: '🏥', context: { de: 'Beim Arzt', en: 'At the doctor' },
@@ -4022,7 +4130,8 @@ const App = (() => {
       prompt: { de: 'Du hast Kopfschmerzen.', en: 'You have a headache.' },
       correct: 'Estou com dor de cabeça.',
       wrong: ['Preciso de um táxi.', 'Quero fazer um tour.'],
-      translation: { de: 'Ich habe Kopfschmerzen.', en: 'I have a headache.' }
+      translation: { de: 'Ich habe Kopfschmerzen.', en: 'I have a headache.' },
+      reactions: { correct: { who: 'Médico', text: 'Entendo. Vou te receitar um analgésico. Descanse bastante! 💊' }, wrong: { who: 'Médico', text: 'Não entendi. O que está sentindo exatamente? 😕' } }
     },
     {
       icon: '📱', context: { de: 'Am Telefon', en: 'On the phone' },
@@ -4030,7 +4139,8 @@ const App = (() => {
       prompt: { de: 'Nenn deinen Namen und frag nach Maria.', en: 'Give your name and ask for Maria.' },
       correct: 'Aqui é João. Posso falar com a Maria?',
       wrong: ['Tchau!', 'Não sei.'],
-      translation: { de: 'Hier ist João. Kann ich mit Maria sprechen?', en: 'This is João. Can I speak to Maria?' }
+      translation: { de: 'Hier ist João. Kann ich mit Maria sprechen?', en: 'This is João. Can I speak to Maria?' },
+      reactions: { correct: { who: 'Atendente', text: 'Um momento, João. Vou chamar a Maria! 📞' }, wrong: { who: 'Atendente', text: 'Desculpe, com quem eu falo? Pode repetir? 😕' } }
     },
     {
       icon: '🛒', context: { de: 'Im Supermarkt', en: 'At the supermarket' },
@@ -4038,7 +4148,8 @@ const App = (() => {
       prompt: { de: 'Du suchst die Bäckerei-Abteilung.', en: 'You are looking for the bakery section.' },
       correct: 'Onde fica a padaria?',
       wrong: ['Quanto tempo?', 'Quero pagar com cartão.'],
-      translation: { de: 'Wo ist die Bäckerei?', en: 'Where is the bakery?' }
+      translation: { de: 'Wo ist die Bäckerei?', en: 'Where is the bakery?' },
+      reactions: { correct: { who: 'Funcionário', text: 'A padaria fica no fundo, à esquerda! 🥖' }, wrong: { who: 'Funcionário', text: 'Não entendi. Em que posso ajudar? 🤔' } }
     },
     {
       icon: '☀️', context: { de: 'Smalltalk über das Wetter', en: 'Small talk about the weather' },
@@ -4046,7 +4157,8 @@ const App = (() => {
       prompt: { de: 'Du stimmst zu und sagst, dass du die Sonne magst.', en: 'You agree and say you like the sun.' },
       correct: 'É, faz muito calor! Mas eu adoro o sol.',
       wrong: ['Está chovendo muito.', 'Preciso de um guarda-chuva.'],
-      translation: { de: 'Ja, es ist sehr heiß! Aber ich liebe die Sonne.', en: 'Yes, it\'s very hot! But I love the sun.' }
+      translation: { de: 'Ja, es ist sehr heiß! Aber ich liebe die Sonne.', en: 'Yes, it\'s very hot! But I love the sun.' },
+      reactions: { correct: { who: 'Vizinho', text: 'Eu também! Adoro os dias ensolarados no Brasil! ☀️😄' }, wrong: { who: 'Vizinho', text: 'Hmm, não parece combinar com hoje! 😅' } }
     },
     {
       icon: '👋', context: { de: 'Sich verabschieden', en: 'Saying goodbye' },
@@ -4054,7 +4166,8 @@ const App = (() => {
       prompt: { de: 'Verabschiede dich herzlich.', en: 'Say a warm goodbye.' },
       correct: 'Igualmente! Cuida-se! Até mais!',
       wrong: ['Não entendi.', 'Quanto custa?'],
-      translation: { de: 'Ebenso! Pass auf dich auf! Bis bald!', en: 'Same to you! Take care! See you!' }
+      translation: { de: 'Ebenso! Pass auf dich auf! Bis bald!', en: 'Same to you! Take care! See you!' },
+      reactions: { correct: { who: 'Amigo', text: 'Você também! Foi um prazer! Até a próxima! 👋😊' }, wrong: { who: 'Amigo', text: 'Hmm, tá bem... tchau então! 😅' } }
     }
   ];
 
@@ -4574,6 +4687,15 @@ const App = (() => {
     const favEl = document.getElementById('prog-fav-count');
     if (favEl) favEl.textContent = favCount;
 
+    // Dialogs and voice translate counts
+    const dialogsEl = document.getElementById('prog-dialogs');
+    if (dialogsEl) dialogsEl.textContent = state.dialogsCompleted || 0;
+    const voiceEl = document.getElementById('prog-voice');
+    if (voiceEl) voiceEl.textContent = state.voiceTranslateUsed || 0;
+
+    // New Goals section
+    renderNewGoals();
+
     // Level test certificates in progress
     const certsDiv = document.getElementById('prog-level-test-certs');
     if (certsDiv) {
@@ -4619,6 +4741,12 @@ const App = (() => {
     { id:'combo_10',    icon:'💥', name:'Unaufhaltsam!',        desc:'10 Antworten in Folge richtig',    check: s => (s.bestCombo || 0) >= 10 },
     { id:'missions_3',  icon:'🎁', name:'Auftrag erfüllt',      desc:'3 Tages-Missionen abgeschlossen',  check: s => (s.totalMissionsCompleted || 0) >= 3 },
     { id:'missions_10', icon:'🌈', name:'Missions-Profi',       desc:'10 Tages-Missionen abgeschlossen', check: s => (s.totalMissionsCompleted || 0) >= 10 },
+    { id:'dialog_1',    icon:'💬', name:'Erstes Gespräch',      desc:'1 Dialog abgeschlossen',           check: s => (s.dialogsCompleted || 0) >= 1 },
+    { id:'dialog_5',    icon:'🗣️', name:'Gesprächspartner',    desc:'5 Dialoge abgeschlossen',          check: s => (s.dialogsCompleted || 0) >= 5 },
+    { id:'dialog_10',   icon:'🎭', name:'Dialog-Profi',         desc:'10 Dialoge abgeschlossen',         check: s => (s.dialogsCompleted || 0) >= 10 },
+    { id:'dialog_20',   icon:'🌍', name:'Konversations-Meister',desc:'20 Dialoge abgeschlossen',         check: s => (s.dialogsCompleted || 0) >= 20 },
+    { id:'voice_1',     icon:'🎙️', name:'Erste Stimme',        desc:'Live-Sprachübersetzer 1× benutzt', check: s => (s.voiceTranslateUsed || 0) >= 1 },
+    { id:'voice_10',    icon:'🎤', name:'Stimm-Meister',        desc:'Live-Sprachübersetzer 10× benutzt',check: s => (s.voiceTranslateUsed || 0) >= 10 },
   ];
 
   function checkAchievements() {
@@ -4650,6 +4778,35 @@ const App = (() => {
       }).join('') + '</div>';
   }
 
+  function renderNewGoals() {
+    const container = document.getElementById('new-goals-list');
+    if (!container) return;
+    const dlgDone = state.dialogsCompleted || 0;
+    const voiceDone = state.voiceTranslateUsed || 0;
+    const goals = [
+      { icon: '💬', name: 'Dialog-Einsteiger',    desc: '1 Dialog abschließen',          current: dlgDone,   target: 1  },
+      { icon: '🗣️', name: 'Gesprächspartner',     desc: '5 Dialoge abschließen',         current: dlgDone,   target: 5  },
+      { icon: '🎭', name: 'Dialog-Profi',          desc: '10 Dialoge abschließen',        current: dlgDone,   target: 10 },
+      { icon: '🌍', name: 'Konversations-Meister', desc: '20 Dialoge abschließen',        current: dlgDone,   target: 20 },
+      { icon: '🎙️', name: 'Erste Stimme',         desc: 'Stimme 1× benutzen',            current: voiceDone, target: 1  },
+      { icon: '🎤', name: 'Stimm-Meister',         desc: 'Stimme 10× benutzen',           current: voiceDone, target: 10 },
+    ];
+    container.innerHTML = goals.map(g => {
+      const done = g.current >= g.target;
+      const pct = Math.min(100, Math.round((g.current / g.target) * 100));
+      return `<div style="margin-bottom:14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <span style="font-size:0.88rem;font-weight:600">${g.icon} ${g.name} ${done ? '✅' : ''}</span>
+          <span style="font-size:0.78rem;color:var(--text-2)">${g.current}/${g.target}</span>
+        </div>
+        <div style="font-size:0.75rem;color:var(--text-2);margin-bottom:4px">${g.desc}</div>
+        <div style="background:var(--border);border-radius:6px;height:7px;overflow:hidden">
+          <div style="background:${done ? 'var(--success)' : 'var(--blue)'};height:100%;width:${pct}%;border-radius:6px;transition:width 0.4s"></div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
   function resetProgress() {
     if (confirm('Fortschritt wirklich zurücksetzen? / Really reset progress?')) {
       state = {
@@ -4662,7 +4819,8 @@ const App = (() => {
         achievements: {}, favorites: {}, levelTestCerts: {},
         sessionsCompleted: 0, dailySessions: 0, dailySessionDate: null,
         bestCombo: 0, totalMissionsCompleted: 0,
-        dailyMissions: [], dailyMissionsDate: null, dailyMissionsProgress: {}
+        dailyMissions: [], dailyMissionsDate: null, dailyMissionsProgress: {},
+        dialogsCompleted: 0, voiceTranslateUsed: 0
       };
       saveState(state);
       generateDailyMissions();
@@ -4907,6 +5065,127 @@ const App = (() => {
     const btn = document.getElementById('fc-speak-btn');
     if (btn) { btn.classList.add('speaking'); setTimeout(() => btn.classList.remove('speaking'), 1500); }
     speakWord(word.pt);
+  }
+
+  /* ── VOICE TRANSLATE ─────────────────────────────────────────────────────── */
+  let voiceRecognition = null;
+  let voiceListening = false;
+
+  function lookupVoiceTranslation(spokenText) {
+    const lang = nativeLang();
+    const spoken = normAccents(spokenText).trim();
+    // Full exact match first, then partial match on any slash/comma-separated token
+    let match = WORDS.find(w => normAccents(w.pt) === spoken);
+    if (!match) {
+      match = WORDS.find(w => {
+        const parts = w.pt.split(/[/,\s]+/).map(p => normAccents(p));
+        return parts.some(p => p === spoken || spoken.startsWith(p) || p.startsWith(spoken));
+      });
+    }
+    if (match) {
+      return { pt: match.pt, translation: lang === 'de' ? match.de : match.en, pron: match.pron || '' };
+    }
+    return null;
+  }
+
+  function toggleVoiceTranslate() {
+    if (voiceListening) {
+      stopVoiceTranslate();
+    } else {
+      startVoiceListening();
+    }
+  }
+
+  function startVoiceListening() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      showToast('Spracherkennung nicht unterstützt. Bitte Chrome/Edge verwenden.');
+      document.getElementById('voice-status').textContent = '⚠️ Nicht unterstützt – bitte Chrome oder Edge benutzen';
+      return;
+    }
+    voiceRecognition = new SpeechRecognition();
+    voiceRecognition.lang = 'pt-BR';
+    voiceRecognition.interimResults = true;
+    voiceRecognition.maxAlternatives = 3;
+    voiceRecognition.continuous = false;
+
+    voiceListening = true;
+    const micBtn = document.getElementById('voice-mic-btn');
+    if (micBtn) { micBtn.classList.add('listening'); micBtn.textContent = '⏹️'; }
+    document.getElementById('voice-status').textContent = '🔴 Aufnahme läuft – sprich jetzt Portugiesisch…';
+
+    voiceRecognition.onresult = function(event) {
+      const results = event.results;
+      const lastResult = results[results.length - 1];
+      const interim = !lastResult.isFinal;
+      const transcript = lastResult[0].transcript.trim();
+
+      if (interim) {
+        document.getElementById('voice-status').textContent = '👂 ' + transcript + '…';
+        return;
+      }
+
+      // Final result
+      const resultCard = document.getElementById('voice-result-card');
+      const recognizedEl = document.getElementById('voice-recognized');
+      const translationEl = document.getElementById('voice-translation');
+      const altEl = document.getElementById('voice-alt-translation');
+
+      recognizedEl.textContent = transcript;
+      resultCard.style.display = '';
+
+      // Try all alternatives for a match
+      let found = null;
+      for (let i = 0; i < lastResult.length; i++) {
+        found = lookupVoiceTranslation(lastResult[i].transcript.trim());
+        if (found) break;
+      }
+
+      if (found) {
+        translationEl.textContent = found.translation;
+        altEl.textContent = found.pron ? '[ ' + found.pron + ' ]' : '';
+      } else {
+        translationEl.textContent = '—';
+        altEl.textContent = 'Kein Eintrag gefunden / No entry found';
+      }
+      // Track usage and check achievements
+      state.voiceTranslateUsed = (state.voiceTranslateUsed || 0) + 1;
+      saveState(state);
+      checkAchievements();
+      document.getElementById('voice-status').textContent = '✅ Erkannt! Tippe nochmal auf das Mikrofon.';
+    };
+
+    voiceRecognition.onerror = function(event) {
+      const msgs = {
+        'not-allowed': '⚠️ Mikrofonzugriff verweigert – bitte erlauben.',
+        'no-speech':   '🔇 Kein Ton erkannt – bitte nochmal versuchen.',
+        'network':     '🌐 Netzwerkfehler – bitte online sein.',
+      };
+      document.getElementById('voice-status').textContent = msgs[event.error] || ('Fehler: ' + event.error);
+      stopVoiceTranslate();
+    };
+
+    voiceRecognition.onend = function() {
+      stopVoiceTranslate(false);
+    };
+
+    try {
+      voiceRecognition.start();
+    } catch (e) {
+      console.warn('LuiBrasil: SpeechRecognition start error', e);
+      document.getElementById('voice-status').textContent = '⚠️ Spracherkennung konnte nicht gestartet werden.';
+      stopVoiceTranslate();
+    }
+  }
+
+  function stopVoiceTranslate(resetStatus = true) {
+    voiceListening = false;
+    if (voiceRecognition) { try { voiceRecognition.stop(); } catch(e){ console.warn('LuiBrasil: SpeechRecognition stop error', e); } voiceRecognition = null; }
+    const micBtn = document.getElementById('voice-mic-btn');
+    if (micBtn) { micBtn.classList.remove('listening'); micBtn.textContent = '🎙️'; }
+    if (resetStatus) {
+      document.getElementById('voice-status').textContent = 'Tippe auf das Mikrofon';
+    }
   }
 
   /* ── GRAMMAR DATA & RENDER ───────────────────────────────────────────────── */
@@ -5979,6 +6258,19 @@ const App = (() => {
       fb.innerHTML = `❌ Richtige Antwort: <strong>${esc(dlg.correct)}</strong>${translation ? ' – ' + esc(translation) : ''}`;
       penaltyXP();
     }
+
+    // Show NPC reaction bubble
+    if (dlg.reactions) {
+      const reactionData = opt.isCorrect ? dlg.reactions.correct : dlg.reactions.wrong;
+      if (reactionData) {
+        const bubblesEl = document.getElementById('dlg-bubbles');
+        const reactionEl = document.createElement('div');
+        reactionEl.className = 'dlg-reaction ' + (opt.isCorrect ? 'reaction-correct' : 'reaction-wrong');
+        reactionEl.innerHTML = `<span class="dlg-reaction-who">${esc(reactionData.who)}:</span>${esc(reactionData.text)}`;
+        bubblesEl.appendChild(reactionEl);
+      }
+    }
+
     speakWord(dlg.correct);
     const dlgNextBtn = document.getElementById('dlg-next-btn');
     dlgNextBtn.classList.remove('hidden');
@@ -6007,6 +6299,8 @@ const App = (() => {
       pct >= 50 ? `Gut gemacht! ${pct}% richtig 💪` :
                   `Übe weiter! ${pct}% richtig 📚`;
     if (session.xpEarned > 0) addXP(session.xpEarned, window.innerWidth / 2, window.innerHeight / 3);
+    state.dialogsCompleted = (state.dialogsCompleted || 0) + 1;
+    saveState(state);
     trackSessionCompleted();
     renderHeaderStats();
     checkAchievements();
@@ -6483,7 +6777,8 @@ const App = (() => {
       closeLevelUp,
       toggleGrammarCard,
       startLueckentext, checkLueckentext, nextLueckentext, ltHint,
-      startConjugationTrainer, checkConjugation, nextConjugation, exitConjugation, conjHint, setConjTense
+      startConjugationTrainer, checkConjugation, nextConjugation, exitConjugation, conjHint, setConjTense,
+      toggleVoiceTranslate, stopVoiceTranslate
     };
   }
 
