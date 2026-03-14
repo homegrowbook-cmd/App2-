@@ -3171,7 +3171,7 @@ const WORDS = [
   { id:627, cat:'ocean', pt:'Onda',            de:'Welle',             en:'Wave',            pron:'ÔN-da',            ex_pt:'As ondas estavam muito altas ontem.',               ex_de:'Die Wellen waren gestern sehr hoch.',               ex_en:'The waves were very high yesterday.' },
   { id:628, cat:'ocean', pt:'Praia',           de:'Strand',            en:'Beach',           pron:'PRÂ-ia',           ex_pt:'Vamos à praia no final de semana.',                 ex_de:'Wir fahren am Wochenende an den Strand.',           ex_en:'We are going to the beach on the weekend.' },
   { id:629, cat:'ocean', pt:'Coral',           de:'Koralle',           en:'Coral',           pron:'ko-RÁL',           ex_pt:'O recife de coral abriga milhares de espécies.',    ex_de:'Das Korallenriff beherbergt Tausende von Arten.',   ex_en:'The coral reef is home to thousands of species.' },
-  { id:630, cat:'ocean', pt:'Tubarão',         de:'Hai',               en:'Shark',           pron:'tu-ba-RÃO',        ex_pt:'O tubarão-branco é o maior predador do oceano.',   ex_de:'Der Weiße Hai ist der größte Raubtier des Ozeans.', ex_en:'The great white shark is the ocean\'s top predator.' },
+  { id:630, cat:'ocean', pt:'Tubarão',         de:'Hai',               en:'Shark',           pron:'tu-ba-RÃO',        ex_pt:'O tubarão-branco é o maior predador do oceano.',   ex_de:'Der Weiße Hai ist das größte Raubtier des Ozeans.', ex_en:'The great white shark is the ocean\'s top predator.' },
   { id:631, cat:'ocean', pt:'Golfinho',        de:'Delphin',           en:'Dolphin',         pron:'gol-FÍ-nhu',       ex_pt:'Os golfinhos são animais muito inteligentes.',      ex_de:'Delfine sind sehr intelligente Tiere.',             ex_en:'Dolphins are very intelligent animals.' },
   { id:632, cat:'ocean', pt:'Baleia',          de:'Wal',               en:'Whale',           pron:'ba-LÉI-a',         ex_pt:'A baleia azul é o maior animal do mundo.',          ex_de:'Der Blauwal ist das größte Tier der Welt.',         ex_en:'The blue whale is the largest animal in the world.' },
   { id:633, cat:'ocean', pt:'Tartaruga marinha',de:'Meeresschildkröte',en:'Sea turtle',      pron:'tar-ta-RÚ-ga ma-RÍ-nha',ex_pt:'A tartaruga marinha volta à praia onde nasceu.',ex_de:'Die Meeresschildkröte kehrt an den Strand zurück, wo sie geboren wurde.',ex_en:'The sea turtle returns to the beach where it was born.' },
@@ -3645,6 +3645,11 @@ const App = (() => {
   function daysBetween(a, b) {
     const msPerDay = 86400000;
     return Math.floor((new Date(b) - new Date(a)) / msPerDay);
+  }
+
+  // Shared accent-insensitive normalization for answer checking
+  function normAccents(s) {
+    return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
   }
 
   function updateStreak() {
@@ -6248,10 +6253,7 @@ const App = (() => {
     const input = document.getElementById('conj-input');
     const raw = (input.value || '').trim();
 
-    function norm(s) {
-      return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
-    }
-    const isCorrect = norm(raw) === norm(correct);
+    const isCorrect = normAccents(raw) === normAccents(correct);
 
     input.disabled = true;
     const revealEl = document.getElementById('conj-reveal');
