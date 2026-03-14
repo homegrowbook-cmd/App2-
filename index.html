@@ -37,6 +37,7 @@
 
     html, body {
       height: 100%;
+      overflow: hidden;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
@@ -48,7 +49,7 @@
     #app {
       max-width: 480px;
       margin: 0 auto;
-      min-height: 100vh;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       background: var(--bg);
@@ -539,7 +540,8 @@
     }
 
     .quiz-question-card .q-label { font-size: 0.8rem; opacity: 0.7; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.8px; }
-    .quiz-question-card .q-word { font-size: 2.2rem; font-weight: 800; }
+    .quiz-question-card .q-word { font-size: 2.2rem; font-weight: 800; line-height: 1.2; }
+    .quiz-question-card .q-word.q-long { font-size: 1.4rem; }
     .quiz-question-card .q-category { font-size: 0.82rem; opacity: 0.65; margin-top: 8px; }
 
     .quiz-options {
@@ -3470,6 +3472,11 @@ const App = (() => {
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
+  function smoothScrollIntoView(el) {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    el.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'nearest' });
+  }
+
   const WORD_OF_DAY_WORDS = [
     { pt:'Saudade',      de:'Sehnsucht',              en:'Longing / Missing',        pron:'saw-DÁ-dʒi' },
     { pt:'Jeitinho',     de:'Erfinderischer Weg',     en:'Clever little way',        pron:'zhei-TÎ-nhu' },
@@ -3898,7 +3905,9 @@ const App = (() => {
         .map(w => w.pt);
     }
     document.getElementById('quiz-q-label').textContent = qLabel;
-    document.getElementById('quiz-q-word').textContent = qWord;
+    const qWordEl = document.getElementById('quiz-q-word');
+    qWordEl.textContent = qWord;
+    qWordEl.classList.toggle('q-long', qWord.length > 20);
     document.getElementById('quiz-q-category').textContent = cat ? cat.icon + ' ' + cat.name[nativeLang()] : '';
 
     // Generate 4 options: 1 correct + 3 random wrong
@@ -3906,6 +3915,8 @@ const App = (() => {
 
     const container = document.getElementById('quiz-options');
     container.innerHTML = '';
+    const hasLongOption = options.some(o => o.length > 20);
+    container.style.gridTemplateColumns = hasLongOption ? '1fr' : '1fr 1fr';
     options.forEach(opt => {
       const btn = document.createElement('button');
       btn.className = 'quiz-option';
@@ -3956,7 +3967,9 @@ const App = (() => {
     }
 
     rateWord(word.id, isCorrect);
-    document.getElementById('quiz-next-btn').classList.remove('hidden');
+    const nextBtn = document.getElementById('quiz-next-btn');
+    nextBtn.classList.remove('hidden');
+    smoothScrollIntoView(nextBtn);
   }
 
   function nextQuizQuestion() {
@@ -5201,7 +5214,9 @@ const App = (() => {
     const correctAnswer = isRev ? (q[lang] || q.de) : q.pt;
 
     document.getElementById('lt-q-label').textContent = isRev ? 'Übersetze ins Deutsche' : 'Übersetze ins Portugiesische';
-    document.getElementById('lt-q-word').textContent = questionText;
+    const ltQWordEl = document.getElementById('lt-q-word');
+    ltQWordEl.textContent = questionText;
+    ltQWordEl.classList.toggle('q-long', questionText.length > 20);
     const cat = CATEGORIES.find(c => c.id === q.cat);
     document.getElementById('lt-q-category').textContent = cat ? cat.name[lang] || cat.name.de : q.cat;
 
@@ -5212,6 +5227,8 @@ const App = (() => {
     ]);
 
     const optionsEl = document.getElementById('lt-options');
+    const hasLongOpt = options.some(o => o.length > 20);
+    optionsEl.style.gridTemplateColumns = hasLongOpt ? '1fr' : '1fr 1fr';
     optionsEl.innerHTML = options.map(opt => `
       <button class="quiz-option" onclick="App.answerLevelTest(this,${JSON.stringify(opt)},${JSON.stringify(correctAnswer)})">${esc(opt)}</button>
     `).join('');
@@ -5239,9 +5256,11 @@ const App = (() => {
     }
     ltSession.answered++;
     document.getElementById('lt-score-val').textContent = `${ltSession.correct} / ${ltSession.answered}`;
-    document.getElementById('lt-next-btn').classList.remove('hidden');
+    const ltNextBtn = document.getElementById('lt-next-btn');
+    ltNextBtn.classList.remove('hidden');
+    smoothScrollIntoView(ltNextBtn);
     if (ltSession.current >= ltSession.questions.length - 1) {
-      document.getElementById('lt-next-btn').textContent = 'Auswertung →';
+      ltNextBtn.textContent = 'Auswertung →';
     }
   }
 
@@ -5496,7 +5515,9 @@ const App = (() => {
       penaltyXP(buttonRect.left + buttonRect.width / 2, buttonRect.top);
     }
     speakWord(dlg.correct);
-    document.getElementById('dlg-next-btn').classList.remove('hidden');
+    const dlgNextBtn = document.getElementById('dlg-next-btn');
+    dlgNextBtn.classList.remove('hidden');
+    smoothScrollIntoView(dlgNextBtn);
   }
 
   function nextDialogQuestion() {
