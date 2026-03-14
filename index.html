@@ -1540,6 +1540,39 @@
     .qb-icon  { font-size: 1.6rem; line-height: 1; }
     .qb-title { font-size: 0.9rem; font-weight: 700; }
     .qb-desc  { font-size: 0.7rem; opacity: 0.85; font-weight: 500; }
+
+    /* ─── Conjugation Trainer ─────────────────────────────────────────────── */
+    .conj-verb-card {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--light-blue) 100%);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      text-align: center;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+    .conj-verb-inf { font-size: 2rem; font-weight: 900; letter-spacing: -0.5px; }
+    .conj-verb-trans { font-size: 1rem; opacity: 0.85; margin-top: 4px; }
+    .conj-tense-label {
+      font-size: 0.82rem; font-weight: 700; text-transform: uppercase;
+      color: var(--text-2); letter-spacing: 0.5px; margin-bottom: 10px;
+    }
+    .conj-subject-label {
+      font-size: 1.3rem; font-weight: 800; color: var(--blue);
+      text-align: center; margin: 8px 0 12px;
+    }
+    .conj-tense-btns {
+      display: flex; gap: 8px; margin-bottom: 16px; justify-content: center;
+    }
+    .conj-tense-btn {
+      flex: 1; max-width: 110px; padding: 8px 4px;
+      border: 2px solid var(--border); border-radius: 8px;
+      background: var(--card); color: var(--text);
+      font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: var(--transition);
+    }
+    .conj-tense-btn.active {
+      border-color: var(--blue); background: var(--blue); color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -1647,7 +1680,12 @@
       <button class="quick-btn" style="background:linear-gradient(135deg,#374151,#6b7280)" onclick="App.showView('wordlist')">
         <span class="qb-icon">📋</span>
         <span class="qb-title">Wortliste</span>
-        <span class="qb-desc" id="home-wl-desc">Alle 623 Vokabeln</span>
+        <span class="qb-desc" id="home-wl-desc">Alle 665 Vokabeln</span>
+      </button>
+      <button class="quick-btn" style="background:linear-gradient(135deg,#7c3aed,#5b21b6)" onclick="App.startConjugationTrainer()" aria-label="Konjugations-Trainer starten – Verbformen üben">
+        <span class="qb-icon">🔤</span>
+        <span class="qb-title">Konjugation</span>
+        <span class="qb-desc">Verbformen üben</span>
       </button>
     </div>
   </div>
@@ -1905,9 +1943,10 @@
 
     <div class="progress-card">
       <h3>🎓 Level-Test / Placement Test</h3>
-      <p style="font-size:0.82rem;color:var(--text-2);margin-bottom:12px">Teste dein Niveau! Beantworte 20 Fragen und erhalte ein A1- oder A2-Zertifikat.</p>
+      <p style="font-size:0.82rem;color:var(--text-2);margin-bottom:12px">Teste dein Niveau! Beantworte 20 Fragen und erhalte ein A1-, A2- oder B1-Zertifikat.</p>
       <button class="cta-btn" onclick="App.startLevelTest('A1')" style="max-width:280px;background:linear-gradient(135deg,var(--green),var(--light-green))">🎓 A1 Test starten</button>
       <button class="cta-btn" onclick="App.startLevelTest('A2')" style="max-width:280px;margin-top:8px;background:linear-gradient(135deg,var(--blue),var(--light-blue))">🎓 A2 Test starten</button>
+      <button class="cta-btn" onclick="App.startLevelTest('B1')" style="max-width:280px;margin-top:8px;background:linear-gradient(135deg,#7c3aed,#5b21b6)">🎓 B1 Test starten</button>
       <div id="prog-level-test-certs" style="margin-top:12px"></div>
     </div>
 
@@ -2006,8 +2045,8 @@
     <div class="settings-section">
       <h3 class="settings-heading">ℹ️ App-Info</h3>
       <div class="settings-info">
-        <p><strong>LuiBrasil</strong> v5.0</p>
-        <p id="settings-word-count">623 Vokabeln &amp; Sätze · 19 Kategorien</p>
+        <p><strong>LuiBrasil</strong> v6.0</p>
+        <p id="settings-word-count">665 Vokabeln &amp; Sätze · 21 Kategorien</p>
         <p>🇧🇷 Brasilianisches Portugiesisch lernen</p>
         <p style="margin-top:8px;font-size:0.78rem">Kostenlos · Offline nutzbar · Keine Anmeldung erforderlich</p>
       </div>
@@ -2170,6 +2209,54 @@
     <div id="wordlist-items" style="margin-top:4px"></div>
   </div>
 
+  <!-- CONJUGATION TRAINER -->
+  <div class="view" id="view-conjugation">
+    <div class="flashcard-header">
+      <button class="back-btn" onclick="App.exitConjugation()">←</button>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-label" id="conj-progress-label">1 / 20</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="conj-progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+    <div id="conj-session-area">
+      <div class="quiz-score-bar">
+        <span>Richtig / Correct</span>
+        <span class="quiz-score-val" id="conj-score-val">0</span>
+      </div>
+      <div class="conj-tense-btns">
+        <button class="conj-tense-btn active" id="conj-btn-present" onclick="App.setConjTense('present')">Gegenwart</button>
+        <button class="conj-tense-btn" id="conj-btn-past"    onclick="App.setConjTense('past')">Vergangenheit</button>
+        <button class="conj-tense-btn" id="conj-btn-future"  onclick="App.setConjTense('future')">Zukunft</button>
+      </div>
+      <div class="conj-verb-card">
+        <div class="conj-tense-label" id="conj-tense-label">Gegenwart / Present</div>
+        <div class="conj-verb-inf" id="conj-verb-inf">—</div>
+        <div class="conj-verb-trans" id="conj-verb-trans">—</div>
+      </div>
+      <div class="conj-subject-label" id="conj-subject">eu</div>
+      <div class="typing-input-wrap">
+        <input class="typing-input" id="conj-input" type="text" placeholder="Konjugierte Form eingeben…"
+          autocomplete="off" autocorrect="off" spellcheck="false"
+          onkeydown="if(event.key==='Enter')App.checkConjugation()" />
+        <button class="speak-btn" id="conj-hint-btn" onclick="App.conjHint()" title="Tipp / Hint">💡</button>
+      </div>
+      <div class="typing-reveal" id="conj-reveal"></div>
+      <button class="cta-btn" id="conj-check-btn" onclick="App.checkConjugation()">Prüfen ✓</button>
+      <button class="cta-btn hidden" id="conj-next-btn" style="background:linear-gradient(135deg,var(--blue),var(--light-blue));box-shadow:0 4px 16px rgba(0,39,118,0.3)" onclick="App.nextConjugation()">Weiter →</button>
+    </div>
+    <div class="session-complete hidden" id="conj-complete">
+      <div class="trophy">🔤</div>
+      <h2>Konjugations-Training beendet!</h2>
+      <p id="conj-complete-msg">Gut gemacht!</p>
+      <div class="xp-earned" id="conj-xp">+0 XP</div>
+      <br><br>
+      <button class="cta-btn" onclick="App.showView('home')" style="max-width:280px;margin:0 auto">🏠 Startseite</button>
+      <button class="cta-btn" style="max-width:280px;margin:8px auto;background:linear-gradient(135deg,var(--blue),var(--light-blue));box-shadow:0 4px 16px rgba(0,39,118,0.3)" onclick="App.startConjugationTrainer()">🔄 Nochmal</button>
+    </div>
+  </div>
+
   <!-- LEVEL TEST -->
   <div class="view" id="view-leveltest">
     <div class="flashcard-header">
@@ -2290,6 +2377,8 @@ const CATEGORIES = [
   { id: 'health',    icon: '🏥', level: 'A2', name: { de: 'Gesundheit',    en: 'Health'           } },
   { id: 'tech',      icon: '💻', level: 'B1', name: { de: 'Technologie',   en: 'Technology'       } },
   { id: 'sports',    icon: '⚽', level: 'A2', name: { de: 'Sport',         en: 'Sports'           } },
+  { id: 'ocean',     icon: '🌊', level: 'B1', name: { de: 'Ozean & Meer',  en: 'Ocean & Sea'      } },
+  { id: 'society',   icon: '🌍', level: 'B1', name: { de: 'Gesellschaft',  en: 'Society'          } },
 ];
 
 // Each word: { id, category, pt, de, en, pron, ex_pt, ex_de, ex_en }
@@ -3076,6 +3165,50 @@ const WORDS = [
   { id:623, cat:'sports', pt:'Ciclismo',      de:'Radfahren',         en:'Cycling',         pron:'si-KLÍZ-mu',       ex_pt:'Gosto de ciclismo nas trilhas da floresta.',   ex_de:'Ich mag Radfahren auf Waldwegen.',                 ex_en:'I enjoy cycling on forest trails.' },
   { id:624, cat:'sports', pt:'Maratona',      de:'Marathon',          en:'Marathon',        pron:'ma-ra-TÔ-na',      ex_pt:'Vou correr minha primeira maratona no mês que vem.',ex_de:'Ich werde nächsten Monat meinen ersten Marathon laufen.',ex_en:'I will run my first marathon next month.' },
   { id:625, cat:'sports', pt:'Salto',         de:'Sprung',            en:'Jump',            pron:'SÁL-tu',           ex_pt:'O salto em distância é uma modalidade olímpica.',ex_de:'Der Weitsprung ist eine olympische Disziplin.',   ex_en:'The long jump is an Olympic discipline.' },
+
+  // ── ocean 🌊 ─────────────────────────────────────────────────────────────
+  { id:626, cat:'ocean', pt:'Oceano',          de:'Ozean',             en:'Ocean',           pron:'o-se-Â-nu',        ex_pt:'O oceano Atlântico separa a Europa da América.',   ex_de:'Der Atlantische Ozean trennt Europa von Amerika.',  ex_en:'The Atlantic Ocean separates Europe from America.' },
+  { id:627, cat:'ocean', pt:'Onda',            de:'Welle',             en:'Wave',            pron:'ÔN-da',            ex_pt:'As ondas estavam muito altas ontem.',               ex_de:'Die Wellen waren gestern sehr hoch.',               ex_en:'The waves were very high yesterday.' },
+  { id:628, cat:'ocean', pt:'Praia',           de:'Strand',            en:'Beach',           pron:'PRÂ-ia',           ex_pt:'Vamos à praia no final de semana.',                 ex_de:'Wir fahren am Wochenende an den Strand.',           ex_en:'We are going to the beach on the weekend.' },
+  { id:629, cat:'ocean', pt:'Coral',           de:'Koralle',           en:'Coral',           pron:'ko-RÁL',           ex_pt:'O recife de coral abriga milhares de espécies.',    ex_de:'Das Korallenriff beherbergt Tausende von Arten.',   ex_en:'The coral reef is home to thousands of species.' },
+  { id:630, cat:'ocean', pt:'Tubarão',         de:'Hai',               en:'Shark',           pron:'tu-ba-RÃO',        ex_pt:'O tubarão-branco é o maior predador do oceano.',   ex_de:'Der Weiße Hai ist das größte Raubtier des Ozeans.', ex_en:'The great white shark is the ocean\'s top predator.' },
+  { id:631, cat:'ocean', pt:'Golfinho',        de:'Delphin',           en:'Dolphin',         pron:'gol-FÍ-nhu',       ex_pt:'Os golfinhos são animais muito inteligentes.',      ex_de:'Delfine sind sehr intelligente Tiere.',             ex_en:'Dolphins are very intelligent animals.' },
+  { id:632, cat:'ocean', pt:'Baleia',          de:'Wal',               en:'Whale',           pron:'ba-LÉI-a',         ex_pt:'A baleia azul é o maior animal do mundo.',          ex_de:'Der Blauwal ist das größte Tier der Welt.',         ex_en:'The blue whale is the largest animal in the world.' },
+  { id:633, cat:'ocean', pt:'Tartaruga marinha',de:'Meeresschildkröte',en:'Sea turtle',      pron:'tar-ta-RÚ-ga ma-RÍ-nha',ex_pt:'A tartaruga marinha volta à praia onde nasceu.',ex_de:'Die Meeresschildkröte kehrt an den Strand zurück, wo sie geboren wurde.',ex_en:'The sea turtle returns to the beach where it was born.' },
+  { id:634, cat:'ocean', pt:'Marés',           de:'Gezeiten',          en:'Tides',           pron:'ma-RÉES',          ex_pt:'As marés são causadas pela gravidade da lua.',      ex_de:'Die Gezeiten werden durch die Schwerkraft des Mondes verursacht.',ex_en:'The tides are caused by the gravity of the moon.' },
+  { id:635, cat:'ocean', pt:'Mergulho',        de:'Tauchen',           en:'Diving',          pron:'mer-GÚ-lhu',       ex_pt:'O mergulho revela um mundo submarino incrível.',   ex_de:'Das Tauchen enthüllt eine unglaubliche Unterwasserwelt.',ex_en:'Diving reveals an incredible underwater world.' },
+  { id:636, cat:'ocean', pt:'Areia',           de:'Sand',              en:'Sand',            pron:'a-RÉI-a',          ex_pt:'A areia da praia é muito fina e branca.',           ex_de:'Der Sand am Strand ist sehr fein und weiß.',        ex_en:'The beach sand is very fine and white.' },
+  { id:637, cat:'ocean', pt:'Peixe',           de:'Fisch',             en:'Fish',            pron:'PÉI-shi',          ex_pt:'Comemos peixe fresco no restaurante à beira-mar.',  ex_de:'Wir aßen frischen Fisch im Restaurant am Meer.',    ex_en:'We ate fresh fish at the seaside restaurant.' },
+  { id:638, cat:'ocean', pt:'Maré alta',       de:'Flut',              en:'High tide',       pron:'ma-RÉ ÁL-ta',      ex_pt:'Com a maré alta, a praia fica pequena.',            ex_de:'Bei Flut wird der Strand kleiner.',                 ex_en:'At high tide, the beach gets smaller.' },
+  { id:639, cat:'ocean', pt:'Farol',           de:'Leuchtturm',        en:'Lighthouse',      pron:'fa-RÓL',           ex_pt:'O farol guia os barcos na escuridão.',              ex_de:'Der Leuchtturm führt Boote durch die Dunkelheit.',  ex_en:'The lighthouse guides boats through the darkness.' },
+  { id:640, cat:'ocean', pt:'Porto',           de:'Hafen',             en:'Port / Harbour',  pron:'POR-tu',           ex_pt:'Os navios chegam ao porto cedo de manhã.',          ex_de:'Die Schiffe kommen früh morgens in den Hafen.',     ex_en:'The ships arrive at the port early in the morning.' },
+  { id:641, cat:'ocean', pt:'Vela',            de:'Segeln',            en:'Sailing',         pron:'VÉ-la',            ex_pt:'Aprendi a vela ainda criança.',                     ex_de:'Ich habe als Kind segeln gelernt.',                 ex_en:'I learned sailing as a child.' },
+  { id:642, cat:'ocean', pt:'Navio',           de:'Schiff',            en:'Ship',            pron:'na-VÍ-u',          ex_pt:'O navio de cruzeiro partiu às seis da manhã.',      ex_de:'Das Kreuzfahrtschiff brach um sechs Uhr morgens auf.',ex_en:'The cruise ship departed at six in the morning.' },
+  { id:643, cat:'ocean', pt:'Horizonte',       de:'Horizont',          en:'Horizon',         pron:'o-ri-ZÔN-tʃi',     ex_pt:'O sol se pôs no horizonte.',                       ex_de:'Die Sonne versank am Horizont.',                   ex_en:'The sun set on the horizon.' },
+  { id:644, cat:'ocean', pt:'Polvo',           de:'Tintenfisch',       en:'Octopus',         pron:'PÓL-vu',           ex_pt:'O polvo tem oito tentáculos.',                      ex_de:'Der Tintenfisch hat acht Tentakel.',                ex_en:'The octopus has eight tentacles.' },
+  { id:645, cat:'ocean', pt:'Corrente marítima',de:'Meeresströmung',   en:'Ocean current',   pron:'ko-HÊN-tʃi ma-RÍ-tʃi-ma',ex_pt:'As correntes marítimas afetam o clima global.',ex_de:'Meeresströmungen beeinflussen das globale Klima.',  ex_en:'Ocean currents affect the global climate.' },
+
+  // ── society 🌍 ────────────────────────────────────────────────────────────
+  { id:646, cat:'society', pt:'Democracia',    de:'Demokratie',        en:'Democracy',       pron:'de-mo-kra-SÍ-a',   ex_pt:'A democracia garante direitos fundamentais.',      ex_de:'Die Demokratie garantiert Grundrechte.',            ex_en:'Democracy guarantees fundamental rights.' },
+  { id:647, cat:'society', pt:'Direitos humanos',de:'Menschenrechte',  en:'Human rights',    pron:'dʒi-RÉI-tus u-MÂ-nus',ex_pt:'Os direitos humanos devem ser respeitados.',    ex_de:'Die Menschenrechte müssen respektiert werden.',     ex_en:'Human rights must be respected.' },
+  { id:648, cat:'society', pt:'Igualdade',     de:'Gleichheit',        en:'Equality',        pron:'i-gual-DÁ-dʒi',    ex_pt:'A igualdade de oportunidades é essencial.',        ex_de:'Die Chancengleichheit ist wesentlich.',             ex_en:'Equal opportunities are essential.' },
+  { id:649, cat:'society', pt:'Diversidade',   de:'Vielfalt',          en:'Diversity',       pron:'dʒi-ver-si-DÁ-dʒi', ex_pt:'A diversidade cultural enriquece nossa sociedade.',ex_de:'Kulturelle Vielfalt bereichert unsere Gesellschaft.',ex_en:'Cultural diversity enriches our society.' },
+  { id:650, cat:'society', pt:'Comunidade',    de:'Gemeinschaft',      en:'Community',       pron:'ko-mu-ni-DÁ-dʒi',  ex_pt:'Trabalhamos juntos pela nossa comunidade.',        ex_de:'Wir arbeiten gemeinsam für unsere Gemeinschaft.',   ex_en:'We work together for our community.' },
+  { id:651, cat:'society', pt:'Voluntário',    de:'Freiwilliger',      en:'Volunteer',       pron:'vo-lun-TÁ-riu',    ex_pt:'Sou voluntário em uma ONG local.',                  ex_de:'Ich bin Freiwilliger bei einer lokalen NGO.',       ex_en:'I am a volunteer at a local NGO.' },
+  { id:652, cat:'society', pt:'Meio ambiente', de:'Umwelt',            en:'Environment',     pron:'MÉI-u am-BI-ên-tʃi',ex_pt:'Precisamos proteger o meio ambiente para o futuro.',ex_de:'Wir müssen die Umwelt für die Zukunft schützen.',  ex_en:'We need to protect the environment for the future.' },
+  { id:653, cat:'society', pt:'Sustentabilidade',de:'Nachhaltigkeit',  en:'Sustainability',  pron:'sus-tên-ta-bi-li-DÁ-dʒi',ex_pt:'A sustentabilidade é chave para o futuro.',   ex_de:'Nachhaltigkeit ist der Schlüssel für die Zukunft.', ex_en:'Sustainability is key to the future.' },
+  { id:654, cat:'society', pt:'Desigualdade',  de:'Ungleichheit',      en:'Inequality',      pron:'de-zi-gual-DÁ-dʒi', ex_pt:'A desigualdade social é um problema global.',      ex_de:'Soziale Ungleichheit ist ein globales Problem.',    ex_en:'Social inequality is a global problem.' },
+  { id:655, cat:'society', pt:'Eleição',       de:'Wahl',              en:'Election',        pron:'e-lei-SÃO',        ex_pt:'As eleições presidenciais acontecem a cada quatro anos.',ex_de:'Die Präsidentschaftswahl findet alle vier Jahre statt.',ex_en:'Presidential elections happen every four years.' },
+  { id:656, cat:'society', pt:'Governo',       de:'Regierung',         en:'Government',      pron:'go-VER-nu',        ex_pt:'O governo anunciou novas políticas sociais.',       ex_de:'Die Regierung hat neue Sozialpolitiken angekündigt.',ex_en:'The government announced new social policies.' },
+  { id:657, cat:'society', pt:'Cidadania',     de:'Staatsbürgerschaft',en:'Citizenship',     pron:'si-da-da-NÍ-a',    ex_pt:'A cidadania traz direitos e deveres.',              ex_de:'Die Staatsbürgerschaft bringt Rechte und Pflichten.',ex_en:'Citizenship brings rights and duties.' },
+  { id:658, cat:'society', pt:'Educação',      de:'Bildung',           en:'Education',       pron:'e-du-ka-SÃO',      ex_pt:'A educação é a base de uma sociedade justa.',       ex_de:'Bildung ist die Grundlage einer gerechten Gesellschaft.',ex_en:'Education is the foundation of a just society.' },
+  { id:659, cat:'society', pt:'Pobreza',       de:'Armut',             en:'Poverty',         pron:'po-BRÉ-za',        ex_pt:'Combater a pobreza é uma prioridade global.',       ex_de:'Armut zu bekämpfen ist eine globale Priorität.',    ex_en:'Fighting poverty is a global priority.' },
+  { id:660, cat:'society', pt:'Cultura',       de:'Kultur',            en:'Culture',         pron:'kul-TÚ-ra',        ex_pt:'A cultura brasileira é rica e diversificada.',      ex_de:'Die brasilianische Kultur ist reich und vielfältig.',ex_en:'Brazilian culture is rich and diverse.' },
+  { id:661, cat:'society', pt:'Tradição',      de:'Tradition',         en:'Tradition',       pron:'tra-dʒi-SÃO',      ex_pt:'As tradições festivas são muito importantes aqui.', ex_de:'Die Festtraditionen sind hier sehr wichtig.',       ex_en:'Festive traditions are very important here.' },
+  { id:662, cat:'society', pt:'Religião',      de:'Religion',          en:'Religion',        pron:'he-li-ZHÃO',       ex_pt:'A liberdade de religião é um direito fundamental.',  ex_de:'Religionsfreiheit ist ein Grundrecht.',             ex_en:'Freedom of religion is a fundamental right.' },
+  { id:663, cat:'society', pt:'Geração',       de:'Generation',        en:'Generation',      pron:'zhe-ra-SÃO',       ex_pt:'Cada geração enfrenta seus próprios desafios.',     ex_de:'Jede Generation steht vor ihren eigenen Herausforderungen.',ex_en:'Each generation faces its own challenges.' },
+  { id:664, cat:'society', pt:'Integração',    de:'Integration',       en:'Integration',     pron:'in-te-gra-SÃO',    ex_pt:'A integração social é importante para todos.',      ex_de:'Soziale Integration ist für alle wichtig.',         ex_en:'Social integration is important for everyone.' },
+  { id:665, cat:'society', pt:'Solidariedade', de:'Solidarität',       en:'Solidarity',      pron:'so-li-da-ri-e-DÁ-dʒi',ex_pt:'A solidariedade nos une em tempos difíceis.',    ex_de:'Solidarität verbindet uns in schwierigen Zeiten.',  ex_en:'Solidarity unites us in difficult times.' },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -3199,6 +3332,227 @@ const STORIES = [
       'almoço': { pt:'almoço', de:'Mittagessen', pron:'al-MÔ-su' },
     }
   },
+  {
+    id: 'story6',
+    level: 'B1',
+    title: { de: 'Eine Reise nach Amazônien', en: 'A Trip to the Amazon' },
+    desc: { de: 'Ein Abenteuer im brasilianischen Regenwald', en: 'An adventure in the Brazilian rainforest' },
+    text: 'Paulo sempre {{sonhou}} em {{conhecer}} a floresta {{amazônica}}. No ano passado, ele {{planejou}} uma {{expedição}} de duas semanas. Chegando em Manaus, ele {{contratou}} um guia {{local}} chamado Raimundo. Juntos, navegaram pelo Rio {{Negro}} em uma pequena {{canoa}}. Paulo ficou {{impressionado}} com a {{biodiversidade}}: {{aves}} coloridas, {{macacos}} curiosos e {{borboletas}} enormes. À noite, {{escutavam}} os sons da floresta. "Este lugar precisa de {{proteção}}," disse Paulo ao voltar para casa.',
+    vocab: {
+      'sonhou': { pt:'sonhou (sonhar)', de:'träumte (träumen)', pron:'so-NHÔU' },
+      'conhecer': { pt:'conhecer', de:'kennenlernen / kennen', pron:'ko-nhe-SER' },
+      'amazônica': { pt:'amazônica', de:'amazonisch', pron:'a-ma-ZÔ-ni-ka' },
+      'planejou': { pt:'planejou (planejar)', de:'plante (planen)', pron:'pla-ne-ZHÔU' },
+      'expedição': { pt:'expedição', de:'Expedition', pron:'ex-pe-dʒi-SÃO' },
+      'contratou': { pt:'contratou (contratar)', de:'engagierte (engagieren)', pron:'kon-tra-TÔU' },
+      'local': { pt:'local', de:'einheimisch / lokal', pron:'lo-KAL' },
+      'Negro': { pt:'Rio Negro', de:'Schwarzer Fluss', pron:'HÍ-u NÉ-gru' },
+      'canoa': { pt:'canoa', de:'Kanu', pron:'ka-NÔ-a' },
+      'impressionado': { pt:'impressionado', de:'beeindruckt', pron:'im-pre-sio-NÁ-du' },
+      'biodiversidade': { pt:'biodiversidade', de:'Artenvielfalt', pron:'bio-dʒi-ver-si-DÁ-dʒi' },
+      'aves': { pt:'aves', de:'Vögel', pron:'Á-vis' },
+      'macacos': { pt:'macacos', de:'Affen', pron:'ma-KÁ-kus' },
+      'borboletas': { pt:'borboletas', de:'Schmetterlinge', pron:'bor-bo-LÉ-tas' },
+      'escutavam': { pt:'escutavam (escutar)', de:'hörten zu (zuhören)', pron:'es-ku-TÁ-vam' },
+      'proteção': { pt:'proteção', de:'Schutz', pron:'pro-te-SÃO' },
+    }
+  },
+  {
+    id: 'story7',
+    level: 'B1',
+    title: { de: 'Das Vorstellungsgespräch', en: 'The Job Interview' },
+    desc: { de: 'Eine Bewerbung bei einem Unternehmen in São Paulo', en: 'A job application at a company in São Paulo' },
+    text: 'Fernanda se {{preparou}} durante semanas para a {{entrevista}} de {{emprego}} numa grande {{empresa}} de tecnologia em São Paulo. Ela {{pesquisou}} sobre os {{valores}} da empresa e {{praticou}} suas {{respostas}}. No dia da entrevista, chegou cedo e foi {{recebida}} pela {{recrutadora}} Mariana. "Por que você quer trabalhar conosco?" {{perguntou}} Mariana. Fernanda respondeu com {{confiança}}: "Admiro a {{inovação}} da empresa e quero {{contribuir}} com minha {{experiência}} em {{gestão}} de projetos." Ao sair, ela se sentiu {{orgulhosa}} do seu {{desempenho}}.',
+    vocab: {
+      'preparou': { pt:'preparou (preparar)', de:'bereitete sich vor (sich vorbereiten)', pron:'pre-pa-RÔU' },
+      'entrevista': { pt:'entrevista', de:'Vorstellungsgespräch / Interview', pron:'en-tre-VÍS-ta' },
+      'emprego': { pt:'emprego', de:'Stelle / Arbeit', pron:'em-PRÉ-gu' },
+      'empresa': { pt:'empresa', de:'Unternehmen / Firma', pron:'em-PRÉ-za' },
+      'pesquisou': { pt:'pesquisou (pesquisar)', de:'recherchierte (recherchieren)', pron:'pes-ki-ZÔU' },
+      'valores': { pt:'valores', de:'Werte', pron:'va-LÓ-ris' },
+      'praticou': { pt:'praticou (praticar)', de:'übte (üben)', pron:'pra-tʃi-KÔU' },
+      'respostas': { pt:'respostas', de:'Antworten', pron:'hes-PÓS-tas' },
+      'recebida': { pt:'recebida (receber)', de:'empfangen (empfangen werden)', pron:'he-se-BÍ-da' },
+      'recrutadora': { pt:'recrutadora', de:'Personalerin / Recruiterin', pron:'he-kru-ta-DÓ-ra' },
+      'perguntou': { pt:'perguntou (perguntar)', de:'fragte (fragen)', pron:'per-gun-TÔU' },
+      'confiança': { pt:'confiança', de:'Selbstvertrauen / Vertrauen', pron:'kon-fi-ÂN-sa' },
+      'inovação': { pt:'inovação', de:'Innovation', pron:'i-no-va-SÃO' },
+      'contribuir': { pt:'contribuir', de:'beitragen', pron:'kon-tri-bu-ÍR' },
+      'experiência': { pt:'experiência', de:'Erfahrung', pron:'ex-pe-ri-ÊN-sia' },
+      'gestão': { pt:'gestão', de:'Management / Verwaltung', pron:'zhes-TÃO' },
+      'orgulhosa': { pt:'orgulhosa', de:'stolz (weiblich)', pron:'or-gu-LHÔZ-a' },
+      'desempenho': { pt:'desempenho', de:'Leistung', pron:'de-zem-PÉ-nhu' },
+    }
+  },
+  {
+    id: 'story8',
+    level: 'B1',
+    title: { de: 'Klimawandel in Brasilien', en: 'Climate Change in Brazil' },
+    desc: { de: 'Ein Artikel über Umweltprobleme in Brasilien', en: 'An article about environmental issues in Brazil' },
+    text: 'O {{aquecimento}} global está afetando o Brasil de formas diversas. As {{chuvas}} estão se tornando mais {{intensas}} em algumas regiões, enquanto outras {{sofrem}} com {{secas}} prolongadas. A floresta {{amazônica}}, considerada o "pulmão do mundo", perdeu milhões de {{hectares}} por causa do {{desmatamento}}. {{Cientistas}} alertam que, sem ação {{imediata}}, os efeitos serão {{irreversíveis}}. O governo brasileiro {{comprometeu-se}} a {{reduzir}} as {{emissões}} de carbono em 43% até 2030. A {{preservação}} do meio {{ambiente}} é uma {{responsabilidade}} de todos.',
+    vocab: {
+      'aquecimento': { pt:'aquecimento global', de:'Erderwärmung', pron:'a-ke-si-MÊN-tu glo-BAL' },
+      'chuvas': { pt:'chuvas', de:'Regenfälle', pron:'SHÚ-vas' },
+      'intensas': { pt:'intensas', de:'stark / intensiv', pron:'in-TÊN-sas' },
+      'sofrem': { pt:'sofrem (sofrer)', de:'leiden (leiden)', pron:'SÓ-frem' },
+      'secas': { pt:'secas', de:'Dürren', pron:'SÉ-kas' },
+      'amazônica': { pt:'amazônica', de:'amazonisch', pron:'a-ma-ZÔ-ni-ka' },
+      'hectares': { pt:'hectares', de:'Hektar', pron:'ek-TÁ-ris' },
+      'desmatamento': { pt:'desmatamento', de:'Abholzung', pron:'dez-ma-ta-MÊN-tu' },
+      'Cientistas': { pt:'cientistas', de:'Wissenschaftler', pron:'si-en-TÍS-tas' },
+      'imediata': { pt:'imediata', de:'sofortig / unmittelbar', pron:'i-me-dʒi-Á-ta' },
+      'irreversíveis': { pt:'irreversíveis', de:'unumkehrbar', pron:'i-he-ver-SÍ-veis' },
+      'comprometeu-se': { pt:'comprometeu-se', de:'verpflichtete sich', pron:'kom-pro-me-TÔU-si' },
+      'reduzir': { pt:'reduzir', de:'reduzieren', pron:'he-du-ZÍR' },
+      'emissões': { pt:'emissões', de:'Emissionen', pron:'e-mi-SÕES' },
+      'preservação': { pt:'preservação', de:'Erhaltung / Schutz', pron:'pre-zer-va-SÃO' },
+      'ambiente': { pt:'ambiente', de:'Umwelt', pron:'am-BI-ên-tʃi' },
+      'responsabilidade': { pt:'responsabilidade', de:'Verantwortung', pron:'hes-pon-sa-bi-li-DÁ-dʒi' },
+    }
+  },
+  {
+    id: 'story9',
+    level: 'B1',
+    title: { de: 'Das Musikfestival', en: 'The Music Festival' },
+    desc: { de: 'Erlebnisse auf einem brasilianischen Musikfestival', en: 'Experiences at a Brazilian music festival' },
+    text: 'Todo ano, Juliana {{aguarda}} com {{ansiedade}} o Festival de Música de São Paulo. Este ano, ela foi com seus {{amigos}} e {{acamparam}} perto do {{palco}} principal. O primeiro show foi de uma banda de {{samba-rock}} que {{fez}} o público {{dançar}} durante três horas. Em seguida, uma artista de {{MPB}} {{cantou}} músicas {{emocionantes}} que {{tocaram}} o coração de todos. Juliana {{aproveitou}} para {{descobrir}} novos {{artistas}} e comprar {{camisetas}} e {{discos}}. "A música brasileira é {{única}}," ela {{comentou}} para seus amigos.',
+    vocab: {
+      'aguarda': { pt:'aguarda (aguardar)', de:'wartet (warten)', pron:'a-GUÁR-da' },
+      'ansiedade': { pt:'ansiedade', de:'Erwartung / Aufregung', pron:'an-si-e-DÁ-dʒi' },
+      'amigos': { pt:'amigos', de:'Freunde', pron:'a-MÍ-gus' },
+      'acamparam': { pt:'acamparam (acampar)', de:'zelteten (zelten)', pron:'a-kam-PÁ-ram' },
+      'palco': { pt:'palco', de:'Bühne', pron:'PÁL-ku' },
+      'samba-rock': { pt:'samba-rock', de:'Samba-Rock (Musikstil)', pron:'SÂM-ba HOCK' },
+      'fez': { pt:'fez (fazer)', de:'brachte (bringen)', pron:'FEZ' },
+      'dançar': { pt:'dançar', de:'tanzen', pron:'dan-SAR' },
+      'MPB': { pt:'MPB (Música Popular Brasileira)', de:'Brasilianische Popmusik', pron:'em-pê-bê' },
+      'cantou': { pt:'cantou (cantar)', de:'sang (singen)', pron:'kan-TÔU' },
+      'emocionantes': { pt:'emocionantes', de:'bewegend / emotional', pron:'e-mo-sio-NÂN-tʃis' },
+      'tocaram': { pt:'tocaram (tocar)', de:'berührten (berühren)', pron:'to-KÁ-ram' },
+      'aproveitou': { pt:'aproveitou (aproveitar)', de:'nutzte (nutzen)', pron:'a-pro-vei-TÔU' },
+      'descobrir': { pt:'descobrir', de:'entdecken', pron:'des-ko-BRÍR' },
+      'artistas': { pt:'artistas', de:'Künstler', pron:'ar-TÍS-tas' },
+      'camisetas': { pt:'camisetas', de:'T-Shirts', pron:'ka-mi-ZÉ-tas' },
+      'discos': { pt:'discos', de:'Schallplatten / Alben', pron:'DƷÍS-kus' },
+      'única': { pt:'única', de:'einzigartig', pron:'Ú-ni-ka' },
+      'comentou': { pt:'comentou (comentar)', de:'kommentierte (kommentieren)', pron:'ko-men-TÔU' },
+    }
+  },
+  {
+    id: 'story10',
+    level: 'B1',
+    title: { de: 'Ein Studium im Ausland', en: 'Studying Abroad' },
+    desc: { de: 'Eine Brasilianerin studiert in Deutschland', en: 'A Brazilian student studies in Germany' },
+    text: 'Camila {{conseguiu}} uma {{bolsa de estudos}} para estudar {{engenharia}} na Alemanha. Antes de partir, ela {{frequentou}} um {{curso}} de alemão por seis meses. Em Berlim, {{adaptou-se}} rapidamente à nova {{rotina}}: acordava cedo, ia de {{metrô}} à {{universidade}} e {{estudava}} até a noite. Sentia {{saudades}} do Brasil, especialmente da {{família}} e da {{comida}} brasileira. Mas fez novos {{amigos}} de todo o mundo e {{expandiu}} seus {{horizontes}}. "Estudar no {{exterior}} mudou minha {{perspectiva}} de vida," ela {{escreveu}} em seu {{diário}}.',
+    vocab: {
+      'conseguiu': { pt:'conseguiu (conseguir)', de:'erreichte / schaffte (erreichen)', pron:'kon-se-GÍU' },
+      'bolsa de estudos': { pt:'bolsa de estudos', de:'Stipendium', pron:'BÓL-sa dʒi es-TÚ-dus' },
+      'engenharia': { pt:'engenharia', de:'Ingenieurwesen', pron:'en-zhe-nha-RÍ-a' },
+      'frequentou': { pt:'frequentou (frequentar)', de:'besuchte (besuchen)', pron:'fre-kuen-TÔU' },
+      'curso': { pt:'curso', de:'Kurs', pron:'KÚR-su' },
+      'adaptou-se': { pt:'adaptou-se (adaptar-se)', de:'passte sich an (sich anpassen)', pron:'a-dap-TÔU-si' },
+      'rotina': { pt:'rotina', de:'Routine / Alltag', pron:'ho-TƩÎN-a' },
+      'metrô': { pt:'metrô', de:'U-Bahn', pron:'me-TRÔ' },
+      'universidade': { pt:'universidade', de:'Universität', pron:'u-ni-ver-si-DÁ-dʒi' },
+      'estudava': { pt:'estudava (estudar)', de:'lernte / studierte (studieren)', pron:'es-tu-DÁ-va' },
+      'saudades': { pt:'saudades', de:'Sehnsucht (Vermissen)', pron:'sau-DÁ-dʒis' },
+      'família': { pt:'família', de:'Familie', pron:'fa-MÍ-lia' },
+      'comida': { pt:'comida', de:'Essen', pron:'ko-MÍ-da' },
+      'amigos': { pt:'amigos', de:'Freunde', pron:'a-MÍ-gus' },
+      'expandiu': { pt:'expandiu (expandir)', de:'erweiterte (erweitern)', pron:'ex-pan-DÍU' },
+      'horizontes': { pt:'horizontes', de:'Horizonte', pron:'o-ri-ZÔN-tʃis' },
+      'exterior': { pt:'exterior', de:'Ausland', pron:'ex-te-ri-ÓR' },
+      'perspectiva': { pt:'perspectiva', de:'Perspektive', pron:'pers-pek-TƩÍF-va' },
+      'escreveu': { pt:'escreveu (escrever)', de:'schrieb (schreiben)', pron:'es-kre-VÔU' },
+      'diário': { pt:'diário', de:'Tagebuch', pron:'dʒi-Á-riu' },
+    }
+  },
+];
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CONJUGATION DATA – Verbs with Present / Past / Future forms
+═══════════════════════════════════════════════════════════════════════════ */
+const CONJUGATIONS = [
+  { inf:'falar',     de:'sprechen',          en:'to speak',
+    present:{ eu:'falo',       você:'fala',        nós:'falamos',      eles:'falam'     },
+    past:   { eu:'falei',      você:'falou',       nós:'falamos',      eles:'falaram'   },
+    future: { eu:'falarei',    você:'falará',      nós:'falaremos',    eles:'falarão'   } },
+  { inf:'comer',     de:'essen',             en:'to eat',
+    present:{ eu:'como',       você:'come',        nós:'comemos',      eles:'comem'     },
+    past:   { eu:'comi',       você:'comeu',       nós:'comemos',      eles:'comeram'   },
+    future: { eu:'comerei',    você:'comerá',      nós:'comeremos',    eles:'comerão'   } },
+  { inf:'abrir',     de:'öffnen',            en:'to open',
+    present:{ eu:'abro',       você:'abre',        nós:'abrimos',      eles:'abrem'     },
+    past:   { eu:'abri',       você:'abriu',       nós:'abrimos',      eles:'abriram'   },
+    future: { eu:'abrirei',    você:'abrirá',      nós:'abriremos',    eles:'abrirão'   } },
+  { inf:'ser',       de:'sein',              en:'to be (perm.)',
+    present:{ eu:'sou',        você:'é',           nós:'somos',        eles:'são'       },
+    past:   { eu:'fui',        você:'foi',         nós:'fomos',        eles:'foram'     },
+    future: { eu:'serei',      você:'será',        nós:'seremos',      eles:'serão'     } },
+  { inf:'estar',     de:'sein (Zustand)',    en:'to be (temp.)',
+    present:{ eu:'estou',      você:'está',        nós:'estamos',      eles:'estão'     },
+    past:   { eu:'estive',     você:'esteve',      nós:'estivemos',    eles:'estiveram' },
+    future: { eu:'estarei',    você:'estará',      nós:'estaremos',    eles:'estarão'   } },
+  { inf:'ter',       de:'haben',             en:'to have',
+    present:{ eu:'tenho',      você:'tem',         nós:'temos',        eles:'têm'       },
+    past:   { eu:'tive',       você:'teve',        nós:'tivemos',      eles:'tiveram'   },
+    future: { eu:'terei',      você:'terá',        nós:'teremos',      eles:'terão'     } },
+  { inf:'fazer',     de:'machen / tun',      en:'to make / do',
+    present:{ eu:'faço',       você:'faz',         nós:'fazemos',      eles:'fazem'     },
+    past:   { eu:'fiz',        você:'fez',         nós:'fizemos',      eles:'fizeram'   },
+    future: { eu:'farei',      você:'fará',        nós:'faremos',      eles:'farão'     } },
+  { inf:'ir',        de:'gehen / fahren',    en:'to go',
+    present:{ eu:'vou',        você:'vai',         nós:'vamos',        eles:'vão'       },
+    past:   { eu:'fui',        você:'foi',         nós:'fomos',        eles:'foram'     },
+    future: { eu:'irei',       você:'irá',         nós:'iremos',       eles:'irão'      } },
+  { inf:'vir',       de:'kommen',            en:'to come',
+    present:{ eu:'venho',      você:'vem',         nós:'vimos',        eles:'vêm'       },
+    past:   { eu:'vim',        você:'veio',        nós:'viemos',       eles:'vieram'    },
+    future: { eu:'virei',      você:'virá',        nós:'viremos',      eles:'virão'     } },
+  { inf:'poder',     de:'können / dürfen',   en:'to be able to',
+    present:{ eu:'posso',      você:'pode',        nós:'podemos',      eles:'podem'     },
+    past:   { eu:'pude',       você:'pôde',        nós:'pudemos',      eles:'puderam'   },
+    future: { eu:'poderei',    você:'poderá',      nós:'poderemos',    eles:'poderão'   } },
+  { inf:'querer',    de:'wollen',            en:'to want',
+    present:{ eu:'quero',      você:'quer',        nós:'queremos',     eles:'querem'    },
+    past:   { eu:'quis',       você:'quis',        nós:'quisemos',     eles:'quiseram'  },
+    future: { eu:'quererei',   você:'quererá',     nós:'quereremos',   eles:'quererão'  } },
+  { inf:'saber',     de:'wissen / können',   en:'to know',
+    present:{ eu:'sei',        você:'sabe',        nós:'sabemos',      eles:'sabem'     },
+    past:   { eu:'soube',      você:'soube',       nós:'soubemos',     eles:'souberam'  },
+    future: { eu:'saberei',    você:'saberá',      nós:'saberemos',    eles:'saberão'   } },
+  { inf:'ver',       de:'sehen',             en:'to see',
+    present:{ eu:'vejo',       você:'vê',          nós:'vemos',        eles:'veem'      },
+    past:   { eu:'vi',         você:'viu',         nós:'vimos',        eles:'viram'     },
+    future: { eu:'verei',      você:'verá',        nós:'veremos',      eles:'verão'     } },
+  { inf:'dar',       de:'geben',             en:'to give',
+    present:{ eu:'dou',        você:'dá',          nós:'damos',        eles:'dão'       },
+    past:   { eu:'dei',        você:'deu',         nós:'demos',        eles:'deram'     },
+    future: { eu:'darei',      você:'dará',        nós:'daremos',      eles:'darão'     } },
+  { inf:'trabalhar', de:'arbeiten',          en:'to work',
+    present:{ eu:'trabalho',   você:'trabalha',    nós:'trabalhamos',  eles:'trabalham' },
+    past:   { eu:'trabalhei',  você:'trabalhou',   nós:'trabalhamos',  eles:'trabalharam'},
+    future: { eu:'trabalharei',você:'trabalhará',  nós:'trabalharemos',eles:'trabalharão'} },
+  { inf:'estudar',   de:'lernen / studieren',en:'to study',
+    present:{ eu:'estudo',     você:'estuda',      nós:'estudamos',    eles:'estudam'   },
+    past:   { eu:'estudei',    você:'estudou',     nós:'estudamos',    eles:'estudaram' },
+    future: { eu:'estudarei',  você:'estudará',    nós:'estudaremos',  eles:'estudarão' } },
+  { inf:'morar',     de:'wohnen',            en:'to live / reside',
+    present:{ eu:'moro',       você:'mora',        nós:'moramos',      eles:'moram'     },
+    past:   { eu:'morei',      você:'morou',       nós:'moramos',      eles:'moraram'   },
+    future: { eu:'morarei',    você:'morará',      nós:'moraremos',    eles:'morarão'   } },
+  { inf:'comprar',   de:'kaufen',            en:'to buy',
+    present:{ eu:'compro',     você:'compra',      nós:'compramos',    eles:'compram'   },
+    past:   { eu:'comprei',    você:'comprou',     nós:'compramos',    eles:'compraram' },
+    future: { eu:'comprarei',  você:'comprará',    nós:'compraremos',  eles:'comprarão' } },
+  { inf:'escrever',  de:'schreiben',         en:'to write',
+    present:{ eu:'escrevo',    você:'escreve',     nós:'escrevemos',   eles:'escrevem'  },
+    past:   { eu:'escrevi',    você:'escreveu',    nós:'escrevemos',   eles:'escreveram'},
+    future: { eu:'escreverei', você:'escreverá',   nós:'escreveremos', eles:'escreverão'} },
+  { inf:'ler',       de:'lesen',             en:'to read',
+    present:{ eu:'leio',       você:'lê',          nós:'lemos',        eles:'leem'      },
+    past:   { eu:'li',         você:'leu',         nós:'lemos',        eles:'leram'     },
+    future: { eu:'lerei',      você:'lerá',        nós:'leremos',      eles:'lerão'     } },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -3291,6 +3645,11 @@ const App = (() => {
   function daysBetween(a, b) {
     const msPerDay = 86400000;
     return Math.floor((new Date(b) - new Date(a)) / msPerDay);
+  }
+
+  // Shared accent-insensitive normalization for answer checking
+  function normAccents(s) {
+    return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
   }
 
   function updateStreak() {
@@ -5287,7 +5646,9 @@ const App = (() => {
     updateStreak();
     const levelCats = level === 'A1'
       ? ['greetings','numbers','colors','food','family','days','body','clothing','weather','sentences','house']
-      : ['travel','verbs','emotions','jobs','nature'];
+      : level === 'A2'
+      ? ['travel','verbs','emotions','jobs','nature','health','sports']
+      : ['tech','ocean','society'];
     const pool = WORDS.filter(w => levelCats.includes(w.cat));
     const questions = shuffle(pool).slice(0, 20);
     ltSession = { level, questions, current: 0, correct: 0, answered: 0, xpEarned: 0 };
@@ -5396,9 +5757,11 @@ const App = (() => {
     const certEl = document.getElementById('lt-certificate');
     if (passed) {
       certEl.classList.remove('hidden');
+      const certColors = { A1: 'var(--green)', A2: 'var(--blue)', B1: '#7c3aed' };
+      const certColor = certColors[ltSession.level] || 'var(--blue)';
       certEl.innerHTML = `
         <h3>🎓 Zertifikat / Certificate</h3>
-        <div class="lt-cert-level">${ltSession.level}</div>
+        <div class="lt-cert-level" style="color:${certColor}">${ltSession.level}</div>
         <p>Niveau ${ltSession.level} Brasilianisches Portugiesisch<br><em>Brazilian Portuguese Level ${ltSession.level}</em></p>
         <p style="margin-top:8px;font-size:0.75rem">Ergebnis: ${pct}% · LuiBrasil</p>
       `;
@@ -5795,6 +6158,180 @@ const App = (() => {
     checkAchievements();
   }
 
+  /* ── Konjugations-Trainer ─────────────────────────────────────────────── */
+  const TENSES = {
+    present: { de: 'Gegenwart', en: 'Present tense', label: 'Gegenwart / Present' },
+    past:    { de: 'Vergangenheit', en: 'Past tense',    label: 'Vergangenheit / Past'    },
+    future:  { de: 'Zukunft',  en: 'Future tense',   label: 'Zukunft / Future'   },
+  };
+  const SUBJECTS = ['eu', 'você', 'nós', 'eles'];
+  let conjSession = null;
+
+  function buildConjQueue(tense) {
+    const queue = [];
+    const verbs = shuffle([...CONJUGATIONS]);
+    verbs.forEach(v => {
+      const subjects = shuffle([...SUBJECTS]);
+      subjects.slice(0, 2).forEach(subj => {
+        queue.push({ verb: v, subject: subj, tense });
+      });
+    });
+    return shuffle(queue).slice(0, 20);
+  }
+
+  function startConjugationTrainer(tense) {
+    tense = tense || conjSession?.tense || 'present';
+    updateStreak();
+    checkMissions('streak', 1);
+    const queue = buildConjQueue(tense);
+    conjSession = { queue, index: 0, score: 0, xpEarned: 0, checked: false, hintUsed: false, tense };
+    document.getElementById('conj-session-area').classList.remove('hidden');
+    document.getElementById('conj-complete').classList.add('hidden');
+    document.getElementById('conj-score-val').textContent = '0';
+    updateConjTenseBtns(tense);
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    showView('conjugation');
+    renderConjugationRound();
+  }
+
+  function setConjTense(tense) {
+    if (!conjSession || conjSession.checked === false) {
+      startConjugationTrainer(tense);
+      return;
+    }
+    conjSession.tense = tense;
+    updateConjTenseBtns(tense);
+  }
+
+  function updateConjTenseBtns(tense) {
+    ['present','past','future'].forEach(t => {
+      const btn = document.getElementById('conj-btn-' + t);
+      if (btn) btn.classList.toggle('active', t === tense);
+    });
+    const label = TENSES[tense]?.label || tense;
+    const el = document.getElementById('conj-tense-label');
+    if (el) el.textContent = label;
+  }
+
+  function renderConjugationRound() {
+    if (!conjSession) return;
+    const { queue, index, tense } = conjSession;
+    const item = queue[index];
+    const total = queue.length;
+    const lang = nativeLang();
+
+    document.getElementById('conj-progress-label').textContent = `${index + 1} / ${total}`;
+    document.getElementById('conj-progress-fill').style.width = Math.round((index / total) * 100) + '%';
+    document.getElementById('conj-verb-inf').textContent = item.verb.inf;
+    document.getElementById('conj-verb-trans').textContent = item.verb[lang] || item.verb.de;
+    document.getElementById('conj-tense-label').textContent = TENSES[tense]?.label || tense;
+    document.getElementById('conj-subject').textContent = item.subject;
+    updateConjTenseBtns(tense);
+
+    const input = document.getElementById('conj-input');
+    input.value = '';
+    input.disabled = false;
+    input.className = 'typing-input';
+    const revEl = document.getElementById('conj-reveal');
+    revEl.textContent = '';
+    revEl.className = 'typing-reveal';
+    revEl.style.background = '';
+    revEl.style.color = '';
+    document.getElementById('conj-check-btn').classList.remove('hidden');
+    document.getElementById('conj-next-btn').classList.add('hidden');
+    document.getElementById('conj-hint-btn').style.opacity = '1';
+    conjSession.checked = false;
+    conjSession.hintUsed = false;
+    setTimeout(() => input.focus(), 80);
+  }
+
+  function checkConjugation() {
+    if (!conjSession || conjSession.checked) return;
+    conjSession.checked = true;
+    const item = conjSession.queue[conjSession.index];
+    const correct = item.verb[conjSession.tense][item.subject];
+    const input = document.getElementById('conj-input');
+    const raw = (input.value || '').trim();
+
+    const isCorrect = normAccents(raw) === normAccents(correct);
+
+    input.disabled = true;
+    const revealEl = document.getElementById('conj-reveal');
+
+    if (isCorrect) {
+      conjSession.score += 1;
+      const earned = conjSession.hintUsed ? 8 : 15;
+      conjSession.xpEarned += earned;
+      input.className = 'typing-input correct';
+      revealEl.textContent = `✅ Richtig! ${item.subject} ${correct}`;
+      revealEl.style.background = '#e8fff2';
+      revealEl.style.color = 'var(--green)';
+      revealEl.classList.add('visible');
+      document.getElementById('conj-score-val').textContent = conjSession.score;
+      checkMissions('correct', 1);
+      speakWord(correct);
+    } else {
+      input.className = 'typing-input wrong';
+      revealEl.innerHTML = `❌ ${item.subject} <strong>${esc(correct)}</strong>`;
+      revealEl.style.background = '#fff0f3';
+      revealEl.style.color = 'var(--danger)';
+      revealEl.classList.add('visible');
+      penaltyXP();
+      speakWord(correct);
+    }
+    document.getElementById('conj-check-btn').classList.add('hidden');
+    document.getElementById('conj-next-btn').classList.remove('hidden');
+  }
+
+  function nextConjugation() {
+    if (!conjSession) return;
+    conjSession.index += 1;
+    if (conjSession.index >= conjSession.queue.length) {
+      endConjugation();
+    } else {
+      renderConjugationRound();
+    }
+  }
+
+  function endConjugation() {
+    if (!conjSession) return;
+    document.getElementById('conj-session-area').classList.add('hidden');
+    document.getElementById('conj-complete').classList.remove('hidden');
+    document.getElementById('conj-progress-fill').style.width = '100%';
+    const total = conjSession.queue.length;
+    document.getElementById('conj-progress-label').textContent = `${total} / ${total}`;
+    document.getElementById('conj-xp').textContent = '+' + conjSession.xpEarned + ' XP';
+    const pct = Math.round((conjSession.score / total) * 100);
+    document.getElementById('conj-complete-msg').textContent =
+      pct >= 90 ? `Exzellent! ${pct}% richtig 🌟` :
+      pct >= 70 ? `Gut gemacht! ${pct}% richtig 💪` :
+      pct >= 50 ? `Weiter so! ${pct}% richtig 📚` :
+                  `Weiter üben! ${pct}% richtig 🔁`;
+    if (conjSession.xpEarned > 0) addXP(conjSession.xpEarned, window.innerWidth / 2, window.innerHeight / 3);
+    trackSessionCompleted();
+    renderHeaderStats();
+    checkAchievements();
+    conjSession = null;
+  }
+
+  function exitConjugation() {
+    conjSession = null;
+    showView('home');
+  }
+
+  function conjHint() {
+    if (!conjSession || conjSession.checked || conjSession.hintUsed) return;
+    conjSession.hintUsed = true;
+    const item = conjSession.queue[conjSession.index];
+    const correct = item.verb[conjSession.tense][item.subject];
+    if (!correct) return;
+    const hint = correct[0] + '_'.repeat(Math.max(correct.length - 1, 1));
+    document.getElementById('conj-input').value = correct[0];
+    document.getElementById('conj-input').focus();
+    document.getElementById('conj-hint-btn').style.opacity = '0.4';
+    showToast(`💡 Tipp: "${hint}"`);
+  }
+
   function ltHint() {
     if (session.checked || session.hintUsed) return;
     session.hintUsed = true;
@@ -5945,7 +6482,8 @@ const App = (() => {
       filterWordList, filterWordCat,
       closeLevelUp,
       toggleGrammarCard,
-      startLueckentext, checkLueckentext, nextLueckentext, ltHint
+      startLueckentext, checkLueckentext, nextLueckentext, ltHint,
+      startConjugationTrainer, checkConjugation, nextConjugation, exitConjugation, conjHint, setConjTense
     };
   }
 
