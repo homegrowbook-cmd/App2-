@@ -2887,6 +2887,7 @@ const App = (() => {
   function getLevel(xp) {
     const xpVal = xp || 0;
     let cur = LEVELS[0];
+    // Iterate in reverse to find the highest level the user has reached
     for (let i = LEVELS.length - 1; i >= 0; i--) {
       if (xpVal >= LEVELS[i].xp) { cur = LEVELS[i]; break; }
     }
@@ -3779,9 +3780,9 @@ const App = (() => {
     { id:'xp_2500',     icon:'🥇', name:'2500 XP',             desc:'2500 XP – Du bist ein Profi!',     check: s => s.xp >= 2500 },
     { id:'xp_5000',     icon:'👑', name:'5000 XP',             desc:'5000 XP – Meisterstatus!',         check: s => s.xp >= 5000 },
     { id:'sessions_5',  icon:'🎓', name:'Ausdauer zeigen',     desc:'5 Übungen abgeschlossen',          check: s => (s.sessionsCompleted || 0) >= 5 },
-    { id:'sessions_25', icon:'🎖️', name:'Lern-Experte',        desc:'25 Übungen abgeschlossen',         check: s => (s.sessionsCompleted || 0) >= 25 },
+    { id:'sessions_25', icon:'🎯', name:'Lern-Experte',        desc:'25 Übungen abgeschlossen',         check: s => (s.sessionsCompleted || 0) >= 25 },
     { id:'combo_5',     icon:'⚡', name:'Combo-Meister',        desc:'5 Antworten in Folge richtig',     check: s => (s.bestCombo || 0) >= 5 },
-    { id:'combo_10',    icon:'🌪️', name:'Unaufhaltsam!',        desc:'10 Antworten in Folge richtig',    check: s => (s.bestCombo || 0) >= 10 },
+    { id:'combo_10',    icon:'💥', name:'Unaufhaltsam!',        desc:'10 Antworten in Folge richtig',    check: s => (s.bestCombo || 0) >= 10 },
     { id:'missions_3',  icon:'🎁', name:'Auftrag erfüllt',      desc:'3 Tages-Missionen abgeschlossen',  check: s => (s.totalMissionsCompleted || 0) >= 3 },
     { id:'missions_10', icon:'🌈', name:'Missions-Profi',       desc:'10 Tages-Missionen abgeschlossen', check: s => (s.totalMissionsCompleted || 0) >= 10 },
   ];
@@ -3939,13 +3940,14 @@ const App = (() => {
     { id: 'quiz_1',     icon: '🎮', desc: 'Ein Quiz abschließen',         xpReward: 35, goal: 1,  type: 'quiz' },
     { id: 'typing_1',   icon: '✏️', desc: 'Eine Tipp-Übung abschließen',  xpReward: 30, goal: 1,  type: 'typing' },
     { id: 'combo_3',    icon: '⚡', desc: '3 Antworten in Folge richtig', xpReward: 20, goal: 3,  type: 'combo' },
-    { id: 'combo_5',    icon: '🌪️', desc: '5 Antworten in Folge richtig', xpReward: 40, goal: 5,  type: 'combo' },
+    { id: 'combo_5',    icon: '💥', desc: '5 Antworten in Folge richtig', xpReward: 40, goal: 5,  type: 'combo' },
   ];
 
   function generateDailyMissions() {
     const td = today();
     if (state.dailyMissionsDate === td && state.dailyMissions && state.dailyMissions.length >= 3) return;
-    // Deterministic shuffle based on day
+    // Deterministic shuffle based on day index using a simple linear hash (Knuth multiplicative + index offset)
+    // so that missions change daily but are consistent within a day across page reloads.
     const dayIdx = Math.floor(new Date(td).getTime() / 86400000);
     const seeded = MISSION_TEMPLATES.map((m, i) => ({ m, sort: (dayIdx * 2654435761 + i * 40503) % 1000 }))
       .sort((a, b) => a.sort - b.sort)
@@ -3969,7 +3971,7 @@ const App = (() => {
       const prev = state.dailyMissionsProgress[m.id] || 0;
       if (prev >= m.goal) return; // already done
       if (m.type !== type) return;
-      // For 'combo' type, value is the current combo count – treat as progress directly
+      // Combo missions track the highest combo reached (not cumulative), so use Math.max instead of increment
       const newVal = m.type === 'combo' ? Math.max(prev, value) : Math.min(m.goal, prev + 1);
       if (newVal !== prev) {
         state.dailyMissionsProgress[m.id] = newVal;
