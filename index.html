@@ -1730,7 +1730,7 @@
       <h3 class="settings-heading">ℹ️ App-Info</h3>
       <div class="settings-info">
         <p><strong>LinguaBrasil</strong> v3.5</p>
-        <p id="settings-word-count">222 Vokabeln &amp; Sätze · 13 Kategorien</p>
+        <p id="settings-word-count">396 Vokabeln &amp; Sätze · 16 Kategorien</p>
         <p>🇧🇷 Brasilianisches Portugiesisch lernen</p>
         <p style="margin-top:8px;font-size:0.78rem">Kostenlos · Offline nutzbar · Keine Anmeldung erforderlich</p>
       </div>
@@ -4515,7 +4515,7 @@ const App = (() => {
       return;
     }
     updateStreak();
-    session = { type:'flashcard', queue:shuffle(favWords), idx:0, index:0, correct:0, wrong:0, catId:null, xpEarned:0, correctCount:0, flipped:false };
+    session = { type:'flashcard', catId:null, queue:shuffle(favWords), index:0, xpEarned:0, flipped:false, correctCount:0, wrongCount:0 };
     showView('flashcard');
     renderFlashcard();
   }
@@ -4542,6 +4542,7 @@ const App = (() => {
   }
 
   function filterWordCat(cat) {
+    if (wlFilter.cat === cat) return;
     wlFilter.cat = cat;
     document.querySelectorAll('.wl-cat-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.cat === cat);
