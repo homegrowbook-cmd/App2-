@@ -82,8 +82,8 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 - [x] **Hörquiz aus Kategorie-Karte (v3.2)** – 🎧-Button auf jeder Kategorie-Karte für gezieltes Hörtraining
 
 ### Noch offen (für v3.3+)
-- [ ] **Satz-Builder** – Sätze aus Wörtern zusammensetzen (Drag & Drop)
-- [ ] **Dialog-Übungen** – Typische Alltagsgespräche nachspielen
+- [x] **Satz-Builder (v3.3)** – Sätze aus Wörtern zusammensetzen (Tap-to-order)
+- [x] **Dialog-Übungen (v3.3)** – Typische Alltagsgespräche nachspielen (12 Szenarien)
 - [ ] **Thematische Geschichten** – Kurze Texte auf Portugiesisch mit Vokabel-Highlighting
 - [ ] **Leistungsnachweise** – Level-Tests, Zertifikate (A1, A2)
 - [ ] **IndexedDB** – Größere Datensätze effizient speichern
@@ -109,6 +109,13 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 3. ✅ **Verbessertes Quiz-Feedback** – Bei richtiger Antwort wird die Aussprache `[ pron ]` eingeblendet; bei falscher Antwort erscheint zusätzlich ein Beispielsatz für besseres Behalten
 4. ✅ **Session-Zusammenfassung mit Auswertung** – Am Ende jeder Karteikarten-Sitzung werden Anzahl richtiger und falscher Antworten (✅ X richtig ❌ Y falsch) angezeigt
 5. ✅ **Hörquiz aus Kategorie-Karte starten** – 🎧-Button auf jeder Kategorie-Karte ermöglicht gezieltes Hörverständnis-Training für eine einzelne Kategorie (wie Karten & Tippen-Modus)
+
+## v3.3 – Neue Übungstypen (implementiert ✅)
+
+> Zwei neue interaktive Lernmodi für aktiven Sprachaufbau
+
+1. ✅ **Satz-Builder** – Wörter eines portugiesischen Beispielsatzes werden gemischt; der Lernende setzt sie durch Antippen in die richtige Reihenfolge (8 Runden, +25 XP pro korrektem Satz)
+2. ✅ **Dialog-Übungen** – 12 typische Alltagsdialoge (Café, Hotel, Arzt, Taxi u. v. m.); Lernende wählen die passende Antwort aus 3 Optionen und hören die Lösung per TTS ab (+20 XP pro richtige Antwort)
 
 ---
 
@@ -169,7 +176,9 @@ LinguaBrasil/
 17. Kulturelle Lektionen          → IMPLEMENTIERT ✅ (v3.2)
 18. Schwache-Wörter-Modus         → IMPLEMENTIERT ✅ (v3.2)
 19. Kategorie-Hörquiz             → IMPLEMENTIERT ✅ (v3.2)
-20. KI-Konversation               → Phase 4 🔜
+20. Satz-Builder                  → IMPLEMENTIERT ✅ (v3.3)
+21. Dialog-Übungen                → IMPLEMENTIERT ✅ (v3.3)
+22. KI-Konversation               → Phase 4 🔜
 ```
 
 ---
@@ -180,7 +189,7 @@ LinguaBrasil/
 |-------|-------|--------|
 | v1.0 MVP | 1–2 Tage | ✅ Fertig |
 | v2.0 Audio & Interaktion | 2–3 Wochen | ✅ Fertig |
-| v3.0–3.2 Vollständiger Lehrplan | 4–6 Wochen | ✅ Weitgehend fertig |
+| v3.0–3.3 Vollständiger Lehrplan + Übungstypen | 4–6 Wochen | ✅ Weitgehend fertig |
 | v4.0 Social & KI | 2–3 Monate | 🔜 Geplant |
 
 ---
