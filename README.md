@@ -5,24 +5,27 @@
 
 Eine kostenlose, browserbasierte HTML-App ohne Installation, die wissenschaftlich fundierte Lernmethoden (Spaced Repetition, Gamification, strukturierter Lehrplan) vereint.
 
+> **Aktueller Stand: v3.5** – 394 Vokabeln & Sätze, 16 Kategorien, 8 Übungstypen, Story-Reader, Level-Tests, Favoriten-System
+
 ---
 
 ## 🚀 App starten / Launch App
 
 👉 **[LinguaBrasil direkt im Browser öffnen](https://homegrowbook-cmd.github.io/App2-/)** *(GitHub Pages)*
 
-### 📱 iOS – App zum Home-Bildschirm hinzufügen
+### 📱 Als PWA installieren (iOS & Android)
 
-LinguaBrasil funktioniert auf iPhone und iPad als vollwertige Offline-App:
+LinguaBrasil funktioniert auf Smartphone und Tablet als vollwertige Offline-App:
 
+**iOS (Safari):**
 1. Öffne **[https://homegrowbook-cmd.github.io/App2-/](https://homegrowbook-cmd.github.io/App2-/)** in **Safari**
 2. Tippe auf das **Teilen-Symbol** (⬆️ unten in der Mitte)
 3. Wähle **„Zum Home-Bildschirm"** (ggf. nach unten scrollen)
 4. Tippe oben rechts auf **„Hinzufügen"**
 
-Die App startet dann ohne Browser-Leiste, funktioniert offline und hat ein eigenes App-Icon – genauso wie eine native App.
+**Android (Chrome):** Tippe auf das Menü → „Zum Startbildschirm hinzufügen"
 
-> **Hinweis:** Die App zeigt beim ersten Besuch automatisch eine Installationsanleitung an.
+Die App startet ohne Browser-Leiste, funktioniert offline und hat ein eigenes App-Icon – genauso wie eine native App.
 
 Oder lokal: Lade `index.html` herunter und öffne sie in deinem Browser – keine Installation nötig!
 
@@ -30,35 +33,65 @@ Oder lokal: Lade `index.html` herunter und öffne sie in deinem Browser – kein
 open index.html
 ```
 
-## ✨ Features (v1.0)
+---
 
-- 🌍 **2 Ausgangssprachen**: Deutsch → Brasilianisches Portugiesisch | Englisch → Brasilianisches Portugiesisch
-- 📚 **8 Vokabelkategorien**: Begrüßungen, Zahlen, Farben, Essen, Reisen, Familie, Wochentage, Verben
-- 🃏 **Karteikarten-Modus** mit Karte-Umdrehen und Bewertung
-- 🎯 **Quiz-Modus** (Multiple Choice, 4 Optionen)
-- 🔄 **Spaced Repetition System (SRS)** – Level 0–5 für jede Vokabel
-- ⭐ **XP-System** + 🔥 **Tages-Streaks**
-- 📈 **Fortschrittsbildschirm** mit Kategorie-Balken und SRS-Verteilung
-- 💾 **LocalStorage-Persistenz** – kein Server nötig
-- 📱 **Mobil-responsives Design** in Brasilianischen Flaggenfarben
+## ✨ Features (v3.5 – aktuell)
+
+### 🗣️ Lerninhalte
+- 🌍 **4 Lernrichtungen**: DE→PT, EN→PT, PT→DE, PT→EN
+- 📚 **394 Vokabeln & Sätze** in **16 Kategorien** (A1/A2-Niveau)
+- 💬 **30 Alltagssätze** mit kontextueller Bedeutungserklärung
+- 📖 **14 Grammatik-Karten** inkl. 3 Kulturkarten (Karneval, Küche, Geografie)
+- 📕 **5 thematische Geschichten** (Story Reader) – A1/A2 Lesetexte mit Vokabel-Popups + TTS
+
+### 🎯 Übungstypen
+- 🃏 **Karteikarten** mit Spaced Repetition (SRS Level 0–5)
+- 🎯 **Multiple-Choice-Quiz** (12 Fragen, +15 XP)
+- ⌨️ **Tipp-Übungen** mit Akzent-Normalisierung
+- 🔊 **Hörverständnis-Quiz** (TTS-Audio → Übersetzung wählen)
+- 🧩 **Satz-Builder** (Wörter in richtige Reihenfolge bringen, 8 Runden)
+- 💬 **Dialog-Übungen** (12 Alltagsszenarien, +20 XP)
+- 🎓 **Level-Tests A1 / A2** (je 20 Fragen; Zertifikat bei ≥ 70 %)
+- ⭐ **Favoriten-Session** – markierte Wörter gezielt üben
+
+### 🎮 Gamification & Motivation
+- ⭐ **XP-System** mit konfigurierbarem Tages-Ziel (Standard 50 XP)
+- 🔥 **Tages-Streaks** + Streak-XP-Multiplikator (≥3/7/14 Tage: +1/+2/+5 XP)
+- ➖ **XP-Strafpunkte** bei falschen Antworten (−5 XP, abschaltbar)
+- 🏆 **10 Achievements** (Wörter gelernt, Streaks, XP-Meilensteine)
+- 📊 **Fortschrittsbildschirm** mit Kategorie-Balken, SRS-Verteilung, Fehler-Analyse
+
+### ⚙️ Einstellungen & UX
+- 🌙 **Dark Mode** (persistent gespeichert)
+- 🔡 **Schriftgröße** (Klein / Normal / Groß)
+- 🔍 **Wortliste** mit Suchfunktion, Kategorie-Filter, SRS-Level-Badge und TTS
+- 🔄 **Force-Update** (Cache leeren ohne Browser-Einstellungen)
+- 💾 **LocalStorage-Persistenz** – kein Server, kein Login nötig
+- 📵 **Vollständig offline nutzbar** (PWA, Service Worker)
+
+---
 
 ## 📖 Dokumentation
 
-- [`ANALYSIS.md`](ANALYSIS.md) – Analyse der Top 10 Sprachenlern-Apps & beste Lernmethoden
-- [`ROADMAP.md`](ROADMAP.md) – Entwicklungsplan v1.0 → v4.0
+- [`ROADMAP.md`](ROADMAP.md) – Vollständiger Entwicklungsplan v1.0 → v4.0
+- [`ANALYSIS.md`](ANALYSIS.md) – Analyse der Top 10 Sprachenlern-Apps & Lernmethoden
 
-## 🗺️ Roadmap
+## 🗺️ Roadmap-Übersicht
 
 | Phase | Inhalt | Status |
 |-------|--------|--------|
 | v1.0 | MVP: SRS, Karteikarten, Quiz, Gamification | ✅ Fertig |
-| v2.0 | Audio (TTS), Aussprache, Tipp-Übungen, PWA | 🔜 Geplant |
-| v3.0 | 500+ Vokabeln, Grammatik, Dialoge, A1–B1 | 🔜 Geplant |
-| v4.0 | KI-Konversation, Social, Cloud-Sync | 🔜 Geplant |
+| v2.0 | Audio (TTS), Tipp-Übungen, PWA, Grammatik | ✅ Fertig |
+| v3.0–3.5 | 394 Vokabeln, alle Übungstypen, Stories, Level-Tests | ✅ Fertig |
+| **v4.0** | **KI-Konversation, Cloud-Sync, Erweiterungen** | 🚀 In Planung |
+
+Details → [`ROADMAP.md`](ROADMAP.md)
+
+---
 
 ## 🛠️ Technischer Stack
 
-- Reines **HTML5 + CSS3 + Vanilla JavaScript**
-- Keine externen Abhängigkeiten
-- Offline-nutzbar
-- Einzige Datei: `index.html`
+- Reines **HTML5 + CSS3 + Vanilla JavaScript** (keine Abhängigkeiten)
+- **Progressive Web App** (PWA) – offline nutzbar, installierbar
+- **Service Worker** (Cache-Strategie: Network-first)
+- Einzige App-Datei: `index.html`

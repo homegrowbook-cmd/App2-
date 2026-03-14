@@ -3155,7 +3155,7 @@ const App = (() => {
       return;
     }
     const queue = [...weak].sort(() => Math.random() - 0.5).slice(0, 15);
-    session = { type: 'flashcard', catId: null, queue, index: 0, xpEarned: 0, flipped: false, correctCount: 0, wrongCount: 0 };
+    session = { type: 'weakwords', catId: null, queue, index: 0, xpEarned: 0, flipped: false, correctCount: 0, wrongCount: 0 };
     updateStreak();
     showView('flashcard');
     document.getElementById('session-complete').classList.add('hidden');
@@ -3273,11 +3273,16 @@ const App = (() => {
     if (!session) { showView('home'); return; }
     if (session.type === 'sentence-builder') { startSentenceBuilder(); return; }
     if (session.type === 'dialog') { startDialogSession(); return; }
-    if (session.catId !== undefined) {
-      startFlashcardSession(session.catId);
-    } else {
-      startQuickSession();
+    if (session.type === 'quiz') { startQuizSession(); return; }
+    if (session.type === 'typing') { startTypingSession(session.catId); return; }
+    if (session.type === 'listening') {
+      session.catId ? startCategoryListeningQuiz(session.catId) : startListeningQuiz();
+      return;
     }
+    if (session.type === 'favorites') { startFavoritesSession(); return; }
+    if (session.type === 'weakwords') { startWeakWordsSession(); return; }
+    // default: flashcard with the same category
+    startFlashcardSession(session.catId ?? null);
   }
 
   /* ── QUIZ SESSION ───────────────────────────────────────────────────────── */
@@ -4015,7 +4020,7 @@ const App = (() => {
     const pool = catId ? WORDS.filter(w => w.cat === catId) : [...WORDS];
     if (pool.length === 0) { showToast('Keine Wörter verfügbar!'); return; }
     const queue = [...pool].sort(() => Math.random() - 0.5).slice(0, 10);
-    session = { type: 'listening', queue, index: 0, score: 0, xpEarned: 0, answered: false };
+    session = { type: 'listening', catId, queue, index: 0, score: 0, xpEarned: 0, answered: false };
     updateStreak();
     document.getElementById('listen-session-area').classList.remove('hidden');
     document.getElementById('listen-complete').classList.add('hidden');
@@ -4028,14 +4033,7 @@ const App = (() => {
   /* ── LISTENING QUIZ ──────────────────────────────────────────────────────── */
   function startListeningQuiz() {
     const pool = [...WORDS].sort(() => Math.random() - 0.5).slice(0, 10);
-    session = {
-      type: 'listening',
-      queue: pool,
-      index: 0,
-      score: 0,
-      xpEarned: 0,
-      answered: false
-    };
+    session = { type: 'listening', catId: null, queue: pool, index: 0, score: 0, xpEarned: 0, answered: false };
     updateStreak();
     document.getElementById('listen-session-area').classList.remove('hidden');
     document.getElementById('listen-complete').classList.add('hidden');
@@ -4552,7 +4550,7 @@ const App = (() => {
       return;
     }
     updateStreak();
-    session = { type:'flashcard', catId:null, queue:shuffle(favWords), index:0, xpEarned:0, flipped:false, correctCount:0, wrongCount:0 };
+    session = { type:'favorites', catId:null, queue:shuffle(favWords), index:0, xpEarned:0, flipped:false, correctCount:0, wrongCount:0 };
     showView('flashcard');
     renderFlashcard();
   }
