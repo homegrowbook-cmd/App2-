@@ -73,18 +73,24 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 
 ---
 
-## 🚀 Phase 4 – Erweiterungen & KI (v4.0) *In Planung*
+## 🚀 Phase 4 – Erweiterungen & KI (v4.0) *In Arbeit*
 
 **Ziel:** Sprach­kompetenz vertiefen, KI-gestützte Personalisierung, Community-Features
 
-### 4.1 – Vokabular & Inhalte
-- [ ] **+100 neue Vokabeln** – Themen: Gesundheit 🏥, Technologie 💻, Sport ⚽, Natur 2.0 🌊
-- [ ] **B1-Lektionen** – Erweiterte Grammatik (Konjunktiv, Passiv, Futur)
+### ✅ 4.0 – Vokabular-Erweiterung & neue Übungstypen
+- [x] **+60 neue Vokabeln** – Kategorien: Gesundheit 🏥 (20), Technologie 💻 (20), Sport ⚽ (20) – Gesamt: 565 Wörter, 19 Kategorien
+- [x] **Lückentext-Trainer** – Fehlende Wörter in Sätzen ergänzen (+20 XP, Hint-Funktion)
+- [x] **Neues Home-Design** – 2-Spalten-Raster für alle Übungstypen, übersichtlicher Navigation
+- [x] **Lückentext-Button auf jeder Kategorie-Karte** (Lernen-Ansicht)
+- [x] **Service Worker v11** – Neues Cache-Profil für v4.0
+
+### 4.1 – Weitere Vokabeln
+- [ ] **+40 neue Vokabeln** – Themen: Natur 2.0 🌊, B1-Wortschatz
 - [ ] **5 weitere Geschichten** (B1-Niveau) mit komplexerem Wortschatz
 - [ ] **A2-Level-Test erweitern** + neuer B1-Level-Test
 
 ### 4.2 – Neue Übungstypen
-- [ ] **Lückentext-Übungen** – Sätze mit fehlendem Wort ergänzen
+- [x] **Lückentext-Übungen** – Sätze mit fehlendem Wort ergänzen (✅ v4.0)
 - [ ] **Aussprache-Bewertung** – Web Speech API zur Spracherkennung nutzen (Experimental)
 - [ ] **Konjugations-Trainer** – Verbformen eingeben (Präsens, Vergangenheit, Futur)
 - [ ] **Bild-Vokabular** – Wörter durch Bilder lernen (Bildauswahl-Quiz)
