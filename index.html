@@ -4287,7 +4287,7 @@ const App = (() => {
     if (!container) return;
     if (container.innerHTML !== '') return; // already rendered
     container.innerHTML = GRAMMAR_CARDS.map((gc, i) => `
-      <div class="grammar-card" id="gc-${i}" onclick="toggleGrammarCard(${i})">
+      <div class="grammar-card" id="gc-${i}" onclick="App.toggleGrammarCard(${i})">
         <div class="grammar-card-title">${gc.title}<span class="grammar-card-chevron">▶</span></div>
         <div class="grammar-card-body">${gc.body}</div>
       </div>`).join('');
@@ -5302,7 +5302,8 @@ const App = (() => {
       startLevelTest, answerLevelTest, nextLevelTestQuestion, exitLevelTest,
       toggleFavorite, startFavoritesSession,
       filterWordList, filterWordCat,
-      closeLevelUp
+      closeLevelUp,
+      toggleGrammarCard
     };
   }
 
