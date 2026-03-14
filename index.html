@@ -2237,6 +2237,16 @@ const App = (() => {
     return new Date().toISOString().split('T')[0];
   }
 
+  // Fisher-Yates shuffle – unbiased random ordering
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
   function daysBetween(a, b) {
     const msPerDay = 86400000;
     return Math.floor((new Date(b) - new Date(a)) / msPerDay);
@@ -3575,8 +3585,7 @@ const App = (() => {
   /* ── SATZ-BUILDER ────────────────────────────────────────────────────────── */
   function startSentenceBuilder() {
     // Use words whose example sentences have at least 3 tokens
-    const pool = WORDS.filter(w => w.ex_pt && w.ex_pt.trim().split(/\s+/).length >= 3)
-      .sort(() => Math.random() - 0.5)
+    const pool = shuffle(WORDS.filter(w => w.ex_pt && w.ex_pt.trim().split(/\s+/).length >= 3))
       .slice(0, 8);
     if (pool.length === 0) { showToast('Keine Sätze verfügbar!'); return; }
     session = {
@@ -3615,7 +3624,7 @@ const App = (() => {
     document.getElementById('sb-category').textContent = cat ? cat.icon + ' ' + cat.name[lang] : '';
 
     const tokens = word.ex_pt.trim().split(/\s+/);
-    const shuffled = [...tokens].sort(() => Math.random() - 0.5);
+    const shuffled = shuffle(tokens);
     session.tokens = tokens;
     session.shuffled = shuffled;
     session.selected = [];
@@ -3737,7 +3746,7 @@ const App = (() => {
 
   /* ── DIALOG-ÜBUNGEN ──────────────────────────────────────────────────────── */
   function startDialogSession() {
-    const queue = [...DIALOGS].sort(() => Math.random() - 0.5);
+    const queue = shuffle(DIALOGS);
     session = { type: 'dialog', queue, index: 0, score: 0, xpEarned: 0, answered: false };
     updateStreak();
     document.getElementById('dlg-session-area').classList.remove('hidden');
@@ -3769,10 +3778,10 @@ const App = (() => {
 
     document.getElementById('dlg-prompt').textContent = dlg.prompt[lang] || dlg.prompt.de;
 
-    const allOptions = [
+    const allOptions = shuffle([
       { text: dlg.correct, isCorrect: true },
       ...dlg.wrong.map(t => ({ text: t, isCorrect: false }))
-    ].sort(() => Math.random() - 0.5);
+    ]);
 
     const container = document.getElementById('dlg-options');
     container.innerHTML = '';
@@ -3810,7 +3819,8 @@ const App = (() => {
       session.score += 1;
       const earnedXP = 20;
       session.xpEarned += earnedXP;
-      addXP(earnedXP, btn.getBoundingClientRect().left + btn.getBoundingClientRect().width / 2, btn.getBoundingClientRect().top);
+      const rect = btn.getBoundingClientRect();
+      addXP(earnedXP, rect.left + rect.width / 2, rect.top);
       fb.classList.add('correct-fb');
       fb.textContent = '✅ Richtig! / Correct!' + (translation ? ' – ' + translation : '');
       document.getElementById('dlg-score-val').textContent = session.score;
