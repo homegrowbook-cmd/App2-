@@ -1,5 +1,5 @@
 /* LinguaBrasil – Service Worker (PWA Offline Support) */
-const CACHE_NAME = 'linguabrasil-v5';
+const CACHE_NAME = 'linguabrasil-v6';
 const ASSETS = [
   './',
   './index.html',

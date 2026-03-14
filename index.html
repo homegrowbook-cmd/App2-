@@ -1117,6 +1117,126 @@
     .achievement-icon { font-size: 1.6rem; flex-shrink: 0; }
     .achievement-name { font-size: 0.78rem; font-weight: 700; color: var(--text); }
     .achievement-desc { font-size: 0.68rem; color: var(--text-2); margin-top: 2px; }
+
+    /* ─── Satz-Builder ───────────────────────────────────────────────────────────── */
+    .sb-prompt-card {
+      background: linear-gradient(135deg, var(--green), var(--light-green));
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      text-align: center;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 20px rgba(0,156,59,0.25);
+    }
+    .sb-prompt-card .q-label { font-size: 0.8rem; opacity: 0.8; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.8px; }
+    .sb-translation { font-size: 1.35rem; font-weight: 800; line-height: 1.4; }
+    .sb-prompt-card .q-category { font-size: 0.82rem; opacity: 0.65; margin-top: 8px; }
+
+    .sb-answer-area {
+      min-height: 68px;
+      background: var(--card);
+      border: 2.5px dashed var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .sb-answer-placeholder {
+      font-size: 0.82rem;
+      color: var(--text-2);
+      font-style: italic;
+    }
+    .sb-answer-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .sb-word-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+      min-height: 44px;
+    }
+    .sb-chip {
+      border: none;
+      border-radius: 20px;
+      padding: 8px 14px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .sb-chip-available {
+      background: var(--blue);
+      color: #fff;
+    }
+    .sb-chip-available:hover { background: var(--light-blue); transform: translateY(-1px); }
+    .sb-chip-selected {
+      background: rgba(0,156,59,0.15);
+      color: var(--green);
+      border: 2px solid var(--green);
+    }
+    .sb-chip-selected:hover { background: rgba(0,156,59,0.25); }
+    .sb-chip:disabled { cursor: default; opacity: 0.7; }
+
+    body.dark .sb-answer-area { background: #1f2937; border-color: #374151; }
+    body.dark .sb-chip-available { background: var(--light-blue); }
+    body.dark .sb-chip-selected { background: rgba(0,196,79,0.15); }
+
+    /* ─── Dialog-Übungen ─────────────────────────────────────────────────────────── */
+    .dlg-context-bar {
+      background: linear-gradient(135deg, #e84393, #ff69b4);
+      color: #fff;
+      border-radius: var(--radius-sm);
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+    .dlg-bubbles {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .dlg-bubble {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      max-width: 88%;
+    }
+    .dlg-who {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-2);
+      margin-bottom: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .dlg-text {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 0 var(--radius) var(--radius) var(--radius);
+      padding: 10px 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .dlg-prompt {
+      background: rgba(232,67,147,0.08);
+      border-left: 4px solid #e84393;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    body.dark .dlg-text { background: #374151; border-color: #4b5563; }
+    body.dark .dlg-prompt { background: rgba(232,67,147,0.12); }
   </style>
 </head>
 <body>
@@ -1179,6 +1299,8 @@
     <button class="cta-btn" style="background:linear-gradient(135deg,var(--blue),var(--light-blue));box-shadow:0 4px 16px rgba(0,39,118,0.3)" onclick="App.showView('learn')">📚 Alle Kategorien</button>
     <button class="cta-btn" style="background:linear-gradient(135deg,#6a0dad,#9b30ff);box-shadow:0 4px 16px rgba(106,13,173,0.3)" onclick="App.startListeningQuiz()">👂 Hörverständnis-Quiz</button>
     <button class="cta-btn" style="background:linear-gradient(135deg,#c77b17,#e89c2f);box-shadow:0 4px 16px rgba(199,123,23,0.3)" onclick="App.startTypingSession(null)">✏️ Tipp-Übung</button>
+    <button class="cta-btn" style="background:linear-gradient(135deg,var(--green),var(--light-green));box-shadow:0 4px 16px rgba(0,156,59,0.3)" onclick="App.startSentenceBuilder()">🔤 Satz-Builder</button>
+    <button class="cta-btn" style="background:linear-gradient(135deg,#e84393,#ff69b4);box-shadow:0 4px 16px rgba(232,67,147,0.3)" onclick="App.startDialogSession()">💬 Dialog-Übungen</button>
   </div>
 
   <!-- LEARN (categories) -->
@@ -1486,11 +1608,86 @@
     <div class="settings-section">
       <h3 class="settings-heading">ℹ️ App-Info</h3>
       <div class="settings-info">
-        <p><strong>LinguaBrasil</strong> v3.2</p>
+        <p><strong>LinguaBrasil</strong> v3.3</p>
         <p id="settings-word-count">222 Vokabeln &amp; Sätze · 13 Kategorien</p>
         <p>🇧🇷 Brasilianisches Portugiesisch lernen</p>
         <p style="margin-top:8px;font-size:0.78rem">Kostenlos · Offline nutzbar · Keine Anmeldung erforderlich</p>
       </div>
+    </div>
+  </div>
+
+  <!-- SENTENCE BUILDER -->
+  <div class="view" id="view-sentence-builder">
+    <div class="flashcard-header">
+      <button class="back-btn" onclick="App.exitSession()">←</button>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-label" id="sb-progress-label">0 / 0</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="sb-progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+    <div id="sb-session-area">
+      <div class="quiz-score-bar">
+        <span>Richtig / Correct</span>
+        <span class="quiz-score-val" id="sb-score-val">0</span>
+      </div>
+      <div class="sb-prompt-card">
+        <div class="q-label" id="sb-prompt-label">Bilde den Satz auf Portugiesisch</div>
+        <div class="sb-translation" id="sb-translation">—</div>
+        <div class="q-category" id="sb-category">—</div>
+      </div>
+      <div class="sb-answer-area" id="sb-answer-area">
+        <div class="sb-answer-placeholder" id="sb-answer-placeholder">Tippe die Wörter in der richtigen Reihenfolge an ↓</div>
+        <div class="sb-answer-chips" id="sb-answer-chips"></div>
+      </div>
+      <div class="sb-word-bank" id="sb-word-bank"></div>
+      <div class="quiz-feedback" id="sb-feedback"></div>
+      <button class="cta-btn" id="sb-check-btn" onclick="App.checkSentenceAnswer()">Prüfen ✓</button>
+      <button class="cta-btn hidden" id="sb-next-btn" onclick="App.nextSentenceRound()" style="background:linear-gradient(135deg,var(--blue),var(--light-blue));box-shadow:0 4px 16px rgba(0,39,118,0.3)">Weiter →</button>
+    </div>
+    <div class="session-complete hidden" id="sb-complete">
+      <div class="trophy">🔤</div>
+      <h2>Satz-Builder beendet!</h2>
+      <p id="sb-complete-msg">Gut gemacht!</p>
+      <div class="xp-earned" id="sb-xp">+0 XP</div>
+      <br><br>
+      <button class="cta-btn" onclick="App.showView('home')" style="max-width:280px;margin:0 auto">🏠 Startseite</button>
+      <button class="cta-btn" style="max-width:280px;margin:8px auto;background:linear-gradient(135deg,var(--green),var(--light-green));box-shadow:0 4px 16px rgba(0,156,59,0.3)" onclick="App.startSentenceBuilder()">🔄 Nochmal</button>
+    </div>
+  </div>
+
+  <!-- DIALOG EXERCISES -->
+  <div class="view" id="view-dialog">
+    <div class="flashcard-header">
+      <button class="back-btn" onclick="App.exitSession()">←</button>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-label" id="dlg-progress-label">0 / 0</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="dlg-progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+    <div id="dlg-session-area">
+      <div class="quiz-score-bar">
+        <span>Punkte / Score</span>
+        <span class="quiz-score-val" id="dlg-score-val">0</span>
+      </div>
+      <div class="dlg-context-bar" id="dlg-context-bar">💬 Dialog</div>
+      <div class="dlg-bubbles" id="dlg-bubbles"></div>
+      <div class="dlg-prompt" id="dlg-prompt">—</div>
+      <div class="quiz-options" id="dlg-options" style="grid-template-columns:1fr"></div>
+      <div class="quiz-feedback" id="dlg-feedback"></div>
+      <button class="cta-btn hidden" id="dlg-next-btn" onclick="App.nextDialogQuestion()">Weiter →</button>
+    </div>
+    <div class="session-complete hidden" id="dlg-complete">
+      <div class="trophy">💬</div>
+      <h2>Dialog-Training beendet!</h2>
+      <p id="dlg-complete-msg">Gut gemacht!</p>
+      <div class="xp-earned" id="dlg-xp">+0 XP</div>
+      <br><br>
+      <button class="cta-btn" onclick="App.showView('home')" style="max-width:280px;margin:0 auto">🏠 Startseite</button>
+      <button class="cta-btn" style="max-width:280px;margin:8px auto;background:linear-gradient(135deg,#e84393,#ff69b4);box-shadow:0 4px 16px rgba(232,67,147,0.3)" onclick="App.startDialogSession()">🔄 Nochmal</button>
     </div>
   </div>
 
@@ -2040,6 +2237,16 @@ const App = (() => {
     return new Date().toISOString().split('T')[0];
   }
 
+  // Fisher-Yates shuffle – unbiased random ordering
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
   function daysBetween(a, b) {
     const msPerDay = 86400000;
     return Math.floor((new Date(b) - new Date(a)) / msPerDay);
@@ -2207,6 +2414,108 @@ const App = (() => {
     { pt:'Grana',        de:'Geld (umgangsspr.)',     en:'Money (slang)',            pron:'GRÂ-na' },
     { pt:'Mano',         de:'Alter / Kumpel (umgangsspr.)', en:'Dude / Bro (slang)', pron:'MÂ-nu' },
     { pt:'Valeu!',       de:'Danke! / Super!',        en:'Thanks! / Cool!',          pron:'va-LÉU' },
+  ];
+
+  const DIALOGS = [
+    {
+      icon: '☕', context: { de: 'Im Café', en: 'At the café' },
+      exchange: [{ who: 'Kellner', text: 'Boa tarde! O que você deseja?' }],
+      prompt: { de: 'Du möchtest einen Kaffee bestellen.', en: 'You want to order a coffee.' },
+      correct: 'Quero um café, por favor.',
+      wrong: ['Obrigado, tchau!', 'Onde fica o banheiro?'],
+      translation: { de: 'Ich möchte einen Kaffee, bitte.', en: 'I would like a coffee, please.' }
+    },
+    {
+      icon: '👋', context: { de: 'Jemanden kennenlernen', en: 'Meeting someone new' },
+      exchange: [{ who: 'Ana', text: 'Olá! Tudo bem? Eu me chamo Ana.' }],
+      prompt: { de: 'Stell dich vor und frag wie es ihr geht.', en: 'Introduce yourself and ask how she is.' },
+      correct: 'Tudo bem! Eu me chamo João. E você?',
+      wrong: ['Não entendo.', 'Onde fica o metrô?'],
+      translation: { de: 'Alles gut! Ich heiße João. Und du?', en: 'All good! My name is João. And you?' }
+    },
+    {
+      icon: '🛍️', context: { de: 'Im Geschäft', en: 'At the shop' },
+      exchange: [{ who: 'Vendedor', text: 'Bom dia! Posso ajudar você?' }],
+      prompt: { de: 'Du möchtest wissen, wie viel etwas kostet.', en: 'You want to know how much something costs.' },
+      correct: 'Quanto custa isso?',
+      wrong: ['Eu não falo português.', 'Um suco de laranja, por favor.'],
+      translation: { de: 'Wie viel kostet das?', en: 'How much does this cost?' }
+    },
+    {
+      icon: '🗺️', context: { de: 'Nach dem Weg fragen', en: 'Asking for directions' },
+      exchange: [
+        { who: 'Você', text: 'Com licença!' },
+        { who: 'Morador', text: 'Pois não?' }
+      ],
+      prompt: { de: 'Du möchtest nach dem Bahnhof fragen.', en: 'You want to ask about the train station.' },
+      correct: 'Onde fica a estação de trem?',
+      wrong: ['Quero uma mesa para dois.', 'A conta, por favor.'],
+      translation: { de: 'Wo ist der Bahnhof?', en: 'Where is the train station?' }
+    },
+    {
+      icon: '🍽️', context: { de: 'Im Restaurant', en: 'At the restaurant' },
+      exchange: [{ who: 'Garçom', text: 'Boa noite! A mesa é para quantas pessoas?' }],
+      prompt: { de: 'Du bist mit einer weiteren Person da.', en: 'You are there with one other person.' },
+      correct: 'Para duas pessoas, por favor.',
+      wrong: ['Sem açúcar, por favor.', 'Você fala inglês?'],
+      translation: { de: 'Für zwei Personen, bitte.', en: 'For two people, please.' }
+    },
+    {
+      icon: '🚕', context: { de: 'Im Taxi', en: 'In a taxi' },
+      exchange: [{ who: 'Motorista', text: 'Boa tarde! Para onde você vai?' }],
+      prompt: { de: 'Du willst zum Flughafen fahren.', en: 'You want to go to the airport.' },
+      correct: 'Para o aeroporto, por favor.',
+      wrong: ['Quero comprar uma passagem.', 'Tem ar-condicionado?'],
+      translation: { de: 'Zum Flughafen, bitte.', en: 'To the airport, please.' }
+    },
+    {
+      icon: '🏨', context: { de: 'Im Hotel', en: 'At the hotel' },
+      exchange: [{ who: 'Recepcionista', text: 'Bem-vindo! Tem reserva?' }],
+      prompt: { de: 'Du hast eine Reservierung unter deinem Namen.', en: 'You have a reservation under your name.' },
+      correct: 'Sim, tenho uma reserva no meu nome.',
+      wrong: ['Preciso de ajuda.', 'Onde fica o restaurante?'],
+      translation: { de: 'Ja, ich habe eine Reservierung auf meinen Namen.', en: 'Yes, I have a reservation under my name.' }
+    },
+    {
+      icon: '🏥', context: { de: 'Beim Arzt', en: 'At the doctor' },
+      exchange: [{ who: 'Médico', text: 'O que está sentindo?' }],
+      prompt: { de: 'Du hast Kopfschmerzen.', en: 'You have a headache.' },
+      correct: 'Estou com dor de cabeça.',
+      wrong: ['Preciso de um táxi.', 'Quero fazer um tour.'],
+      translation: { de: 'Ich habe Kopfschmerzen.', en: 'I have a headache.' }
+    },
+    {
+      icon: '📱', context: { de: 'Am Telefon', en: 'On the phone' },
+      exchange: [{ who: 'Atendente', text: 'Alô? Com quem eu falo?' }],
+      prompt: { de: 'Nenn deinen Namen und frag nach Maria.', en: 'Give your name and ask for Maria.' },
+      correct: 'Aqui é João. Posso falar com a Maria?',
+      wrong: ['Tchau!', 'Não sei.'],
+      translation: { de: 'Hier ist João. Kann ich mit Maria sprechen?', en: 'This is João. Can I speak to Maria?' }
+    },
+    {
+      icon: '🛒', context: { de: 'Im Supermarkt', en: 'At the supermarket' },
+      exchange: [{ who: 'Funcionário', text: 'Posso ajudar?' }],
+      prompt: { de: 'Du suchst die Bäckerei-Abteilung.', en: 'You are looking for the bakery section.' },
+      correct: 'Onde fica a padaria?',
+      wrong: ['Quanto tempo?', 'Quero pagar com cartão.'],
+      translation: { de: 'Wo ist die Bäckerei?', en: 'Where is the bakery?' }
+    },
+    {
+      icon: '☀️', context: { de: 'Smalltalk über das Wetter', en: 'Small talk about the weather' },
+      exchange: [{ who: 'Vizinho', text: 'Que calor hoje, não é?' }],
+      prompt: { de: 'Du stimmst zu und sagst, dass du die Sonne magst.', en: 'You agree and say you like the sun.' },
+      correct: 'É, faz muito calor! Mas eu adoro o sol.',
+      wrong: ['Está chovendo muito.', 'Preciso de um guarda-chuva.'],
+      translation: { de: 'Ja, es ist sehr heiß! Aber ich liebe die Sonne.', en: 'Yes, it\'s very hot! But I love the sun.' }
+    },
+    {
+      icon: '👋', context: { de: 'Sich verabschieden', en: 'Saying goodbye' },
+      exchange: [{ who: 'Amigo', text: 'Foi ótimo te ver! Até logo!' }],
+      prompt: { de: 'Verabschiede dich herzlich.', en: 'Say a warm goodbye.' },
+      correct: 'Igualmente! Cuida-se! Até mais!',
+      wrong: ['Não entendi.', 'Quanto custa?'],
+      translation: { de: 'Ebenso! Pass auf dich auf! Bis bald!', en: 'Same to you! Take care! See you!' }
+    }
   ];
 
   function renderHome() {
@@ -2424,7 +2733,10 @@ const App = (() => {
   }
 
   function restartSession() {
-    if (session && session.catId !== undefined) {
+    if (!session) { showView('home'); return; }
+    if (session.type === 'sentence-builder') { startSentenceBuilder(); return; }
+    if (session.type === 'dialog') { startDialogSession(); return; }
+    if (session.catId !== undefined) {
       startFlashcardSession(session.catId);
     } else {
       startQuickSession();
@@ -3270,6 +3582,281 @@ const App = (() => {
     renderHeaderStats();
   }
 
+  /* ── SATZ-BUILDER ────────────────────────────────────────────────────────── */
+  function startSentenceBuilder() {
+    // Use words whose example sentences have at least 3 tokens
+    const pool = shuffle(WORDS.filter(w => w.ex_pt && w.ex_pt.trim().split(/\s+/).length >= 3))
+      .slice(0, 8);
+    if (pool.length === 0) { showToast('Keine Sätze verfügbar!'); return; }
+    session = {
+      type: 'sentence-builder',
+      queue: pool,
+      index: 0,
+      score: 0,
+      xpEarned: 0,
+      checked: false,
+      tokens: [],
+      shuffled: [],
+      selected: [],
+      available: []
+    };
+    updateStreak();
+    document.getElementById('sb-session-area').classList.remove('hidden');
+    document.getElementById('sb-complete').classList.add('hidden');
+    document.getElementById('sb-score-val').textContent = '0';
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    showView('sentence-builder');
+    renderSentenceBuilderRound();
+  }
+
+  function renderSentenceBuilderRound() {
+    const { queue, index } = session;
+    const word = queue[index];
+    const total = queue.length;
+    document.getElementById('sb-progress-label').textContent = `${index + 1} / ${total}`;
+    document.getElementById('sb-progress-fill').style.width = Math.round((index / total) * 100) + '%';
+
+    const lang = nativeLang();
+    document.getElementById('sb-translation').textContent = lang === 'de' ? word.ex_de : word.ex_en;
+    document.getElementById('sb-prompt-label').textContent =
+      lang === 'de' ? 'Bilde den Satz auf Portugiesisch' : 'Build the sentence in Portuguese';
+    const cat = CATEGORIES.find(c => c.id === word.cat);
+    document.getElementById('sb-category').textContent = cat ? cat.icon + ' ' + cat.name[lang] : '';
+
+    const tokens = word.ex_pt.trim().split(/\s+/);
+    const shuffled = shuffle(tokens);
+    session.tokens = tokens;
+    session.shuffled = shuffled;
+    session.selected = [];
+    session.available = shuffled.map((_, i) => i);
+    session.checked = false;
+
+    renderSentenceBuilderChips();
+
+    const fb = document.getElementById('sb-feedback');
+    fb.className = 'quiz-feedback';
+    fb.textContent = '';
+    document.getElementById('sb-check-btn').classList.remove('hidden');
+    document.getElementById('sb-next-btn').classList.add('hidden');
+  }
+
+  function renderSentenceBuilderChips() {
+    const answerChips = document.getElementById('sb-answer-chips');
+    const wordBank = document.getElementById('sb-word-bank');
+    const placeholder = document.getElementById('sb-answer-placeholder');
+
+    if (session.selected.length === 0) {
+      placeholder.style.display = 'block';
+      answerChips.innerHTML = '';
+    } else {
+      placeholder.style.display = 'none';
+      answerChips.innerHTML = '';
+      session.selected.forEach((tokenIdx, pos) => {
+        const chip = document.createElement('button');
+        chip.className = 'sb-chip sb-chip-selected';
+        chip.textContent = session.shuffled[tokenIdx];
+        if (!session.checked) chip.onclick = () => removeSentenceChip(pos);
+        else chip.disabled = true;
+        answerChips.appendChild(chip);
+      });
+    }
+
+    wordBank.innerHTML = '';
+    session.available.forEach(tokenIdx => {
+      const chip = document.createElement('button');
+      chip.className = 'sb-chip sb-chip-available';
+      chip.textContent = session.shuffled[tokenIdx];
+      if (!session.checked) chip.onclick = () => addSentenceChip(tokenIdx);
+      else chip.disabled = true;
+      wordBank.appendChild(chip);
+    });
+  }
+
+  function addSentenceChip(tokenIdx) {
+    session.selected.push(tokenIdx);
+    session.available = session.available.filter(i => i !== tokenIdx);
+    renderSentenceBuilderChips();
+  }
+
+  function removeSentenceChip(pos) {
+    const tokenIdx = session.selected[pos];
+    session.selected.splice(pos, 1);
+    session.available.push(tokenIdx);
+    renderSentenceBuilderChips();
+  }
+
+  function checkSentenceAnswer() {
+    if (session.checked) return;
+    if (session.selected.length === 0) {
+      showToast(nativeLang() === 'de' ? 'Wähle Wörter aus!' : 'Select some words!');
+      return;
+    }
+    session.checked = true;
+    const userSentence = session.selected.map(i => session.shuffled[i]).join(' ');
+    const correct = session.tokens.join(' ');
+    const isCorrect = userSentence === correct;
+
+    const fb = document.getElementById('sb-feedback');
+    fb.classList.add('visible');
+    if (isCorrect) {
+      const earnedXP = 25;
+      session.xpEarned += earnedXP;
+      session.score += 1;
+      const btn = document.getElementById('sb-check-btn');
+      const rect = btn.getBoundingClientRect();
+      addXP(earnedXP, rect.left + rect.width / 2, rect.top);
+      fb.classList.add('correct-fb');
+      fb.textContent = '✅ Richtig! / Correct! 🎉';
+      document.getElementById('sb-score-val').textContent = session.score;
+    } else {
+      fb.classList.add('wrong-fb');
+      fb.innerHTML = `❌ Richtige Reihenfolge: <strong>${esc(correct)}</strong>`;
+    }
+    renderSentenceBuilderChips();
+    rateWord(session.queue[session.index].id, isCorrect);
+    speakWord(session.queue[session.index].pt);
+    document.getElementById('sb-check-btn').classList.add('hidden');
+    document.getElementById('sb-next-btn').classList.remove('hidden');
+  }
+
+  function nextSentenceRound() {
+    session.index += 1;
+    if (session.index >= session.queue.length) {
+      endSentenceBuilderSession();
+    } else {
+      renderSentenceBuilderRound();
+    }
+  }
+
+  function endSentenceBuilderSession() {
+    document.getElementById('sb-session-area').classList.add('hidden');
+    document.getElementById('sb-complete').classList.remove('hidden');
+    document.getElementById('sb-progress-fill').style.width = '100%';
+    const total = session.queue.length;
+    document.getElementById('sb-progress-label').textContent = `${total} / ${total}`;
+    document.getElementById('sb-xp').textContent = '+' + session.xpEarned + ' XP';
+    const pct = Math.round((session.score / total) * 100);
+    document.getElementById('sb-complete-msg').textContent =
+      pct >= 80 ? `Ausgezeichnet! ${pct}% richtig 🌟` :
+      pct >= 50 ? `Gut gemacht! ${pct}% richtig 💪` :
+                  `Übe weiter! ${pct}% richtig 📚`;
+    renderHeaderStats();
+    checkAchievements();
+  }
+
+  /* ── DIALOG-ÜBUNGEN ──────────────────────────────────────────────────────── */
+  function startDialogSession() {
+    const queue = shuffle(DIALOGS);
+    session = { type: 'dialog', queue, index: 0, score: 0, xpEarned: 0, answered: false };
+    updateStreak();
+    document.getElementById('dlg-session-area').classList.remove('hidden');
+    document.getElementById('dlg-complete').classList.add('hidden');
+    document.getElementById('dlg-score-val').textContent = '0';
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    showView('dialog');
+    renderDialogQuestion();
+  }
+
+  function renderDialogQuestion() {
+    const { queue, index } = session;
+    const dlg = queue[index];
+    const total = queue.length;
+    const lang = nativeLang();
+    document.getElementById('dlg-progress-label').textContent = `${index + 1} / ${total}`;
+    document.getElementById('dlg-progress-fill').style.width = Math.round((index / total) * 100) + '%';
+
+    document.getElementById('dlg-context-bar').textContent = dlg.icon + ' ' + (dlg.context[lang] || dlg.context.de);
+
+    const bubblesEl = document.getElementById('dlg-bubbles');
+    bubblesEl.innerHTML = '';
+    dlg.exchange.forEach(turn => {
+      const bubble = document.createElement('div');
+      bubble.className = 'dlg-bubble';
+      bubble.innerHTML = `<span class="dlg-who">${esc(turn.who)}</span><span class="dlg-text">${esc(turn.text)}</span>`;
+      bubblesEl.appendChild(bubble);
+    });
+
+    document.getElementById('dlg-prompt').textContent = dlg.prompt[lang] || dlg.prompt.de;
+
+    const allOptions = shuffle([
+      { text: dlg.correct, isCorrect: true },
+      ...dlg.wrong.map(t => ({ text: t, isCorrect: false }))
+    ]);
+
+    const container = document.getElementById('dlg-options');
+    container.innerHTML = '';
+    allOptions.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-option';
+      btn.style.textAlign = 'left';
+      btn.textContent = opt.text;
+      btn.onclick = () => handleDialogAnswer(btn, opt, dlg);
+      container.appendChild(btn);
+    });
+
+    const fb = document.getElementById('dlg-feedback');
+    fb.className = 'quiz-feedback';
+    fb.textContent = '';
+    document.getElementById('dlg-next-btn').classList.add('hidden');
+    session.answered = false;
+  }
+
+  function handleDialogAnswer(btn, opt, dlg) {
+    if (session.answered) return;
+    session.answered = true;
+    const lang = nativeLang();
+    const translation = dlg.translation ? (dlg.translation[lang] || dlg.translation.de) : '';
+
+    document.querySelectorAll('#dlg-options .quiz-option').forEach(b => {
+      b.disabled = true;
+      if (b.textContent === dlg.correct) b.classList.add('correct');
+      if (b === btn && !opt.isCorrect) b.classList.add('wrong');
+    });
+
+    const fb = document.getElementById('dlg-feedback');
+    fb.classList.add('visible');
+    if (opt.isCorrect) {
+      session.score += 1;
+      const earnedXP = 20;
+      session.xpEarned += earnedXP;
+      const rect = btn.getBoundingClientRect();
+      addXP(earnedXP, rect.left + rect.width / 2, rect.top);
+      fb.classList.add('correct-fb');
+      fb.textContent = '✅ Richtig! / Correct!' + (translation ? ' – ' + translation : '');
+      document.getElementById('dlg-score-val').textContent = session.score;
+    } else {
+      fb.classList.add('wrong-fb');
+      fb.innerHTML = `❌ Richtige Antwort: <strong>${esc(dlg.correct)}</strong>${translation ? ' – ' + esc(translation) : ''}`;
+    }
+    speakWord(dlg.correct);
+    document.getElementById('dlg-next-btn').classList.remove('hidden');
+  }
+
+  function nextDialogQuestion() {
+    session.index += 1;
+    if (session.index >= session.queue.length) {
+      endDialogSession();
+    } else {
+      renderDialogQuestion();
+    }
+  }
+
+  function endDialogSession() {
+    document.getElementById('dlg-session-area').classList.add('hidden');
+    document.getElementById('dlg-complete').classList.remove('hidden');
+    document.getElementById('dlg-progress-fill').style.width = '100%';
+    const total = session.queue.length;
+    document.getElementById('dlg-progress-label').textContent = `${total} / ${total}`;
+    document.getElementById('dlg-xp').textContent = '+' + session.xpEarned + ' XP';
+    const pct = Math.round((session.score / total) * 100);
+    document.getElementById('dlg-complete-msg').textContent =
+      pct >= 80 ? `Ausgezeichnet! ${pct}% richtig 🌟` :
+      pct >= 50 ? `Gut gemacht! ${pct}% richtig 💪` :
+                  `Übe weiter! ${pct}% richtig 📚`;
+    renderHeaderStats();
+    checkAchievements();
+  }
+
   function init() {
     updateStreak();
     renderHeaderStats();
@@ -3378,7 +3965,10 @@ const App = (() => {
       nativeLang, isReverse,
       toggleDarkMode, setFontSize,
       startWeakWordsSession, startCategoryListeningQuiz,
-      checkAchievements, renderAchievements
+      checkAchievements, renderAchievements,
+      startSentenceBuilder, checkSentenceAnswer, nextSentenceRound,
+      addSentenceChip, removeSentenceChip,
+      startDialogSession, nextDialogQuestion
     };
   }
 
