@@ -73,7 +73,7 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 
 ---
 
-## 🚀 Phase 4 – Erweiterungen & KI (v4.0) *In Arbeit*
+## ✅ Phase 4 – Erweiterungen & KI (v4.0–v6.0) *Teilweise Abgeschlossen*
 
 **Ziel:** Sprach­kompetenz vertiefen, KI-gestützte Personalisierung, Community-Features
 
@@ -84,15 +84,15 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 - [x] **Lückentext-Button auf jeder Kategorie-Karte** (Lernen-Ansicht)
 - [x] **Service Worker v11** – Neues Cache-Profil für v4.0
 
-### 4.1 – Weitere Vokabeln
-- [ ] **+40 neue Vokabeln** – Themen: Natur 2.0 🌊, B1-Wortschatz
-- [ ] **5 weitere Geschichten** (B1-Niveau) mit komplexerem Wortschatz
-- [ ] **A2-Level-Test erweitern** + neuer B1-Level-Test
+### ✅ 4.1 – Weitere Vokabeln *Abgeschlossen*
+- [x] **+40 neue Vokabeln** – Ozean 🌊 (20), Gesellschaft 🌍 (20) – Gesamt: 665 Wörter, 21 Kategorien
+- [x] **5 weitere Geschichten** (B1-Niveau) mit komplexerem Wortschatz (story6–story10)
+- [x] **A2-Level-Test erweitert** (+ Health & Sports) + neuer **B1-Level-Test** (Tech, Ozean, Gesellschaft)
 
-### 4.2 – Neue Übungstypen
+### ✅ 4.2 – Neue Übungstypen *Abgeschlossen*
 - [x] **Lückentext-Übungen** – Sätze mit fehlendem Wort ergänzen (✅ v4.0)
+- [x] **Konjugations-Trainer** – Verbformen eingeben (Gegenwart, Vergangenheit, Zukunft, 20 Verben)
 - [ ] **Aussprache-Bewertung** – Web Speech API zur Spracherkennung nutzen (Experimental)
-- [ ] **Konjugations-Trainer** – Verbformen eingeben (Präsens, Vergangenheit, Futur)
 - [ ] **Bild-Vokabular** – Wörter durch Bilder lernen (Bildauswahl-Quiz)
 
 ### 4.3 – KI & Personalisierung
@@ -139,8 +139,8 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 21. Level-Tests + Zertifikate           → ✅ IMPLEMENTIERT (v3.5)
 22. Favoriten-System                    → ✅ IMPLEMENTIERT (v3.5)
 23. Wortliste mit Suche                 → ✅ IMPLEMENTIERT (v3.5)
-24. Lückentext-Übungen                  → 🔜 Phase 4.2
-25. Konjugations-Trainer                → 🔜 Phase 4.2
+24. Lückentext-Übungen                  → ✅ IMPLEMENTIERT (v4.0)
+25. Konjugations-Trainer                → ✅ IMPLEMENTIERT (v6.0)
 26. KI-Konversation                     → 🔜 Phase 4.3
 27. Adaptives SRS 2.0                   → 🔜 Phase 4.3
 28. Cloud-Sync                          → 🔜 Phase 4.4
@@ -183,7 +183,7 @@ LuiBrasil/
 | v1.0 MVP | 1–2 Tage | ✅ Fertig |
 | v2.0 Audio & Interaktion | 2–3 Wochen | ✅ Fertig |
 | v3.0–3.5 Lehrplan + Übungstypen + Gamification + Stories | 4–6 Wochen | ✅ Fertig |
-| v4.0 Erweiterungen & KI | 2–4 Monate | 🚀 In Planung |
+| v4.0–v6.0 Erweiterungen | 2–4 Monate | ✅ Teilweise Fertig |
 
 ---
 
