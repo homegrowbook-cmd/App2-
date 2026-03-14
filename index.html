@@ -3408,8 +3408,8 @@ const App = (() => {
   function getDueCards(catId) {
     const pool = catId ? WORDS.filter(w => w.cat === catId) : WORDS;
     return pool.filter(w => {
-      const c = getCard(w.id);
-      return c.nextReview <= today();
+      const c = state.cards[w.id];
+      return c && c.nextReview <= today();
     });
   }
 
@@ -5507,7 +5507,7 @@ const App = (() => {
     container.innerHTML = words.map(w => {
       const front = isRev ? w.pt : (w[lang] || w.de);
       const back  = isRev ? (w[lang] || w.de) : w.pt;
-      const lvl = getCard(w.id).level;
+      const lvl = state.cards[w.id] ? state.cards[w.id].level : 0;
       const cat = CATEGORIES.find(c => c.id === w.cat);
       const isFav = state.favorites && state.favorites[w.id];
       return `<div class="wl-item">
