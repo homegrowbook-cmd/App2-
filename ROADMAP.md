@@ -56,11 +56,11 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 ### Technische Erweiterungen
 - [x] **Service Worker** – Offline-Nutzung (PWA) via `service-worker.js`
 - [x] **Web App Manifest** – App installierbar auf Smartphone via `manifest.json`
-- [ ] IndexedDB für größere Datensätze *(für v3.0 verschoben)*
+- [ ] IndexedDB für größere Datensätze *(verschoben auf v4.0)*
 
 ---
 
-## Phase 3 – Inhalte & Struktur (v3.0–v3.4) ✅ *Weitgehend abgeschlossen*
+## Phase 3 – Inhalte & Struktur (v3.0–v3.5) ✅ *Abgeschlossen*
 
 **Ziel:** Vollständiger A1–B1 Lehrplan + Reverse-Learning
 
@@ -81,15 +81,14 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 - [x] **Session-Zusammenfassung (v3.2)** – Richtig/Falsch-Auswertung am Ende jeder Karteikarten-Sitzung
 - [x] **Hörquiz aus Kategorie-Karte (v3.2)** – 🎧-Button auf jeder Kategorie-Karte für gezieltes Hörtraining
 
-### Noch offen (für v3.3+)
+### Noch offen (für v3.3+) – alles implementiert ✅
 - [x] **Satz-Builder (v3.3)** – Sätze aus Wörtern zusammensetzen (Tap-to-order)
 - [x] **Dialog-Übungen (v3.3)** – Typische Alltagsgespräche nachspielen (12 Szenarien)
 - [x] **XP-Strafpunkte (v3.4)** – XP-Abzug bei falschen Antworten
 - [x] **Streak-Multiplikator (v3.4)** – Bonus-XP für lange Streaks
 - [x] **Tägliches XP-Ziel (v3.4)** – Konfigurierbares Tagesziel mit Fortschrittsbalken
 - [x] **Thematische Geschichten (v3.5)** – 5 interaktive A1/A2 Lesetexte mit tippbaren Vokabel-Highlights, Popup mit Übersetzung + Aussprache + TTS
-- [x] **Leistungsnachweise / Level-Tests (v3.5)** – A1- und A2-Test (je 20 Fragen, Multiple Choice); Zertifikat bei ≥70% im Fortschritts-Tab
-- [ ] **IndexedDB** – Größere Datensätze effizient speichern
+- [x] **Leistungsnachweise / Level-Tests (v3.5)** – A1- und A2-Test (je 20 Fragen, Multiple Choice); Zertifikat bei ≥70% im Fortschritts-Tab; Ergebnis persistent gespeichert
 
 ---
 
@@ -153,6 +152,7 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 - [ ] **Ranglisten & Challenges** – Wöchentliche Wettbewerbe mit Freunden
 - [ ] **Spaced Repetition 2.0** – ML-basierte Anpassung der Lernintervalle
 - [ ] **Benutzerkonten & Cloud-Sync** – Fortschritt geräteübergreifend speichern
+- [ ] **IndexedDB** – Größere Datensätze effizient speichern (bessere Performance bei wachsendem Vokabular)
 - [ ] **Weitere Sprachen** – Spanisch, Französisch, Italienisch
 
 ---
@@ -210,6 +210,7 @@ LinguaBrasil/
 27. **Favoriten-System**               → IMPLEMENTIERT ✅ (v3.5)
 28. **Wortliste mit Suche**            → IMPLEMENTIERT ✅ (v3.5)
 29. KI-Konversation               → Phase 4 🔜
+30. IndexedDB                     → Phase 4 🔜
 ```
 
 ---
@@ -220,7 +221,7 @@ LinguaBrasil/
 |-------|-------|--------|
 | v1.0 MVP | 1–2 Tage | ✅ Fertig |
 | v2.0 Audio & Interaktion | 2–3 Wochen | ✅ Fertig |
-| v3.0–3.4 Vollständiger Lehrplan + Übungstypen + Gamification | 4–6 Wochen | ✅ Weitgehend fertig |
+| v3.0–3.5 Vollständiger Lehrplan + Übungstypen + Gamification + Stories + Level-Tests | 4–6 Wochen | ✅ Fertig |
 | v4.0 Social & KI | 2–3 Monate | 🔜 Geplant |
 
 ---

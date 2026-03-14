@@ -1595,6 +1595,10 @@
         <div class="bs-value" id="prog-xp">0</div>
         <div class="bs-label">⭐ XP gesamt</div>
       </div>
+      <div class="big-stat">
+        <div class="bs-value" id="prog-fav-count">0</div>
+        <div class="bs-label">⭐ Favoriten</div>
+      </div>
     </div>
 
     <div class="progress-card">
@@ -1622,6 +1626,7 @@
       <p style="font-size:0.82rem;color:var(--text-2);margin-bottom:12px">Teste dein Niveau! Beantworte 20 Fragen und erhalte ein A1- oder A2-Zertifikat.</p>
       <button class="cta-btn" onclick="App.startLevelTest('A1')" style="max-width:280px;background:linear-gradient(135deg,var(--green),var(--light-green))">🎓 A1 Test starten</button>
       <button class="cta-btn" onclick="App.startLevelTest('A2')" style="max-width:280px;margin-top:8px;background:linear-gradient(135deg,var(--blue),var(--light-blue))">🎓 A2 Test starten</button>
+      <div id="prog-level-test-certs" style="margin-top:12px"></div>
     </div>
 
     <div style="text-align:center;margin-top:16px">
@@ -2642,7 +2647,8 @@ function loadState() {
     dailyGoal: 50,
     dailyXP: 0,
     dailyXPDate: null,
-    favorites: {}
+    favorites: {},
+    levelTestCerts: {}
   };
 }
 
@@ -3504,6 +3510,29 @@ const App = (() => {
     });
     checkAchievements();
     renderAchievements();
+
+    // Favorites count
+    const favCount = state.favorites ? Object.keys(state.favorites).length : 0;
+    const favEl = document.getElementById('prog-fav-count');
+    if (favEl) favEl.textContent = favCount;
+
+    // Level test certificates in progress
+    const certsDiv = document.getElementById('prog-level-test-certs');
+    if (certsDiv) {
+      const certs = state.levelTestCerts ? Object.entries(state.levelTestCerts) : [];
+      if (certs.length > 0) {
+        certsDiv.innerHTML = '<p style="font-size:0.82rem;font-weight:600;color:var(--text-2);margin-bottom:6px">🏅 Erworbene Zertifikate / Earned Certificates</p>' +
+          certs.map(([level, res]) => `
+            <div class="lt-certificate" style="margin:6px 0;padding:12px 16px">
+              <h3 style="font-size:0.95rem">🎓 Zertifikat – Niveau ${esc(level)}</h3>
+              <div class="lt-cert-level" style="font-size:1.4rem">${esc(level)}</div>
+              <p>Brasilianisches Portugiesisch / Brazilian Portuguese</p>
+              <p style="font-size:0.75rem;margin-top:4px">Ergebnis: ${res.pct}% · ${res.date || ''} · LinguaBrasil</p>
+            </div>`).join('');
+      } else {
+        certsDiv.innerHTML = '<p style="font-size:0.82rem;color:var(--text-2)">Noch kein Zertifikat – bestehe einen Level-Test mit ≥70%!</p>';
+      }
+    }
   }
 
   /* ── ACHIEVEMENTS ───────────────────────────────────────────────────────────── */
@@ -4469,6 +4498,13 @@ const App = (() => {
         <p>Niveau ${ltSession.level} Brasilianisches Portugiesisch<br><em>Brazilian Portuguese Level ${ltSession.level}</em></p>
         <p style="margin-top:8px;font-size:0.75rem">Ergebnis: ${pct}% · LinguaBrasil</p>
       `;
+      // Persist the best result for this level
+      if (!state.levelTestCerts) state.levelTestCerts = {};
+      const prev = state.levelTestCerts[ltSession.level];
+      if (!prev || pct > prev.pct) {
+        state.levelTestCerts[ltSession.level] = { pct, date: new Date().toISOString().split('T')[0] };
+        saveState(state);
+      }
     } else {
       certEl.classList.add('hidden');
     }
@@ -4572,17 +4608,19 @@ const App = (() => {
       const back  = isRev ? (w[lang] || w.de) : w.pt;
       const lvl = getCard(w.id).level;
       const cat = CATEGORIES.find(c => c.id === w.cat);
+      const isFav = state.favorites && state.favorites[w.id];
       return `<div class="wl-item">
         <div class="wl-item-main">
           <span class="wl-front">${esc(front)}</span>
           <span class="wl-arrow">→</span>
           <span class="wl-back">${esc(back)}</span>
+          ${isFav ? '<span style="font-size:0.85rem" title="Favorit / Favorite">⭐</span>' : ''}
         </div>
         <div class="wl-item-meta">
           <span class="wl-cat">${cat ? cat.icon : ''}</span>
           <span class="wl-pron">[ ${esc(w.pron||'')} ]</span>
           <span class="wl-srs srs-${lvl}" title="SRS Level ${lvl}">L${lvl}</span>
-          <button onclick="App.speakWord(${w.id})" style="border:none;background:none;cursor:pointer;font-size:0.95rem;padding:0 4px" title="Anhören">🔊</button>
+          <button onclick="App.speakWord(${JSON.stringify(w.pt)})" style="border:none;background:none;cursor:pointer;font-size:0.95rem;padding:0 4px" title="Anhören">🔊</button>
         </div>
       </div>`;
     }).join('');
@@ -4710,6 +4748,8 @@ const App = (() => {
     if (state.dailyGoal === undefined) state.dailyGoal = 50;
     if (state.dailyXP === undefined) state.dailyXP = 0;
     if (state.dailyXPDate === undefined) state.dailyXPDate = null;
+    if (!state.favorites) state.favorites = {};
+    if (!state.levelTestCerts) state.levelTestCerts = {};
     updateStreak();
     renderHeaderStats();
     renderHome();
