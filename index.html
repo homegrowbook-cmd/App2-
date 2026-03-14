@@ -368,7 +368,8 @@
     .flip-card {
       position: relative;
       width: 100%;
-      min-height: 220px;
+      min-height: 380px;
+      max-height: calc(100vh - 240px);
       transform-style: preserve-3d;
       transition: transform 0.55s cubic-bezier(.4,0,.2,1);
     }
@@ -380,24 +381,27 @@
       inset: 0;
       backface-visibility: hidden;
       border-radius: var(--radius);
-      padding: 28px 24px;
+      padding: 20px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       text-align: center;
       box-shadow: var(--shadow);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .card-front {
       background: linear-gradient(135deg, var(--card) 0%, #f8fbff 100%);
       border: 2px solid var(--border);
+      justify-content: center;
     }
 
     .card-back {
       background: linear-gradient(135deg, #e8fff2 0%, #f0fff8 100%);
       border: 2px solid var(--green);
       transform: rotateY(180deg);
+      justify-content: flex-start;
     }
 
     .card-lang-badge {
@@ -410,14 +414,21 @@
       padding: 3px 10px;
       border-radius: 20px;
       margin-bottom: 14px;
+      flex-shrink: 0;
     }
 
     .card-word {
-      font-size: 2.4rem;
+      font-size: clamp(1.1rem, 6vw, 2.4rem);
       font-weight: 800;
       color: var(--text);
       margin-bottom: 6px;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.3;
+      width: 100%;
     }
+    .card-word.w-medium { font-size: clamp(1.1rem, 4.5vw, 1.7rem); }
+    .card-word.w-long   { font-size: clamp(1rem,   3.5vw, 1.3rem); }
 
     .card-category-badge {
       font-size: 0.75rem;
@@ -432,11 +443,17 @@
     }
 
     .card-pt-word {
-      font-size: 2.4rem;
+      font-size: clamp(1.1rem, 6vw, 2.4rem);
       font-weight: 800;
       color: var(--green);
       margin-bottom: 6px;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.3;
+      width: 100%;
     }
+    .card-pt-word.w-medium { font-size: clamp(1.1rem, 4.5vw, 1.7rem); }
+    .card-pt-word.w-long   { font-size: clamp(1rem,   3.5vw, 1.3rem); }
 
     .card-pronunciation {
       font-size: 0.95rem;
@@ -456,6 +473,9 @@
       width: 100%;
       margin-bottom: 8px;
       font-style: italic;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      flex-shrink: 0;
     }
 
     .card-example {
@@ -466,6 +486,9 @@
       border-radius: var(--radius-sm);
       text-align: left;
       width: 100%;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      flex-shrink: 0;
     }
 
     .card-example span { display: block; margin-bottom: 2px; }
@@ -540,8 +563,9 @@
     }
 
     .quiz-question-card .q-label { font-size: 0.8rem; opacity: 0.7; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.8px; }
-    .quiz-question-card .q-word { font-size: 2.2rem; font-weight: 800; line-height: 1.2; }
+    .quiz-question-card .q-word { font-size: 2.2rem; font-weight: 800; line-height: 1.2; word-break: break-word; overflow-wrap: break-word; }
     .quiz-question-card .q-word.q-long { font-size: 1.4rem; }
+    .quiz-question-card .q-word.q-very-long { font-size: 1.0rem; }
     .quiz-question-card .q-category { font-size: 0.82rem; opacity: 0.65; margin-top: 8px; }
 
     .quiz-options {
@@ -555,13 +579,20 @@
       background: var(--card);
       border: 2.5px solid var(--border);
       border-radius: var(--radius);
-      padding: 16px 12px;
-      font-size: 1rem;
+      padding: 14px 10px;
+      font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
       text-align: center;
       transition: all var(--transition);
       color: var(--text);
+      word-break: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.3;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .quiz-option:hover:not(:disabled) {
@@ -3734,29 +3765,37 @@ const App = (() => {
 
     // front
     const cat = CATEGORIES.find(c => c.id === word.cat);
+    const srcWordEl = document.getElementById('fc-source-word');
     if (isReverse()) {
       document.getElementById('fc-lang-badge').textContent = '🇧🇷 Português';
-      document.getElementById('fc-source-word').textContent = word.pt;
+      srcWordEl.textContent = word.pt;
       document.getElementById('fc-category').textContent = cat ? cat.icon + ' ' + cat.name[nativeLang()] : '';
     } else {
       document.getElementById('fc-lang-badge').textContent = nativeLang() === 'de' ? '🇩🇪 Deutsch' : '🇬🇧 English';
-      document.getElementById('fc-source-word').textContent = nativeLang() === 'de' ? word.de : word.en;
+      srcWordEl.textContent = nativeLang() === 'de' ? word.de : word.en;
       document.getElementById('fc-category').textContent = cat ? cat.icon + ' ' + cat.name[nativeLang()] : '';
     }
+    const srcLen = srcWordEl.textContent.length;
+    srcWordEl.classList.toggle('w-medium', srcLen > 15 && srcLen <= 25);
+    srcWordEl.classList.toggle('w-long',   srcLen > 25);
 
     // back
     const exSource = nativeLang() === 'de' ? word.ex_de : word.ex_en;
+    const ptWordEl = document.getElementById('fc-pt-word');
     if (isReverse()) {
-      document.getElementById('fc-pt-word').textContent = nativeLang() === 'de' ? word.de : word.en;
+      ptWordEl.textContent = nativeLang() === 'de' ? word.de : word.en;
       document.getElementById('fc-pronunciation').textContent = '[ ' + word.pron + ' ] 🇧🇷';
       document.getElementById('fc-example').innerHTML =
         `<span class="ex-pt">${word.pt}</span><span>${exSource}</span>`;
     } else {
-      document.getElementById('fc-pt-word').textContent = word.pt;
+      ptWordEl.textContent = word.pt;
       document.getElementById('fc-pronunciation').textContent = '[ ' + word.pron + ' ]';
       document.getElementById('fc-example').innerHTML =
         `<span class="ex-pt">${word.ex_pt}</span><span>${exSource}</span>`;
     }
+    const ptLen = ptWordEl.textContent.length;
+    ptWordEl.classList.toggle('w-medium', ptLen > 15 && ptLen <= 25);
+    ptWordEl.classList.toggle('w-long',   ptLen > 25);
 
     // bedeutung (usage meaning) – shown for sentence cards
     const bedEl = document.getElementById('fc-bedeutung');
@@ -3775,6 +3814,14 @@ const App = (() => {
     document.getElementById('flip-hint').classList.remove('hidden');
     document.getElementById('rating-buttons').classList.add('hidden');
     updateFavBtn(word.id);
+
+    // Dynamically size the card to fit the taller of the two faces.
+    // scrollHeight reflects intrinsic layout dimensions and is unaffected by CSS transforms.
+    requestAnimationFrame(() => {
+      const front = flipCard.querySelector('.card-front');
+      const back  = flipCard.querySelector('.card-back');
+      flipCard.style.height = Math.max(front.scrollHeight, back.scrollHeight, 380) + 'px';
+    });
   }
 
   function flipCard() {
@@ -3907,7 +3954,8 @@ const App = (() => {
     document.getElementById('quiz-q-label').textContent = qLabel;
     const qWordEl = document.getElementById('quiz-q-word');
     qWordEl.textContent = qWord;
-    qWordEl.classList.toggle('q-long', qWord.length > 20);
+    qWordEl.classList.toggle('q-long',      qWord.length > 20 && qWord.length <= 35);
+    qWordEl.classList.toggle('q-very-long', qWord.length > 35);
     document.getElementById('quiz-q-category').textContent = cat ? cat.icon + ' ' + cat.name[nativeLang()] : '';
 
     // Generate 4 options: 1 correct + 3 random wrong
