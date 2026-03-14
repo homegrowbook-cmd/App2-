@@ -3312,9 +3312,13 @@ const App = (() => {
     }
   }
 
-  function penaltyXP(x, y) {
+  function penaltyXP() {
     if (!state.xpPenaltyEnabled) return;
-    addXP(-XP_PENALTY, x, y);
+    if (session) {
+      session.xpEarned = Math.max(0, (session.xpEarned || 0) - XP_PENALTY);
+    } else if (typeof ltSession !== 'undefined' && ltSession) {
+      ltSession.xpEarned = Math.max(0, (ltSession.xpEarned || 0) - XP_PENALTY);
+    }
   }
 
   function getCard(id) {
@@ -3645,7 +3649,7 @@ const App = (() => {
 
     // stats
     const seen = Object.keys(state.cards).length;
-    const mastered = Object.values(state.cards).filter(c => c.level >= 5).length;
+    const mastered = Object.values(state.cards).filter(c => (c.correct || 0) >= 5).length;
     const acc = state.totalAnswered > 0
       ? Math.round((state.totalCorrect / state.totalAnswered) * 100) + '%'
       : '—';
@@ -3841,9 +3845,6 @@ const App = (() => {
       session.combo = (session.combo || 0) + 1;
       const earnedXP = 10 + session.index; // small bonus for later cards
       session.xpEarned += earnedXP;
-      const btn = document.querySelector('.rating-btn.good');
-      const rect = btn.getBoundingClientRect();
-      addXP(earnedXP, rect.left + rect.width / 2, rect.top);
       checkCombo(session.combo);
       checkMissions('correct', 1);
       checkMissions('combo', session.combo);
@@ -3871,6 +3872,7 @@ const App = (() => {
       const correctCount = session.correctCount || 0, wrongCount = session.wrongCount || 0;
       summEl.textContent = `✅ ${correctCount} richtig  ❌ ${wrongCount} falsch`;
     }
+    if (session.xpEarned > 0) addXP(session.xpEarned, window.innerWidth / 2, window.innerHeight / 3);
     trackSessionCompleted();
     checkAchievements();
     renderHeaderStats();
@@ -4000,7 +4002,6 @@ const App = (() => {
       session.combo = (session.combo || 0) + 1;
       const earnedXP = 15;
       session.xpEarned += earnedXP;
-      addXP(earnedXP, btn.getBoundingClientRect().left + btn.getBoundingClientRect().width / 2, btn.getBoundingClientRect().top);
       fb.classList.add('correct-fb');
       fb.innerHTML = `✅ Richtig! / Correct! &nbsp;<span style="color:var(--green);font-size:0.82rem">[ ${esc(word.pron)} ]</span>`;
       document.getElementById('quiz-score-val').textContent = session.score;
@@ -4011,7 +4012,7 @@ const App = (() => {
       session.combo = 0;
       fb.classList.add('wrong-fb');
       fb.innerHTML = `❌ Falsch! Richtige Antwort: <strong>${esc(correct)}</strong> &nbsp;<span style="font-size:0.8rem;color:var(--text-2)">[ ${esc(word.pron)} ] – ${esc(word.ex_pt)}</span>`;
-      penaltyXP(btn.getBoundingClientRect().left + btn.getBoundingClientRect().width / 2, btn.getBoundingClientRect().top);
+      penaltyXP();
     }
 
     rateWord(word.id, isCorrect);
@@ -4047,6 +4048,7 @@ const App = (() => {
     document.getElementById('quiz-complete-title').textContent = title;
     document.getElementById('quiz-complete-msg').textContent = msg;
     document.getElementById('quiz-xp').textContent = '+' + session.xpEarned + ' XP';
+    if (session.xpEarned > 0) addXP(session.xpEarned, window.innerWidth / 2, window.innerHeight / 3);
     trackSessionCompleted();
     checkMissions('quiz', 1);
     renderHeaderStats();
@@ -4056,7 +4058,7 @@ const App = (() => {
   function renderProgress() {
     renderLevelBanner();
     const seen = Object.keys(state.cards).length;
-    const mastered = Object.values(state.cards).filter(c => c.level >= 5).length;
+    const mastered = Object.values(state.cards).filter(c => (c.correct || 0) >= 5).length;
     document.getElementById('prog-total-words').textContent = seen;
     document.getElementById('prog-mastered').textContent = mastered;
     document.getElementById('prog-streak').textContent = state.streak;
@@ -4180,9 +4182,9 @@ const App = (() => {
     { id:'words_100',   icon:'💯', name:'100er Club',          desc:'100 Wörter gelernt',               check: s => Object.keys(s.cards).length >= 100 },
     { id:'words_150',   icon:'📕', name:'Wort-Profi',          desc:'150 Wörter gelernt',               check: s => Object.keys(s.cards).length >= 150 },
     { id:'words_200',   icon:'📗', name:'Lexikon-Meister',     desc:'200 Wörter gelernt',               check: s => Object.keys(s.cards).length >= 200 },
-    { id:'mastered_5',  icon:'⭐', name:'Erste Meisterung',    desc:'5 Wörter gemeistert (Level 5)',    check: s => Object.values(s.cards).filter(c=>c.level>=5).length >= 5 },
-    { id:'mastered_20', icon:'🌟', name:'Meisterwortschatz',   desc:'20 Wörter gemeistert',             check: s => Object.values(s.cards).filter(c=>c.level>=5).length >= 20 },
-    { id:'mastered_50', icon:'🏅', name:'Wort-Champion',       desc:'50 Wörter gemeistert',             check: s => Object.values(s.cards).filter(c=>c.level>=5).length >= 50 },
+    { id:'mastered_5',  icon:'⭐', name:'Erste Meisterung',    desc:'5 Wörter min. 5x richtig beantwortet',    check: s => Object.values(s.cards).filter(c=>(c.correct||0)>=5).length >= 5 },
+    { id:'mastered_20', icon:'🌟', name:'Meisterwortschatz',   desc:'20 Wörter min. 5x richtig beantwortet',   check: s => Object.values(s.cards).filter(c=>(c.correct||0)>=5).length >= 20 },
+    { id:'mastered_50', icon:'🏅', name:'Wort-Champion',       desc:'50 Wörter min. 5x richtig beantwortet',   check: s => Object.values(s.cards).filter(c=>(c.correct||0)>=5).length >= 50 },
     { id:'streak_3',    icon:'🔥', name:'3-Tage-Streak',       desc:'3 Tage in Folge gelernt',          check: s => s.streak >= 3 },
     { id:'streak_7',    icon:'🏅', name:'Eine Woche!',         desc:'7 Tage Streak',                    check: s => s.streak >= 7 },
     { id:'streak_14',   icon:'🔥', name:'2 Wochen Streak',     desc:'14 Tage in Folge gelernt',         check: s => s.streak >= 14 },
@@ -4309,7 +4311,7 @@ const App = (() => {
     const milestones = { 3: { msg: '🔥 Combo ×3! +5 XP', bonus: 5 }, 5: { msg: '⚡ Combo ×5! +10 XP', bonus: 10 }, 10: { msg: '🌟 Combo ×10! +20 XP', bonus: 20 } };
     if (milestones[n]) {
       showComboPop(milestones[n].msg);
-      addXP(milestones[n].bonus, window.innerWidth / 2, window.innerHeight / 3);
+      if (session) session.xpEarned = (session.xpEarned || 0) + milestones[n].bonus;
       if (n > (state.bestCombo || 0)) {
         state.bestCombo = n;
         saveState(state);
@@ -4796,8 +4798,6 @@ const App = (() => {
       const earnedXP = 20;
       session.xpEarned += earnedXP;
       session.combo = (session.combo || 0) + 1;
-      const rect = input.getBoundingClientRect();
-      addXP(earnedXP, rect.left + rect.width / 2, rect.top);
       reveal.style.background = '#e8fff2';
       reveal.style.color = 'var(--green)';
       reveal.textContent = '✅ Richtig! / Correct!';
@@ -4811,8 +4811,7 @@ const App = (() => {
       reveal.textContent = isReverse()
         ? `❌ Richtige Antwort: ${correctWord}  (🇧🇷 ${word.pt}  [ ${word.pron} ])`
         : `❌ Richtige Antwort: ${word.pt}  [ ${word.pron} ]`;
-      const rect = input.getBoundingClientRect();
-      penaltyXP(rect.left + rect.width / 2, rect.top);
+      penaltyXP();
     }
     speakWord(word.pt);
     rateWord(word.id, isCorrect);
@@ -4847,6 +4846,7 @@ const App = (() => {
       pct >= 80 ? `Ausgezeichnet! ${pct}% richtig 🌟` :
       pct >= 50 ? `Gut gemacht! ${pct}% richtig 💪` :
                   `Übe weiter! ${pct}% richtig 📚`;
+    if (session.xpEarned > 0) addXP(session.xpEarned, window.innerWidth / 2, window.innerHeight / 3);
     trackSessionCompleted();
     checkMissions('typing', 1);
     renderHeaderStats();
@@ -4950,14 +4950,13 @@ const App = (() => {
       session.score += 1;
       const earnedXP = 15;
       session.xpEarned += earnedXP;
-      addXP(earnedXP, btn.getBoundingClientRect().left + btn.getBoundingClientRect().width / 2, btn.getBoundingClientRect().top);
       fb.classList.add('correct-fb');
       fb.textContent = '✅ Richtig! / Correct!';
       document.getElementById('listen-score-val').textContent = session.score;
     } else {
       fb.classList.add('wrong-fb');
       fb.textContent = `❌ Falsch! Richtige Antwort: ${correct}`;
-      penaltyXP(btn.getBoundingClientRect().left + btn.getBoundingClientRect().width / 2, btn.getBoundingClientRect().top);
+      penaltyXP();
     }
     rateWord(word.id, isCorrect);
     document.getElementById('listen-next-btn').classList.remove('hidden');
@@ -4988,6 +4987,7 @@ const App = (() => {
     document.getElementById('listen-complete-title').textContent = title;
     document.getElementById('listen-complete-msg').textContent = msg;
     document.getElementById('listen-xp').textContent = '+' + session.xpEarned + ' XP';
+    if (session.xpEarned > 0) addXP(session.xpEarned, window.innerWidth / 2, window.innerHeight / 3);
     trackSessionCompleted();
     checkMissions('listening', 1);
     renderHeaderStats();
@@ -5114,18 +5114,13 @@ const App = (() => {
       const earnedXP = 25;
       session.xpEarned += earnedXP;
       session.score += 1;
-      const btn = document.getElementById('sb-check-btn');
-      const rect = btn.getBoundingClientRect();
-      addXP(earnedXP, rect.left + rect.width / 2, rect.top);
       fb.classList.add('correct-fb');
       fb.textContent = '✅ Richtig! / Correct! 🎉';
       document.getElementById('sb-score-val').textContent = session.score;
     } else {
       fb.classList.add('wrong-fb');
       fb.innerHTML = `❌ Richtige Reihenfolge: <strong>${esc(correct)}</strong>`;
-      const checkBtn = document.getElementById('sb-check-btn');
-      const checkBtnRect = checkBtn.getBoundingClientRect();
-      penaltyXP(checkBtnRect.left + checkBtnRect.width / 2, checkBtnRect.top);
+      penaltyXP();
     }
     renderSentenceBuilderChips();
     rateWord(session.queue[session.index].id, isCorrect);
@@ -5155,6 +5150,7 @@ const App = (() => {
       pct >= 80 ? `Ausgezeichnet! ${pct}% richtig 🌟` :
       pct >= 50 ? `Gut gemacht! ${pct}% richtig 💪` :
                   `Übe weiter! ${pct}% richtig 📚`;
+    if (session.xpEarned > 0) addXP(session.xpEarned, window.innerWidth / 2, window.innerHeight / 3);
     trackSessionCompleted();
     checkMissions('sentence_builder', 1);
     renderHeaderStats();
@@ -5295,7 +5291,6 @@ const App = (() => {
       btn.classList.add('correct');
       ltSession.correct++;
       ltSession.xpEarned += 10;
-      addXP(10);
       fb.innerHTML = '<span style="color:var(--success)">✅ Richtig! / Correct!</span>';
     } else {
       btn.classList.add('wrong');
@@ -5356,6 +5351,7 @@ const App = (() => {
     } else {
       certEl.classList.add('hidden');
     }
+    if (ltSession.xpEarned > 0) addXP(ltSession.xpEarned, window.innerWidth / 2, window.innerHeight / 3);
     ltSession = null;
   }
 
@@ -5551,16 +5547,13 @@ const App = (() => {
       session.score += 1;
       const earnedXP = 20;
       session.xpEarned += earnedXP;
-      const rect = btn.getBoundingClientRect();
-      addXP(earnedXP, rect.left + rect.width / 2, rect.top);
       fb.classList.add('correct-fb');
       fb.textContent = '✅ Richtig! / Correct!' + (translation ? ' – ' + translation : '');
       document.getElementById('dlg-score-val').textContent = session.score;
     } else {
       fb.classList.add('wrong-fb');
       fb.innerHTML = `❌ Richtige Antwort: <strong>${esc(dlg.correct)}</strong>${translation ? ' – ' + esc(translation) : ''}`;
-      const buttonRect = btn.getBoundingClientRect();
-      penaltyXP(buttonRect.left + buttonRect.width / 2, buttonRect.top);
+      penaltyXP();
     }
     speakWord(dlg.correct);
     const dlgNextBtn = document.getElementById('dlg-next-btn');
@@ -5589,6 +5582,7 @@ const App = (() => {
       pct >= 80 ? `Ausgezeichnet! ${pct}% richtig 🌟` :
       pct >= 50 ? `Gut gemacht! ${pct}% richtig 💪` :
                   `Übe weiter! ${pct}% richtig 📚`;
+    if (session.xpEarned > 0) addXP(session.xpEarned, window.innerWidth / 2, window.innerHeight / 3);
     trackSessionCompleted();
     renderHeaderStats();
     checkAchievements();
@@ -5690,8 +5684,6 @@ const App = (() => {
       session.score += 1;
       const earnedXP = session.hintUsed ? 10 : 20;
       session.xpEarned += earnedXP;
-      const rect = input.getBoundingClientRect();
-      addXP(earnedXP, rect.left + rect.width / 2, rect.top);
       if (blankEl) { blankEl.textContent = target; blankEl.classList.add('revealed'); }
       revealEl.textContent = `✅ Richtig! ${target} [ ${word.pron} ]`;
       revealEl.style.background = '#e8fff2';
@@ -5705,8 +5697,7 @@ const App = (() => {
       revealEl.style.background = '#fff0f3';
       revealEl.style.color = 'var(--danger)';
       revealEl.classList.add('visible');
-      penaltyXP(document.getElementById('lt-input').getBoundingClientRect().left + 60,
-                document.getElementById('lt-input').getBoundingClientRect().top);
+      penaltyXP();
     }
     rateWord(word.id, isCorrect);
     speakWord(target);
@@ -5736,6 +5727,7 @@ const App = (() => {
       pct >= 70 ? `Gut gemacht! ${pct}% richtig 💪` :
       pct >= 50 ? `Weiter so! ${pct}% richtig 📚` :
                   `Weiter üben! ${pct}% richtig 🔁`;
+    if (session.xpEarned > 0) addXP(session.xpEarned, window.innerWidth / 2, window.innerHeight / 3);
     trackSessionCompleted();
     checkMissions('sentence_builder', 1);
     renderHeaderStats();
