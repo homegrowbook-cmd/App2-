@@ -1313,6 +1313,131 @@
 
     body.dark .dlg-text { background: #374151; border-color: #4b5563; }
     body.dark .dlg-prompt { background: rgba(232,67,147,0.12); }
+
+    /* ─── Level System ────────────────────────────────────────────────────── */
+    .level-up-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(6px); display: flex; align-items: center;
+      justify-content: center; z-index: 9999; opacity: 0;
+      transition: opacity 0.35s; pointer-events: none;
+    }
+    .level-up-overlay.show { opacity: 1; pointer-events: all; }
+    .level-up-card {
+      background: linear-gradient(145deg, var(--blue) 0%, #1a4a9e 60%, #0d3b82 100%);
+      color: #fff; border-radius: 28px; padding: 40px 28px 32px;
+      text-align: center; max-width: 320px; width: 90%; position: relative;
+      overflow: hidden; transform: scale(0.8) translateY(20px);
+      transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
+      box-shadow: 0 28px 80px rgba(0,39,118,0.55);
+    }
+    .level-up-overlay.show .level-up-card { transform: scale(1) translateY(0); }
+    .level-up-emoji {
+      font-size: 4.5rem; display: block; margin-bottom: 10px;
+      animation: lvlBounce 0.7s 0.25s both;
+    }
+    @keyframes lvlBounce {
+      0%   { transform: scale(0.3) rotate(-15deg); opacity: 0; }
+      60%  { transform: scale(1.25) rotate(5deg); opacity: 1; }
+      80%  { transform: scale(0.95) rotate(-2deg); }
+      100% { transform: scale(1) rotate(0); }
+    }
+    .level-up-subtitle { font-size: 0.85rem; opacity: 0.8; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+    .level-up-num { font-size: 3rem; font-weight: 900; line-height: 1; margin-bottom: 4px; }
+    .level-up-name { font-size: 1.5rem; font-weight: 800; color: var(--yellow); margin-bottom: 14px; }
+    .level-up-desc { font-size: 0.82rem; opacity: 0.75; margin-bottom: 22px; }
+    .level-up-btn {
+      background: var(--yellow); color: var(--blue); border: none;
+      border-radius: 14px; padding: 13px 32px; font-weight: 800;
+      font-size: 1rem; cursor: pointer; transition: transform 0.15s;
+    }
+    .level-up-btn:active { transform: scale(0.96); }
+    /* confetti */
+    .confetti-wrap { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    .conf-piece {
+      position: absolute; width: 9px; height: 9px; border-radius: 2px;
+      animation: confFall linear both;
+    }
+    @keyframes confFall {
+      0%   { transform: translateY(-16px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(120%) rotate(540deg); opacity: 0; }
+    }
+
+    /* ─── Daily Missions ──────────────────────────────────────────────────── */
+    .missions-card {
+      background: var(--card); border-radius: var(--radius);
+      padding: 16px; margin-bottom: 16px; box-shadow: var(--shadow);
+    }
+    .missions-hdr {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .missions-title { font-size: 0.92rem; font-weight: 700; color: var(--text); }
+    .missions-reset { font-size: 0.68rem; color: var(--text-2); }
+    .mission-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 0; border-bottom: 1px solid var(--border);
+    }
+    .mission-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .mission-ico { font-size: 1.3rem; width: 30px; text-align: center; flex-shrink: 0; }
+    .mission-body { flex: 1; min-width: 0; }
+    .mission-lbl { font-size: 0.81rem; font-weight: 600; color: var(--text); }
+    .mission-meta { font-size: 0.7rem; color: var(--text-2); margin-top: 1px; }
+    .mission-bar-bg {
+      height: 5px; background: var(--border); border-radius: 6px;
+      margin-top: 5px; overflow: hidden;
+    }
+    .mission-bar-fg {
+      height: 100%; border-radius: 6px; transition: width 0.4s ease;
+      background: linear-gradient(90deg, var(--green), var(--light-green));
+    }
+    .mission-bar-fg.done { background: linear-gradient(90deg,#f7b731,#f0a500); }
+    .mission-chk { font-size: 1.3rem; flex-shrink: 0; }
+    body.dark .missions-card { background: #1f2937; border: 1px solid #374151; }
+
+    /* ─── Combo Pop ───────────────────────────────────────────────────────── */
+    .combo-pop {
+      position: fixed; top: 45%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.5);
+      background: linear-gradient(135deg,#f97316,#ef4444);
+      color: #fff; padding: 12px 30px; border-radius: 22px;
+      font-size: 1.25rem; font-weight: 900; z-index: 8000;
+      pointer-events: none; white-space: nowrap;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      box-shadow: 0 8px 30px rgba(239,68,68,0.45);
+      animation: comboPop 1.5s ease-out forwards;
+    }
+    @keyframes comboPop {
+      0%   { opacity: 0; transform: translate(-50%,-50%) scale(0.5); }
+      18%  { opacity: 1; transform: translate(-50%,-50%) scale(1.18); }
+      38%  { transform: translate(-50%,-50%) scale(1); }
+      72%  { opacity: 1; transform: translate(-50%,-60%); }
+      100% { opacity: 0; transform: translate(-50%,-85%); }
+    }
+
+    /* ─── XP Level in Progress Page ──────────────────────────────────────── */
+    .xp-level-banner {
+      background: linear-gradient(135deg, var(--blue), var(--light-blue));
+      color: #fff; border-radius: var(--radius);
+      padding: 18px 20px; margin-bottom: 16px;
+    }
+    .xp-level-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .xp-level-badge {
+      width: 54px; height: 54px; background: rgba(255,255,255,0.18);
+      border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-size: 1.8rem; flex-shrink: 0;
+    }
+    .xp-level-info { flex: 1; }
+    .xp-level-num { font-size: 0.75rem; opacity: 0.8; }
+    .xp-level-title { font-size: 1.25rem; font-weight: 800; }
+    .xp-level-bar-bg {
+      height: 8px; background: rgba(255,255,255,0.25);
+      border-radius: 6px; overflow: hidden; margin-bottom: 4px;
+    }
+    .xp-level-bar-fg {
+      height: 100%; background: var(--yellow);
+      border-radius: 6px; transition: width 0.5s ease;
+    }
+    .xp-level-label { font-size: 0.7rem; opacity: 0.75; text-align: right; }
   </style>
 </head>
 <body>
@@ -1338,6 +1463,7 @@
     </div>
     <div class="header-stats">
       <div class="stat-pill" id="header-streak">🔥 <span id="streak-val">0</span></div>
+      <div class="stat-pill" id="header-level" title="Level / Nível">🌱 <span id="level-val">1</span></div>
       <div class="stat-pill" id="header-xp" style="display:flex;flex-direction:column;align-items:center;gap:0">
         <span>⭐ <span id="xp-val">0</span></span>
         <div class="daily-goal-bar" title="Tägliches Ziel / Daily Goal"><div class="daily-goal-fill" id="daily-goal-fill" style="width:0%"></div></div>
@@ -1375,6 +1501,9 @@
     </div>
 
     <button class="cta-btn" onclick="App.startQuickSession()">⚡ Schnellübung starten</button>
+
+    <!-- Daily Missions -->
+    <div id="missions-card" class="missions-card" style="display:none"></div>
     <button class="cta-btn" style="background:linear-gradient(135deg,var(--blue),var(--light-blue));box-shadow:0 4px 16px rgba(0,39,118,0.3)" onclick="App.showView('learn')">📚 Alle Kategorien</button>
     <button class="cta-btn" style="background:linear-gradient(135deg,#6a0dad,#9b30ff);box-shadow:0 4px 16px rgba(106,13,173,0.3)" onclick="App.startListeningQuiz()">👂 Hörverständnis-Quiz</button>
     <button class="cta-btn" style="background:linear-gradient(135deg,#c77b17,#e89c2f);box-shadow:0 4px 16px rgba(199,123,23,0.3)" onclick="App.startTypingSession(null)">✏️ Tipp-Übung</button>
@@ -1578,6 +1707,19 @@
   <!-- PROGRESS -->
   <div class="view" id="view-progress">
     <p class="section-title mb-16">Mein Fortschritt / My Progress</p>
+
+    <!-- XP Level Banner -->
+    <div class="xp-level-banner" id="xp-level-banner">
+      <div class="xp-level-row">
+        <div class="xp-level-badge" id="prog-level-badge">🌱</div>
+        <div class="xp-level-info">
+          <div class="xp-level-num" id="prog-level-num">Level 1</div>
+          <div class="xp-level-title" id="prog-level-title">Iniciante</div>
+        </div>
+      </div>
+      <div class="xp-level-bar-bg"><div class="xp-level-bar-fg" id="prog-level-bar" style="width:0%"></div></div>
+      <div class="xp-level-label" id="prog-level-label">0 / 100 XP zum nächsten Level</div>
+    </div>
 
     <div class="big-stats-grid">
       <div class="big-stat">
@@ -1915,6 +2057,19 @@
 
 <!-- Toast -->
 <div id="toast"></div>
+
+<!-- Level-Up Modal -->
+<div id="levelup-modal" class="level-up-overlay" role="dialog" aria-modal="true" aria-label="Level Up!">
+  <div class="level-up-card">
+    <div class="confetti-wrap" id="confetti-wrap"></div>
+    <span class="level-up-emoji" id="levelup-emoji">🌱</span>
+    <div class="level-up-subtitle">Level aufgestiegen! / Level Up!</div>
+    <div class="level-up-num" id="levelup-num">Level 2</div>
+    <div class="level-up-name" id="levelup-name">Explorador</div>
+    <div class="level-up-desc" id="levelup-desc">Du hast ein neues Niveau erreicht!</div>
+    <button class="level-up-btn" onclick="App.closeLevelUp()">Weiter! / Continue! 🚀</button>
+  </div>
+</div>
 
 <!-- Language Selection Popup -->
 <div id="lang-popup-overlay" class="lang-popup-overlay hidden" role="dialog" aria-modal="true" aria-label="Sprachauswahl / Language Selection">
@@ -2649,7 +2804,15 @@ function loadState() {
     dailyXP: 0,
     dailyXPDate: null,
     favorites: {},
-    levelTestCerts: {}
+    levelTestCerts: {},
+    sessionsCompleted: 0,     // total sessions finished
+    dailySessions: 0,         // sessions today
+    dailySessionDate: null,   // date of daily session counter
+    bestCombo: 0,             // best consecutive correct answers ever
+    totalMissionsCompleted: 0,// total daily missions ever completed
+    dailyMissions: [],        // today's mission templates
+    dailyMissionsDate: null,  // date missions were generated
+    dailyMissionsProgress: {} // missionId -> progress count
   };
 }
 
@@ -2707,8 +2870,31 @@ const App = (() => {
     saveState(state);
   }
 
-  /* ── XP constants ──────────────────────────────────────────────────────── */
+  /* ── XP constants & Level System ──────────────────────────────────────── */
   const XP_PENALTY = 5;
+
+  const LEVELS = [
+    { level: 1,  xp: 0,     title: 'Iniciante',    icon: '🌱', desc: 'Willkommen! Deine Reise beginnt.' },
+    { level: 2,  xp: 100,   title: 'Explorador',   icon: '🗺️', desc: 'Du erkennst erste Wörter!' },
+    { level: 3,  xp: 300,   title: 'Aventureiro',  icon: '⚔️', desc: 'Du wagst dich ins Unbekannte!' },
+    { level: 4,  xp: 600,   title: 'Estudante',    icon: '📖', desc: 'Echter Lernwille zeigt sich.' },
+    { level: 5,  xp: 1200,  title: 'Conhecedor',   icon: '🎓', desc: 'Dein Wortschatz wächst beeindruckend.' },
+    { level: 6,  xp: 2500,  title: 'Especialista', icon: '🌟', desc: 'Du sprichst fließend über viele Themen!' },
+    { level: 7,  xp: 5000,  title: 'Mestre',       icon: '👑', desc: 'Du beherrschst Brasilianisches Portugiesisch.' },
+    { level: 8,  xp: 10000, title: 'Lenda',        icon: '🏆', desc: 'Lendenstatus erreicht – Parabéns!' },
+  ];
+
+  function getLevel(xp) {
+    const xpVal = xp || 0;
+    let cur = LEVELS[0];
+    for (let i = LEVELS.length - 1; i >= 0; i--) {
+      if (xpVal >= LEVELS[i].xp) { cur = LEVELS[i]; break; }
+    }
+    const nextIdx = LEVELS.findIndex(l => l.xp > xpVal);
+    const next = nextIdx !== -1 ? LEVELS[nextIdx] : null;
+    const progress = next ? Math.min(100, Math.round(((xpVal - cur.xp) / (next.xp - cur.xp)) * 100)) : 100;
+    return { ...cur, next, progress };
+  }
 
   function streakBonus() {
     if (!state.streakMultiplierEnabled) return 0;
@@ -2735,10 +2921,15 @@ const App = (() => {
         setTimeout(() => showToast('🎯 Tagesziel erreicht! / Daily goal reached!'), 400);
       }
     }
+    const oldLevel = getLevel(state.xp).level;
     state.xp = Math.max(0, (state.xp || 0) + amount);
+    const newLevel = getLevel(state.xp).level;
     saveState(state);
     renderHeaderStats();
     showXPPop(amount, x, y);
+    if (!isPenalty && newLevel > oldLevel) {
+      setTimeout(() => showLevelUp(getLevel(state.xp)), 500);
+    }
   }
 
   function penaltyXP(x, y) {
@@ -2813,6 +3004,10 @@ const App = (() => {
     }
     streakEl.innerHTML = `🔥 <span id="streak-val">${state.streak}</span>${badgeHTML}`;
     document.getElementById('xp-val').textContent = state.xp;
+    // update level badge
+    const lvl = getLevel(state.xp);
+    const lvlEl = document.getElementById('header-level');
+    if (lvlEl) lvlEl.innerHTML = `${lvl.icon} <span id="level-val">${lvl.level}</span>`;
     // update daily goal bar
     if (!state.dailyXPDate || state.dailyXPDate !== today()) {
       state.dailyXP = 0;
@@ -3072,6 +3267,9 @@ const App = (() => {
     document.getElementById('home-words-learned').textContent = seen;
     document.getElementById('home-streak').textContent = state.streak;
     document.getElementById('home-accuracy').textContent = acc;
+
+    // daily missions
+    renderDailyMissions();
   }
 
   function setLang(lang) {
@@ -3132,9 +3330,11 @@ const App = (() => {
       xpEarned: 0,
       flipped: false,
       correctCount: 0,
-      wrongCount: 0
+      wrongCount: 0,
+      combo: 0
     };
     updateStreak();
+    checkMissions('streak', 1);
     showView('flashcard');
     document.getElementById('session-complete').classList.add('hidden');
     document.getElementById('fc-session-area').classList.remove('hidden');
@@ -3155,8 +3355,9 @@ const App = (() => {
       return;
     }
     const queue = [...weak].sort(() => Math.random() - 0.5).slice(0, 15);
-    session = { type: 'weakwords', catId: null, queue, index: 0, xpEarned: 0, flipped: false, correctCount: 0, wrongCount: 0 };
+    session = { type: 'weakwords', catId: null, queue, index: 0, xpEarned: 0, flipped: false, correctCount: 0, wrongCount: 0, combo: 0 };
     updateStreak();
+    checkMissions('streak', 1);
     showView('flashcard');
     document.getElementById('session-complete').classList.add('hidden');
     document.getElementById('fc-session-area').classList.remove('hidden');
@@ -3232,13 +3433,18 @@ const App = (() => {
 
     if (correct) {
       session.correctCount = (session.correctCount || 0) + 1;
+      session.combo = (session.combo || 0) + 1;
       const earnedXP = 10 + session.index; // small bonus for later cards
       session.xpEarned += earnedXP;
       const btn = document.querySelector('.rating-btn.good');
       const rect = btn.getBoundingClientRect();
       addXP(earnedXP, rect.left + rect.width / 2, rect.top);
+      checkCombo(session.combo);
+      checkMissions('correct', 1);
+      checkMissions('combo', session.combo);
     } else {
       session.wrongCount = (session.wrongCount || 0) + 1;
+      session.combo = 0;
     }
 
     session.index += 1;
@@ -3260,6 +3466,7 @@ const App = (() => {
       const correctCount = session.correctCount || 0, wrongCount = session.wrongCount || 0;
       summEl.textContent = `✅ ${correctCount} richtig  ❌ ${wrongCount} falsch`;
     }
+    trackSessionCompleted();
     checkAchievements();
     renderHeaderStats();
   }
@@ -3294,9 +3501,11 @@ const App = (() => {
       index: 0,
       score: 0,
       xpEarned: 0,
-      answered: false
+      answered: false,
+      combo: 0
     };
     updateStreak();
+    checkMissions('streak', 1);
     document.getElementById('quiz-session-area').classList.remove('hidden');
     document.getElementById('quiz-complete').classList.add('hidden');
     document.getElementById('quiz-score-val').textContent = '0';
@@ -3377,13 +3586,18 @@ const App = (() => {
     fb.classList.add('visible');
     if (isCorrect) {
       session.score += 1;
+      session.combo = (session.combo || 0) + 1;
       const earnedXP = 15;
       session.xpEarned += earnedXP;
       addXP(earnedXP, btn.getBoundingClientRect().left + btn.getBoundingClientRect().width / 2, btn.getBoundingClientRect().top);
       fb.classList.add('correct-fb');
       fb.innerHTML = `✅ Richtig! / Correct! &nbsp;<span style="color:var(--green);font-size:0.82rem">[ ${esc(word.pron)} ]</span>`;
       document.getElementById('quiz-score-val').textContent = session.score;
+      checkCombo(session.combo);
+      checkMissions('correct', 1);
+      checkMissions('combo', session.combo);
     } else {
+      session.combo = 0;
       fb.classList.add('wrong-fb');
       fb.innerHTML = `❌ Falsch! Richtige Antwort: <strong>${esc(correct)}</strong> &nbsp;<span style="font-size:0.8rem;color:var(--text-2)">[ ${esc(word.pron)} ] – ${esc(word.ex_pt)}</span>`;
       penaltyXP(btn.getBoundingClientRect().left + btn.getBoundingClientRect().width / 2, btn.getBoundingClientRect().top);
@@ -3420,11 +3634,14 @@ const App = (() => {
     document.getElementById('quiz-complete-title').textContent = title;
     document.getElementById('quiz-complete-msg').textContent = msg;
     document.getElementById('quiz-xp').textContent = '+' + session.xpEarned + ' XP';
+    trackSessionCompleted();
+    checkMissions('quiz', 1);
     renderHeaderStats();
   }
 
   /* ── PROGRESS ───────────────────────────────────────────────────────────── */
   function renderProgress() {
+    renderLevelBanner();
     const seen = Object.keys(state.cards).length;
     const mastered = Object.values(state.cards).filter(c => c.level >= 5).length;
     document.getElementById('prog-total-words').textContent = seen;
@@ -3543,16 +3760,30 @@ const App = (() => {
 
   /* ── ACHIEVEMENTS ───────────────────────────────────────────────────────────── */
   const ACHIEVEMENTS = [
-    { id:'first_word',  icon:'🌱', name:'Erster Schritt',      desc:'Erstes Wort gelernt',           check: s => Object.keys(s.cards).length >= 1 },
-    { id:'words_10',    icon:'📖', name:'Fleißiger Lerner',    desc:'10 Wörter gesehen',             check: s => Object.keys(s.cards).length >= 10 },
-    { id:'words_25',    icon:'📚', name:'Wortschatz-Sammler',  desc:'25 Wörter gesehen',             check: s => Object.keys(s.cards).length >= 25 },
-    { id:'words_50',    icon:'🎒', name:'Halbzeit!',           desc:'50 Wörter gelernt',             check: s => Object.keys(s.cards).length >= 50 },
-    { id:'words_100',   icon:'💯', name:'100er Club',          desc:'100 Wörter gelernt',            check: s => Object.keys(s.cards).length >= 100 },
-    { id:'mastered_5',  icon:'⭐', name:'Erste Meisterung',    desc:'5 Wörter gemeistert (Level 5)', check: s => Object.values(s.cards).filter(c=>c.level>=5).length >= 5 },
-    { id:'mastered_20', icon:'🌟', name:'Meisterwortschatz',   desc:'20 Wörter gemeistert',          check: s => Object.values(s.cards).filter(c=>c.level>=5).length >= 20 },
-    { id:'streak_3',    icon:'🔥', name:'3-Tage-Streak',       desc:'3 Tage in Folge gelernt',       check: s => s.streak >= 3 },
-    { id:'streak_7',    icon:'🏅', name:'Eine Woche!',         desc:'7 Tage Streak',                 check: s => s.streak >= 7 },
-    { id:'xp_500',      icon:'🏆', name:'XP-Sammler',          desc:'500 XP verdient',               check: s => s.xp >= 500 },
+    { id:'first_word',  icon:'🌱', name:'Erster Schritt',      desc:'Erstes Wort gelernt',              check: s => Object.keys(s.cards).length >= 1 },
+    { id:'words_10',    icon:'📖', name:'Fleißiger Lerner',    desc:'10 Wörter gesehen',                check: s => Object.keys(s.cards).length >= 10 },
+    { id:'words_25',    icon:'📚', name:'Wortschatz-Sammler',  desc:'25 Wörter gesehen',                check: s => Object.keys(s.cards).length >= 25 },
+    { id:'words_50',    icon:'🎒', name:'Halbzeit!',           desc:'50 Wörter gelernt',                check: s => Object.keys(s.cards).length >= 50 },
+    { id:'words_100',   icon:'💯', name:'100er Club',          desc:'100 Wörter gelernt',               check: s => Object.keys(s.cards).length >= 100 },
+    { id:'words_150',   icon:'📕', name:'Wort-Profi',          desc:'150 Wörter gelernt',               check: s => Object.keys(s.cards).length >= 150 },
+    { id:'words_200',   icon:'📗', name:'Lexikon-Meister',     desc:'200 Wörter gelernt',               check: s => Object.keys(s.cards).length >= 200 },
+    { id:'mastered_5',  icon:'⭐', name:'Erste Meisterung',    desc:'5 Wörter gemeistert (Level 5)',    check: s => Object.values(s.cards).filter(c=>c.level>=5).length >= 5 },
+    { id:'mastered_20', icon:'🌟', name:'Meisterwortschatz',   desc:'20 Wörter gemeistert',             check: s => Object.values(s.cards).filter(c=>c.level>=5).length >= 20 },
+    { id:'mastered_50', icon:'🏅', name:'Wort-Champion',       desc:'50 Wörter gemeistert',             check: s => Object.values(s.cards).filter(c=>c.level>=5).length >= 50 },
+    { id:'streak_3',    icon:'🔥', name:'3-Tage-Streak',       desc:'3 Tage in Folge gelernt',          check: s => s.streak >= 3 },
+    { id:'streak_7',    icon:'🏅', name:'Eine Woche!',         desc:'7 Tage Streak',                    check: s => s.streak >= 7 },
+    { id:'streak_14',   icon:'🔥', name:'2 Wochen Streak',     desc:'14 Tage in Folge gelernt',         check: s => s.streak >= 14 },
+    { id:'streak_30',   icon:'🌋', name:'30-Tage-Streak',      desc:'Ein Monat täglich gelernt!',       check: s => s.streak >= 30 },
+    { id:'xp_500',      icon:'🏆', name:'XP-Sammler',          desc:'500 XP verdient',                  check: s => s.xp >= 500 },
+    { id:'xp_1000',     icon:'💎', name:'1000 XP',             desc:'1000 XP verdient',                 check: s => s.xp >= 1000 },
+    { id:'xp_2500',     icon:'🥇', name:'2500 XP',             desc:'2500 XP – Du bist ein Profi!',     check: s => s.xp >= 2500 },
+    { id:'xp_5000',     icon:'👑', name:'5000 XP',             desc:'5000 XP – Meisterstatus!',         check: s => s.xp >= 5000 },
+    { id:'sessions_5',  icon:'🎓', name:'Ausdauer zeigen',     desc:'5 Übungen abgeschlossen',          check: s => (s.sessionsCompleted || 0) >= 5 },
+    { id:'sessions_25', icon:'🎖️', name:'Lern-Experte',        desc:'25 Übungen abgeschlossen',         check: s => (s.sessionsCompleted || 0) >= 25 },
+    { id:'combo_5',     icon:'⚡', name:'Combo-Meister',        desc:'5 Antworten in Folge richtig',     check: s => (s.bestCombo || 0) >= 5 },
+    { id:'combo_10',    icon:'🌪️', name:'Unaufhaltsam!',        desc:'10 Antworten in Folge richtig',    check: s => (s.bestCombo || 0) >= 10 },
+    { id:'missions_3',  icon:'🎁', name:'Auftrag erfüllt',      desc:'3 Tages-Missionen abgeschlossen',  check: s => (s.totalMissionsCompleted || 0) >= 3 },
+    { id:'missions_10', icon:'🌈', name:'Missions-Profi',       desc:'10 Tages-Missionen abgeschlossen', check: s => (s.totalMissionsCompleted || 0) >= 10 },
   ];
 
   function checkAchievements() {
@@ -3593,11 +3824,16 @@ const App = (() => {
         xpPenaltyEnabled: state.xpPenaltyEnabled,
         streakMultiplierEnabled: state.streakMultiplierEnabled,
         dailyGoal: state.dailyGoal, dailyXP: 0, dailyXPDate: null,
-        achievements: {}
+        achievements: {}, favorites: {}, levelTestCerts: {},
+        sessionsCompleted: 0, dailySessions: 0, dailySessionDate: null,
+        bestCombo: 0, totalMissionsCompleted: 0,
+        dailyMissions: [], dailyMissionsDate: null, dailyMissionsProgress: {}
       };
       saveState(state);
+      generateDailyMissions();
       renderHeaderStats();
       renderProgress();
+      renderDailyMissions();
       showToast('Fortschritt zurückgesetzt / Progress reset');
     }
   }
@@ -3627,6 +3863,178 @@ const App = (() => {
     t.classList.add('show');
     if (toastTimer) clearTimeout(toastTimer);
     toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  /* ── Level-up Modal ──────────────────────────────────────────────────────── */
+  function showLevelUp(lvl) {
+    const modal = document.getElementById('levelup-modal');
+    document.getElementById('levelup-emoji').textContent = lvl.icon;
+    document.getElementById('levelup-num').textContent = 'Level ' + lvl.level;
+    document.getElementById('levelup-name').textContent = lvl.title;
+    document.getElementById('levelup-desc').textContent = lvl.desc || '';
+    // Confetti
+    const wrap = document.getElementById('confetti-wrap');
+    wrap.innerHTML = '';
+    const colors = ['#FFDF00','#009c3b','#002776','#ef476f','#06d6a0','#ffd166'];
+    for (let i = 0; i < 35; i++) {
+      const p = document.createElement('div');
+      p.className = 'conf-piece';
+      p.style.cssText = `left:${Math.random()*100}%;background:${colors[i%colors.length]};` +
+        `animation-duration:${1.8 + Math.random()*1.5}s;animation-delay:${Math.random()*0.6}s;` +
+        `width:${6 + Math.random()*8}px;height:${6 + Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'}`;
+      wrap.appendChild(p);
+    }
+    modal.classList.add('show');
+  }
+
+  function closeLevelUp() {
+    document.getElementById('levelup-modal').classList.remove('show');
+  }
+
+  /* ── Combo System ────────────────────────────────────────────────────────── */
+  function checkCombo(n) {
+    const milestones = { 3: { msg: '🔥 Combo ×3! +5 XP', bonus: 5 }, 5: { msg: '⚡ Combo ×5! +10 XP', bonus: 10 }, 10: { msg: '🌟 Combo ×10! +20 XP', bonus: 20 } };
+    if (milestones[n]) {
+      showComboPop(milestones[n].msg);
+      addXP(milestones[n].bonus, window.innerWidth / 2, window.innerHeight / 3);
+      if (n > (state.bestCombo || 0)) {
+        state.bestCombo = n;
+        saveState(state);
+      }
+      checkAchievements();
+    }
+  }
+
+  function showComboPop(msg) {
+    const el = document.createElement('div');
+    el.className = 'combo-pop';
+    el.textContent = msg;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1600);
+  }
+
+  /* ── Session Tracking ────────────────────────────────────────────────────── */
+  function trackSessionCompleted() {
+    state.sessionsCompleted = (state.sessionsCompleted || 0) + 1;
+    // daily sessions
+    const td = today();
+    if (state.dailySessionDate !== td) {
+      state.dailySessions = 0;
+      state.dailySessionDate = td;
+    }
+    state.dailySessions = (state.dailySessions || 0) + 1;
+    saveState(state);
+    checkMissions('session', 1);
+    checkAchievements();
+  }
+
+  /* ── Daily Missions ──────────────────────────────────────────────────────── */
+  const MISSION_TEMPLATES = [
+    { id: 'correct_5',  icon: '✅', desc: '5 Antworten richtig',          xpReward: 20, goal: 5,  type: 'correct' },
+    { id: 'correct_15', icon: '🎯', desc: '15 Antworten richtig',         xpReward: 50, goal: 15, type: 'correct' },
+    { id: 'session_1',  icon: '📚', desc: 'Eine Übung abschließen',       xpReward: 25, goal: 1,  type: 'session' },
+    { id: 'session_3',  icon: '🏋️', desc: '3 Übungen abschließen',        xpReward: 75, goal: 3,  type: 'session' },
+    { id: 'streak_day', icon: '🔥', desc: 'Heute lernen (Streak halten)', xpReward: 30, goal: 1,  type: 'streak' },
+    { id: 'words_3',    icon: '📖', desc: '3 Übungen mit neuen Wörtern',  xpReward: 30, goal: 3,  type: 'session' },
+    { id: 'quiz_1',     icon: '🎮', desc: 'Ein Quiz abschließen',         xpReward: 35, goal: 1,  type: 'quiz' },
+    { id: 'typing_1',   icon: '✏️', desc: 'Eine Tipp-Übung abschließen',  xpReward: 30, goal: 1,  type: 'typing' },
+    { id: 'combo_3',    icon: '⚡', desc: '3 Antworten in Folge richtig', xpReward: 20, goal: 3,  type: 'combo' },
+    { id: 'combo_5',    icon: '🌪️', desc: '5 Antworten in Folge richtig', xpReward: 40, goal: 5,  type: 'combo' },
+  ];
+
+  function generateDailyMissions() {
+    const td = today();
+    if (state.dailyMissionsDate === td && state.dailyMissions && state.dailyMissions.length >= 3) return;
+    // Deterministic shuffle based on day
+    const dayIdx = Math.floor(new Date(td).getTime() / 86400000);
+    const seeded = MISSION_TEMPLATES.map((m, i) => ({ m, sort: (dayIdx * 2654435761 + i * 40503) % 1000 }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(x => x.m);
+    state.dailyMissions = seeded.slice(0, 3).map(m => ({ ...m }));
+    state.dailyMissionsDate = td;
+    state.dailyMissionsProgress = {};
+    saveState(state);
+  }
+
+  function checkMissions(type, value) {
+    if (!state.dailyMissions || state.dailyMissions.length === 0) return;
+    const td = today();
+    if (state.dailyMissionsDate !== td) {
+      generateDailyMissions();
+      return;
+    }
+    if (!state.dailyMissionsProgress) state.dailyMissionsProgress = {};
+    let changed = false;
+    state.dailyMissions.forEach(m => {
+      const prev = state.dailyMissionsProgress[m.id] || 0;
+      if (prev >= m.goal) return; // already done
+      if (m.type !== type) return;
+      // For 'combo' type, value is the current combo count – treat as progress directly
+      const newVal = m.type === 'combo' ? Math.max(prev, value) : Math.min(m.goal, prev + 1);
+      if (newVal !== prev) {
+        state.dailyMissionsProgress[m.id] = newVal;
+        changed = true;
+        if (newVal >= m.goal) {
+          state.totalMissionsCompleted = (state.totalMissionsCompleted || 0) + 1;
+          setTimeout(() => {
+            showToast(`🎁 Mission erfüllt: ${m.desc} +${m.xpReward} XP`);
+            addXP(m.xpReward, window.innerWidth / 2, 80);
+            checkAchievements();
+          }, 700);
+        }
+      }
+    });
+    if (changed) {
+      saveState(state);
+      renderDailyMissions();
+    }
+  }
+
+  function renderDailyMissions() {
+    const card = document.getElementById('missions-card');
+    if (!card) return;
+    generateDailyMissions();
+    const td = today();
+    const locale = (state.lang === 'en' || state.lang === 'pt-en') ? 'en-US' : 'de-DE';
+    const dateStr = new Date().toLocaleDateString(locale, { weekday: 'short', month: 'short', day: 'numeric' });
+    let html = `<div class="missions-hdr"><span class="missions-title">🎯 Tägliche Missionen</span><span class="missions-reset">${dateStr}</span></div>`;
+    state.dailyMissions.forEach(m => {
+      const prog = (state.dailyMissionsProgress && state.dailyMissionsProgress[m.id]) || 0;
+      const done = prog >= m.goal;
+      const pct = Math.min(100, Math.round((prog / m.goal) * 100));
+      html += `<div class="mission-row">
+        <div class="mission-ico">${m.icon}</div>
+        <div class="mission-body">
+          <div class="mission-lbl">${esc(m.desc)}</div>
+          <div class="mission-meta">${prog}/${m.goal} · +${m.xpReward} XP</div>
+          <div class="mission-bar-bg"><div class="mission-bar-fg${done ? ' done' : ''}" style="width:${pct}%"></div></div>
+        </div>
+        <div class="mission-chk">${done ? '✅' : '⬜'}</div>
+      </div>`;
+    });
+    card.innerHTML = html;
+    card.style.display = 'block';
+  }
+
+  /* ── renderProgress enhancement – level banner ───────────────────────────── */
+  function renderLevelBanner() {
+    const lvl = getLevel(state.xp);
+    const badgeEl = document.getElementById('prog-level-badge');
+    const numEl   = document.getElementById('prog-level-num');
+    const titleEl = document.getElementById('prog-level-title');
+    const barEl   = document.getElementById('prog-level-bar');
+    const labelEl = document.getElementById('prog-level-label');
+    if (!badgeEl) return;
+    badgeEl.textContent = lvl.icon;
+    numEl.textContent   = 'Level ' + lvl.level;
+    titleEl.textContent = lvl.title;
+    barEl.style.width   = lvl.progress + '%';
+    if (lvl.next) {
+      const needed = lvl.next.xp - state.xp;
+      labelEl.textContent = `${state.xp - lvl.xp} / ${lvl.next.xp - lvl.xp} XP · noch ${needed} XP bis Level ${lvl.next.level}`;
+    } else {
+      labelEl.textContent = 'Maximales Level erreicht! / Max level reached! 🏆';
+    }
   }
 
   function showXPPop(amount, x, y) {
@@ -3900,9 +4308,11 @@ const App = (() => {
       queue: [...pool].sort(() => Math.random() - 0.5),
       index: 0,
       xpEarned: 0,
-      checked: false
+      checked: false,
+      combo: 0
     };
     updateStreak();
+    checkMissions('streak', 1);
     document.getElementById('type-session-area').classList.remove('hidden');
     document.getElementById('type-complete').classList.add('hidden');
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -3966,12 +4376,17 @@ const App = (() => {
     if (isCorrect) {
       const earnedXP = 20;
       session.xpEarned += earnedXP;
+      session.combo = (session.combo || 0) + 1;
       const rect = input.getBoundingClientRect();
       addXP(earnedXP, rect.left + rect.width / 2, rect.top);
       reveal.style.background = '#e8fff2';
       reveal.style.color = 'var(--green)';
       reveal.textContent = '✅ Richtig! / Correct!';
+      checkCombo(session.combo);
+      checkMissions('correct', 1);
+      checkMissions('combo', session.combo);
     } else {
+      session.combo = 0;
       reveal.style.background = '#fff0f3';
       reveal.style.color = 'var(--danger)';
       reveal.textContent = isReverse()
@@ -4013,6 +4428,8 @@ const App = (() => {
       pct >= 80 ? `Ausgezeichnet! ${pct}% richtig 🌟` :
       pct >= 50 ? `Gut gemacht! ${pct}% richtig 💪` :
                   `Übe weiter! ${pct}% richtig 📚`;
+    trackSessionCompleted();
+    checkMissions('typing', 1);
     renderHeaderStats();
   }
 
@@ -4020,8 +4437,9 @@ const App = (() => {
     const pool = catId ? WORDS.filter(w => w.cat === catId) : [...WORDS];
     if (pool.length === 0) { showToast('Keine Wörter verfügbar!'); return; }
     const queue = [...pool].sort(() => Math.random() - 0.5).slice(0, 10);
-    session = { type: 'listening', catId, queue, index: 0, score: 0, xpEarned: 0, answered: false };
+    session = { type: 'listening', catId, queue, index: 0, score: 0, xpEarned: 0, answered: false, combo: 0 };
     updateStreak();
+    checkMissions('streak', 1);
     document.getElementById('listen-session-area').classList.remove('hidden');
     document.getElementById('listen-complete').classList.add('hidden');
     document.getElementById('listen-score-val').textContent = '0';
@@ -4033,8 +4451,9 @@ const App = (() => {
   /* ── LISTENING QUIZ ──────────────────────────────────────────────────────── */
   function startListeningQuiz() {
     const pool = [...WORDS].sort(() => Math.random() - 0.5).slice(0, 10);
-    session = { type: 'listening', catId: null, queue: pool, index: 0, score: 0, xpEarned: 0, answered: false };
+    session = { type: 'listening', catId: null, queue: pool, index: 0, score: 0, xpEarned: 0, answered: false, combo: 0 };
     updateStreak();
+    checkMissions('streak', 1);
     document.getElementById('listen-session-area').classList.remove('hidden');
     document.getElementById('listen-complete').classList.add('hidden');
     document.getElementById('listen-score-val').textContent = '0';
@@ -4150,6 +4569,7 @@ const App = (() => {
     document.getElementById('listen-complete-title').textContent = title;
     document.getElementById('listen-complete-msg').textContent = msg;
     document.getElementById('listen-xp').textContent = '+' + session.xpEarned + ' XP';
+    trackSessionCompleted();
     renderHeaderStats();
   }
 
@@ -4172,6 +4592,7 @@ const App = (() => {
       available: []
     };
     updateStreak();
+    checkMissions('streak', 1);
     document.getElementById('sb-session-area').classList.remove('hidden');
     document.getElementById('sb-complete').classList.add('hidden');
     document.getElementById('sb-score-val').textContent = '0';
@@ -4314,6 +4735,7 @@ const App = (() => {
       pct >= 80 ? `Ausgezeichnet! ${pct}% richtig 🌟` :
       pct >= 50 ? `Gut gemacht! ${pct}% richtig 💪` :
                   `Übe weiter! ${pct}% richtig 📚`;
+    trackSessionCompleted();
     renderHeaderStats();
     checkAchievements();
   }
@@ -4550,7 +4972,8 @@ const App = (() => {
       return;
     }
     updateStreak();
-    session = { type:'favorites', catId:null, queue:shuffle(favWords), index:0, xpEarned:0, flipped:false, correctCount:0, wrongCount:0 };
+    checkMissions('streak', 1);
+    session = { type:'favorites', catId:null, queue:shuffle(favWords), index:0, xpEarned:0, flipped:false, correctCount:0, wrongCount:0, combo:0 };
     showView('flashcard');
     renderFlashcard();
   }
@@ -4628,8 +5051,9 @@ const App = (() => {
   /* ── DIALOG-ÜBUNGEN ──────────────────────────────────────────────────────── */
   function startDialogSession() {
     const queue = shuffle(DIALOGS);
-    session = { type: 'dialog', queue, index: 0, score: 0, xpEarned: 0, answered: false };
+    session = { type: 'dialog', queue, index: 0, score: 0, xpEarned: 0, answered: false, combo: 0 };
     updateStreak();
+    checkMissions('streak', 1);
     document.getElementById('dlg-session-area').classList.remove('hidden');
     document.getElementById('dlg-complete').classList.add('hidden');
     document.getElementById('dlg-score-val').textContent = '0';
@@ -4736,6 +5160,7 @@ const App = (() => {
       pct >= 80 ? `Ausgezeichnet! ${pct}% richtig 🌟` :
       pct >= 50 ? `Gut gemacht! ${pct}% richtig 💪` :
                   `Übe weiter! ${pct}% richtig 📚`;
+    trackSessionCompleted();
     renderHeaderStats();
     checkAchievements();
   }
@@ -4749,7 +5174,17 @@ const App = (() => {
     if (state.dailyXPDate === undefined) state.dailyXPDate = null;
     if (!state.favorites) state.favorites = {};
     if (!state.levelTestCerts) state.levelTestCerts = {};
+    // Migrate reward system fields
+    if (state.sessionsCompleted === undefined) state.sessionsCompleted = 0;
+    if (state.dailySessions === undefined) state.dailySessions = 0;
+    if (state.dailySessionDate === undefined) state.dailySessionDate = null;
+    if (state.bestCombo === undefined) state.bestCombo = 0;
+    if (state.totalMissionsCompleted === undefined) state.totalMissionsCompleted = 0;
+    if (!state.dailyMissions) state.dailyMissions = [];
+    if (state.dailyMissionsDate === undefined) state.dailyMissionsDate = null;
+    if (!state.dailyMissionsProgress) state.dailyMissionsProgress = {};
     updateStreak();
+    generateDailyMissions();
     renderHeaderStats();
     renderHome();
     // Apply dark mode and font size from saved state
@@ -4864,7 +5299,8 @@ const App = (() => {
       openStory, showStoriesList, showStoryVocab, speakStoryWord, closeStoryVocabPopup,
       startLevelTest, answerLevelTest, nextLevelTestQuestion, exitLevelTest,
       toggleFavorite, startFavoritesSession,
-      filterWordList, filterWordCat
+      filterWordList, filterWordCat,
+      closeLevelUp
     };
   }
 
