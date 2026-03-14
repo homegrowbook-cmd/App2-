@@ -718,6 +718,7 @@
     .wl-cat { font-size:0.85rem; }
     .wl-pron { font-size:0.75rem;color:var(--text-2);font-style:italic; }
     .wl-srs { font-size:0.72rem;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--border); }
+    .wl-fav { font-size:0.85rem; }
     .wl-srs.srs-0 { background:#fee2e2;color:#dc2626; }
     .wl-srs.srs-1 { background:#fef3c7;color:#d97706; }
     .wl-srs.srs-2 { background:#fef9c3;color:#ca8a04; }
@@ -4502,7 +4503,7 @@ const App = (() => {
       if (!state.levelTestCerts) state.levelTestCerts = {};
       const prev = state.levelTestCerts[ltSession.level];
       if (!prev || pct > prev.pct) {
-        state.levelTestCerts[ltSession.level] = { pct, date: new Date().toISOString().split('T')[0] };
+        state.levelTestCerts[ltSession.level] = { pct, date: today() };
         saveState(state);
       }
     } else {
@@ -4614,7 +4615,7 @@ const App = (() => {
           <span class="wl-front">${esc(front)}</span>
           <span class="wl-arrow">→</span>
           <span class="wl-back">${esc(back)}</span>
-          ${isFav ? '<span style="font-size:0.85rem" title="Favorit / Favorite">⭐</span>' : ''}
+          ${isFav ? '<span class="wl-fav" title="Favorit / Favorite">⭐</span>' : ''}
         </div>
         <div class="wl-item-meta">
           <span class="wl-cat">${cat ? cat.icon : ''}</span>
