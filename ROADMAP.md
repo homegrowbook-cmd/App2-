@@ -60,24 +60,55 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 
 ---
 
-## Phase 3 – Inhalte & Struktur (v3.0) 🔄 *In Arbeit*
+## Phase 3 – Inhalte & Struktur (v3.0–v3.2) ✅ *Weitgehend abgeschlossen*
 
 **Ziel:** Vollständiger A1–B1 Lehrplan + Reverse-Learning
 
-### Geplante Features
+### Implementierte Features
 - [x] **Portugiesisch → Deutsch/Englisch lernen** – Neue Lernrichtung PT→DE und PT→EN (Flashcards, Quiz, Tipp-Übung, Hörquiz alle unterstützen beide Richtungen)
 - [x] **Erweiterte Kategorien** – 4 neue Themenbereiche: Körper 🧍, Kleidung 👕, Wetter 🌤️, Gefühle 😊
-- [x] **Neue Kategorie: Alltagssätze 💬** – 20 häufig genutzte Sätze für den Alltag (A1-Niveau): Begrüßungsformeln, Orientierung, Restaurant, Hilfe anfordern u. v. m.
-- [x] **Erweiterter Wortschatz** – 271 Vokabeln & Alltagssätze (13 Kategorien): alle Kategorien um je 2–5 neue Einträge erweitert – Ziel: 500+ *(in Arbeit)*
-- [x] **Einstellungen-Seite** – Neue Einstellungen-Ansicht (⚙️ in der Kopfleiste) mit Lernrichtungsauswahl, Fortschritt zurücksetzen und App-Info
-- [x] **Grammatik-Lektionen** – 4 neue strukturierte Grammatikkarten: Verben -er/-ir (Präsens), Pretérito Perfeito (Vergangenheit), Futuro (Zukunft: ir + Infinitiv), Imperativ (Befehlsform) – jetzt 11 Grammatikkarten gesamt
-- [x] **Wichtige Alltagssätze mit Bedeutung** – Alle Alltagssätze (💬 30 Sätze) enthalten jetzt eine kontextuelle Bedeutungserklärung (wann & warum man den Satz benutzt), Ausspracheführer und Übersetzung – sichtbar auf der Rückseite der Lernkarte
+- [x] **Neue Kategorie: Alltagssätze 💬** – 30 häufig genutzte Sätze mit kontextueller Bedeutungserklärung
+- [x] **Einstellungen-Seite** – Lernrichtungsauswahl, Fortschritt zurücksetzen und App-Info
+- [x] **Grammatik-Lektionen** – 14 Grammatikkarten gesamt (Artikel, Ser/Estar, Zeiten, Imperative, Aussprache, Phrasen, Präpositionen + 3 Kulturkarten)
+- [x] **3 neue Vokabelkategorien (v3.2)** – Zuhause 🏠 (15), Berufe 👔 (15), Natur 🌿 (15) → jetzt 314 Wörter, 16 Kategorien
+- [x] **Kulturelle Lektionskarten (v3.2)** – 3 neue Grammatik-Karten über brasilianische Kultur: Karneval & Festa Junina, Küche & Getränke, Geografie & Fakten
+- [x] **Erweiterter Wort-des-Tages (v3.2)** – 21 kuratierte brasilianische Wörter & Ausdrücke (statt 7)
+- [x] **Achievement/Erfolgs-System (v3.2)** – 10 Meilenstein-Badges (Wörter gelernt, gemeistert, Streaks, XP) im Fortschritts-Tab
+- [x] **„Schwache Wörter üben" Modus (v3.2)** – Direktzugriff auf Wörter mit SRS-Level 0–1 im Lern-Tab
+- [x] **Dunkel-Modus (v3.2)** – Dark-Mode-Toggle in den Einstellungen, persistent gespeichert
+- [x] **Schriftgröße wählbar (v3.2)** – Klein / Normal / Groß in den Einstellungen
+- [x] **Verbessertes Quiz-Feedback (v3.2)** – Ausspracheführer `[ pron ]` und Beispielsatz bei Antworten
+- [x] **Session-Zusammenfassung (v3.2)** – Richtig/Falsch-Auswertung am Ende jeder Karteikarten-Sitzung
+- [x] **Hörquiz aus Kategorie-Karte (v3.2)** – 🎧-Button auf jeder Kategorie-Karte für gezieltes Hörtraining
+
+### Noch offen (für v3.3+)
 - [ ] **Satz-Builder** – Sätze aus Wörtern zusammensetzen (Drag & Drop)
 - [ ] **Dialog-Übungen** – Typische Alltagsgespräche nachspielen
 - [ ] **Thematische Geschichten** – Kurze Texte auf Portugiesisch mit Vokabel-Highlighting
-- [ ] **Kulturelle Lektionen** – Brasilianische Feste, Küche, Musik, Slang
 - [ ] **Leistungsnachweise** – Level-Tests, Zertifikate (A1, A2)
 - [ ] **IndexedDB** – Größere Datensätze effizient speichern
+
+---
+
+## v3.2 – 5 Ausbau-Vorschläge (implementiert ✅)
+
+> Eigenständig umsetzbare Erweiterungen zum Ausbau des Lernumfangs
+
+1. ✅ **3 neue Vokabelkategorien** – Zuhause 🏠, Berufe 👔, Natur 🌿 mit je 15 Wörtern (+45 Einträge auf insgesamt 314 Wörter & 16 Kategorien)
+2. ✅ **Kulturelle Lektionskarten** – 3 interaktive Grammatik-Karten über brasilianische Kultur: Feste (Karneval/Festa Junina), Küche (Feijoada, Caipirinha, Cafezinho) und Geografie
+3. ✅ **Erweiterter Wort-des-Tages** – Pool von 7 auf 21 typisch brasilianische Ausdrücke und Slang-Wörter erweitert (Cafuné, Malandro, Valeu!, Mano u. v. m.)
+4. ✅ **Achievement/Meilenstein-System** – 10 freischaltbare Erfolge (🌱 Erster Schritt, 📖 10 Wörter, 💯 100er Club, 🔥 Streak-Badges, 🏆 XP-Sammler) im Fortschritts-Tab
+5. ✅ **„Schwache Wörter üben" Modus** – Schnellzugriff-Button im Lern-Tab filtert automatisch alle Wörter mit SRS-Level 0–1 für gezielte Wiederholung
+
+## v3.2 – 5 Verbesserungs-Vorschläge (implementiert ✅)
+
+> Eigenständig umsetzbare UX/UI-Verbesserungen
+
+1. ✅ **Dunkel-Modus (Dark Mode)** – Toggle in den Einstellungen; vollständiges dunkles Farbschema für alle App-Bereiche; Einstellung wird im LocalStorage gespeichert
+2. ✅ **Schriftgröße wählbar** – 3-Stufen-Auswahl (Klein / Normal / Groß) in den Einstellungen für bessere Lesbarkeit auf allen Geräten
+3. ✅ **Verbessertes Quiz-Feedback** – Bei richtiger Antwort wird die Aussprache `[ pron ]` eingeblendet; bei falscher Antwort erscheint zusätzlich ein Beispielsatz für besseres Behalten
+4. ✅ **Session-Zusammenfassung mit Auswertung** – Am Ende jeder Karteikarten-Sitzung werden Anzahl richtiger und falscher Antworten (✅ X richtig ❌ Y falsch) angezeigt
+5. ✅ **Hörquiz aus Kategorie-Karte starten** – 🎧-Button auf jeder Kategorie-Karte ermöglicht gezieltes Hörverständnis-Training für eine einzelne Kategorie (wie Karten & Tippen-Modus)
 
 ---
 
@@ -121,19 +152,24 @@ LinguaBrasil/
 ```
 1. SRS + tägliche Wiederholung    → IMPLEMENTIERT ✅
 2. Gamification (XP, Streaks)     → IMPLEMENTIERT ✅
-3. Strukturierter Lehrplan        → IMPLEMENTIERT ✅ (12 Kategorien, A1/A2)
+3. Strukturierter Lehrplan        → IMPLEMENTIERT ✅ (16 Kategorien, A1/A2)
 4. Multiple-Choice Übungen        → IMPLEMENTIERT ✅
 5. Aussprache / Audio (TTS)       → IMPLEMENTIERT ✅ (v2.0)
 6. Schreib-Übungen (Tippen)       → IMPLEMENTIERT ✅ (v2.0)
 7. Hörverständnis-Quiz            → IMPLEMENTIERT ✅ (v2.0)
 8. Fehler-Analyse                 → IMPLEMENTIERT ✅ (v2.0)
-9. Grammatik-Karten               → IMPLEMENTIERT ✅ (v2.0)
+9. Grammatik-Karten               → IMPLEMENTIERT ✅ (v2.0, 14 Karten)
 10. PWA (Offline, Installierbar)  → IMPLEMENTIERT ✅ (v2.0)
 11. PT→DE/EN Lernrichtung         → IMPLEMENTIERT ✅ (v3.0)
 12. Alltagssätze-Kategorie         → IMPLEMENTIERT ✅ (v3.0)
 13. Grammatik-Lektionen (Detail)  → IMPLEMENTIERT ✅ (v3.1)
 14. Alltagssätze mit Bedeutung    → IMPLEMENTIERT ✅ (v3.1)
-15. KI-Konversation               → Phase 4 🔜
+15. Dark Mode + Schriftgröße      → IMPLEMENTIERT ✅ (v3.2)
+16. Achievement-System            → IMPLEMENTIERT ✅ (v3.2)
+17. Kulturelle Lektionen          → IMPLEMENTIERT ✅ (v3.2)
+18. Schwache-Wörter-Modus         → IMPLEMENTIERT ✅ (v3.2)
+19. Kategorie-Hörquiz             → IMPLEMENTIERT ✅ (v3.2)
+20. KI-Konversation               → Phase 4 🔜
 ```
 
 ---
@@ -144,7 +180,7 @@ LinguaBrasil/
 |-------|-------|--------|
 | v1.0 MVP | 1–2 Tage | ✅ Fertig |
 | v2.0 Audio & Interaktion | 2–3 Wochen | ✅ Fertig |
-| v3.0 Vollständiger Lehrplan | 4–6 Wochen | 🔄 In Arbeit |
+| v3.0–3.2 Vollständiger Lehrplan | 4–6 Wochen | ✅ Weitgehend fertig |
 | v4.0 Social & KI | 2–3 Monate | 🔜 Geplant |
 
 ---
