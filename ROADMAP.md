@@ -60,7 +60,7 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 
 ---
 
-## Phase 3 – Inhalte & Struktur (v3.0–v3.2) ✅ *Weitgehend abgeschlossen*
+## Phase 3 – Inhalte & Struktur (v3.0–v3.4) ✅ *Weitgehend abgeschlossen*
 
 **Ziel:** Vollständiger A1–B1 Lehrplan + Reverse-Learning
 
@@ -84,6 +84,9 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 ### Noch offen (für v3.3+)
 - [x] **Satz-Builder (v3.3)** – Sätze aus Wörtern zusammensetzen (Tap-to-order)
 - [x] **Dialog-Übungen (v3.3)** – Typische Alltagsgespräche nachspielen (12 Szenarien)
+- [x] **XP-Strafpunkte (v3.4)** – XP-Abzug bei falschen Antworten
+- [x] **Streak-Multiplikator (v3.4)** – Bonus-XP für lange Streaks
+- [x] **Tägliches XP-Ziel (v3.4)** – Konfigurierbares Tagesziel mit Fortschrittsbalken
 - [ ] **Thematische Geschichten** – Kurze Texte auf Portugiesisch mit Vokabel-Highlighting
 - [ ] **Leistungsnachweise** – Level-Tests, Zertifikate (A1, A2)
 - [ ] **IndexedDB** – Größere Datensätze effizient speichern
@@ -116,6 +119,16 @@ Eine kostenlose, browserbasierte HTML-App zum Erlernen von Brasilianischem Portu
 
 1. ✅ **Satz-Builder** – Wörter eines portugiesischen Beispielsatzes werden gemischt; der Lernende setzt sie durch Antippen in die richtige Reihenfolge (8 Runden, +25 XP pro korrektem Satz)
 2. ✅ **Dialog-Übungen** – 12 typische Alltagsdialoge (Café, Hotel, Arzt, Taxi u. v. m.); Lernende wählen die passende Antwort aus 3 Optionen und hören die Lösung per TTS ab (+20 XP pro richtige Antwort)
+
+---
+
+## v3.4 – Gamification & Motivation (implementiert ✅)
+
+> Drei neue Features für ein faireres, motivierenderes Lernsystem
+
+1. ✅ **XP-Strafpunkte bei falschen Antworten** – -5 XP für jede falsche Antwort in Quiz, Tipp-Übung, Hörquiz, Satz-Builder und Dialog-Übungen; XP kann nie unter 0 fallen; rote Abzugsanimation (−5 XP) sichtbar; ein/aus-schaltbar in den Einstellungen
+2. ✅ **Streak-XP-Multiplikator** – Je länger die tägliche Lernsträhne, desto mehr Bonus-XP: Streak ≥ 3 Tage: +1 XP, ≥ 7 Tage: +2 XP, ≥ 14 Tage: +5 XP pro richtiger Antwort; Bonus-Badge im Header sichtbar; abschaltbar in den Einstellungen
+3. ✅ **Tägliches XP-Ziel mit Fortschrittsbalken** – Konfigurierbares Tagesziel (Standard: 50 XP, von 10–500 einstellbar) mit Mini-Fortschrittsbalken direkt unter dem ⭐ XP-Zähler im Header; bei Zielerreichung erscheint eine Erfolgsmeldung (Toast); täglich automatisch zurückgesetzt
 
 ---
 
@@ -178,7 +191,10 @@ LinguaBrasil/
 19. Kategorie-Hörquiz             → IMPLEMENTIERT ✅ (v3.2)
 20. Satz-Builder                  → IMPLEMENTIERT ✅ (v3.3)
 21. Dialog-Übungen                → IMPLEMENTIERT ✅ (v3.3)
-22. KI-Konversation               → Phase 4 🔜
+22. XP-Strafpunkte                → IMPLEMENTIERT ✅ (v3.4)
+23. Streak-Multiplikator          → IMPLEMENTIERT ✅ (v3.4)
+24. Tägliches XP-Ziel             → IMPLEMENTIERT ✅ (v3.4)
+25. KI-Konversation               → Phase 4 🔜
 ```
 
 ---
@@ -189,7 +205,7 @@ LinguaBrasil/
 |-------|-------|--------|
 | v1.0 MVP | 1–2 Tage | ✅ Fertig |
 | v2.0 Audio & Interaktion | 2–3 Wochen | ✅ Fertig |
-| v3.0–3.3 Vollständiger Lehrplan + Übungstypen | 4–6 Wochen | ✅ Weitgehend fertig |
+| v3.0–3.4 Vollständiger Lehrplan + Übungstypen + Gamification | 4–6 Wochen | ✅ Weitgehend fertig |
 | v4.0 Social & KI | 2–3 Monate | 🔜 Geplant |
 
 ---
