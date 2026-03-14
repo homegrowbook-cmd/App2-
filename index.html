@@ -724,10 +724,49 @@
       animation: xpFloat 1.2s ease forwards;
       z-index: 2000;
     }
+    .xp-pop.penalty {
+      color: #e53e3e;
+      text-shadow: 0 2px 8px rgba(229,62,62,0.4);
+      animation: xpSink 1.2s ease forwards;
+    }
 
     @keyframes xpFloat {
       0%   { opacity: 1; transform: translateY(0) scale(1); }
       100% { opacity: 0; transform: translateY(-60px) scale(1.3); }
+    }
+    @keyframes xpSink {
+      0%   { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(40px) scale(0.8); }
+    }
+
+    /* ─── Daily XP Goal Bar ─────────────────────────────────────────────────── */
+    .daily-goal-bar {
+      height: 3px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 2px;
+      margin-top: 3px;
+      overflow: hidden;
+      width: 60px;
+    }
+    .daily-goal-fill {
+      height: 100%;
+      background: var(--yellow);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+    .daily-goal-fill.done { background: #4ade80; }
+
+    /* ─── Streak Multiplier Badge ───────────────────────────────────────────── */
+    .streak-bonus-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      background: linear-gradient(135deg,#f97316,#ef4444);
+      color: #fff;
+      padding: 1px 5px;
+      border-radius: 8px;
+      font-weight: 700;
+      margin-left: 3px;
+      vertical-align: middle;
     }
 
     /* ─── Language Selection Popup ──────────────────────────────────────────── */
@@ -1262,7 +1301,10 @@
     </div>
     <div class="header-stats">
       <div class="stat-pill" id="header-streak">🔥 <span id="streak-val">0</span></div>
-      <div class="stat-pill" id="header-xp">⭐ <span id="xp-val">0</span></div>
+      <div class="stat-pill" id="header-xp" style="display:flex;flex-direction:column;align-items:center;gap:0">
+        <span>⭐ <span id="xp-val">0</span></span>
+        <div class="daily-goal-bar" title="Tägliches Ziel / Daily Goal"><div class="daily-goal-fill" id="daily-goal-fill" style="width:0%"></div></div>
+      </div>
       <button class="header-settings-btn" onclick="App.showView('settings')" title="Einstellungen / Settings">⚙️</button>
     </div>
   </header>
@@ -1589,6 +1631,36 @@
     </div>
 
     <div class="settings-section">
+      <h3 class="settings-heading">🎮 Gamification</h3>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <p style="font-weight:600;margin:0">⚡ XP-Strafe bei falschen Antworten</p>
+            <p style="font-size:0.78rem;color:var(--text-2);margin:3px 0 0">-5 XP für jede falsche Antwort im Quiz, Tippen, Hören, Satz-Builder &amp; Dialog</p>
+          </div>
+          <button id="settings-penalty-btn" onclick="App.toggleXPPenalty()" class="settings-update-btn" style="white-space:nowrap;min-width:80px">EIN</button>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <p style="font-weight:600;margin:0">🔥 Streak-Multiplikator</p>
+            <p style="font-size:0.78rem;color:var(--text-2);margin:3px 0 0">Streak ≥3: +1 XP Bonus · ≥7: +2 XP · ≥14: +5 XP pro richtiger Antwort</p>
+          </div>
+          <button id="settings-streak-mult-btn" onclick="App.toggleStreakMultiplier()" class="settings-update-btn" style="white-space:nowrap;min-width:80px">EIN</button>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <p style="font-weight:600;margin:0">🎯 Tägliches XP-Ziel</p>
+            <p style="font-size:0.78rem;color:var(--text-2);margin:3px 0 0">Tägliches Ziel: <span id="settings-daily-goal-val">50</span> XP</p>
+          </div>
+          <div style="display:flex;gap:6px">
+            <button onclick="App.adjustDailyGoal(-10)" class="lang-btn" style="padding:6px 10px;font-size:1rem">−</button>
+            <button onclick="App.adjustDailyGoal(10)"  class="lang-btn" style="padding:6px 10px;font-size:1rem">＋</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-section">
       <h3 class="settings-heading">📊 Lernfortschritt / Learning Progress</h3>
       <button onclick="App.resetProgress()" class="settings-danger-btn">
         🗑️ Fortschritt zurücksetzen / Reset Progress
@@ -1608,7 +1680,7 @@
     <div class="settings-section">
       <h3 class="settings-heading">ℹ️ App-Info</h3>
       <div class="settings-info">
-        <p><strong>LinguaBrasil</strong> v3.3</p>
+        <p><strong>LinguaBrasil</strong> v3.4</p>
         <p id="settings-word-count">222 Vokabeln &amp; Sätze · 13 Kategorien</p>
         <p>🇧🇷 Brasilianisches Portugiesisch lernen</p>
         <p style="margin-top:8px;font-size:0.78rem">Kostenlos · Offline nutzbar · Keine Anmeldung erforderlich</p>
@@ -2206,7 +2278,12 @@ function loadState() {
     wrongCounts: {},  // id -> number of wrong answers (for error analysis)
     darkMode: false,
     fontSize: 'normal',
-    achievements: {}
+    achievements: {},
+    xpPenaltyEnabled: true,
+    streakMultiplierEnabled: true,
+    dailyGoal: 50,
+    dailyXP: 0,
+    dailyXPDate: null
   };
 }
 
@@ -2264,11 +2341,43 @@ const App = (() => {
     saveState(state);
   }
 
+  /* ── XP constants ──────────────────────────────────────────────────────── */
+  const XP_PENALTY = 5;
+
+  function streakBonus() {
+    if (!state.streakMultiplierEnabled) return 0;
+    const s = state.streak || 0;
+    if (s >= 14) return 5;
+    if (s >= 7)  return 2;
+    if (s >= 3)  return 1;
+    return 0;
+  }
+
   function addXP(amount, x, y) {
-    state.xp += amount;
+    const isPenalty = amount < 0;
+    if (!isPenalty) {
+      // add streak bonus to positive XP gains
+      amount += streakBonus();
+      // track daily XP
+      if (!state.dailyXPDate || state.dailyXPDate !== today()) {
+        state.dailyXP = 0;
+        state.dailyXPDate = today();
+      }
+      const prevDaily = state.dailyXP || 0;
+      state.dailyXP = prevDaily + amount;
+      if (prevDaily < (state.dailyGoal || 50) && state.dailyXP >= (state.dailyGoal || 50)) {
+        setTimeout(() => showToast('🎯 Tagesziel erreicht! / Daily goal reached!'), 400);
+      }
+    }
+    state.xp = Math.max(0, (state.xp || 0) + amount);
     saveState(state);
     renderHeaderStats();
     showXPPop(amount, x, y);
+  }
+
+  function penaltyXP(x, y) {
+    if (!state.xpPenaltyEnabled) return;
+    addXP(-XP_PENALTY, x, y);
   }
 
   function getCard(id) {
@@ -2329,7 +2438,27 @@ const App = (() => {
   /* ── render header ──────────────────────────────────────────────────────── */
   function renderHeaderStats() {
     document.getElementById('streak-val').textContent = state.streak;
+    const bonus = streakBonus();
+    const streakEl = document.getElementById('header-streak');
+    // show streak multiplier badge if active
+    let badgeHTML = '';
+    if (bonus > 0 && state.streakMultiplierEnabled) {
+      badgeHTML = `<span class="streak-bonus-badge">+${bonus} XP</span>`;
+    }
+    streakEl.innerHTML = `🔥 <span id="streak-val">${state.streak}</span>${badgeHTML}`;
     document.getElementById('xp-val').textContent = state.xp;
+    // update daily goal bar
+    if (!state.dailyXPDate || state.dailyXPDate !== today()) {
+      state.dailyXP = 0;
+      state.dailyXPDate = today();
+    }
+    const goal = state.dailyGoal || 50;
+    const pct = Math.min(100, Math.round(((state.dailyXP || 0) / goal) * 100));
+    const fillEl = document.getElementById('daily-goal-fill');
+    if (fillEl) {
+      fillEl.style.width = pct + '%';
+      fillEl.className = 'daily-goal-fill' + (pct >= 100 ? ' done' : '');
+    }
   }
 
   /* ── views ──────────────────────────────────────────────────────────────── */
@@ -2368,6 +2497,25 @@ const App = (() => {
       const b = document.getElementById('font-btn-' + s);
       if (b) b.classList.toggle('selected', state.fontSize === s);
     });
+    // XP Penalty toggle
+    const penBtn = document.getElementById('settings-penalty-btn');
+    if (penBtn) {
+      penBtn.textContent = state.xpPenaltyEnabled ? 'EIN' : 'AUS';
+      penBtn.style.background = state.xpPenaltyEnabled
+        ? 'linear-gradient(135deg,var(--green),var(--light-green))'
+        : 'linear-gradient(135deg,#6b7280,#9ca3af)';
+    }
+    // Streak multiplier toggle
+    const smBtn = document.getElementById('settings-streak-mult-btn');
+    if (smBtn) {
+      smBtn.textContent = state.streakMultiplierEnabled ? 'EIN' : 'AUS';
+      smBtn.style.background = state.streakMultiplierEnabled
+        ? 'linear-gradient(135deg,#f97316,#ef4444)'
+        : 'linear-gradient(135deg,#6b7280,#9ca3af)';
+    }
+    // Daily goal display
+    const dgVal = document.getElementById('settings-daily-goal-val');
+    if (dgVal) dgVal.textContent = state.dailyGoal || 50;
   }
 
   function toggleDarkMode() {
@@ -2383,6 +2531,26 @@ const App = (() => {
     document.body.classList.remove('font-small','font-large');
     if (size === 'small') document.body.classList.add('font-small');
     if (size === 'large') document.body.classList.add('font-large');
+    renderSettings();
+  }
+
+  function toggleXPPenalty() {
+    state.xpPenaltyEnabled = !state.xpPenaltyEnabled;
+    saveState(state);
+    renderSettings();
+  }
+
+  function toggleStreakMultiplier() {
+    state.streakMultiplierEnabled = !state.streakMultiplierEnabled;
+    saveState(state);
+    renderHeaderStats();
+    renderSettings();
+  }
+
+  function adjustDailyGoal(delta) {
+    state.dailyGoal = Math.max(10, Math.min(500, (state.dailyGoal || 50) + delta));
+    saveState(state);
+    renderHeaderStats();
     renderSettings();
   }
 
@@ -2844,6 +3012,7 @@ const App = (() => {
     } else {
       fb.classList.add('wrong-fb');
       fb.innerHTML = `❌ Falsch! Richtige Antwort: <strong>${esc(correct)}</strong> &nbsp;<span style="font-size:0.8rem;color:var(--text-2)">[ ${esc(word.pron)} ] – ${esc(word.ex_pt)}</span>`;
+      penaltyXP(btn.getBoundingClientRect().left + btn.getBoundingClientRect().width / 2, btn.getBoundingClientRect().top);
     }
 
     rateWord(word.id, isCorrect);
@@ -3020,7 +3189,15 @@ const App = (() => {
 
   function resetProgress() {
     if (confirm('Fortschritt wirklich zurücksetzen? / Really reset progress?')) {
-      state = { lang: state.lang, xp: 0, streak: 0, lastStudied: null, totalCorrect: 0, totalAnswered: 0, cards: {}, wrongCounts: {} };
+      state = {
+        lang: state.lang, xp: 0, streak: 0, lastStudied: null,
+        totalCorrect: 0, totalAnswered: 0, cards: {}, wrongCounts: {},
+        darkMode: state.darkMode, fontSize: state.fontSize,
+        xpPenaltyEnabled: state.xpPenaltyEnabled,
+        streakMultiplierEnabled: state.streakMultiplierEnabled,
+        dailyGoal: state.dailyGoal, dailyXP: 0, dailyXPDate: null,
+        achievements: {}
+      };
       saveState(state);
       renderHeaderStats();
       renderProgress();
@@ -3057,8 +3234,9 @@ const App = (() => {
 
   function showXPPop(amount, x, y) {
     const el = document.createElement('div');
-    el.className = 'xp-pop';
-    el.textContent = '+' + amount + ' XP';
+    const isPenalty = amount < 0;
+    el.className = 'xp-pop' + (isPenalty ? ' penalty' : '');
+    el.textContent = (isPenalty ? '' : '+') + amount + ' XP';
     el.style.left = (x - 30) + 'px';
     el.style.top = (y - 10) + 'px';
     document.body.appendChild(el);
@@ -3402,6 +3580,8 @@ const App = (() => {
       reveal.textContent = isReverse()
         ? `❌ Richtige Antwort: ${correctWord}  (🇧🇷 ${word.pt}  [ ${word.pron} ])`
         : `❌ Richtige Antwort: ${word.pt}  [ ${word.pron} ]`;
+      const rect = input.getBoundingClientRect();
+      penaltyXP(rect.left + rect.width / 2, rect.top);
     }
     speakWord(word.pt);
     rateWord(word.id, isCorrect);
@@ -3549,6 +3729,7 @@ const App = (() => {
     } else {
       fb.classList.add('wrong-fb');
       fb.textContent = `❌ Falsch! Richtige Antwort: ${correct}`;
+      penaltyXP(btn.getBoundingClientRect().left + btn.getBoundingClientRect().width / 2, btn.getBoundingClientRect().top);
     }
     rateWord(word.id, isCorrect);
     document.getElementById('listen-next-btn').classList.remove('hidden');
@@ -3711,6 +3892,9 @@ const App = (() => {
     } else {
       fb.classList.add('wrong-fb');
       fb.innerHTML = `❌ Richtige Reihenfolge: <strong>${esc(correct)}</strong>`;
+      const checkBtn = document.getElementById('sb-check-btn');
+      const checkBtnRect = checkBtn.getBoundingClientRect();
+      penaltyXP(checkBtnRect.left + checkBtnRect.width / 2, checkBtnRect.top);
     }
     renderSentenceBuilderChips();
     rateWord(session.queue[session.index].id, isCorrect);
@@ -3827,6 +4011,8 @@ const App = (() => {
     } else {
       fb.classList.add('wrong-fb');
       fb.innerHTML = `❌ Richtige Antwort: <strong>${esc(dlg.correct)}</strong>${translation ? ' – ' + esc(translation) : ''}`;
+      const buttonRect = btn.getBoundingClientRect();
+      penaltyXP(buttonRect.left + buttonRect.width / 2, buttonRect.top);
     }
     speakWord(dlg.correct);
     document.getElementById('dlg-next-btn').classList.remove('hidden');
@@ -3858,6 +4044,12 @@ const App = (() => {
   }
 
   function init() {
+    // Migrate older state objects that lack new fields
+    if (state.xpPenaltyEnabled === undefined) state.xpPenaltyEnabled = true;
+    if (state.streakMultiplierEnabled === undefined) state.streakMultiplierEnabled = true;
+    if (state.dailyGoal === undefined) state.dailyGoal = 50;
+    if (state.dailyXP === undefined) state.dailyXP = 0;
+    if (state.dailyXPDate === undefined) state.dailyXPDate = null;
     updateStreak();
     renderHeaderStats();
     renderHome();
@@ -3964,6 +4156,7 @@ const App = (() => {
       startListeningQuiz, playListenWord, nextListenQuestion,
       nativeLang, isReverse,
       toggleDarkMode, setFontSize,
+      toggleXPPenalty, toggleStreakMultiplier, adjustDailyGoal,
       startWeakWordsSession, startCategoryListeningQuiz,
       checkAchievements, renderAchievements,
       startSentenceBuilder, checkSentenceAnswer, nextSentenceRound,
