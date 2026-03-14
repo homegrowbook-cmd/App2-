@@ -1819,7 +1819,7 @@
       <p style="font-size:0.85rem;color:var(--text-2);margin-bottom:16px">Lies kurze Texte auf Portugiesisch und tippe auf markierte Vokabeln, um ihre Bedeutung zu sehen.</p>
       <div id="stories-cards"></div>
     </div>
-    <div class="view hidden" id="story-reader-area" style="padding:0">
+    <div class="hidden" id="story-reader-area" style="padding:0">
       <div class="flashcard-header">
         <button class="back-btn" onclick="App.showStoriesList()">←</button>
         <div style="font-size:0.9rem;font-weight:600;color:#fff" id="story-reader-title">Geschichte</div>
@@ -2833,7 +2833,7 @@ const App = (() => {
     if (name === 'progress') renderProgress();
     if (name === 'grammar') renderGrammar();
     if (name === 'settings') renderSettings();
-    if (name === 'stories') renderStoriesCards();
+    if (name === 'stories') { renderStoriesCards(); showStoriesList(); }
     if (name === 'wordlist') initWordList();
   }
 
@@ -4312,7 +4312,7 @@ const App = (() => {
     if (!currentStory) return;
     const lang = nativeLang();
     document.getElementById('story-reader-title').textContent = currentStory.title[lang] || currentStory.title['de'];
-    let html = currentStory.text.replace(/\{\{(\w+)\}\}/g, (match, word) => {
+    let html = currentStory.text.replace(/\{\{([^}]+)\}\}/g, (match, word) => {
       const v = currentStory.vocab[word];
       const display = v ? v.pt.split(' ')[0] : word;
       return `<span class="story-word" onclick="App.showStoryVocab('${word}')">${display}</span>`;
@@ -4484,7 +4484,7 @@ const App = (() => {
 
   /* ── Favorites ──────────────────────────────────────────────────────────── */
   function toggleFavorite() {
-    const w = session && session.queue ? session.queue[session.index !== undefined ? session.index : 0] : null;
+    const w = (session && session.queue) ? session.queue[session.index] : null;
     if (!w) return;
     if (!state.favorites) state.favorites = {};
     if (state.favorites[w.id]) {
