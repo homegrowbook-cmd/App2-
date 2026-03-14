@@ -1647,7 +1647,7 @@
       <button class="quick-btn" style="background:linear-gradient(135deg,#374151,#6b7280)" onclick="App.showView('wordlist')">
         <span class="qb-icon">📋</span>
         <span class="qb-title">Wortliste</span>
-        <span class="qb-desc" id="home-wl-desc">Alle 563 Vokabeln</span>
+        <span class="qb-desc" id="home-wl-desc">Alle 623 Vokabeln</span>
       </button>
     </div>
   </div>
@@ -2016,8 +2016,8 @@
     <div class="settings-section">
       <h3 class="settings-heading">ℹ️ App-Info</h3>
       <div class="settings-info">
-        <p><strong>LuiBrasil</strong> v4.0</p>
-        <p id="settings-word-count">563 Vokabeln &amp; Sätze · 19 Kategorien</p>
+        <p><strong>LuiBrasil</strong> v5.0</p>
+        <p id="settings-word-count">623 Vokabeln &amp; Sätze · 19 Kategorien</p>
         <p>🇧🇷 Brasilianisches Portugiesisch lernen</p>
         <p style="margin-top:8px;font-size:0.78rem">Kostenlos · Offline nutzbar · Keine Anmeldung erforderlich</p>
       </div>
@@ -3024,6 +3024,78 @@ const WORDS = [
   { id:563, cat:'sports', pt:'Time',         de:'Team / Mannschaft', en:'Team',            pron:'TÎM-i',           ex_pt:'Nosso time ganhou hoje!',                      ex_de:'Unser Team hat heute gewonnen!',                  ex_en:'Our team won today!' },
   { id:564, cat:'sports', pt:'Árbitro',      de:'Schiedsrichter/in', en:'Referee',         pron:'ÁR-bi-tru',       ex_pt:'O árbitro marcou pênalti.',                    ex_de:'Der Schiedsrichter pfiff Elfmeter.',              ex_en:'The referee called a penalty.' },
   { id:565, cat:'sports', pt:'Campeonato',   de:'Meisterschaft',     en:'Championship',    pron:'kam-pi-u-NÁ-tu',  ex_pt:'O Brasil venceu o campeonato mundial.',        ex_de:'Brasilien hat die Weltmeisterschaft gewonnen.',   ex_en:'Brazil won the world championship.' },
+
+  // ── house +10 ─────────────────────────────────────────────────────────────
+  { id:566, cat:'house', pt:'Sótão',         de:'Dachboden',         en:'Attic',           pron:'SÓ-tãw',          ex_pt:'Guardamos as malas no sótão.',                 ex_de:'Wir bewahren die Koffer auf dem Dachboden auf.',  ex_en:'We store the suitcases in the attic.' },
+  { id:567, cat:'house', pt:'Porão',         de:'Keller',            en:'Basement',        pron:'po-RÃW',          ex_pt:'O porão está cheio de caixas.',                ex_de:'Der Keller ist voller Kisten.',                   ex_en:'The basement is full of boxes.' },
+  { id:568, cat:'house', pt:'Telhado',       de:'Dach',              en:'Roof',            pron:'te-LHÁ-du',       ex_pt:'O telhado precisa de reparo.',                 ex_de:'Das Dach muss repariert werden.',                 ex_en:'The roof needs repair.' },
+  { id:569, cat:'house', pt:'Parede',        de:'Wand',              en:'Wall',            pron:'pa-RÉ-dʒi',       ex_pt:'Pintamos a parede de azul.',                   ex_de:'Wir haben die Wand blau gestrichen.',             ex_en:'We painted the wall blue.' },
+  { id:570, cat:'house', pt:'Piso',          de:'Boden',             en:'Floor',           pron:'PÍ-zu',           ex_pt:'O piso de madeira é muito bonito.',             ex_de:'Der Holzboden ist sehr schön.',                   ex_en:'The wooden floor is very beautiful.' },
+  { id:571, cat:'house', pt:'Teto',          de:'Decke',             en:'Ceiling',         pron:'TÉ-tu',           ex_pt:'O teto do quarto é muito alto.',               ex_de:'Die Decke des Zimmers ist sehr hoch.',            ex_en:'The ceiling of the room is very high.' },
+  { id:572, cat:'house', pt:'Quintal',       de:'Hinterhof',         en:'Backyard',        pron:'kin-TAL',         ex_pt:'As crianças brincam no quintal.',              ex_de:'Die Kinder spielen im Hinterhof.',                ex_en:'The children play in the backyard.' },
+  { id:573, cat:'house', pt:'Lavanderia',    de:'Waschküche',        en:'Laundry room',    pron:'la-van-de-RÍ-a',  ex_pt:'A lavanderia fica ao lado da cozinha.',        ex_de:'Die Waschküche liegt neben der Küche.',           ex_en:'The laundry room is next to the kitchen.' },
+  { id:574, cat:'house', pt:'Escritório',    de:'Arbeitszimmer',     en:'Home office',     pron:'es-kri-TÓ-ri-u',  ex_pt:'Trabalho no escritório de casa.',              ex_de:'Ich arbeite im Arbeitszimmer zuhause.',           ex_en:'I work in the home office.' },
+  { id:575, cat:'house', pt:'Sala de jantar',de:'Esszimmer',         en:'Dining room',     pron:'SÁ-la dʒi zhan-TAR', ex_pt:'Jantamos juntos na sala de jantar.',        ex_de:'Wir essen gemeinsam im Esszimmer.',               ex_en:'We have dinner together in the dining room.' },
+
+  // ── jobs +10 ──────────────────────────────────────────────────────────────
+  { id:576, cat:'jobs', pt:'Psicólogo / Psicóloga',     de:'Psychologe / Psychologin',      en:'Psychologist',    pron:'psi-KÓ-lo-gu',    ex_pt:'A psicóloga ajudou muito no tratamento.',     ex_de:'Die Psychologin half sehr bei der Behandlung.',   ex_en:'The psychologist helped a lot with the treatment.' },
+  { id:577, cat:'jobs', pt:'Farmacêutico / Farmacêutica',de:'Pharmazeut / Pharmazeutin',    en:'Pharmacist',      pron:'far-ma-SÊU-tʃi-ku',ex_pt:'O farmacêutico indicou o remédio certo.',     ex_de:'Der Pharmazeut empfahl das richtige Medikament.', ex_en:'The pharmacist recommended the right medicine.' },
+  { id:578, cat:'jobs', pt:'Piloto / Pilota',           de:'Pilot / Pilotin',               en:'Pilot',           pron:'pi-LÓ-tu',         ex_pt:'O piloto aterrizou o avião com segurança.',   ex_de:'Der Pilot landete das Flugzeug sicher.',          ex_en:'The pilot landed the plane safely.' },
+  { id:579, cat:'jobs', pt:'Chef de cozinha',           de:'Küchenchef / Küchenchefin',     en:'Chef',            pron:'SHEF dʒi ko-ZÎ-nha',ex_pt:'O chef criou um prato incrível.',            ex_de:'Der Küchenchef kreierte ein unglaubliches Gericht.',ex_en:'The chef created an incredible dish.' },
+  { id:580, cat:'jobs', pt:'Fotógrafo / Fotógrafa',     de:'Fotograf / Fotografin',         en:'Photographer',    pron:'fo-TÓ-gra-fu',     ex_pt:'O fotógrafo capturou momentos únicos.',       ex_de:'Der Fotograf hat einzigartige Momente festgehalten.',ex_en:'The photographer captured unique moments.' },
+  { id:581, cat:'jobs', pt:'Cientista',                 de:'Wissenschaftler / Wissenschaftlerin',en:'Scientist', pron:'si-en-TÍSS-ta',    ex_pt:'A cientista fez uma grande descoberta.',      ex_de:'Die Wissenschaftlerin machte eine große Entdeckung.',ex_en:'The scientist made a great discovery.' },
+  { id:582, cat:'jobs', pt:'Tradutor / Tradutora',      de:'Übersetzer / Übersetzerin',     en:'Translator',      pron:'tra-du-TOR',        ex_pt:'A tradutora fala cinco idiomas.',             ex_de:'Die Übersetzerin spricht fünf Sprachen.',         ex_en:'The translator speaks five languages.' },
+  { id:583, cat:'jobs', pt:'Eletricista',               de:'Elektriker / Elektrikerin',     en:'Electrician',     pron:'e-le-tri-SÍSS-ta',  ex_pt:'O eletricista consertou a tomada.',           ex_de:'Der Elektriker reparierte die Steckdose.',        ex_en:'The electrician fixed the socket.' },
+  { id:584, cat:'jobs', pt:'Carpinteiro / Carpinteira', de:'Tischler / Tischlerin',         en:'Carpenter',       pron:'kar-pin-TÊI-ru',    ex_pt:'O carpinteiro fez uma mesa nova.',            ex_de:'Der Tischler hat einen neuen Tisch gebaut.',      ex_en:'The carpenter made a new table.' },
+  { id:585, cat:'jobs', pt:'Agricultor / Agricultora',  de:'Landwirt / Landwirtin',         en:'Farmer',          pron:'a-gri-kul-TOR',     ex_pt:'O agricultor colheu o milho esta semana.',    ex_de:'Der Landwirt hat diese Woche Mais geerntet.',     ex_en:'The farmer harvested the corn this week.' },
+
+  // ── nature +10 ────────────────────────────────────────────────────────────
+  { id:586, cat:'nature', pt:'Ilha',          de:'Insel',             en:'Island',          pron:'Í-lha',           ex_pt:'A ilha é cercada de mar azul.',                ex_de:'Die Insel ist von blauem Meer umgeben.',          ex_en:'The island is surrounded by blue sea.' },
+  { id:587, cat:'nature', pt:'Vale',          de:'Tal',               en:'Valley',          pron:'VÁ-li',           ex_pt:'O vale verde é muito bonito.',                 ex_de:'Das grüne Tal ist sehr schön.',                   ex_en:'The green valley is very beautiful.' },
+  { id:588, cat:'nature', pt:'Caverna',       de:'Höhle',             en:'Cave',            pron:'ka-VÉR-na',       ex_pt:'Exploramos uma caverna no fim de semana.',     ex_de:'Wir erkundeten am Wochenende eine Höhle.',        ex_en:'We explored a cave on the weekend.' },
+  { id:589, cat:'nature', pt:'Pântano',       de:'Sumpf',             en:'Swamp',           pron:'PÃN-ta-nu',       ex_pt:'O pântano tem muitos animais raros.',          ex_de:'Der Sumpf beherbergt viele seltene Tiere.',       ex_en:'The swamp has many rare animals.' },
+  { id:590, cat:'nature', pt:'Geleira',       de:'Gletscher',         en:'Glacier',         pron:'zhe-LÊI-ra',      ex_pt:'As geleiras estão derretendo por causa do aquecimento.',ex_de:'Die Gletscher schmelzen wegen der Erwärmung.', ex_en:'Glaciers are melting due to warming.' },
+  { id:591, cat:'nature', pt:'Planície',      de:'Ebene',             en:'Plain',           pron:'pla-NÍ-si',       ex_pt:'A planície se estende até o horizonte.',       ex_de:'Die Ebene erstreckt sich bis zum Horizont.',      ex_en:'The plain extends to the horizon.' },
+  { id:592, cat:'nature', pt:'Arco-íris',     de:'Regenbogen',        en:'Rainbow',         pron:'ÁR-ku Í-ris',     ex_pt:'Um arco-íris apareceu após a chuva.',          ex_de:'Nach dem Regen erschien ein Regenbogen.',         ex_en:'A rainbow appeared after the rain.' },
+  { id:593, cat:'nature', pt:'Relâmpago',     de:'Blitz',             en:'Lightning',       pron:'re-LÃM-pa-gu',    ex_pt:'O relâmpago iluminou o céu noturno.',          ex_de:'Der Blitz erleuchtete den Nachthimmel.',          ex_en:'The lightning lit up the night sky.' },
+  { id:594, cat:'nature', pt:'Terremoto',     de:'Erdbeben',          en:'Earthquake',      pron:'te-he-MÓ-tu',     ex_pt:'O terremoto destruiu vários edifícios.',       ex_de:'Das Erdbeben zerstörte mehrere Gebäude.',         ex_en:'The earthquake destroyed several buildings.' },
+  { id:595, cat:'nature', pt:'Furacão',       de:'Hurrikan',          en:'Hurricane',       pron:'fu-ra-KÃW',       ex_pt:'O furacão atingiu a costa com força.',         ex_de:'Der Hurrikan traf die Küste mit Wucht.',          ex_en:'The hurricane hit the coast with force.' },
+
+  // ── health +10 ────────────────────────────────────────────────────────────
+  { id:596, cat:'health', pt:'Fisioterapia',  de:'Physiotherapie',    en:'Physiotherapy',   pron:'fi-zi-u-te-ra-PÍ-a',ex_pt:'A fisioterapia me ajudou a recuperar.',       ex_de:'Die Physiotherapie hat mir bei der Genesung geholfen.',ex_en:'Physiotherapy helped me recover.' },
+  { id:597, cat:'health', pt:'Vitamina',      de:'Vitamin',           en:'Vitamin',         pron:'vi-ta-MÍ-na',     ex_pt:'Tomo vitaminas todos os dias.',                ex_de:'Ich nehme täglich Vitamine ein.',                 ex_en:'I take vitamins every day.' },
+  { id:598, cat:'health', pt:'Nutrição',      de:'Ernährung',         en:'Nutrition',       pron:'nu-tri-SÃW',      ex_pt:'Uma boa nutrição é essencial para a saúde.',   ex_de:'Eine gute Ernährung ist wesentlich für die Gesundheit.',ex_en:'Good nutrition is essential for health.' },
+  { id:599, cat:'health', pt:'Exercício',     de:'Übung',             en:'Exercise',        pron:'e-zer-SÍ-si-u',   ex_pt:'O exercício físico melhora o bem-estar.',      ex_de:'Körperliche Übung verbessert das Wohlbefinden.',  ex_en:'Physical exercise improves well-being.' },
+  { id:600, cat:'health', pt:'Meditação',     de:'Meditation',        en:'Meditation',      pron:'me-dʒi-ta-SÃW',   ex_pt:'A meditação reduz o estresse.',                ex_de:'Meditation reduziert Stress.',                    ex_en:'Meditation reduces stress.' },
+  { id:601, cat:'health', pt:'Insônia',       de:'Schlaflosigkeit',   en:'Insomnia',        pron:'in-SÔ-ni-a',      ex_pt:'Sofro de insônia há algumas semanas.',         ex_de:'Ich leide seit einigen Wochen an Schlaflosigkeit.',ex_en:'I have been suffering from insomnia for a few weeks.' },
+  { id:602, cat:'health', pt:'Antibiótico',   de:'Antibiotikum',      en:'Antibiotic',      pron:'an-tʃi-bi-Ó-tʃi-ku',ex_pt:'O médico receitou antibiótico para a infecção.',ex_de:'Der Arzt verschrieb ein Antibiotikum gegen die Infektion.',ex_en:'The doctor prescribed an antibiotic for the infection.' },
+  { id:603, cat:'health', pt:'Lesão',         de:'Verletzung',        en:'Injury',          pron:'le-ZÃW',          ex_pt:'A lesão no joelho doeu muito.',                ex_de:'Die Knieverletzung schmerzte sehr.',              ex_en:'The knee injury hurt a lot.' },
+  { id:604, cat:'health', pt:'Reabilitação',  de:'Rehabilitation',    en:'Rehabilitation',  pron:'he-a-bi-li-ta-SÃW',ex_pt:'A reabilitação após a cirurgia foi longa.',    ex_de:'Die Rehabilitation nach der Operation war lang.',  ex_en:'Rehabilitation after surgery was long.' },
+  { id:605, cat:'health', pt:'Bem-estar',     de:'Wohlbefinden',      en:'Well-being',      pron:'bẽn es-TAR',      ex_pt:'O bem-estar é importante para a qualidade de vida.',ex_de:'Das Wohlbefinden ist wichtig für die Lebensqualität.',ex_en:'Well-being is important for quality of life.' },
+
+  // ── tech +10 ──────────────────────────────────────────────────────────────
+  { id:606, cat:'tech', pt:'Software',        de:'Software',          en:'Software',        pron:'SOF-tware',        ex_pt:'O software foi atualizado ontem.',             ex_de:'Die Software wurde gestern aktualisiert.',        ex_en:'The software was updated yesterday.' },
+  { id:607, cat:'tech', pt:'Hardware',        de:'Hardware',          en:'Hardware',        pron:'HARD-ware',        ex_pt:'O hardware do meu computador é antigo.',       ex_de:'Die Hardware meines Computers ist alt.',          ex_en:'My computer hardware is old.' },
+  { id:608, cat:'tech', pt:'Programação',     de:'Programmierung',    en:'Programming',     pron:'pro-gra-ma-SÃW',   ex_pt:'Estudo programação desde os quinze anos.',     ex_de:'Ich studiere seit ich fünfzehn bin Programmierung.', ex_en:'I have been studying programming since I was fifteen.' },
+  { id:609, cat:'tech', pt:'Banco de dados',  de:'Datenbank',         en:'Database',        pron:'BÃN-ku dʒi DÁ-dus',ex_pt:'Os dados são salvos no banco de dados.',       ex_de:'Die Daten werden in der Datenbank gespeichert.',   ex_en:'The data is saved in the database.' },
+  { id:610, cat:'tech', pt:'Servidor',        de:'Server',            en:'Server',          pron:'ser-vi-DOR',       ex_pt:'O servidor ficou fora do ar por uma hora.',    ex_de:'Der Server war eine Stunde lang nicht verfügbar.', ex_en:'The server was down for an hour.' },
+  { id:611, cat:'tech', pt:'Código',          de:'Code',              en:'Code',            pron:'KÓ-dʒi-gu',        ex_pt:'O programador revisou o código.',              ex_de:'Der Programmierer hat den Code überprüft.',        ex_en:'The programmer reviewed the code.' },
+  { id:612, cat:'tech', pt:'Teclado',         de:'Tastatur',          en:'Keyboard',        pron:'te-KLÁ-du',        ex_pt:'O teclado sem fio é muito prático.',           ex_de:'Die kabellose Tastatur ist sehr praktisch.',       ex_en:'The wireless keyboard is very handy.' },
+  { id:613, cat:'tech', pt:'Mouse',           de:'Maus',              en:'Mouse',           pron:'MAUS',             ex_pt:'O mouse do computador parou de funcionar.',    ex_de:'Die Computermaus funktioniert nicht mehr.',        ex_en:'The computer mouse stopped working.' },
+  { id:614, cat:'tech', pt:'Criptografia',    de:'Verschlüsselung',   en:'Encryption',      pron:'krip-to-gra-FÍ-a', ex_pt:'A criptografia protege nossos dados.',         ex_de:'Verschlüsselung schützt unsere Daten.',            ex_en:'Encryption protects our data.' },
+  { id:615, cat:'tech', pt:'Realidade virtual',de:'Virtuelle Realität',en:'Virtual reality', pron:'he-a-li-DÁ-dʒi vir-tu-AL',ex_pt:'A realidade virtual está transformando os jogos.',ex_de:'Virtuelle Realität verändert das Spielen.',    ex_en:'Virtual reality is transforming gaming.' },
+
+  // ── sports +10 ────────────────────────────────────────────────────────────
+  { id:616, cat:'sports', pt:'Boxe',          de:'Boxen',             en:'Boxing',          pron:'BÓK-si',           ex_pt:'Pratico boxe duas vezes por semana.',          ex_de:'Ich trainiere zweimal pro Woche Boxen.',          ex_en:'I practice boxing twice a week.' },
+  { id:617, cat:'sports', pt:'Surfe',         de:'Surfen',            en:'Surfing',         pron:'SÚR-fi',           ex_pt:'O surfe é muito popular no litoral brasileiro.',ex_de:'Surfen ist an der brasilianischen Küste sehr beliebt.',ex_en:'Surfing is very popular on the Brazilian coast.' },
+  { id:618, cat:'sports', pt:'Escalada',      de:'Klettern',          en:'Climbing',        pron:'es-ka-LÁ-da',      ex_pt:'A escalada exige muita força e equilíbrio.',   ex_de:'Klettern erfordert viel Kraft und Gleichgewicht.', ex_en:'Climbing requires a lot of strength and balance.' },
+  { id:619, cat:'sports', pt:'Golfe',         de:'Golf',              en:'Golf',            pron:'GÓL-fi',           ex_pt:'Ele joga golfe todos os domingos.',             ex_de:'Er spielt jeden Sonntag Golf.',                   ex_en:'He plays golf every Sunday.' },
+  { id:620, cat:'sports', pt:'Rugby',         de:'Rugby',             en:'Rugby',           pron:'RÁG-bi',           ex_pt:'O rugby é um esporte de contato intenso.',     ex_de:'Rugby ist ein intensiver Kontaktsport.',          ex_en:'Rugby is an intense contact sport.' },
+  { id:621, cat:'sports', pt:'Esqui',         de:'Skifahren',         en:'Skiing',          pron:'es-KÍ',            ex_pt:'Aprendi a esquiar nas montanhas.',              ex_de:'Ich habe in den Bergen Skifahren gelernt.',        ex_en:'I learned to ski in the mountains.' },
+  { id:622, cat:'sports', pt:'Artes marciais',de:'Kampfsport',        en:'Martial arts',    pron:'ÁR-tʃis mar-SI-as', ex_pt:'As artes marciais ensinam disciplina.',        ex_de:'Kampfsport lehrt Disziplin.',                     ex_en:'Martial arts teach discipline.' },
+  { id:623, cat:'sports', pt:'Ciclismo',      de:'Radfahren',         en:'Cycling',         pron:'si-KLÍZ-mu',       ex_pt:'Gosto de ciclismo nas trilhas da floresta.',   ex_de:'Ich mag Radfahren auf Waldwegen.',                 ex_en:'I enjoy cycling on forest trails.' },
+  { id:624, cat:'sports', pt:'Maratona',      de:'Marathon',          en:'Marathon',        pron:'ma-ra-TÔ-na',      ex_pt:'Vou correr minha primeira maratona no mês que vem.',ex_de:'Ich werde nächsten Monat meinen ersten Marathon laufen.',ex_en:'I will run my first marathon next month.' },
+  { id:625, cat:'sports', pt:'Salto',         de:'Sprung',            en:'Jump',            pron:'SÁL-tu',           ex_pt:'O salto em distância é uma modalidade olímpica.',ex_de:'Der Weitsprung ist eine olympische Disziplin.',   ex_en:'The long jump is an Olympic discipline.' },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════════
