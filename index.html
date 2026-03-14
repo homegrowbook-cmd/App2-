@@ -1953,16 +1953,6 @@
           <span>English</span>
           <span style="font-size:0.72rem;color:var(--text-2);font-weight:500">→ 🇧🇷</span>
         </button>
-        <button class="lang-btn" id="settings-lang-pt-de" onclick="App.setLang('pt-de')">
-          <span class="lang-flag">🇧🇷</span>
-          <span>Português</span>
-          <span style="font-size:0.72rem;color:var(--text-2);font-weight:500">→ 🇩🇪</span>
-        </button>
-        <button class="lang-btn" id="settings-lang-pt-en" onclick="App.setLang('pt-en')">
-          <span class="lang-flag">🇧🇷</span>
-          <span>Português</span>
-          <span style="font-size:0.72rem;color:var(--text-2);font-weight:500">→ 🇬🇧</span>
-        </button>
       </div>
     </div>
 
@@ -2270,16 +2260,6 @@
         <span class="lang-flag">🇬🇧</span>
         <span>English</span>
         <span style="font-size:0.72rem;color:var(--text-2);font-weight:500">→ 🇧🇷</span>
-      </button>
-      <button class="lang-btn" onclick="App.chooseLang('pt-de')">
-        <span class="lang-flag">🇧🇷</span>
-        <span>Português</span>
-        <span style="font-size:0.72rem;color:var(--text-2);font-weight:500">→ 🇩🇪</span>
-      </button>
-      <button class="lang-btn" onclick="App.chooseLang('pt-en')">
-        <span class="lang-flag">🇧🇷</span>
-        <span>Português</span>
-        <span style="font-size:0.72rem;color:var(--text-2);font-weight:500">→ 🇬🇧</span>
       </button>
     </div>
     <p class="lang-popup-hint">⚙️ Die Sprachauswahl kann jederzeit in den <strong>Einstellungen</strong> geändert werden.<br><span style="font-size:0.82em">The language selection can be changed at any time in Settings.</span></p>
@@ -3234,7 +3214,13 @@ const STATE_KEY = 'lingabrasil_v1';
 function loadState() {
   try {
     const raw = localStorage.getItem(STATE_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const s = JSON.parse(raw);
+      // Migrate pt-de/pt-en to de/en (reverse modes removed)
+      if (s.lang === 'pt-de') s.lang = 'de';
+      if (s.lang === 'pt-en') s.lang = 'en';
+      return s;
+    }
   } catch (_) {}
   return {
     lang: 'de',
@@ -3280,13 +3266,11 @@ const App = (() => {
 
   /* ── direction helpers ─────────────────────────────────────────────────── */
   function nativeLang() {
-    if (state.lang === 'pt-de') return 'de';
-    if (state.lang === 'pt-en') return 'en';
     return state.lang; // 'de' or 'en'
   }
 
   function isReverse() {
-    return state.lang === 'pt-de' || state.lang === 'pt-en';
+    return false;
   }
 
   /* ── helpers ───────────────────────────────────────────────────────────── */
@@ -3497,7 +3481,7 @@ const App = (() => {
 
   /* ── SETTINGS ───────────────────────────────────────────────────────────── */
   function renderSettingsLang() {
-    ['de', 'en', 'pt-de', 'pt-en'].forEach(l => {
+    ['de', 'en'].forEach(l => {
       const btn = document.getElementById('settings-lang-' + l);
       if (btn) btn.classList.toggle('selected', state.lang === l);
     });
@@ -4488,7 +4472,7 @@ const App = (() => {
     if (!card) return;
     generateDailyMissions();
     const td = today();
-    const locale = (state.lang === 'en' || state.lang === 'pt-en') ? 'en-US' : 'de-DE';
+    const locale = state.lang === 'en' ? 'en-US' : 'de-DE';
     const dateStr = new Date().toLocaleDateString(locale, { weekday: 'short', month: 'short', day: 'numeric' });
     let html = `<div class="missions-hdr"><span class="missions-title">🎯 Tägliche Missionen</span><span class="missions-reset">${dateStr}</span></div>`;
     state.dailyMissions.forEach(m => {
