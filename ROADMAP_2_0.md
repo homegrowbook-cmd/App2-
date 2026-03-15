@@ -3,7 +3,7 @@
 
 > **Erstellt:** März 2026  
 > **Basis:** Vergleich mit den Top 8 Sprach-Apps + aktuellem Feature-Stand LuiBrasil v7.0  
-> **Status:** v8.2 implementiert – März 2026
+> **Status:** v0.75 implementiert – März 2026
 
 ---
 
@@ -79,7 +79,7 @@
 
 ---
 
-### ✅ ABGESCHLOSSEN – v8.0 / v8.1 / v8.2
+### ✅ ABGESCHLOSSEN – v8.0 / v8.1 / v8.2 / v0.75
 
 #### 8.0 – Onboarding-Flow & UX-Grundlagen ✅
 - [x] **Willkommens-Wizard** (3 Screens): Ziel auswählen, Level-Einschätzung, tägliches Zeitbudget
@@ -106,9 +106,19 @@
 - [x] **ProMotion 120Hz-optimiert** (`will-change: transform`) auf animierten Elementen
 - [x] **Confetti-Canvas isoliert** (`contain: strict`) für keine Full-Page-Repaints
 
+#### v0.75 – Haptic Feedback, Swipe-Gesten, Recommendation Engine ✅
+- [x] **Haptic Feedback auf iOS/Android**: `navigator.vibrate()` bei richtiger (kurz) / falscher (lang) Antwort in allen Übungstypen
+- [x] **Swipe-Gesten auf Karteikarten**: Links wischen = Nochmal, rechts wischen = Gewusst! (Drops/Tinder-inspiriert)
+- [x] **Animated Score-Counter**: XP-Zahl zählt hoch beim Sammeln (visuell befriedigend, rAF-basiert)
+- [x] **"Heute empfohlen"-Karte**: Personalisierte Tagesempfehlungen basierend auf SRS-Stand und Lernziel (Onboarding-Ziel: Reise, Konversation, Fließend)
+- [x] **SRS-Fälligkeits-Zähler** im Home-Screen: Zeigt wie viele Wörter heute zur Wiederholung fällig sind
+- [x] **Streak-Alarm**: Warnung am Abend (ab 18:00 Uhr), wenn kein Training heute
+- [x] **Merkhilfen (Mems)**: Eselsbrücken-Texte für ausgewählte Vokabeln (Obrigado, Água, Amor, Saudade) auf der Karteikarten-Rückseite (🧠-Icon)
+- [x] **`trackLastActivity` mit Datum**: Datumsfeld in lastActivity-Objekt für korrektes Streak/Empfehlungs-Tracking
+
 ---
 
-### 🟧 HOCH – Nächste Priorität (v8.5 – v9.0)
+
 
 #### 8.3 – Täglicher Lernplan (empfohlener Kurs) 📅
 - [ ] **Empfohlener Tages-Kurs**: App zeigt täglich „Heute empfohlen: SRS-Wiederholung + 1 Dialog" (personalisiert nach Onboarding-Ziel)
@@ -116,9 +126,9 @@
 - [ ] **Kategorie-Icons vergrößern** + Schwierigkeitsgrad-Anzeige (A1/A2/B1) prominenter
 
 #### 8.4 – Haptic Feedback & Micro-Interactions 📳
-- [ ] **Haptic Feedback auf iOS**: `navigator.vibrate()` bei richtiger/falscher Antwort (kurz/lang), spürbare Rückmeldung
-- [ ] **Swipe-Gesten auf Karteikarten**: Links wischen = Falsch, rechts wischen = Richtig (Drops/Tinder-inspiriert)
-- [ ] **Animated Score-Counter**: XP-Zahl zählt hoch beim Sammeln (visuell befriedigend)
+- [x] **Haptic Feedback auf iOS**: `navigator.vibrate()` bei richtiger/falscher Antwort (kurz/lang), spürbare Rückmeldung ✅ v0.75
+- [x] **Swipe-Gesten auf Karteikarten**: Links wischen = Falsch, rechts wischen = Richtig (Drops/Tinder-inspiriert) ✅ v0.75
+- [x] **Animated Score-Counter**: XP-Zahl zählt hoch beim Sammeln (visuell befriedigend) ✅ v0.75
 
 #### 8.5 – Aussprache-Trainer 🎤
 - [ ] **Aussprache-Bewertung mit Web Speech API**: Nutzer spricht Wort → App vergleicht mit Zielwort → Feedback (✅ Gut / ⚠️ Versuche nochmal)
@@ -130,8 +140,8 @@
 - [ ] **Freunde einladen** via Share-Link (kein Account nötig, nur Link mit Streak-Vergleich)
 
 #### 8.7 – Erweitertes Bild-Vokabular 🖼️
+- [x] **Mnemotechniken (Mems)**: Kurze Merkhilfe bei ausgewählten Vokabeln optional anzeigen ✅ v0.75
 - [ ] **Emoji-Assoziationen** zu allen Vokabeln ergänzen (bereits teilweise vorhanden)
-- [ ] **Mnemotechniken (Mems)**: Kurze Merkhilfe bei jeder Vokabel optional anzeigen (z.B. „saudade – klingt wie ‚so da da' – die Sehnsucht nach jemandem, der ‚so da' war")
 
 ---
 
@@ -188,9 +198,11 @@
 | iPhone 16 Pro / iOS-Optimierung | Gering | 🔥🔥🔥🔥🔥 | **P0** | v8.2 | ✅ Fertig |
 | Empfohlener Tages-Kurs | Mittel | 🔥🔥🔥🔥🔥 | **P1** | v8.3 | 📋 Geplant |
 | Geführter Lernpfad | Hoch | 🔥🔥🔥🔥🔥 | **P1** | v8.3 | 📋 Geplant |
-| Haptic Feedback + Swipe-Gesten | Gering | 🔥🔥🔥🔥 | **P1** | v8.4 | 📋 Geplant |
+| Haptic Feedback + Swipe-Gesten | Gering | 🔥🔥🔥🔥 | **P1** | v0.75 | ✅ Fertig |
+| Animated XP Counter | Gering | 🔥🔥🔥🔥 | **P1** | v0.75 | ✅ Fertig |
+| Recommendation Engine (Heute empfohlen) | Mittel | 🔥🔥🔥🔥🔥 | **P1** | v0.75 | ✅ Fertig |
+| Mems / Merkhilfen | Mittel | 🔥🔥🔥 | **P2** | v0.75 | ✅ Fertig |
 | Aussprache-Bewertung | Mittel | 🔥🔥🔥🔥🔥 | **P1** | v8.5 | 📋 Geplant |
-| Mems / Merkhilfen | Mittel | 🔥🔥🔥 | **P2** | v8.7 | 📋 Geplant |
 | Wöchentliche Liga | Hoch | 🔥🔥🔥🔥 | **P2** | v9.0 | 📋 Geplant |
 | Audio-Lektionen | Sehr hoch | 🔥🔥🔥 | **P3** | v9.0 | 📋 Geplant |
 | KI-Personalisierung | Sehr hoch | 🔥🔥🔥🔥 | **P3** | v9.1 | 📋 Geplant |
@@ -208,6 +220,7 @@
 | **v8.0** | Onboarding, Session-Timer, Heatmap, Emoji-Quiz, Tages-Challenge, Streak Freeze | 3–4 Wochen | ✅ **Fertig** (März 2026) |
 | **v8.1** | Bilderraten-Spiel, Live-Translate Test-Panel | 1 Woche | ✅ **Fertig** (März 2026) |
 | **v8.2** | iPhone 16 Pro / iOS-Optimierung (44pt Targets, 100dvh, ProMotion, Tap-Delay) | 1 Tag | ✅ **Fertig** (März 2026) |
+| **v0.75** | Haptic Feedback, Swipe-Gesten, Animated XP, Recommendation Engine, Mems | 1 Woche | ✅ **Fertig** (März 2026) |
 | **v8.3** | Empfohlener Tages-Kurs, geführter Lernpfad | 3–4 Wochen | 📋 Geplant |
 | **v8.4** | Haptic Feedback, Swipe-Gesten, Micro-Interactions | 1–2 Wochen | 📋 Geplant |
 | **v8.5** | Aussprache-Trainer | 4–6 Wochen | 📋 Geplant |
@@ -251,5 +264,5 @@
 
 ---
 
-*LuiBrasil Roadmap 2.0 – Erstellt: März 2026 | Letzte Aktualisierung: März 2026 (v8.2)*  
+*LuiBrasil Roadmap 2.0 – Erstellt: März 2026 | Letzte Aktualisierung: März 2026 (v0.75)*  
 *Analysierte Wettbewerber: Duolingo, Babbel, Rosetta Stone, Memrise, Busuu, Pimsleur, HelloTalk, Drops*
