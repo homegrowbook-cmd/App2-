@@ -116,7 +116,9 @@
     .bottom-nav {
       background: var(--card);
       border-top: 1px solid var(--border);
-      display: flex;
+      /* CSS Grid: explicitly allocates one equal column per icon – scales to exactly 5 items */
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
       position: sticky;
       bottom: 0;
       z-index: 100;
@@ -125,35 +127,108 @@
     }
 
     .nav-btn {
-      flex: 1;
       border: none;
       background: none;
       /* min 44pt height for Apple HIG touch target on iPhone 16 Pro */
       min-height: 44px;
-      padding: 8px 2px 6px;
+      padding: 8px 4px 6px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 2px;
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       font-weight: 600;
       color: var(--text-2);
-      transition: color var(--transition);
+      transition: color var(--transition), border-top-color var(--transition);
+      border-top: 3px solid transparent;
       /* Remove 300ms tap delay on iOS */
       touch-action: manipulation;
     }
 
-    .nav-btn .nav-icon { font-size: 1.3rem; line-height: 1; }
+    .nav-btn .nav-icon { font-size: 1.25rem; line-height: 1; }
 
     .nav-btn.active {
       color: var(--blue);
+      border-top-color: var(--blue);
     }
 
     .nav-btn.active .nav-icon {
       transform: scale(1.15);
       transition: transform var(--transition);
     }
+
+    /* ─── Privacy Consent Overlay ───────────────────────────────────────────── */
+    .privacy-overlay {
+      position: fixed; inset: 0; z-index: 4000;
+      background: rgba(0,0,0,0.65); backdrop-filter: blur(5px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px;
+    }
+    .privacy-overlay.hidden { display: none; }
+    .privacy-card {
+      background: var(--card); border-radius: 20px; padding: 26px 20px 22px;
+      max-width: 420px; width: 100%;
+      box-shadow: 0 20px 60px rgba(0,39,118,0.28);
+      animation: popupIn 0.3s cubic-bezier(.4,0,.2,1);
+      max-height: 92dvh; overflow-y: auto;
+    }
+    .privacy-logo { font-size: 2.6rem; text-align: center; margin-bottom: 8px; }
+    .privacy-title {
+      font-size: 1.25rem; font-weight: 800; color: var(--blue);
+      text-align: center; margin-bottom: 4px;
+    }
+    .privacy-subtitle {
+      font-size: 0.88rem; color: var(--text-2); text-align: center;
+      margin-bottom: 18px; line-height: 1.5;
+    }
+    .privacy-items { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    .privacy-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      background: var(--bg); border-radius: var(--radius-sm); padding: 12px;
+    }
+    .privacy-item-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+    .privacy-item-text { flex: 1; }
+    .privacy-item-text strong { display: block; font-size: 0.92rem; color: var(--text); margin-bottom: 2px; }
+    .privacy-item-text p { font-size: 0.78rem; color: var(--text-2); line-height: 1.4; margin: 0; }
+    .privacy-toggle { flex-shrink: 0; position: relative; display: inline-block; width: 40px; height: 22px; cursor: pointer; margin-top: 4px; }
+    .privacy-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .privacy-toggle-track {
+      position: absolute; inset: 0; border-radius: 22px;
+      background: var(--border); transition: background var(--transition);
+    }
+    .privacy-toggle-track::after {
+      content: ''; position: absolute; left: 3px; top: 3px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #fff; transition: transform var(--transition);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+    }
+    .privacy-toggle input:checked + .privacy-toggle-track { background: var(--green); }
+    .privacy-toggle input:checked + .privacy-toggle-track::after { transform: translateX(18px); }
+    .privacy-note {
+      font-size: 0.76rem; color: var(--text-2); background: var(--bg);
+      border-radius: var(--radius-sm); padding: 10px 12px;
+      line-height: 1.5; margin-bottom: 16px;
+    }
+    .privacy-btn-accept {
+      width: 100%; padding: 13px 16px; margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--blue), var(--light-blue));
+      color: #fff; border: none; border-radius: var(--radius-sm);
+      font-size: 0.95rem; font-weight: 700; cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0,39,118,0.28);
+      transition: var(--transition);
+    }
+    .privacy-btn-accept:hover { filter: brightness(1.08); }
+    .privacy-btn-minimal {
+      width: 100%; padding: 10px 16px;
+      background: none; border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600;
+      color: var(--text-2); cursor: pointer; transition: var(--transition);
+    }
+    .privacy-btn-minimal:hover { border-color: var(--blue); color: var(--blue); }
+    body.dark .privacy-card { background: #1f2937; }
+    body.dark .privacy-item { background: #111827; }
+    body.dark .privacy-note { background: #111827; }
 
     /* ─── Views ────────────────────────────────────────────────────────────── */
     .view {
@@ -1324,6 +1399,7 @@
     }
     body.dark .app-header { background: linear-gradient(135deg,#1e3a5f 0%,#2a4a7f 100%); }
     body.dark .bottom-nav { background: #1f2937; border-top-color: #374151; }
+    body.dark .nav-btn.active { color: var(--light-blue); border-top-color: var(--light-blue); }
     body.dark .category-card { background: #1f2937; }
     body.dark .grammar-card { background: #1f2937; }
     body.dark .progress-card, body.dark .big-stat { background: #1f2937; }
@@ -2516,7 +2592,7 @@
     <div class="settings-section">
       <h3 class="settings-heading">ℹ️ App-Info</h3>
       <div class="settings-info">
-        <p><strong>LuiBrasil</strong> v0.75</p>
+        <p><strong>LuiBrasil</strong> v0.76</p>
         <p id="settings-word-count">665 Vokabeln &amp; Sätze · 21 Kategorien</p>
         <p>🇧🇷 Brasilianisches Portugiesisch lernen</p>
         <p style="margin-top:8px;font-size:0.78rem">Kostenlos · Offline nutzbar · Keine Anmeldung erforderlich</p>
@@ -2935,6 +3011,64 @@
     <div class="level-up-name" id="levelup-name">Explorador</div>
     <div class="level-up-desc" id="levelup-desc">Du hast ein neues Niveau erreicht!</div>
     <button class="level-up-btn" onclick="App.closeLevelUp()">Weiter! / Continue! 🚀</button>
+  </div>
+</div>
+
+<!-- Privacy & Permissions Consent (GDPR – shown once on first launch) -->
+<div id="privacy-overlay" class="privacy-overlay hidden" role="dialog" aria-modal="true" aria-label="Datenschutz & Berechtigungen">
+  <div class="privacy-card">
+    <div class="privacy-logo">🔒</div>
+    <h2 class="privacy-title">Datenschutz &amp; Berechtigungen</h2>
+    <p class="privacy-subtitle">
+      Bevor du startest, informieren wir dich einmalig über Datenspeicherung.<br>
+      <span style="font-size:0.8em;color:var(--text-2)">Before you start, we inform you once about data storage.</span>
+    </p>
+    <div class="privacy-items">
+      <div class="privacy-item">
+        <span class="privacy-item-icon">💾</span>
+        <div class="privacy-item-text">
+          <strong>Lokale Lerndaten / Local learning data</strong>
+          <p>Dein Lernfortschritt (XP, Streak, Karten) wird ausschließlich lokal auf deinem Gerät gespeichert – kein Server, keine Cloud.<br>
+          <em>Your progress is stored locally on your device only – no server, no cloud.</em></p>
+        </div>
+        <label class="privacy-toggle" title="Notwendig / Required">
+          <input type="checkbox" id="consent-storage" checked disabled>
+          <span class="privacy-toggle-track"></span>
+        </label>
+      </div>
+      <div class="privacy-item">
+        <span class="privacy-item-icon">📊</span>
+        <div class="privacy-item-text">
+          <strong>Nutzungsstatistiken / Usage statistics</strong>
+          <p>Anonyme Nutzungsdaten (z. B. Sitzungsdauer) helfen uns, die App zu verbessern.<br>
+          <em>Anonymous usage data (e.g. session length) helps us improve the app.</em></p>
+        </div>
+        <label class="privacy-toggle" title="Optional">
+          <input type="checkbox" id="consent-analytics" checked>
+          <span class="privacy-toggle-track"></span>
+        </label>
+      </div>
+      <div class="privacy-item">
+        <span class="privacy-item-icon">🎙️</span>
+        <div class="privacy-item-text">
+          <strong>Mikrofon / Microphone</strong>
+          <p>Wird optional für Live-Übersetzen benötigt. Du kannst dies jederzeit im Browser widerrufen.<br>
+          <em>Only needed for Live-Translate (optional). Revocable at any time in browser settings.</em></p>
+        </div>
+        <label class="privacy-toggle" title="Optional">
+          <input type="checkbox" id="consent-mic" checked>
+          <span class="privacy-toggle-track"></span>
+        </label>
+      </div>
+    </div>
+    <p class="privacy-note">
+      🔐 Alle Daten verbleiben auf deinem Gerät. Es werden keine persönlichen Daten an Dritte weitergegeben.<br>
+      <em>All data stays on your device. No personal data is shared with third parties.</em><br>
+      Diese Einstellungen können jederzeit in den Einstellungen geändert werden.<br>
+      <em>These settings can be changed at any time in Settings.</em>
+    </p>
+    <button class="privacy-btn-accept" onclick="App.acceptPrivacyConsent()">Zustimmen &amp; Starten 🚀<br><small style="font-weight:400;opacity:.8">Accept &amp; Start</small></button>
+    <button class="privacy-btn-minimal" onclick="App.declinePrivacyConsent()">Nur notwendige akzeptieren / Accept necessary only</button>
   </div>
 </div>
 
@@ -4294,7 +4428,8 @@ function loadState() {
     totalMissionsCompleted: 0,// total daily missions ever completed
     dailyMissions: [],        // today's mission templates
     dailyMissionsDate: null,  // date missions were generated
-    dailyMissionsProgress: {} // missionId -> progress count
+    dailyMissionsProgress: {}, // missionId -> progress count
+    privacyConsent: null       // null = not yet asked; object = { storage, analytics, mic, date }
   };
 }
 
@@ -4857,6 +4992,38 @@ const App = (() => {
     // update Wortliste button description dynamically
     const wlDesc = document.getElementById('home-wl-desc');
     if (wlDesc) wlDesc.textContent = `Alle ${WORDS.length} Vokabeln`;
+  }
+
+  /* ── PRIVACY CONSENT ─────────────────────────────────────────────────────── */
+  function showPrivacyConsent() {
+    document.getElementById('privacy-overlay').classList.remove('hidden');
+  }
+
+  function _applyPrivacyConsent(analytics, mic) {
+    state.privacyConsent = {
+      storage: true,
+      analytics: analytics,
+      mic: mic,
+      date: new Date().toISOString()
+    };
+    saveState(state);
+    document.getElementById('privacy-overlay').classList.add('hidden');
+    // Continue startup flow
+    if (!state.langSelected) {
+      document.getElementById('lang-popup-overlay').classList.remove('hidden');
+    } else if (!state.onboardingDone) {
+      setTimeout(showOnboarding, 300);
+    }
+  }
+
+  function acceptPrivacyConsent() {
+    const analytics = document.getElementById('consent-analytics').checked;
+    const mic = document.getElementById('consent-mic').checked;
+    _applyPrivacyConsent(analytics, mic);
+  }
+
+  function declinePrivacyConsent() {
+    _applyPrivacyConsent(false, false);
   }
 
   function setLang(lang) {
@@ -5639,7 +5806,7 @@ const App = (() => {
     try {
       const data = {
         exportDate: new Date().toISOString(),
-        appVersion: 'v0.75',
+        appVersion: 'v0.76',
         state: state
       };
       const json = JSON.stringify(data, null, 2);
@@ -8189,6 +8356,8 @@ const App = (() => {
     if (state.dailyChallengeDate === undefined) state.dailyChallengeDate = null;
     if (state.dailyChallengeProgress === undefined) state.dailyChallengeProgress = 0;
     if (state.lastActivity === undefined) state.lastActivity = null;
+    // Migrate privacy consent field (added in v0.76)
+    if (state.privacyConsent === undefined) state.privacyConsent = null;
     updateStreak();
     generateDailyMissions();
     generateDailyChallenge();
@@ -8200,8 +8369,10 @@ const App = (() => {
     if (state.fontSize === 'small') document.body.classList.add('font-small');
     if (state.fontSize === 'large') document.body.classList.add('font-large');
 
-    // Show language selection popup on first launch, then onboarding
-    if (!state.langSelected) {
+    // Show privacy consent once on very first launch, then language selection, then onboarding
+    if (!state.privacyConsent) {
+      showPrivacyConsent();
+    } else if (!state.langSelected) {
       document.getElementById('lang-popup-overlay').classList.remove('hidden');
     } else if (!state.onboardingDone) {
       // Returning user who hasn't done onboarding yet (e.g. upgraded from v7)
@@ -8323,7 +8494,8 @@ const App = (() => {
       startEmojiQuiz, nextEmojiQuestion, answerEmojiQuestion,
       startBilderraten, nextBilderFrage, answerBilderraten, exitBilderraten,
       testVoiceTranslate,
-      useStreakFreeze
+      useStreakFreeze,
+      acceptPrivacyConsent, declinePrivacyConsent
     };
   }
 
