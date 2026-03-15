@@ -2323,32 +2323,33 @@
   <div class="view" id="view-voice-translate">
     <div class="flashcard-header">
       <button class="back-btn" onclick="App.showView('home')">←</button>
-      <div style="font-size:0.9rem;font-weight:600;color:#fff">🎙️ Live-Sprachübersetzer</div>
+      <div style="font-size:0.9rem;font-weight:600;color:#fff">🎙️ Live-Sprachübersetzer DE→PT</div>
     </div>
     <div style="padding:16px;display:flex;flex-direction:column;align-items:center;gap:16px">
       <p style="font-size:0.85rem;color:var(--text-2);text-align:center;line-height:1.6">
-        Sprich Portugiesisch – die App zeigt die Übersetzung.<br>
-        <em>Speak Portuguese – see the German translation.</em>
+        Sprich <strong>Deutsch</strong> – die App übersetzt ins <strong>Brasilianische Portugiesisch</strong> und spricht es vor.<br>
+        <em>Speak German – hear &amp; see the Brazilian Portuguese translation.</em>
       </p>
 
       <button id="voice-mic-btn" class="voice-mic-btn" onclick="App.toggleVoiceTranslate()">🎙️</button>
-      <div id="voice-status" style="font-size:0.85rem;color:var(--text-2);text-align:center;min-height:1.4em">Tippe auf das Mikrofon</div>
+      <div id="voice-status" style="font-size:0.85rem;color:var(--text-2);text-align:center;min-height:1.4em">Tippe auf das Mikrofon und sprich Deutsch</div>
 
       <div class="voice-result-card" id="voice-result-card" style="display:none">
-        <div style="font-size:0.78rem;font-weight:700;color:var(--text-2);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px">🇧🇷 Erkannt / Recognized</div>
-        <div id="voice-recognized" style="font-size:1.35rem;font-weight:800;color:var(--blue);margin:4px 0 8px"></div>
-        <button onclick="App.speakWord(document.getElementById('voice-recognized').textContent)" style="border:none;background:rgba(0,156,59,0.12);border-radius:8px;padding:5px 12px;cursor:pointer;font-size:0.9rem;margin-bottom:10px">🔊 Anhören</button>
+        <div style="font-size:0.78rem;font-weight:700;color:var(--text-2);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px">🇩🇪 Erkannt / Gesprochen</div>
+        <div id="voice-recognized" style="font-size:1.1rem;font-weight:700;color:var(--text);margin:4px 0 8px"></div>
         <hr style="border:none;border-top:1px solid var(--border);margin:4px 0 10px">
-        <div style="font-size:0.78rem;font-weight:700;color:var(--text-2);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px">🇩🇪 Übersetzung / Translation</div>
-        <div id="voice-translation" style="font-size:1.05rem;font-weight:600;color:var(--text);margin:4px 0"></div>
+        <div style="font-size:0.78rem;font-weight:700;color:var(--text-2);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px">🇧🇷 Brasilianisch / Brazilian Portuguese</div>
+        <div id="voice-translation" style="font-size:1.35rem;font-weight:800;color:var(--blue);margin:4px 0"></div>
         <div id="voice-alt-translation" style="font-size:0.8rem;color:var(--text-2);margin-top:4px"></div>
+        <button onclick="App.speakWord(document.getElementById('voice-translation').textContent)" style="border:none;background:rgba(0,156,59,0.12);border-radius:8px;padding:5px 12px;cursor:pointer;font-size:0.9rem;margin-top:8px">🔊 Anhören (PT-BR)</button>
       </div>
 
       <div style="background:var(--card);border-radius:var(--radius-sm);padding:14px 16px;border:1.5px solid var(--border);width:100%;max-width:360px">
         <p style="font-size:0.82rem;font-weight:700;margin-bottom:8px;color:var(--text)">💡 Tipps / Tips</p>
         <p style="font-size:0.78rem;color:var(--text-2);line-height:1.7">
-          • Sprich deutlich und in normalem Tempo<br>
-          • Einzelne Wörter oder kurze Sätze<br>
+          • Sprich deutlich <strong>Deutsch</strong> – Wörter oder kurze Sätze<br>
+          • Die Übersetzung wird automatisch vorgelesen (PT-BR)<br>
+          • Mikrofon startet nach jeder Übersetzung neu (mehrfach nutzbar)<br>
           • Beste Unterstützung in Chrome / Edge<br>
           • Benötigt Mikrofonerlaubnis im Browser
         </p>
@@ -5280,18 +5281,17 @@ const App = (() => {
   let voiceListening = false;
 
   function lookupVoiceTranslation(spokenText) {
-    const lang = nativeLang();
-    const spoken = normAccents(spokenText).trim();
-    // Full exact match first, then partial match on any slash/comma-separated token
-    let match = WORDS.find(w => normAccents(w.pt) === spoken);
+    const spoken = normAccents(spokenText).toLowerCase().trim();
+    // Full exact match on German (de) field first, then partial/prefix match
+    let match = WORDS.find(w => normAccents(w.de).toLowerCase() === spoken);
     if (!match) {
       match = WORDS.find(w => {
-        const parts = w.pt.split(/[/,\s]+/).map(p => normAccents(p));
+        const parts = w.de.split(/[/,]+/).map(p => normAccents(p.trim()).toLowerCase());
         return parts.some(p => p === spoken || spoken.startsWith(p) || p.startsWith(spoken));
       });
     }
     if (match) {
-      return { pt: match.pt, translation: lang === 'de' ? match.de : match.en, pron: match.pron || '' };
+      return { de: match.de, pt: match.pt, pron: match.pron || '' };
     }
     return null;
   }
@@ -5312,7 +5312,7 @@ const App = (() => {
       return;
     }
     voiceRecognition = new SpeechRecognition();
-    voiceRecognition.lang = 'pt-BR';
+    voiceRecognition.lang = 'de-DE';
     voiceRecognition.interimResults = true;
     voiceRecognition.maxAlternatives = 3;
     voiceRecognition.continuous = false;
@@ -5320,7 +5320,7 @@ const App = (() => {
     voiceListening = true;
     const micBtn = document.getElementById('voice-mic-btn');
     if (micBtn) { micBtn.classList.add('listening'); micBtn.textContent = '⏹️'; }
-    document.getElementById('voice-status').textContent = '🔴 Aufnahme läuft – sprich jetzt Portugiesisch…';
+    document.getElementById('voice-status').textContent = '🔴 Aufnahme läuft – sprich jetzt Deutsch…';
 
     voiceRecognition.onresult = function(event) {
       const results = event.results;
@@ -5350,8 +5350,10 @@ const App = (() => {
       }
 
       if (found) {
-        translationEl.textContent = found.translation;
+        translationEl.textContent = found.pt;
         altEl.textContent = found.pron ? '[ ' + found.pron + ' ]' : '';
+        // Auto-speak the Brazilian Portuguese translation
+        setTimeout(() => speakWord(found.pt), 300);
       } else {
         translationEl.textContent = '—';
         altEl.textContent = 'Kein Eintrag gefunden / No entry found';
@@ -5360,7 +5362,7 @@ const App = (() => {
       state.voiceTranslateUsed = (state.voiceTranslateUsed || 0) + 1;
       saveState(state);
       checkAchievements();
-      document.getElementById('voice-status').textContent = '✅ Erkannt! Tippe nochmal auf das Mikrofon.';
+      document.getElementById('voice-status').textContent = '✅ Erkannt! Sprich das nächste Wort…';
     };
 
     voiceRecognition.onerror = function(event) {
@@ -5374,7 +5376,13 @@ const App = (() => {
     };
 
     voiceRecognition.onend = function() {
-      stopVoiceTranslate(false);
+      // Auto-restart so the user can speak multiple times without re-tapping the button
+      if (voiceListening) {
+        voiceRecognition = null;
+        setTimeout(startVoiceListening, 400);
+      } else {
+        stopVoiceTranslate(false);
+      }
     };
 
     try {
@@ -5392,7 +5400,7 @@ const App = (() => {
     const micBtn = document.getElementById('voice-mic-btn');
     if (micBtn) { micBtn.classList.remove('listening'); micBtn.textContent = '🎙️'; }
     if (resetStatus) {
-      document.getElementById('voice-status').textContent = 'Tippe auf das Mikrofon';
+      document.getElementById('voice-status').textContent = 'Tippe auf das Mikrofon und sprich Deutsch';
     }
   }
 
