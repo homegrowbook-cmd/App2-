@@ -3,6 +3,7 @@
 
 > **Erstellt:** März 2026  
 > **Basis:** Vergleich mit den Top 8 Sprach-Apps + aktuellem Feature-Stand LuiBrasil v7.0
+> **Status:** v8.0 implementiert – März 2026
 
 ---
 
@@ -72,16 +73,16 @@
 ### 🟥 KRITISCH – Sofortmaßnahmen (v8.0)
 
 #### 8.1 – Onboarding-Flow & Lernpfad
-- [ ] **Willkommens-Wizard** (3 Screens): Ziel auswählen (Reise / Alltag / Arbeit / Kultur), Level-Einschätzung (Anfänger/Fortgeschritten), tägliches Zeitbudget (5/10/20 Min)
+- [x] **Willkommens-Wizard** (3 Screens): Ziel auswählen (Reise / Alltag / Arbeit / Kultur), Level-Einschätzung (Anfänger/Fortgeschritten), tägliches Zeitbudget (5/10/20 Min)
 - [ ] **Empfohlener Tages-Kurs** – App zeigt täglich: „Heute empfohlen: SRS-Wiederholung + 1 Dialog"
 - [ ] **Geführter Lernpfad für Anfänger** – Schritt-für-Schritt von Basics → A1 → A2 → B1 (ähnlich Duolingo-Pfad)
-- [ ] **„Weiter wo du aufgehört hast"**-Button auf der Startseite
+- [x] **„Weiter wo du aufgehört hast"**-Button auf der Startseite
 
 #### 8.2 – UX / Visual Refresh
 - [ ] **Kategorie-Icons vergrößern** + Schwierigkeitsgrad-Anzeige (A1/A2/B1) prominenter
-- [ ] **Fortschritts-Heatmap** (GitHub-Style) auf dem Homescreen: letzte 30 Lerntage auf einen Blick
-- [ ] **5-Minuten-Session-Modus** (Drops-inspiriert): Timer-basierte Kurzeinheit mit automatischem Ende
-- [ ] **Konfetti-Animation** bei Meilensteinen (erste 50 Wörter, erster Streak-Week)
+- [x] **Fortschritts-Heatmap** (GitHub-Style) auf dem Homescreen: letzte 30 Lerntage auf einen Blick
+- [x] **5-Minuten-Session-Modus** (Drops-inspiriert): Timer-basierte Kurzeinheit mit automatischem Ende
+- [x] **Konfetti-Animation** bei Meilensteinen (erste 50 Wörter, erster Streak-Week)
 
 ---
 
@@ -95,11 +96,11 @@
 #### 8.6 – Social & Motivation 👥
 - [ ] **Wöchentliche Rangliste (Liga-System)**: Nutzer-Klassen nach Gesamt-XP in der aktuellen Woche (Bronze/Silber/Gold-Liga analog Duolingo)
 - [ ] **Freunde einladen** via Share-Link (kein Account nötig, nur Link mit Streak-Vergleich)
-- [ ] **Tages-Challenge**: Täglich wechselnde Mini-Aufgabe (z.B. „Lerne heute 5 Wörter aus Kategorie ‚Essen'")
-- [ ] **Streak-Gefrierpunkte** (wie Duolingo Streak Freeze): 1 verpasster Tag wird nicht gewertet (1× pro Woche)
+- [x] **Tages-Challenge**: Täglich wechselnde Mini-Aufgabe (z.B. „Lerne heute 5 Wörter aus Kategorie ‚Essen'")
+- [x] **Streak-Gefrierpunkte** (wie Duolingo Streak Freeze): 1 verpasster Tag wird nicht gewertet (1× pro Woche)
 
 #### 8.7 – Bild-Vokabular 🖼️
-- [ ] **Bild-Quiz-Modus**: Bild anzeigen → 4 Wörter zur Auswahl (Multiple Choice), nutzt Emoji als kostengünstige Bilder
+- [x] **Bild-Quiz-Modus**: Bild anzeigen → 4 Wörter zur Auswahl (Multiple Choice), nutzt Emoji als kostengünstige Bilder
 - [ ] **Emoji-Assoziationen** zu allen Vokabeln ergänzen (bereits teilweise vorhanden in Kategorien)
 - [ ] **Mnemotechniken (Mems)**: Kurze Merkhilfe bei jeder Vokabel optional anzeigen (z.B. „saudade – klingt wie ‚so da da' – die Sehnsucht nach jemandem, der ‚so da' war")
 
@@ -169,8 +170,8 @@
 
 | Version | Inhalt | Dauer | Status |
 |---------|--------|-------|--------|
-| **v8.0** | Onboarding, Lernpfad, Session-Timer, Heatmap | 3–4 Wochen | 🔜 Nächste Version |
-| **v8.5** | Aussprache-Trainer, Tages-Challenge, Streak Freeze, Bild-Quiz | 4–6 Wochen | 📋 Geplant |
+| **v8.0** | Onboarding, Lernpfad, Session-Timer, Heatmap, Emoji-Quiz, Tages-Challenge, Streak Freeze | 3–4 Wochen | ✅ **Fertig** (März 2026) |
+| **v8.5** | Aussprache-Trainer, Liga-System, erweiterte Statistiken | 4–6 Wochen | 📋 Geplant |
 | **v9.0** | Liga-System, Audio-Modus, erweiterte Statistiken | 6–8 Wochen | 📋 Geplant |
 | **v9.1** | KI-Personalisierung, adaptives SRS 2.0 | 8–12 Wochen | 📋 Geplant |
 | **v9.2** | Zertifikate (druckbar + LinkedIn), CEFR-Alignment | 2–3 Wochen | 📋 Geplant |
