@@ -4154,8 +4154,9 @@ const App = (() => {
     if (state.lastStudied && daysBetween(state.lastStudied, td) === 1) {
       state.streak += 1;
     } else if (!state.lastStudied || daysBetween(state.lastStudied, td) > 1) {
-      // Check streak freeze: allows skipping exactly 1 missed day (gap of 2)
-      const gap = state.lastStudied ? daysBetween(state.lastStudied, td) : 999;
+      // Check streak freeze: allows skipping exactly 1 missed day (gap of 2 days)
+      const ONE_DAY_MISSED_GAP = 2;
+      const gap = state.lastStudied ? daysBetween(state.lastStudied, td) : Infinity;
       const week = isoWeek(td);
       // Refresh freeze availability weekly
       if (state.streakFreezeWeek !== week) {
@@ -4163,7 +4164,7 @@ const App = (() => {
         state.streakFreezeAvailable = 1;
         state.streakFreezeUsed = false;
       }
-      if (gap === 2 && state.streakFreezeAvailable > 0 && !state.streakFreezeUsed && state.streak > 0) {
+      if (gap === ONE_DAY_MISSED_GAP && state.streakFreezeAvailable > 0 && !state.streakFreezeUsed && state.streak > 0) {
         // Use streak freeze: continue streak as if no day was missed
         state.streakFreezeAvailable -= 1;
         state.streakFreezeUsed = true;
@@ -4178,11 +4179,12 @@ const App = (() => {
   }
 
   function isoWeek(dateStr) {
+    const MS_PER_DAY = 86400000;
     const d = new Date(dateStr);
     const jan4 = new Date(d.getFullYear(), 0, 4);
     const startOfWeek1 = new Date(jan4);
     startOfWeek1.setDate(jan4.getDate() - (jan4.getDay() || 7) + 1);
-    const weekNum = Math.ceil((d - startOfWeek1) / (7 * 86400000));
+    const weekNum = Math.ceil((d - startOfWeek1) / (7 * MS_PER_DAY));
     return d.getFullYear() + '-W' + weekNum;
   }
 
@@ -4859,6 +4861,7 @@ const App = (() => {
 
   function exitSession() {
     session = null;
+    stopTimedSession();
     showView('learn');
   }
 
@@ -5551,7 +5554,12 @@ const App = (() => {
       d.setDate(d.getDate() - i);
       const ds = d.toISOString().split('T')[0];
       const val = hm[ds] || 0;
-      const level = val === 0 ? 0 : val === 1 ? 1 : val === 2 ? 2 : val <= 4 ? 3 : 4;
+      let level;
+      if (val === 0)      level = 0;
+      else if (val === 1) level = 1;
+      else if (val === 2) level = 2;
+      else if (val <= 4)  level = 3;
+      else                level = 4;
       cells.push({ ds, val, level });
     }
     cells.forEach(({ ds, val, level }) => {
@@ -5602,7 +5610,7 @@ const App = (() => {
     } else {
       timedSessionEnd = null;
       _hideTimerBar();
-      showToast('⏱️ Zeit abgelaufen! / Time\'s up! Gut gemacht! 🎉');
+      showToast("⏱️ Zeit abgelaufen! / Time's up! Gut gemacht! 🎉");
       setTimeout(() => showMilestoneConfetti('⏱️ 5-Min Session geschafft!'), 500);
     }
   }
@@ -5762,7 +5770,7 @@ const App = (() => {
     if (word.emoji) return word.emoji;
     const pool = CAT_EMOJI[word.cat] || ['📖'];
     // Use word id to deterministically pick an emoji from the pool
-    return pool[word.id % pool.length];
+    return pool[Math.abs(word.id) % pool.length];
   }
 
   let emojiSession = null;
