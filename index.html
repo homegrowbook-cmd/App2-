@@ -1188,6 +1188,74 @@
     .settings-info strong {
       color: var(--text);
     }
+    .diag-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .diag-item {
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+    }
+    .diag-label {
+      font-size: 0.72rem;
+      color: var(--text-2);
+      margin-bottom: 2px;
+    }
+    .diag-value {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .diag-srs-bar {
+      display: flex;
+      gap: 3px;
+      margin-top: 8px;
+      align-items: flex-end;
+      height: 32px;
+    }
+    .diag-srs-col {
+      flex: 1;
+      background: var(--blue);
+      border-radius: 3px 3px 0 0;
+      min-height: 4px;
+      position: relative;
+    }
+    .diag-srs-col[data-level="0"] { background: #9ca3af; }
+    .diag-srs-col[data-level="1"] { background: #f97316; }
+    .diag-srs-col[data-level="2"] { background: #eab308; }
+    .diag-srs-col[data-level="3"] { background: #22c55e; }
+    .diag-srs-col[data-level="4"] { background: #06b6d4; }
+    .diag-srs-col[data-level="5"] { background: #7c3aed; }
+    .diag-srs-label {
+      font-size: 0.65rem;
+      color: var(--text-2);
+      text-align: center;
+      margin-top: 4px;
+      display: flex;
+      gap: 3px;
+    }
+    .diag-srs-label span { flex: 1; text-align: center; }
+    .settings-export-btn {
+      width: 100%;
+      padding: 12px;
+      background: none;
+      border: 2px solid var(--green);
+      color: var(--green);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--transition);
+      margin-bottom: 8px;
+    }
+    .settings-export-btn:hover,
+    .settings-export-btn:active {
+      background: rgba(6,214,160,0.08);
+    }
 
     /* ─── Dark Mode ─────────────────────────────────────────────────────────────── */
     body.dark {
@@ -2114,6 +2182,21 @@
         <p>🇧🇷 Brasilianisches Portugiesisch lernen</p>
         <p style="margin-top:8px;font-size:0.78rem">Kostenlos · Offline nutzbar · Keine Anmeldung erforderlich</p>
       </div>
+    </div>
+
+    <div class="settings-section">
+      <h3 class="settings-heading">🔧 Diagnose &amp; Neuinstallation / Diagnostics &amp; Reinstall</h3>
+      <p style="font-size:0.82rem;color:var(--text-2);margin-bottom:12px">
+        Fehlersuche, Status-Übersicht &amp; komplette Neuinstallation. /
+        Debugging, status overview &amp; complete reinstall.
+      </p>
+      <div id="settings-diag-info"></div>
+      <button onclick="App.exportStateBackup()" class="settings-export-btn">
+        💾 Fortschritt exportieren / Export Backup
+      </button>
+      <button onclick="App.fullReinstall()" class="settings-danger-btn">
+        🔁 Komplette Neuinstallation / Full Reinstall
+      </button>
     </div>
   </div>
 
@@ -3984,6 +4067,8 @@ const App = (() => {
     // Daily goal display
     const dgVal = document.getElementById('settings-daily-goal-val');
     if (dgVal) dgVal.textContent = state.dailyGoal || 50;
+    // Diagnostics panel
+    renderDiagnostics();
   }
 
   function toggleDarkMode() {
@@ -4844,6 +4929,129 @@ const App = (() => {
       }
     } catch (e) {
       console.warn('LuiBrasil: forceUpdate cleanup error', e);
+    }
+    location.reload();
+  }
+
+  /* ── Diagnostics & Reinstall ────────────────────────────────────────────── */
+  function renderDiagnostics() {
+    const el = document.getElementById('settings-diag-info');
+    if (!el) return;
+
+    // localStorage size estimate
+    let lsSize = 0;
+    try {
+      for (const k in localStorage) {
+        if (Object.prototype.hasOwnProperty.call(localStorage, k)) {
+          lsSize += (localStorage[k] || '').length + k.length;
+        }
+      }
+    } catch (_) {}
+    const lsKB = (lsSize * 2 / 1024).toFixed(1); // UTF-16 chars → bytes → KB
+
+    // Card statistics
+    const cards = state.cards || {};
+    const cardIds = Object.keys(cards);
+    const totalSeen = cardIds.length;
+    const srsCount = [0, 0, 0, 0, 0, 0];
+    cardIds.forEach(id => {
+      const lvl = Math.min(5, Math.max(0, (cards[id].level || 0)));
+      srsCount[lvl]++;
+    });
+    const mastered = srsCount[5];
+    const accuracy = state.totalAnswered > 0
+      ? Math.round((state.totalCorrect / state.totalAnswered) * 100)
+      : 0;
+
+    // SRS bar chart (max bar = tallest column)
+    const maxSrs = Math.max(1, ...srsCount);
+    const srsColors = ['#9ca3af','#f97316','#eab308','#22c55e','#06b6d4','#7c3aed'];
+    const srsBar = srsCount.map((n, i) =>
+      `<div class="diag-srs-col" data-level="${i}" style="height:${Math.round((n / maxSrs) * 30) + 2}px;background:${srsColors[i]}" title="L${i}: ${n}"></div>`
+    ).join('');
+
+    el.innerHTML = `
+      <div class="diag-grid">
+        <div class="diag-item">
+          <div class="diag-label">💾 LocalStorage</div>
+          <div class="diag-value">${lsKB} KB</div>
+        </div>
+        <div class="diag-item">
+          <div class="diag-label">📖 Gesehen / Seen</div>
+          <div class="diag-value">${totalSeen} / ${WORDS.length}</div>
+        </div>
+        <div class="diag-item">
+          <div class="diag-label">✅ Gemeistert / Mastered</div>
+          <div class="diag-value">${mastered}</div>
+        </div>
+        <div class="diag-item">
+          <div class="diag-label">🎯 Genauigkeit / Accuracy</div>
+          <div class="diag-value">${accuracy}%</div>
+        </div>
+        <div class="diag-item">
+          <div class="diag-label">⚡ XP gesamt / Total XP</div>
+          <div class="diag-value">${state.xp || 0}</div>
+        </div>
+        <div class="diag-item">
+          <div class="diag-label">🔥 Streak (Tage)</div>
+          <div class="diag-value">${state.streak || 0}</div>
+        </div>
+      </div>
+      <div style="margin-bottom:4px;font-size:0.78rem;color:var(--text-2);font-weight:600">SRS-Verteilung (L0–L5)</div>
+      <div class="diag-srs-bar">${srsBar}</div>
+      <div class="diag-srs-label">
+        <span>L0</span><span>L1</span><span>L2</span><span>L3</span><span>L4</span><span>L5</span>
+      </div>
+      <div style="margin-top:8px;font-size:0.72rem;color:var(--text-2)">
+        ${srsCount.map((n, i) => `L${i}: ${n}`).join(' · ')}
+      </div>`;
+  }
+
+  function exportStateBackup() {
+    try {
+      const data = {
+        exportDate: new Date().toISOString(),
+        appVersion: 'v7.0',
+        state: state
+      };
+      const json = JSON.stringify(data, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'luibrasil-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Backup exportiert / Backup exported ✅');
+    } catch (e) {
+      console.error('LuiBrasil: export error', e);
+      showToast('Export fehlgeschlagen / Export failed ❌');
+    }
+  }
+
+  async function fullReinstall() {
+    if (!confirm(
+      'KOMPLETTE NEUINSTALLATION / FULL REINSTALL\n\n' +
+      'Dies löscht ALLE App-Daten (Fortschritt, Einstellungen, Cache).\n' +
+      'Danach startet die App wie nach einer Neuinstallation.\n\n' +
+      'This deletes ALL app data (progress, settings, cache).\n' +
+      'The app will restart as if freshly installed.\n\n' +
+      'Tipp: Erst "Fortschritt exportieren" für ein Backup! / Tip: Export backup first!'
+    )) return;
+    try {
+      localStorage.clear();
+      if ('serviceWorker' in navigator) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(registrations.map(r => r.unregister()));
+      }
+      if ('caches' in window) {
+        const keys = await caches.keys();
+        await Promise.all(keys.map(k => caches.delete(k)));
+      }
+    } catch (e) {
+      console.warn('LuiBrasil: fullReinstall cleanup error', e);
     }
     location.reload();
   }
@@ -6758,7 +6966,7 @@ const App = (() => {
       startFlashcardSession, flipCard, rateCard,
       exitSession, restartSession,
       startQuizSession, nextQuizQuestion,
-      resetProgress, forceUpdate,
+      resetProgress, forceUpdate, exportStateBackup, fullReinstall,
       speak, speakWord,
       startTypingSession, checkTypingAnswer, nextTypingCard, typeListenHint,
       startListeningQuiz, playListenWord, nextListenQuestion,
