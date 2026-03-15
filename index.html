@@ -133,7 +133,9 @@
 
     .nav-btn {
       flex: 1;
+      /* 3px transparent top-border reserves space so active border doesn't shift layout */
       border: none;
+      border-top: 3px solid transparent;
       background: none;
       /* min 44pt height for Apple HIG touch target on iPhone 16 Pro */
       min-height: 44px;
@@ -146,15 +148,24 @@
       font-size: 0.62rem;
       font-weight: 600;
       color: var(--text-2);
-      transition: color var(--transition);
+      transition: color var(--transition), border-top-color var(--transition);
       /* Remove 300ms tap delay on iOS */
       touch-action: manipulation;
     }
 
     .nav-btn .nav-icon { font-size: 1.3rem; line-height: 1; }
 
+    /* Prevent long German labels (e.g. "Fortschritt") from wrapping on small iPhones */
+    .nav-btn > span:not(.nav-icon) {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
     .nav-btn.active {
       color: var(--blue);
+      border-top-color: var(--blue);
     }
 
     .nav-btn.active .nav-icon {
