@@ -1804,6 +1804,50 @@
     .emoji-choice-btn.correct { background: rgba(6,214,160,0.15); border-color: var(--success); color: var(--success); }
     .emoji-choice-btn.wrong { background: rgba(239,71,111,0.1); border-color: var(--danger); color: var(--danger); }
 
+    /* ─── Bilderraten ──────────────────────────────────────────────────────── */
+    .bilderraten-card {
+      background: var(--card); border-radius: var(--radius); padding: 28px 18px 20px;
+      text-align: center; box-shadow: var(--shadow); margin-bottom: 14px;
+    }
+    .bilderraten-scene { font-size: 5.5rem; line-height: 1; margin-bottom: 10px; }
+    .bilderraten-hint { font-size: 0.82rem; color: var(--text-2); font-weight: 600; margin-bottom: 6px; letter-spacing: 0.3px; }
+    .bilderraten-prompt { font-size: 0.9rem; color: var(--text); font-weight: 700; }
+    .bilderraten-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+    .bilderraten-btn {
+      padding: 16px 10px; border-radius: var(--radius-sm);
+      border: 2px solid var(--border); background: var(--bg);
+      cursor: pointer; font-size: 0.95rem; font-weight: 700; color: var(--blue);
+      transition: var(--transition); letter-spacing: 0.2px; line-height: 1.3;
+    }
+    .bilderraten-btn:hover { border-color: var(--blue); background: rgba(0,39,118,0.06); }
+    .bilderraten-btn.correct { background: rgba(6,214,160,0.15); border-color: var(--success); color: var(--success); }
+    .bilderraten-btn.wrong { background: rgba(239,71,111,0.1); border-color: var(--danger); color: var(--danger); }
+
+    /* ─── Voice Translate Test Panel ──────────────────────────────────────── */
+    .vt-test-panel {
+      background: var(--card); border-radius: var(--radius-sm); padding: 14px 16px;
+      border: 1.5px solid var(--border); width: 100%; max-width: 360px;
+    }
+    .vt-test-input-row { display: flex; gap: 8px; margin-top: 8px; }
+    .vt-test-input {
+      flex: 1; padding: 10px 12px; border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); font-size: 0.9rem; background: var(--bg);
+      color: var(--text); outline: none;
+    }
+    .vt-test-input:focus { border-color: var(--blue); }
+    .vt-test-btn {
+      padding: 10px 14px; border: none; border-radius: var(--radius-sm);
+      background: linear-gradient(135deg,#059669,#10b981); color: #fff;
+      cursor: pointer; font-weight: 700; font-size: 0.88rem; white-space: nowrap;
+    }
+    .vt-test-result {
+      margin-top: 10px; padding: 10px 12px; border-radius: var(--radius-sm);
+      background: rgba(0,39,118,0.06); border: 1.5px solid var(--border);
+      display: none;
+    }
+    .vt-test-result.found { border-color: var(--success); background: rgba(6,214,160,0.08); }
+    .vt-test-result.not-found { border-color: var(--warning); background: rgba(255,209,102,0.1); }
+
     /* ─── Milestone Confetti Overlay ───────────────────────────────────────── */
     .milestone-overlay {
       position: fixed; inset: 0; z-index: 2500;
@@ -1985,6 +2029,11 @@
         <span class="qb-icon">🎙️</span>
         <span class="qb-title">Stimme</span>
         <span class="qb-desc">Live übersetzen</span>
+      </button>
+      <button class="quick-btn" style="background:linear-gradient(135deg,#e84393,#ff69b4)" onclick="App.startBilderraten()" aria-label="Bilderraten starten – Alltags-Vokabeln mit Bildern üben">
+        <span class="qb-icon">🖼️</span>
+        <span class="qb-title">Bilderraten</span>
+        <span class="qb-desc">Alltag auf Portugiesisch</span>
       </button>
     </div>
   </div>
@@ -2546,6 +2595,18 @@
           • Benötigt Mikrofonerlaubnis im Browser
         </p>
       </div>
+
+      <div class="vt-test-panel">
+        <p style="font-size:0.82rem;font-weight:700;margin-bottom:4px;color:var(--text)">🧪 Funktion testen / Test without mic</p>
+        <p style="font-size:0.76rem;color:var(--text-2);line-height:1.6">Tippe ein deutsches Wort ein, um die Übersetzung zu testen – ganz ohne Mikrofon.</p>
+        <div class="vt-test-input-row">
+          <input class="vt-test-input" id="vt-test-input" type="text" placeholder="z. B. Hallo, Essen, Wasser…"
+            autocomplete="off" autocorrect="off" spellcheck="false"
+            onkeydown="if(event.key==='Enter')App.testVoiceTranslate()" />
+          <button class="vt-test-btn" onclick="App.testVoiceTranslate()">▶ Test</button>
+        </div>
+        <div class="vt-test-result" id="vt-test-result"></div>
+      </div>
     </div>
   </div>
 
@@ -2703,6 +2764,42 @@
       <br><br>
       <button class="cta-btn" onclick="App.showView('home')" style="max-width:280px;margin:0 auto">🏠 Startseite</button>
       <button class="cta-btn" style="max-width:280px;margin:8px auto;background:linear-gradient(135deg,#d97706,#f59e0b)" onclick="App.startEmojiQuiz()">🔄 Nochmal</button>
+    </div>
+  </div>
+
+  <!-- BILDERRATEN -->
+  <div class="view" id="view-bilderraten">
+    <div class="flashcard-header">
+      <button class="back-btn" onclick="App.exitBilderraten()">←</button>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-label" id="br-progress-label">0 / 12</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="br-progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+    <div id="br-session-area">
+      <div class="quiz-score-bar">
+        <span>Punkte / Score</span>
+        <span class="quiz-score-val" id="br-score-val">0</span>
+      </div>
+      <div class="bilderraten-card">
+        <div class="bilderraten-scene" id="br-scene">🍕</div>
+        <div class="bilderraten-hint" id="br-hint">Essen &amp; Trinken</div>
+        <div class="bilderraten-prompt">Wie heißt das auf Portugiesisch? / Como se diz em Português?</div>
+      </div>
+      <div class="bilderraten-choices" id="br-choices"></div>
+      <div class="quiz-feedback hidden" id="br-feedback"></div>
+      <button class="cta-btn hidden" id="br-next-btn" onclick="App.nextBilderFrage()">Weiter →</button>
+    </div>
+    <div class="session-complete hidden" id="br-complete">
+      <div class="trophy">🖼️</div>
+      <h2>Bilderraten abgeschlossen!</h2>
+      <p id="br-complete-msg">Gut gemacht!</p>
+      <div class="xp-earned" id="br-xp">+0 XP</div>
+      <br><br>
+      <button class="cta-btn" onclick="App.showView('home')" style="max-width:280px;margin:0 auto">🏠 Startseite</button>
+      <button class="cta-btn" style="max-width:280px;margin:8px auto;background:linear-gradient(135deg,#e84393,#ff69b4)" onclick="App.startBilderraten()">🔄 Nochmal</button>
     </div>
   </div>
 
@@ -5879,6 +5976,139 @@ const App = (() => {
     renderHeaderStats();
     emojiSession = null;
   }
+
+  /* ── Bilderraten – Picture Guessing Game ────────────────────────────────── */
+  // Everyday-life categories for picture guessing (Alltag)
+  const BILDERRATEN_CATS = [
+    'food','house','clothing','health','weather','family',
+    'jobs','days','emotions','colors','body','sports','travel','nature'
+  ];
+
+  const SCENE_HINTS = {
+    food:     ['🍽️ Mahlzeit', '🛒 Im Supermarkt', '🍳 In der Küche'],
+    house:    ['🏠 Zuhause', '🛋️ Im Wohnzimmer', '🚿 Im Badezimmer'],
+    clothing: ['👗 Anziehen', '🛍️ Einkaufen', '👔 Mode & Stil'],
+    health:   ['🏥 Beim Arzt', '💊 In der Apotheke', '🤒 Krank sein'],
+    weather:  ['🌤️ Wetterbericht', '☔ Draußen unterwegs', '🌡️ Temperaturen'],
+    family:   ['👨‍👩‍👧 Familienleben', '🏡 Zuhause', '❤️ Zusammen sein'],
+    jobs:     ['💼 Bei der Arbeit', '🏢 Im Büro', '👷 Berufe & Tätigkeiten'],
+    days:     ['📅 Alltag', '⏰ Tagesplanung', '🗓️ Wochentage'],
+    emotions: ['😊 Gefühle', '❤️ Emotionen', '🧠 Wie fühlst du dich?'],
+    colors:   ['🎨 Farben', '🌈 Bunt & vielfältig', '🖌️ Kunst'],
+    body:     ['🧍 Körperteile', '💪 Fit & gesund', '🏋️ Bewegung'],
+    sports:   ['⚽ Sport & Spiel', '🏊 Aktiv bleiben', '🎾 Freizeit'],
+    travel:   ['✈️ Reisen', '🚂 Unterwegs sein', '🏖️ Urlaub'],
+    nature:   ['🌿 In der Natur', '🌳 Im Park', '🦋 Natur erleben'],
+  };
+
+  let bilderSession = null;
+
+  function startBilderraten() {
+    const pool = WORDS.filter(w => BILDERRATEN_CATS.includes(w.cat) && CAT_EMOJI[w.cat]);
+    if (pool.length < 4) { showToast('Nicht genug Wörter verfügbar!'); return; }
+    const shuffled = shuffle(pool).slice(0, 12);
+    bilderSession = { queue: shuffled, index: 0, score: 0, xpEarned: 0 };
+    trackLastActivity('bilderraten', null, '🖼️ Bilderraten');
+    updateStreak();
+    checkMissions('streak', 1);
+    showView('bilderraten');
+    document.getElementById('br-session-area').classList.remove('hidden');
+    document.getElementById('br-complete').classList.add('hidden');
+    _renderBilderFrage();
+  }
+
+  function _renderBilderFrage() {
+    if (!bilderSession) return;
+    const { queue, index } = bilderSession;
+    if (index >= queue.length) { _endBilderraten(); return; }
+    const word = queue[index];
+    const emoji = _getWordEmoji(word);
+    const total = queue.length;
+    document.getElementById('br-progress-label').textContent = (index + 1) + ' / ' + total;
+    document.getElementById('br-progress-fill').style.width = ((index / total) * 100) + '%';
+    document.getElementById('br-scene').textContent = emoji;
+    const hints = SCENE_HINTS[word.cat] || ['🌍 Alltag'];
+    document.getElementById('br-hint').textContent = hints[Math.abs(word.id) % hints.length];
+    document.getElementById('br-score-val').textContent = bilderSession.score;
+    // Choices: correct = PT word; 3 distractors from same everyday pool
+    const correctPt = word.pt;
+    const distractors = shuffle(
+      WORDS.filter(w => w.id !== word.id && BILDERRATEN_CATS.includes(w.cat))
+    ).slice(0, 3).map(w => w.pt);
+    const choices = shuffle([correctPt, ...distractors]);
+    const choicesEl = document.getElementById('br-choices');
+    choicesEl.innerHTML = '';
+    choices.forEach(ch => {
+      const btn = document.createElement('button');
+      btn.className = 'bilderraten-btn';
+      btn.textContent = ch;
+      btn.onclick = () => answerBilderraten(ch, correctPt, btn);
+      choicesEl.appendChild(btn);
+    });
+    document.getElementById('br-feedback').classList.add('hidden');
+    document.getElementById('br-next-btn').classList.add('hidden');
+  }
+
+  function answerBilderraten(chosen, correct, btnEl) {
+    document.querySelectorAll('.bilderraten-btn').forEach(b => { b.onclick = null; });
+    const isCorrect = chosen === correct;
+    if (isCorrect) {
+      btnEl.classList.add('correct');
+      bilderSession.score++;
+      bilderSession.xpEarned = (bilderSession.xpEarned || 0) + 10;
+      checkMissions('correct', 1);
+    } else {
+      btnEl.classList.add('wrong');
+      document.querySelectorAll('.bilderraten-btn').forEach(b => {
+        if (b.textContent === correct) b.classList.add('correct');
+      });
+      penaltyXP();
+    }
+    // Speak the Portuguese word aloud
+    setTimeout(() => speakWord(correct), 300);
+    const fb = document.getElementById('br-feedback');
+    fb.textContent = isCorrect ? '✅ Richtig! – ' + correct : '❌ ' + correct;
+    fb.className = 'quiz-feedback ' + (isCorrect ? 'correct' : 'wrong');
+    fb.classList.remove('hidden');
+    document.getElementById('br-next-btn').classList.remove('hidden');
+  }
+
+  function nextBilderFrage() {
+    if (!bilderSession) return;
+    bilderSession.index++;
+    if (bilderSession.index >= bilderSession.queue.length) {
+      _endBilderraten();
+    } else {
+      _renderBilderFrage();
+    }
+  }
+
+  function _endBilderraten() {
+    if (!bilderSession) return;
+    document.getElementById('br-session-area').classList.add('hidden');
+    document.getElementById('br-complete').classList.remove('hidden');
+    const score = bilderSession.score;
+    const total = bilderSession.queue.length;
+    const pct = Math.round((score / total) * 100);
+    let msg = '';
+    if (pct >= 90) msg = score + '/' + total + ' – Ausgezeichnet! 🌟';
+    else if (pct >= 70) msg = score + '/' + total + ' – Super! 💪';
+    else if (pct >= 50) msg = score + '/' + total + ' – Gut! Weiter üben! 📚';
+    else msg = score + '/' + total + ' – Nicht aufgeben! 💡';
+    document.getElementById('br-complete-msg').textContent = msg;
+    document.getElementById('br-xp').textContent = '+' + bilderSession.xpEarned + ' XP';
+    if (bilderSession.xpEarned > 0) addXP(bilderSession.xpEarned, window.innerWidth / 2, window.innerHeight / 3);
+    trackSessionCompleted();
+    checkDailyChallenge('session', 1);
+    renderHeaderStats();
+    bilderSession = null;
+  }
+
+  function exitBilderraten() {
+    bilderSession = null;
+    showView('home');
+  }
+
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -6221,6 +6451,67 @@ const App = (() => {
     if (micBtn) { micBtn.classList.remove('listening'); micBtn.textContent = '🎙️'; }
     if (resetStatus) {
       document.getElementById('voice-status').textContent = 'Tippe auf das Mikrofon und sprich Deutsch';
+    }
+  }
+
+  function testVoiceTranslate() {
+    const input = document.getElementById('vt-test-input');
+    const resultEl = document.getElementById('vt-test-result');
+    if (!input || !resultEl) return;
+    const text = input.value.trim();
+    if (!text) { showToast('Bitte ein deutsches Wort eingeben.'); return; }
+    const found = lookupVoiceTranslation(text);
+    resultEl.innerHTML = '';
+    resultEl.style.display = 'block';
+    if (found) {
+      resultEl.className = 'vt-test-result found';
+      const deLabel = document.createElement('span');
+      deLabel.style.cssText = 'font-size:0.76rem;font-weight:700;color:var(--text-2);text-transform:uppercase';
+      deLabel.textContent = '🇩🇪 Deutsch';
+      const deVal = document.createElement('div');
+      deVal.style.cssText = 'font-size:1rem;font-weight:700;color:var(--text);margin:2px 0 6px';
+      deVal.textContent = found.de;
+      const ptLabel = document.createElement('span');
+      ptLabel.style.cssText = 'font-size:0.76rem;font-weight:700;color:var(--text-2);text-transform:uppercase';
+      ptLabel.textContent = '🇧🇷 Português';
+      const ptVal = document.createElement('div');
+      ptVal.style.cssText = 'font-size:1.2rem;font-weight:800;color:var(--blue);margin:2px 0 6px';
+      ptVal.textContent = found.pt;
+      resultEl.appendChild(deLabel);
+      resultEl.appendChild(deVal);
+      resultEl.appendChild(ptLabel);
+      resultEl.appendChild(ptVal);
+      if (found.pron) {
+        const pronDiv = document.createElement('div');
+        pronDiv.style.cssText = 'font-size:0.78rem;color:var(--text-2)';
+        pronDiv.textContent = '📢 ' + found.pron;
+        resultEl.appendChild(pronDiv);
+      }
+      const speakBtn = document.createElement('button');
+      speakBtn.style.cssText = 'border:none;background:rgba(0,156,59,0.12);border-radius:8px;padding:4px 10px;cursor:pointer;font-size:0.85rem;margin-top:6px';
+      speakBtn.textContent = '🔊 Anhören';
+      const ptWord = found.pt;
+      speakBtn.addEventListener('click', () => speakWord(ptWord));
+      resultEl.appendChild(speakBtn);
+      setTimeout(() => speakWord(found.pt), 300);
+    } else {
+      resultEl.className = 'vt-test-result not-found';
+      const msg = document.createElement('span');
+      msg.style.cssText = 'font-size:0.85rem;color:var(--text-2)';
+      const mainText = document.createElement('span');
+      mainText.textContent = '⚠️ Kein Eintrag für ';
+      const strong = document.createElement('strong');
+      strong.textContent = '"' + text + '"';
+      const after = document.createElement('span');
+      after.textContent = ' gefunden.';
+      const hint = document.createElement('em');
+      hint.style.cssText = 'font-size:0.78rem;display:block;margin-top:2px';
+      hint.textContent = 'Not in vocabulary – try another word.';
+      msg.appendChild(mainText);
+      msg.appendChild(strong);
+      msg.appendChild(after);
+      msg.appendChild(hint);
+      resultEl.appendChild(msg);
     }
   }
 
@@ -7847,6 +8138,8 @@ const App = (() => {
       resumeLastActivity,
       startTimedSession, stopTimedSession,
       startEmojiQuiz, nextEmojiQuestion, answerEmojiQuestion,
+      startBilderraten, nextBilderFrage, answerBilderraten, exitBilderraten,
+      testVoiceTranslate,
       useStreakFreeze
     };
   }
