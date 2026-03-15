@@ -1846,6 +1846,36 @@
     .challenge-progress-fill { height: 100%; background: #fff; border-radius: 4px; transition: width 0.5s ease; }
     .challenge-meta { display: flex; justify-content: space-between; margin-top: 6px; font-size: 0.78rem; opacity: 0.85; }
 
+    /* ─── Recommend Card ──────────────────────────────────────────────────── */
+    .recommend-card {
+      background: linear-gradient(135deg, #1e3a5f 0%, #0e4d2e 100%);
+      color: #fff; border-radius: var(--radius); padding: 16px 18px;
+      margin-bottom: 14px; box-shadow: 0 4px 20px rgba(0,39,118,0.25);
+    }
+    .recommend-card.hidden { display: none; }
+    .recommend-hdr { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .recommend-title { font-size: 0.9rem; font-weight: 800; letter-spacing: 0.3px; }
+    .recommend-subtitle { font-size: 0.75rem; opacity: 0.75; margin-bottom: 10px; }
+    .recommend-items { display: flex; flex-direction: column; gap: 8px; }
+    .recommend-item {
+      background: rgba(255,255,255,0.12); border-radius: 10px;
+      padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; transition: background 0.18s;
+    }
+    .recommend-item:active { background: rgba(255,255,255,0.22); }
+    .recommend-item-left { display: flex; align-items: center; gap: 10px; }
+    .recommend-item-icon { font-size: 1.4rem; }
+    .recommend-item-text { display: flex; flex-direction: column; }
+    .recommend-item-title { font-size: 0.83rem; font-weight: 700; }
+    .recommend-item-desc { font-size: 0.7rem; opacity: 0.8; margin-top: 1px; }
+    .recommend-item-badge {
+      background: rgba(255,255,255,0.25); color: #fff;
+      font-size: 0.68rem; font-weight: 700; padding: 2px 8px;
+      border-radius: 20px; white-space: nowrap;
+    }
+    .recommend-item-badge.urgent { background: rgba(239,71,111,0.7); }
+    body.dark .recommend-card { background: linear-gradient(135deg, #162032 0%, #0a2d1a 100%); }
+
     /* ─── Emoji Quiz ───────────────────────────────────────────────────────── */
     .emoji-quiz-card {
       background: var(--card); border-radius: var(--radius); padding: 24px 18px;
@@ -2006,6 +2036,10 @@
         <div class="stat-value" id="home-accuracy">—</div>
         <div class="stat-label">Genauigkeit</div>
       </div>
+      <div class="stat-card" onclick="App.startFlashcardSession(null)" style="cursor:pointer">
+        <div class="stat-value" id="home-due-count" style="font-size:1rem">—</div>
+        <div class="stat-label">SRS Wiederholung</div>
+      </div>
     </div>
 
     <button class="cta-btn" onclick="App.startQuickSession()">⚡ Schnellübung starten</button>
@@ -2017,6 +2051,9 @@
 
     <!-- Daily Challenge -->
     <div id="home-challenge-card" class="challenge-card hidden"></div>
+
+    <!-- Daily Recommendation -->
+    <div id="home-recommend-card" class="recommend-card hidden"></div>
 
     <!-- Activity Heatmap -->
     <div class="heatmap-card" id="home-heatmap-card">
@@ -2146,9 +2183,10 @@
       <div class="flip-hint" id="flip-hint">👆 Tippe auf die Karte, um die Antwort zu sehen</div>
 
       <div class="rating-buttons hidden" id="rating-buttons">
-        <button class="rating-btn bad" onclick="App.rateCard(false)">😕 Noch nicht</button>
-        <button class="rating-btn good" onclick="App.rateCard(true)">✅ Gewusst!</button>
+        <button class="rating-btn bad" onclick="App.rateCard(false)">👈 Noch nicht</button>
+        <button class="rating-btn good" onclick="App.rateCard(true)">Gewusst! 👉</button>
       </div>
+      <div class="swipe-hint" id="swipe-hint" style="text-align:center;font-size:0.72rem;color:var(--text-2);margin-top:4px;opacity:0.7">← wischen = Nochmal &nbsp;|&nbsp; wischen = Gewusst! →</div>
     </div>
 
     <div class="session-complete hidden" id="session-complete">
@@ -2478,7 +2516,7 @@
     <div class="settings-section">
       <h3 class="settings-heading">ℹ️ App-Info</h3>
       <div class="settings-info">
-        <p><strong>LuiBrasil</strong> v8.2</p>
+        <p><strong>LuiBrasil</strong> v0.75</p>
         <p id="settings-word-count">665 Vokabeln &amp; Sätze · 21 Kategorien</p>
         <p>🇧🇷 Brasilianisches Portugiesisch lernen</p>
         <p style="margin-top:8px;font-size:0.78rem">Kostenlos · Offline nutzbar · Keine Anmeldung erforderlich</p>
@@ -3031,7 +3069,7 @@ const WORDS = [
   { id:4,  cat:'greetings', pt:'Boa tarde',       de:'Guten Tag',           en:'Good afternoon',   pron:'Boa TAR-dʒi',  ex_pt:'Boa tarde! Como foi seu dia?',   ex_de:'Guten Tag! Wie war Ihr Tag?',    ex_en:'Good afternoon! How was your day?' },
   { id:5,  cat:'greetings', pt:'Boa noite',       de:'Gute Nacht',          en:'Good night',       pron:'Boa NOI-tʃi',  ex_pt:'Boa noite! Durma bem.',          ex_de:'Gute Nacht! Schlaf gut.',        ex_en:'Good night! Sleep well.' },
   { id:6,  cat:'greetings', pt:'Tudo bem?',       de:'Alles gut?',          en:'All good?',        pron:'TU-du BÊ?',    ex_pt:'Tudo bem? Sim, tudo bem.',       ex_de:'Alles gut? Ja, alles gut.',      ex_en:'All good? Yes, all good.' },
-  { id:7,  cat:'greetings', pt:'Obrigado',        de:'Danke',               en:'Thank you',        pron:'ob-ri-GA-du',  ex_pt:'Obrigado pela ajuda!',           ex_de:'Danke für die Hilfe!',           ex_en:'Thank you for the help!' },
+  { id:7,  cat:'greetings', pt:'Obrigado',        de:'Danke',               en:'Thank you',        pron:'ob-ri-GA-du',  mem:'Oba-riga-do! Sag es wie eine Freudenschrei: „Obrigado!" für Dankbarkeit.',  ex_pt:'Obrigado pela ajuda!',           ex_de:'Danke für die Hilfe!',           ex_en:'Thank you for the help!' },
   { id:8,  cat:'greetings', pt:'Por favor',       de:'Bitte',               en:'Please',           pron:'por fa-VOR',   ex_pt:'Por favor, me ajude.',           ex_de:'Bitte hilf mir.',                ex_en:'Please help me.' },
   { id:9,  cat:'greetings', pt:'De nada',         de:'Gern geschehen',      en:"You're welcome",   pron:'dʒi NA-da',    ex_pt:'Obrigado! – De nada!',           ex_de:'Danke! – Gern geschehen!',       ex_en:'Thank you! – You\'re welcome!' },
   { id:10, cat:'greetings', pt:'Desculpe',        de:'Entschuldigung',      en:'Sorry',            pron:'dʒis-KUL-pi',  ex_pt:'Desculpe o atraso.',             ex_de:'Entschuldigung für die Verspätung.', ex_en:'Sorry for the delay.' },
@@ -3067,7 +3105,7 @@ const WORDS = [
 
   /* ── FOOD ── */
   { id:36, cat:'food', pt:'Pão',         de:'Brot',       en:'Bread',      pron:'Pão',          ex_pt:'Pão de queijo é delicioso.',      ex_de:'Käsebrot ist köstlich.',          ex_en:'Cheese bread is delicious.' },
-  { id:37, cat:'food', pt:'Água',        de:'Wasser',     en:'Water',      pron:'Á-gua',        ex_pt:'Pode me trazer água gelada?',     ex_de:'Können Sie mir kaltes Wasser bringen?', ex_en:'Can you bring me cold water?' },
+  { id:37, cat:'food', pt:'Água',        de:'Wasser',     en:'Water',      pron:'Á-gua',        mem:'Água klingt wie „AH-gua" – denk an Aqua/Wasser.',  ex_pt:'Pode me trazer água gelada?',     ex_de:'Können Sie mir kaltes Wasser bringen?', ex_en:'Can you bring me cold water?' },
   { id:38, cat:'food', pt:'Café',        de:'Kaffee',     en:'Coffee',     pron:'ka-FÉ',        ex_pt:'Um café com leite, por favor.',   ex_de:'Ein Kaffee mit Milch, bitte.',    ex_en:'A coffee with milk, please.' },
   { id:39, cat:'food', pt:'Leite',       de:'Milch',      en:'Milk',       pron:'LÉI-tʃi',      ex_pt:'Eu bebo leite todo dia.',         ex_de:'Ich trinke jeden Tag Milch.',     ex_en:'I drink milk every day.' },
   { id:40, cat:'food', pt:'Arroz',       de:'Reis',       en:'Rice',       pron:'a-RÔS',        ex_pt:'Arroz e feijão é nosso prato.',   ex_de:'Reis und Bohnen ist unser Gericht.', ex_en:'Rice and beans is our dish.' },
@@ -3175,7 +3213,7 @@ const WORDS = [
   { id:128, cat:'emotions', pt:'Cansado',    de:'Müde',       en:'Tired',     pron:'kân-SÁ-du',  ex_pt:'Estou cansado depois do trabalho.', ex_de:'Ich bin müde nach der Arbeit.',  ex_en:'I am tired after work.' },
   { id:129, cat:'emotions', pt:'Surpreso',   de:'Überrascht', en:'Surprised', pron:'sur-PRÉ-zu', ex_pt:'Fiquei surpreso com o presente.', ex_de:'Ich war überrascht von dem Geschenk.', ex_en:'I was surprised by the gift.' },
   { id:130, cat:'emotions', pt:'Animado',    de:'Aufgeregt',  en:'Excited',   pron:'a-ni-MÁ-du', ex_pt:'Estou animado para a viagem!',    ex_de:'Ich bin aufgeregt für die Reise!', ex_en:'I am excited for the trip!' },
-  { id:131, cat:'emotions', pt:'Amor',       de:'Liebe',      en:'Love',      pron:'a-MOR',      ex_pt:'Eu te amo de verdade.',           ex_de:'Ich liebe dich wirklich.',        ex_en:'I truly love you.' },
+  { id:131, cat:'emotions', pt:'Amor',       de:'Liebe',      en:'Love',      pron:'a-MOR',      mem:'Amor = Liebe auf fast allen romanischen Sprachen – wie Amour (FR), Amore (IT).',  ex_pt:'Eu te amo de verdade.',           ex_de:'Ich liebe dich wirklich.',        ex_en:'I truly love you.' },
 
   /* ── NUMBERS (extended) ── */
   { id:132, cat:'numbers', pt:'Trinta',      de:'Dreißig',    en:'Thirty',    pron:'TRÎN-ta',      ex_pt:'Ele tem trinta anos.',            ex_de:'Er ist dreißig Jahre alt.',       ex_en:'He is thirty years old.' },
@@ -3358,7 +3396,7 @@ const WORDS = [
   { id:257, cat:'weather', pt:'Trovoada',  de:'Gewitter',         en:'Thunderstorm',     pron:'tro-vo-Á-da', ex_pt:'Uma trovoada chegando à noite.',      ex_de:'Abends kommt ein Gewitter.',                  ex_en:'A thunderstorm is coming tonight.' },
 
   /* ── EMOTIONS (v3.1) ── */
-  { id:258, cat:'emotions', pt:'Saudade',        de:'Sehnsucht / Vermissen', en:'Longing / Missing someone', pron:'saw-DÁ-dʒi', ex_pt:'Tenho saudade do Brasil.', ex_de:'Ich vermisse Brasilien.',        ex_en:'I miss Brazil.' },
+  { id:258, cat:'emotions', pt:'Saudade',        de:'Sehnsucht / Vermissen', en:'Longing / Missing someone', pron:'saw-DÁ-dʒi', mem:'Klingt wie „sau-da-deh" – die Sehnsucht nach jemandem, der einmal „da" war.',  ex_pt:'Tenho saudade do Brasil.', ex_de:'Ich vermisse Brasilien.',        ex_en:'I miss Brazil.' },
   { id:259, cat:'emotions', pt:'Nervoso',         de:'Nervös',               en:'Nervous',                   pron:'ner-VÓ-zu',  ex_pt:'Estou nervoso antes da apresentação.', ex_de:'Ich bin nervös vor dem Vortrag.', ex_en:'I am nervous before the presentation.' },
   { id:260, cat:'emotions', pt:'Entusiasmado',    de:'Begeistert',           en:'Enthusiastic / Excited',    pron:'en-tu-zi-as-MÁ-du', ex_pt:'Estou entusiasmado com a viagem!', ex_de:'Ich bin begeistert von der Reise!', ex_en:'I am excited about the trip!' },
 
@@ -4488,7 +4526,25 @@ const App = (() => {
       badgeHTML = `<span class="streak-bonus-badge">+${bonus} XP</span>`;
     }
     streakEl.innerHTML = `🔥 <span id="streak-val">${state.streak}</span>${badgeHTML}`;
-    document.getElementById('xp-val').textContent = state.xp;
+    const xpEl = document.getElementById('xp-val');
+    const oldXP = parseInt(xpEl.textContent) || 0;
+    // Only animate for small differences (≤500 XP) to avoid excessively long animations
+    if (oldXP !== state.xp && Math.abs(state.xp - oldXP) <= 500) {
+      const diff = state.xp - oldXP;
+      const steps = Math.min(Math.abs(diff), 20); // cap at 20 frames for smooth but brief animation
+      const stepSize = diff / steps;
+      let current = oldXP;
+      let stepCount = 0;
+      const tick = () => {
+        stepCount++;
+        current += stepSize;
+        xpEl.textContent = Math.round(stepCount < steps ? current : state.xp);
+        if (stepCount < steps) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    } else {
+      xpEl.textContent = state.xp;
+    }
     // update level badge
     const lvl = getLevel(state.xp);
     const lvlEl = document.getElementById('header-level');
@@ -4772,6 +4828,11 @@ const App = (() => {
     document.getElementById('home-streak').textContent = state.streak;
     document.getElementById('home-accuracy').textContent = acc;
 
+    // SRS due count badge
+    const dueCount = WORDS.filter(w => { const c = state.cards[w.id]; return c && c.nextReview <= today(); }).length;
+    const dueEl = document.getElementById('home-due-count');
+    if (dueEl) dueEl.textContent = dueCount > 0 ? dueCount + ' fällig' : '✓ Alles aktuell';
+
     // continue button
     const contBtn = document.getElementById('home-continue-btn');
     const contLbl = document.getElementById('home-continue-label');
@@ -4791,6 +4852,8 @@ const App = (() => {
 
     // daily missions
     renderDailyMissions();
+    // daily recommendation
+    renderRecommendationCard();
     // update Wortliste button description dynamically
     const wlDesc = document.getElementById('home-wl-desc');
     if (wlDesc) wlDesc.textContent = `Alle ${WORDS.length} Vokabeln`;
@@ -4943,6 +5006,9 @@ const App = (() => {
     if (word.bedeutung) {
       bedEl.textContent = '💡 ' + word.bedeutung;
       bedEl.classList.remove('hidden');
+    } else if (word.mem) {
+      bedEl.textContent = '🧠 ' + word.mem;
+      bedEl.classList.remove('hidden');
     } else {
       bedEl.textContent = '';
       bedEl.classList.add('hidden');
@@ -4963,6 +5029,18 @@ const App = (() => {
       const back  = flipCard.querySelector('.card-back');
       flipCard.style.height = Math.max(front.scrollHeight, back.scrollHeight, 380) + 'px';
     });
+
+    // Swipe gesture on card container (left = wrong, right = correct)
+    const cc = document.getElementById('card-container');
+    cc._swipeStartX = null;
+    cc.ontouchstart = function(e) { cc._swipeStartX = e.changedTouches[0].clientX; };
+    cc.ontouchend = function(e) {
+      if (cc._swipeStartX === null || !session.flipped) return;
+      const dx = e.changedTouches[0].clientX - cc._swipeStartX;
+      cc._swipeStartX = null;
+      if (Math.abs(dx) < 60) return; // require at least 60px to avoid accidental swipes
+      if (dx > 0) { rateCard(true); } else { rateCard(false); }
+    };
   }
 
   function flipCard() {
@@ -4976,6 +5054,7 @@ const App = (() => {
   function rateCard(correct) {
     const word = session.queue[session.index];
     rateWord(word.id, correct);
+    if (correct) { haptic('correct'); } else { haptic('wrong'); }
 
     if (correct) {
       session.correctCount = (session.correctCount || 0) + 1;
@@ -5139,6 +5218,7 @@ const App = (() => {
     fb.classList.add('visible');
     if (isCorrect) {
       session.score += 1;
+      haptic('correct');
       session.combo = (session.combo || 0) + 1;
       const earnedXP = 15;
       session.xpEarned += earnedXP;
@@ -5152,6 +5232,7 @@ const App = (() => {
       checkDailyChallenge('combo', session.combo);
     } else {
       session.combo = 0;
+      haptic('wrong');
       fb.classList.add('wrong-fb');
       fb.innerHTML = `❌ Falsch! Richtige Antwort: <strong>${esc(correct)}</strong> &nbsp;<span style="font-size:0.8rem;color:var(--text-2)">[ ${esc(word.pron)} ] – ${esc(word.ex_pt)}</span>`;
       penaltyXP();
@@ -5558,7 +5639,7 @@ const App = (() => {
     try {
       const data = {
         exportDate: new Date().toISOString(),
-        appVersion: 'v8.2',
+        appVersion: 'v0.75',
         state: state
       };
       const json = JSON.stringify(data, null, 2);
@@ -5665,7 +5746,7 @@ const App = (() => {
 
   /* ─── Activity Tracking / Continue Button ───────────────────────────────── */
   function trackLastActivity(type, catId, label) {
-    state.lastActivity = { type, catId: catId || null, label: label || type };
+    state.lastActivity = { type, catId: catId || null, label: label || type, date: today() };
     // Also update heatmap
     updateHeatmap();
     saveState(state);
@@ -5852,6 +5933,35 @@ const App = (() => {
         <span>${prog}/${ch.goal}</span>
         <span>+50 XP bei Abschluss</span>
       </div>`;
+  }
+
+  /* ─── Recommendation Card ────────────────────────────────────────────────── */
+  function renderRecommendationCard() {
+    const card = document.getElementById('home-recommend-card');
+    if (!card) return;
+    const due = WORDS.filter(w => { const c = state.cards[w.id]; return c && c.nextReview <= today(); });
+    const dueCount = due.length;
+    const hour = new Date().getHours();
+    const noActivityToday = !state.lastActivity || !state.lastActivity.date || state.lastActivity.date !== today();
+    const streakAtRisk = state.streak > 0 && hour >= 18 && noActivityToday;
+    const items = [];
+    if (dueCount > 0) items.push({ icon:'🔁', title:`${dueCount} Wörter zur Wiederholung`, desc:'SRS fällig – jetzt festigen', badge: dueCount > 15 ? `${dueCount} fällig!` : `${dueCount} fällig`, urgent: dueCount > 15, fn: function(){ startFlashcardSession(null); } });
+    if (streakAtRisk) items.push({ icon:'🔥', title:`Streak in Gefahr! (${state.streak} Tage)`, desc:'Heute noch üben – Streak retten!', badge:'Jetzt!', urgent:true, fn: startQuickSession });
+    const goal = state.learningGoal;
+    if (goal === 'travel' || !goal) items.push({ icon:'✈️', title:'Dialog-Übung', desc:'Reisetaugliche Alltagssätze', badge:'+20 XP', urgent:false, fn: startDialogSession });
+    else if (goal === 'conversation') items.push({ icon:'💬', title:'Dialog-Übung', desc:'Echte Gesprächssituationen', badge:'+20 XP', urgent:false, fn: startDialogSession });
+    else if (goal === 'fluency') items.push({ icon:'📖', title:'Geschichte lesen', desc:'Texte auf Portugiesisch', badge:'+30 XP', urgent:false, fn: function(){ showView('stories'); } });
+    else items.push({ icon:'⚡', title:'5-Min Blitz', desc:'Schnelle Intensiv-Session', badge:'+XP', urgent:false, fn: function(){ startTimedSession(5); } });
+    if (!items.length) { card.classList.add('hidden'); return; }
+    card.classList.remove('hidden');
+    let html = `<div class="recommend-hdr"><span style="font-size:1.3rem">🎯</span><span class="recommend-title">Heute empfohlen</span></div><div class="recommend-subtitle">Basierend auf deinem Lernstand</div><div class="recommend-items">`;
+    items.slice(0,3).forEach(it => {
+      html += `<div class="recommend-item"><div class="recommend-item-left"><div class="recommend-item-icon">${it.icon}</div><div class="recommend-item-text"><div class="recommend-item-title">${esc(it.title)}</div><div class="recommend-item-desc">${esc(it.desc)}</div></div></div><div class="recommend-item-badge${it.urgent?' urgent':''}">${esc(it.badge)}</div></div>`;
+    });
+    html += '</div>';
+    card.innerHTML = html;
+    const nodes = card.querySelectorAll('.recommend-item');
+    items.slice(0,3).forEach((it,i) => { if (nodes[i]) nodes[i].onclick = it.fn; });
   }
 
   function checkDailyChallenge(type, value) {
@@ -6208,6 +6318,7 @@ const App = (() => {
     const milestones = { 3: { msg: '🔥 Combo ×3! +5 XP', bonus: 5 }, 5: { msg: '⚡ Combo ×5! +10 XP', bonus: 10 }, 10: { msg: '🌟 Combo ×10! +20 XP', bonus: 20 } };
     if (milestones[n]) {
       showComboPop(milestones[n].msg);
+      haptic('combo');
       if (session) session.xpEarned = (session.xpEarned || 0) + milestones[n].bonus;
       if (n > (state.bestCombo || 0)) {
         state.bestCombo = n;
@@ -6375,6 +6486,14 @@ const App = (() => {
     utt.lang = 'pt-BR';
     utt.rate = 0.85;
     window.speechSynthesis.speak(utt);
+  }
+
+  function haptic(type) {
+    if (!navigator.vibrate) return;
+    if (type === 'correct') navigator.vibrate(50);
+    else if (type === 'wrong') navigator.vibrate([80, 40, 80]);
+    else if (type === 'levelup') navigator.vibrate([100, 50, 100, 50, 200]);
+    else if (type === 'combo') navigator.vibrate([30, 20, 60]);
   }
 
   function speak() {
@@ -6884,6 +7003,7 @@ const App = (() => {
     if (isCorrect) {
       const earnedXP = 20;
       session.xpEarned += earnedXP;
+      haptic('correct');
       session.combo = (session.combo || 0) + 1;
       reveal.style.background = '#e8fff2';
       reveal.style.color = 'var(--green)';
@@ -6893,6 +7013,7 @@ const App = (() => {
       checkMissions('combo', session.combo);
     } else {
       session.combo = 0;
+      haptic('wrong');
       reveal.style.background = '#fff0f3';
       reveal.style.color = 'var(--danger)';
       reveal.textContent = isReverse()
