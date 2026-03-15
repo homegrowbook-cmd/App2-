@@ -1,5 +1,5 @@
 /* LuiBrasil – Service Worker (PWA Offline Support) */
-const CACHE_NAME = 'luibrasil-v25';
+const CACHE_NAME = 'luibrasil-v26';
 const ASSETS = [
   './',
   './index.html',

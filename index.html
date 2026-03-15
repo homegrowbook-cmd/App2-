@@ -2115,7 +2115,7 @@
       <button class="quick-btn" style="background:linear-gradient(135deg,#374151,#6b7280)" onclick="App.showView('wordlist')">
         <span class="qb-icon">📋</span>
         <span class="qb-title">Wortliste</span>
-        <span class="qb-desc" id="home-wl-desc">Alle 665 Vokabeln</span>
+        <span class="qb-desc" id="home-wl-desc">Alle 785 Vokabeln</span>
       </button>
       <button class="quick-btn" style="background:linear-gradient(135deg,#7c3aed,#5b21b6)" onclick="App.startConjugationTrainer()" aria-label="Konjugations-Trainer starten – Verbformen üben">
         <span class="qb-icon">🔤</span>
@@ -2516,8 +2516,8 @@
     <div class="settings-section">
       <h3 class="settings-heading">ℹ️ App-Info</h3>
       <div class="settings-info">
-        <p><strong>LuiBrasil</strong> v0.75</p>
-        <p id="settings-word-count">665 Vokabeln &amp; Sätze · 21 Kategorien</p>
+        <p><strong>LuiBrasil</strong> v1.0</p>
+        <p id="settings-word-count">785 Vokabeln &amp; Sätze · 26 Kategorien</p>
         <p>🇧🇷 Brasilianisches Portugiesisch lernen</p>
         <p style="margin-top:8px;font-size:0.78rem">Kostenlos · Offline nutzbar · Keine Anmeldung erforderlich</p>
       </div>
@@ -3058,6 +3058,11 @@ const CATEGORIES = [
   { id: 'sports',    icon: '⚽', level: 'A2', name: { de: 'Sport',         en: 'Sports'           } },
   { id: 'ocean',     icon: '🌊', level: 'B1', name: { de: 'Ozean & Meer',  en: 'Ocean & Sea'      } },
   { id: 'society',   icon: '🌍', level: 'B1', name: { de: 'Gesellschaft',  en: 'Society'          } },
+  { id: 'shopping',  icon: '🛒', level: 'A2', name: { de: 'Einkaufen',     en: 'Shopping'         } },
+  { id: 'months',    icon: '📆', level: 'A1', name: { de: 'Monate & Jahreszeiten', en: 'Months & Seasons' } },
+  { id: 'adjectives',icon: '📝', level: 'A2', name: { de: 'Adjektive',     en: 'Adjectives'       } },
+  { id: 'animals',   icon: '🐾', level: 'A1', name: { de: 'Tiere',         en: 'Animals'          } },
+  { id: 'education', icon: '🎓', level: 'A2', name: { de: 'Bildung & Schule', en: 'Education'     } },
 ];
 
 // Each word: { id, category, pt, de, en, pron, ex_pt, ex_de, ex_en }
@@ -3888,6 +3893,136 @@ const WORDS = [
   { id:663, cat:'society', pt:'Geração',       de:'Generation',        en:'Generation',      pron:'zhe-ra-SÃO',       ex_pt:'Cada geração enfrenta seus próprios desafios.',     ex_de:'Jede Generation steht vor ihren eigenen Herausforderungen.',ex_en:'Each generation faces its own challenges.' },
   { id:664, cat:'society', pt:'Integração',    de:'Integration',       en:'Integration',     pron:'in-te-gra-SÃO',    ex_pt:'A integração social é importante para todos.',      ex_de:'Soziale Integration ist für alle wichtig.',         ex_en:'Social integration is important for everyone.' },
   { id:665, cat:'society', pt:'Solidariedade', de:'Solidarität',       en:'Solidarity',      pron:'so-li-da-ri-e-DÁ-dʒi',ex_pt:'A solidariedade nos une em tempos difíceis.',    ex_de:'Solidarität verbindet uns in schwierigen Zeiten.',  ex_en:'Solidarity unites us in difficult times.' },
+
+  /* ── SHOPPING ── */
+  { id:666, cat:'shopping', pt:'Loja',              de:'Laden',             en:'Shop',            pron:'LÓ-zha',           ex_pt:'Essa loja vende roupas bonitas.',               ex_de:'Dieser Laden verkauft schöne Kleidung.',           ex_en:'This shop sells beautiful clothes.' },
+  { id:667, cat:'shopping', pt:'Preço',             de:'Preis',             en:'Price',           pron:'PRÉ-su',           ex_pt:'Qual é o preço desta bolsa?',                  ex_de:'Was ist der Preis dieser Tasche?',                 ex_en:'What is the price of this bag?' },
+  { id:668, cat:'shopping', pt:'Caro',              de:'Teuer',             en:'Expensive',       pron:'KÁ-ru',            ex_pt:'Este celular é muito caro.',                   ex_de:'Dieses Handy ist sehr teuer.',                    ex_en:'This phone is very expensive.' },
+  { id:669, cat:'shopping', pt:'Barato',            de:'Günstig',           en:'Cheap',           pron:'ba-RÁ-tu',         ex_pt:'Encontrei um vestido barato na promoção.',     ex_de:'Ich fand ein günstiges Kleid im Angebot.',        ex_en:'I found a cheap dress on sale.' },
+  { id:670, cat:'shopping', pt:'Comprar',           de:'Kaufen',            en:'To buy',          pron:'kom-PRÁR',         ex_pt:'Quero comprar um presente para ela.',          ex_de:'Ich möchte ihr ein Geschenk kaufen.',             ex_en:'I want to buy a gift for her.' },
+  { id:671, cat:'shopping', pt:'Vender',            de:'Verkaufen',         en:'To sell',         pron:'ven-DÊR',          ex_pt:'Ele vende frutas na feira.',                   ex_de:'Er verkauft Früchte auf dem Markt.',              ex_en:'He sells fruits at the market.' },
+  { id:672, cat:'shopping', pt:'Desconto',          de:'Rabatt',            en:'Discount',        pron:'des-KÔN-tu',       ex_pt:'Tem desconto para estudantes?',                ex_de:'Gibt es Rabatt für Studierende?',                 ex_en:'Is there a discount for students?' },
+  { id:673, cat:'shopping', pt:'Promoção',          de:'Sonderangebot',     en:'Sale',            pron:'pro-mo-SÃO',       ex_pt:'A promoção termina hoje à noite.',             ex_de:'Das Sonderangebot endet heute Abend.',            ex_en:'The sale ends tonight.' },
+  { id:674, cat:'shopping', pt:'Caixa',             de:'Kasse',             en:'Checkout',        pron:'KÁI-sha',          ex_pt:'Vou pagar no caixa ali.',                      ex_de:'Ich werde an der Kasse dort bezahlen.',           ex_en:'I will pay at the checkout over there.' },
+  { id:675, cat:'shopping', pt:'Dinheiro',          de:'Bargeld',           en:'Cash',            pron:'dʒi-NHÉI-ru',      ex_pt:'Aceita dinheiro ou só cartão?',                ex_de:'Akzeptieren Sie Bargeld oder nur Karte?',         ex_en:'Do you accept cash or only card?' },
+  { id:676, cat:'shopping', pt:'Cartão de crédito', de:'Kreditkarte',       en:'Credit card',     pron:'kar-TÃO dʒi KRÉ-dʒi-tu', ex_pt:'Posso pagar com cartão de crédito?',     ex_de:'Kann ich mit Kreditkarte zahlen?',                ex_en:'Can I pay by credit card?' },
+  { id:677, cat:'shopping', pt:'Recibo',            de:'Quittung',          en:'Receipt',         pron:'he-SÍ-bu',         ex_pt:'Pode me dar o recibo, por favor?',             ex_de:'Können Sie mir bitte die Quittung geben?',        ex_en:'Can you give me the receipt, please?' },
+  { id:678, cat:'shopping', pt:'Tamanho',           de:'Größe',             en:'Size',            pron:'ta-MÂ-nhu',        ex_pt:'Qual é o seu tamanho de camisa?',              ex_de:'Welche Hemdgröße haben Sie?',                     ex_en:'What is your shirt size?' },
+  { id:679, cat:'shopping', pt:'Sacola',            de:'Einkaufstasche',    en:'Shopping bag',    pron:'sa-KÓ-la',         ex_pt:'Você tem uma sacola para as compras?',         ex_de:'Haben Sie eine Einkaufstasche?',                  ex_en:'Do you have a shopping bag?' },
+  { id:680, cat:'shopping', pt:'Produto',           de:'Produkt',           en:'Product',         pron:'pro-DÚ-tu',        ex_pt:'Este produto é de boa qualidade.',             ex_de:'Dieses Produkt ist von guter Qualität.',          ex_en:'This product is of good quality.' },
+  { id:681, cat:'shopping', pt:'Marca',             de:'Marke',             en:'Brand',           pron:'MÂR-ka',           ex_pt:'Qual é a sua marca favorita?',                 ex_de:'Was ist Ihre Lieblingsmarke?',                    ex_en:'What is your favorite brand?' },
+  { id:682, cat:'shopping', pt:'Qualidade',         de:'Qualität',          en:'Quality',         pron:'kua-li-DÁ-dʒi',   ex_pt:'A qualidade deste produto é excelente.',      ex_de:'Die Qualität dieses Produkts ist ausgezeichnet.', ex_en:'The quality of this product is excellent.' },
+  { id:683, cat:'shopping', pt:'Oferta',            de:'Angebot',           en:'Offer/Deal',      pron:'o-FÉR-ta',         ex_pt:'Essa oferta é por tempo limitado.',            ex_de:'Dieses Angebot ist zeitlich begrenzt.',           ex_en:'This offer is for a limited time.' },
+  { id:684, cat:'shopping', pt:'Etiqueta',          de:'Etikett',           en:'Label/Tag',       pron:'e-tʃi-KÉ-ta',     ex_pt:'A etiqueta mostra o preço original.',          ex_de:'Das Etikett zeigt den Originalpreis.',            ex_en:'The tag shows the original price.' },
+  { id:685, cat:'shopping', pt:'Cliente',           de:'Kunde',             en:'Customer',        pron:'kli-ÊN-tʃi',       ex_pt:'O cliente tem sempre razão.',                  ex_de:'Der Kunde hat immer recht.',                      ex_en:'The customer is always right.' },
+  { id:686, cat:'shopping', pt:'Atendente',         de:'Verkäufer/in',      en:'Sales clerk',     pron:'a-tên-DÊN-tʃi',   ex_pt:'O atendente foi muito prestativo.',            ex_de:'Der Verkäufer war sehr hilfsbereit.',             ex_en:'The sales clerk was very helpful.' },
+  { id:687, cat:'shopping', pt:'Fila',              de:'Warteschlange',     en:'Queue',           pron:'FÍ-la',            ex_pt:'A fila do caixa está enorme hoje.',            ex_de:'Die Warteschlange an der Kasse ist riesig heute.',ex_en:'The checkout queue is huge today.' },
+  { id:688, cat:'shopping', pt:'Pagamento',         de:'Zahlung',           en:'Payment',         pron:'pa-ga-MÊN-tu',     ex_pt:'O pagamento pode ser feito online.',           ex_de:'Die Zahlung kann online erfolgen.',               ex_en:'Payment can be made online.' },
+  { id:689, cat:'shopping', pt:'Troca',             de:'Umtausch',          en:'Exchange/Return', pron:'TRÓ-ka',           ex_pt:'Quero fazer a troca deste produto.',           ex_de:'Ich möchte dieses Produkt umtauschen.',           ex_en:'I want to exchange this product.' },
+  { id:690, cat:'shopping', pt:'Saldo',             de:'Guthaben',          en:'Balance/Credit',  pron:'SÁL-du',           ex_pt:'Verifique o saldo do seu cartão.',             ex_de:'Überprüfen Sie das Guthaben Ihrer Karte.',        ex_en:'Check the balance on your card.' },
+
+  /* ── MONTHS & SEASONS ── */
+  { id:691, cat:'months', pt:'Janeiro',    de:'Januar',       en:'January',  pron:'zha-NÉI-ru',  ex_pt:'Janeiro é o mês do Carnaval.',          ex_de:'Januar ist der Monat des Karnevals.',           ex_en:'January is the month of Carnival.' },
+  { id:692, cat:'months', pt:'Fevereiro',  de:'Februar',      en:'February', pron:'fe-ve-RÉI-ru', ex_pt:'Fevereiro é o mês mais curto do ano.',  ex_de:'Februar ist der kürzeste Monat des Jahres.',    ex_en:'February is the shortest month of the year.' },
+  { id:693, cat:'months', pt:'Março',      de:'März',         en:'March',    pron:'MÁR-su',       ex_pt:'Março traz as primeiras chuvas de outono.', ex_de:'März bringt die ersten Herbstregen.',       ex_en:'March brings the first autumn rains.' },
+  { id:694, cat:'months', pt:'Abril',      de:'April',        en:'April',    pron:'a-BRIL',       ex_pt:'Em abril começa o outono no Brasil.',   ex_de:'Im April beginnt der Herbst in Brasilien.',     ex_en:'In April autumn begins in Brazil.' },
+  { id:695, cat:'months', pt:'Maio',       de:'Mai',          en:'May',      pron:'MÁI-u',        ex_pt:'Maio é o mês das mães no Brasil.',       ex_de:'Mai ist Muttertag-Monat in Brasilien.',         ex_en:'May is Mother\'s Day month in Brazil.' },
+  { id:696, cat:'months', pt:'Junho',      de:'Juni',         en:'June',     pron:'ZHÚ-nhu',      ex_pt:'Junho é o mês das festas juninas.',      ex_de:'Juni ist der Monat der Festa Junina.',          ex_en:'June is the month of Festa Junina.' },
+  { id:697, cat:'months', pt:'Julho',      de:'Juli',         en:'July',     pron:'ZHÚ-lhu',      ex_pt:'Julho é feriado em muitas escolas.',     ex_de:'Im Juli haben viele Schulen Ferien.',           ex_en:'July is holiday time in many schools.' },
+  { id:698, cat:'months', pt:'Agosto',     de:'August',       en:'August',   pron:'a-GÔS-tu',     ex_pt:'Agosto é mês de ventos fortes.',         ex_de:'August ist ein Monat mit starken Winden.',     ex_en:'August is a month with strong winds.' },
+  { id:699, cat:'months', pt:'Setembro',   de:'September',    en:'September',pron:'se-TÊM-bru',   ex_pt:'Setembro traz a primavera ao Brasil.',   ex_de:'September bringt den Frühling nach Brasilien.', ex_en:'September brings spring to Brazil.' },
+  { id:700, cat:'months', pt:'Outubro',    de:'Oktober',      en:'October',  pron:'ou-TÚ-bru',    ex_pt:'Outubro é o mês do Dia das Crianças.',   ex_de:'Oktober ist Kindertag-Monat in Brasilien.',     ex_en:'October is Children\'s Day month in Brazil.' },
+  { id:701, cat:'months', pt:'Novembro',   de:'November',     en:'November', pron:'no-VÊM-bru',   ex_pt:'Novembro tem o Dia da Consciência Negra.', ex_de:'November hat den Tag des Schwarzen Bewusstseins.', ex_en:'November has Black Consciousness Day.' },
+  { id:702, cat:'months', pt:'Dezembro',   de:'Dezember',     en:'December', pron:'de-ZÊM-bru',   ex_pt:'Dezembro é o mês do Natal.',             ex_de:'Dezember ist der Monat von Weihnachten.',       ex_en:'December is the month of Christmas.' },
+  { id:703, cat:'months', pt:'Primavera',  de:'Frühling',     en:'Spring',   pron:'pri-ma-VÉ-ra', ex_pt:'A primavera começa em setembro no Brasil.', ex_de:'Der Frühling beginnt im September in Brasilien.', ex_en:'Spring begins in September in Brazil.' },
+  { id:704, cat:'months', pt:'Verão',      de:'Sommer',       en:'Summer',   pron:'ve-RÃO',       ex_pt:'O verão brasileiro é muito quente e úmido.', ex_de:'Der brasilianische Sommer ist sehr heiß und feucht.', ex_en:'The Brazilian summer is very hot and humid.' },
+  { id:705, cat:'months', pt:'Outono',     de:'Herbst',       en:'Autumn',   pron:'ou-TÓ-nu',     ex_pt:'O outono tem temperaturas amenas.',      ex_de:'Der Herbst hat milde Temperaturen.',            ex_en:'Autumn has mild temperatures.' },
+  { id:706, cat:'months', pt:'Inverno',    de:'Winter',       en:'Winter',   pron:'în-VÉR-nu',    ex_pt:'O inverno no sul do Brasil pode ser frio.', ex_de:'Der Winter im Süden Brasiliens kann kalt sein.', ex_en:'Winter in southern Brazil can be cold.' },
+  { id:707, cat:'months', pt:'Estação do ano', de:'Jahreszeit',en:'Season',  pron:'es-ta-SÃO du Â-nu', ex_pt:'Qual é a sua estação do ano favorita?', ex_de:'Was ist Ihre Lieblingszeit im Jahr?',         ex_en:'What is your favorite season of the year?' },
+  { id:708, cat:'months', pt:'Aniversário',de:'Geburtstag',   en:'Birthday', pron:'a-ni-ver-SÁ-riu', ex_pt:'Hoje é o meu aniversário!',            ex_de:'Heute ist mein Geburtstag!',                    ex_en:'Today is my birthday!' },
+  { id:709, cat:'months', pt:'Natal',      de:'Weihnachten',  en:'Christmas',pron:'na-TAL',       ex_pt:'Feliz Natal a todos!',                   ex_de:'Frohe Weihnachten an alle!',                    ex_en:'Merry Christmas to everyone!' },
+  { id:710, cat:'months', pt:'Ano Novo',   de:'Neujahr',      en:'New Year', pron:'Â-nu NÓ-vu',   ex_pt:'Feliz Ano Novo! Que venham coisas boas.', ex_de:'Frohes neues Jahr! Mögen gute Dinge kommen.',  ex_en:'Happy New Year! May good things come.' },
+
+  /* ── ADJECTIVES ── */
+  { id:711, cat:'adjectives', pt:'Grande',      de:'Groß',             en:'Big/Large',    pron:'GRÂN-dʒi',    ex_pt:'O Brasil é um país muito grande.',           ex_de:'Brasilien ist ein sehr großes Land.',            ex_en:'Brazil is a very large country.' },
+  { id:712, cat:'adjectives', pt:'Pequeno',     de:'Klein',            en:'Small',        pron:'pe-KÊ-nu',    ex_pt:'Meu apartamento é pequeno mas aconchegante.',ex_de:'Meine Wohnung ist klein aber gemütlich.',        ex_en:'My apartment is small but cozy.' },
+  { id:713, cat:'adjectives', pt:'Bonito',      de:'Schön',            en:'Beautiful',    pron:'bo-NÍ-tu',    ex_pt:'Que paisagem bonita!',                       ex_de:'Was für eine schöne Landschaft!',                ex_en:'What a beautiful landscape!' },
+  { id:714, cat:'adjectives', pt:'Feio',        de:'Hässlich',         en:'Ugly',         pron:'FÉI-u',       ex_pt:'Ele acha que esse quadro é feio.',           ex_de:'Er findet dieses Gemälde hässlich.',             ex_en:'He thinks this painting is ugly.' },
+  { id:715, cat:'adjectives', pt:'Novo',        de:'Neu',              en:'New',          pron:'NÓ-vu',       ex_pt:'Comprei um carro novo!',                     ex_de:'Ich habe ein neues Auto gekauft!',               ex_en:'I bought a new car!' },
+  { id:716, cat:'adjectives', pt:'Velho',       de:'Alt',              en:'Old',          pron:'VÉ-lhu',      ex_pt:'Este é um bairro muito velho da cidade.',    ex_de:'Dies ist ein sehr altes Viertel der Stadt.',     ex_en:'This is a very old neighborhood of the city.' },
+  { id:717, cat:'adjectives', pt:'Rápido',      de:'Schnell',          en:'Fast',         pron:'HÁ-pi-du',    ex_pt:'O metrô é rápido e conveniente.',            ex_de:'Die U-Bahn ist schnell und bequem.',             ex_en:'The subway is fast and convenient.' },
+  { id:718, cat:'adjectives', pt:'Lento',       de:'Langsam',          en:'Slow',         pron:'LÊN-tu',      ex_pt:'O trânsito está muito lento hoje.',          ex_de:'Der Verkehr ist heute sehr langsam.',            ex_en:'The traffic is very slow today.' },
+  { id:719, cat:'adjectives', pt:'Alto',        de:'Groß/Hoch',        en:'Tall/High',    pron:'ÁL-tu',       ex_pt:'O prédio mais alto de São Paulo.',           ex_de:'Das höchste Gebäude in São Paulo.',              ex_en:'The tallest building in São Paulo.' },
+  { id:720, cat:'adjectives', pt:'Baixo',       de:'Klein/Niedrig',    en:'Short/Low',    pron:'BÁI-shu',     ex_pt:'A mesa está baixa para mim.',                ex_de:'Der Tisch ist für mich zu niedrig.',             ex_en:'The table is too low for me.' },
+  { id:721, cat:'adjectives', pt:'Forte',       de:'Stark',            en:'Strong',       pron:'FÔR-tʃi',     ex_pt:'Ele é muito forte e trabalha duro.',         ex_de:'Er ist sehr stark und arbeitet hart.',           ex_en:'He is very strong and works hard.' },
+  { id:722, cat:'adjectives', pt:'Fraco',       de:'Schwach',          en:'Weak',         pron:'FRÁ-ku',      ex_pt:'Estou fraco porque não comi nada.',          ex_de:'Ich bin schwach, weil ich nichts gegessen habe.',ex_en:'I am weak because I haven\'t eaten anything.' },
+  { id:723, cat:'adjectives', pt:'Limpo',       de:'Sauber',           en:'Clean',        pron:'LÎM-pu',      ex_pt:'O quarto está limpo e organizado.',          ex_de:'Das Zimmer ist sauber und ordentlich.',          ex_en:'The room is clean and tidy.' },
+  { id:724, cat:'adjectives', pt:'Sujo',        de:'Schmutzig',        en:'Dirty',        pron:'SÚ-zhu',      ex_pt:'As mãos estão sujas, precisa lavar.',        ex_de:'Die Hände sind schmutzig, sie müssen gewaschen werden.', ex_en:'The hands are dirty, they need to be washed.' },
+  { id:725, cat:'adjectives', pt:'Difícil',     de:'Schwierig',        en:'Difficult',    pron:'dʒi-FÍ-sil',  ex_pt:'Português é difícil mas vale a pena.',       ex_de:'Portugiesisch ist schwierig, aber es lohnt sich.', ex_en:'Portuguese is difficult but worth it.' },
+  { id:726, cat:'adjectives', pt:'Fácil',       de:'Einfach',          en:'Easy',         pron:'FÁ-sil',      ex_pt:'Este exercício é muito fácil.',              ex_de:'Diese Übung ist sehr einfach.',                  ex_en:'This exercise is very easy.' },
+  { id:727, cat:'adjectives', pt:'Importante',  de:'Wichtig',          en:'Important',    pron:'îm-por-TÂN-tʃi', ex_pt:'É importante estudar todos os dias.',     ex_de:'Es ist wichtig, jeden Tag zu lernen.',           ex_en:'It is important to study every day.' },
+  { id:728, cat:'adjectives', pt:'Interessante',de:'Interessant',      en:'Interesting',  pron:'în-te-re-SÂN-tʃi', ex_pt:'Este livro é muito interessante.',      ex_de:'Dieses Buch ist sehr interessant.',              ex_en:'This book is very interesting.' },
+  { id:729, cat:'adjectives', pt:'Aberto',      de:'Geöffnet/Offen',  en:'Open',         pron:'a-BÉR-tu',    ex_pt:'O mercado está aberto até às dez.',          ex_de:'Der Markt ist bis zehn Uhr geöffnet.',           ex_en:'The market is open until ten.' },
+  { id:730, cat:'adjectives', pt:'Fechado',     de:'Geschlossen',      en:'Closed',       pron:'fe-SHÁ-du',   ex_pt:'A loja está fechada aos domingos.',          ex_de:'Der Laden ist sonntags geschlossen.',            ex_en:'The shop is closed on Sundays.' },
+  { id:731, cat:'adjectives', pt:'Verdadeiro',  de:'Wahr/Echt',        en:'True/Real',    pron:'ver-da-DÉI-ru', ex_pt:'É uma história verdadeira.',               ex_de:'Das ist eine wahre Geschichte.',                 ex_en:'It is a true story.' },
+  { id:732, cat:'adjectives', pt:'Falso',       de:'Falsch/Gefälscht', en:'False/Fake',   pron:'FÁL-su',      ex_pt:'Cuidado com notícias falsas!',               ex_de:'Achtung vor falschen Nachrichten!',              ex_en:'Beware of fake news!' },
+  { id:733, cat:'adjectives', pt:'Ocupado',     de:'Beschäftigt',      en:'Busy',         pron:'o-ku-PÁ-du',  ex_pt:'Estou muito ocupado esta semana.',           ex_de:'Ich bin diese Woche sehr beschäftigt.',          ex_en:'I am very busy this week.' },
+  { id:734, cat:'adjectives', pt:'Livre',       de:'Frei',             en:'Free/Available',pron:'LÍ-vri',     ex_pt:'Estou livre amanhã à tarde.',                ex_de:'Ich bin morgen Nachmittag frei.',                ex_en:'I am free tomorrow afternoon.' },
+  { id:735, cat:'adjectives', pt:'Cheio',       de:'Voll',             en:'Full',         pron:'SHÉI-u',      ex_pt:'O ônibus está cheio na hora do rush.',       ex_de:'Der Bus ist in der Stoßzeit voll.',              ex_en:'The bus is full during rush hour.' },
+
+  /* ── ANIMALS ── */
+  { id:736, cat:'animals', pt:'Cachorro',  de:'Hund',           en:'Dog',          pron:'ka-SHÓ-rru',  ex_pt:'O cachorro late quando ouve barulho.',      ex_de:'Der Hund bellt, wenn er Lärm hört.',          ex_en:'The dog barks when it hears noise.' },
+  { id:737, cat:'animals', pt:'Gato',      de:'Katze',          en:'Cat',          pron:'GÁ-tu',        ex_pt:'O gato dorme a maior parte do dia.',        ex_de:'Die Katze schläft den größten Teil des Tages.',ex_en:'The cat sleeps most of the day.' },
+  { id:738, cat:'animals', pt:'Papagaio',  de:'Papagei',        en:'Parrot',       pron:'pa-pa-GÁI-u',  ex_pt:'O papagaio repete tudo que ouve.',          ex_de:'Der Papagei wiederholt alles, was er hört.',  ex_en:'The parrot repeats everything it hears.' },
+  { id:739, cat:'animals', pt:'Cavalo',    de:'Pferd',          en:'Horse',        pron:'ka-VÁ-lu',     ex_pt:'O cavalo galopa muito rápido.',              ex_de:'Das Pferd galoppiert sehr schnell.',           ex_en:'The horse gallops very fast.' },
+  { id:740, cat:'animals', pt:'Vaca',      de:'Kuh',            en:'Cow',          pron:'VÁ-ka',        ex_pt:'A vaca dá leite fresco todo dia.',           ex_de:'Die Kuh gibt täglich frische Milch.',          ex_en:'The cow gives fresh milk every day.' },
+  { id:741, cat:'animals', pt:'Porco',     de:'Schwein',        en:'Pig',          pron:'PÓR-ku',       ex_pt:'O porco come quase tudo.',                  ex_de:'Das Schwein frisst fast alles.',               ex_en:'The pig eats almost everything.' },
+  { id:742, cat:'animals', pt:'Galinha',   de:'Huhn/Henne',     en:'Chicken/Hen',  pron:'ga-LÍ-nha',    ex_pt:'A galinha bota ovos toda manhã.',            ex_de:'Die Henne legt jeden Morgen Eier.',            ex_en:'The hen lays eggs every morning.' },
+  { id:743, cat:'animals', pt:'Coelho',    de:'Kaninchen',      en:'Rabbit',       pron:'ku-É-lhu',     ex_pt:'O coelho adora cenouras.',                   ex_de:'Das Kaninchen liebt Karotten.',                ex_en:'The rabbit loves carrots.' },
+  { id:744, cat:'animals', pt:'Rato',      de:'Maus/Ratte',     en:'Mouse/Rat',    pron:'HÁ-tu',        ex_pt:'O rato roeu o queijo.',                      ex_de:'Die Ratte nagte am Käse.',                     ex_en:'The rat gnawed on the cheese.' },
+  { id:745, cat:'animals', pt:'Macaco',    de:'Affe',           en:'Monkey',       pron:'ma-KÁ-ku',     ex_pt:'O macaco balança nos galhos.',               ex_de:'Der Affe schwingt sich durch die Äste.',      ex_en:'The monkey swings through the branches.' },
+  { id:746, cat:'animals', pt:'Leão',      de:'Löwe',           en:'Lion',         pron:'le-ÃO',        ex_pt:'O leão é o rei da selva.',                   ex_de:'Der Löwe ist der König des Dschungels.',       ex_en:'The lion is the king of the jungle.' },
+  { id:747, cat:'animals', pt:'Elefante',  de:'Elefant',        en:'Elephant',     pron:'e-le-FÂN-tʃi', ex_pt:'O elefante é o maior animal terrestre.',     ex_de:'Der Elefant ist das größte Landtier.',         ex_en:'The elephant is the largest land animal.' },
+  { id:748, cat:'animals', pt:'Girafa',    de:'Giraffe',        en:'Giraffe',      pron:'zhi-RÁ-fa',    ex_pt:'A girafa tem um pescoço muito longo.',       ex_de:'Die Giraffe hat einen sehr langen Hals.',      ex_en:'The giraffe has a very long neck.' },
+  { id:749, cat:'animals', pt:'Cobra',     de:'Schlange',       en:'Snake',        pron:'KÓ-bra',       ex_pt:'Cuidado! Tem cobra na floresta.',            ex_de:'Vorsicht! Im Wald gibt es Schlangen.',         ex_en:'Be careful! There are snakes in the forest.' },
+  { id:750, cat:'animals', pt:'Sapo',      de:'Frosch',         en:'Frog',         pron:'SÁ-pu',        ex_pt:'O sapo canta quando chove.',                 ex_de:'Der Frosch singt, wenn es regnet.',            ex_en:'The frog sings when it rains.' },
+  { id:751, cat:'animals', pt:'Tartaruga', de:'Schildkröte',    en:'Turtle',       pron:'tar-ta-RÚ-ga', ex_pt:'A tartaruga vive muitos anos.',              ex_de:'Die Schildkröte lebt viele Jahre.',            ex_en:'The turtle lives for many years.' },
+  { id:752, cat:'animals', pt:'Borboleta', de:'Schmetterling',  en:'Butterfly',    pron:'bor-bo-LÉ-ta', ex_pt:'A borboleta pousa na flor.',                 ex_de:'Der Schmetterling landet auf der Blume.',      ex_en:'The butterfly lands on the flower.' },
+  { id:753, cat:'animals', pt:'Abelha',    de:'Biene',          en:'Bee',          pron:'a-BÉ-lha',     ex_pt:'A abelha produz mel delicioso.',             ex_de:'Die Biene produziert köstlichen Honig.',       ex_en:'The bee produces delicious honey.' },
+  { id:754, cat:'animals', pt:'Aranha',    de:'Spinne',         en:'Spider',       pron:'a-RÂ-nha',     ex_pt:'A aranha tece sua teia para caçar.',         ex_de:'Die Spinne webt ihr Netz, um zu jagen.',       ex_en:'The spider weaves its web to hunt.' },
+  { id:755, cat:'animals', pt:'Ovelha',    de:'Schaf',          en:'Sheep',        pron:'o-VÉ-lha',     ex_pt:'A ovelha dá lã para fazer roupas.',          ex_de:'Das Schaf gibt Wolle für Kleidung.',           ex_en:'The sheep provides wool for clothing.' },
+  { id:756, cat:'animals', pt:'Urso',      de:'Bär',            en:'Bear',         pron:'ÚR-su',        ex_pt:'O urso hiberna no inverno.',                 ex_de:'Der Bär hält Winterschlaf.',                   ex_en:'The bear hibernates in winter.' },
+  { id:757, cat:'animals', pt:'Lobo',      de:'Wolf',           en:'Wolf',         pron:'LÓ-bu',        ex_pt:'O lobo uiva para a lua.',                    ex_de:'Der Wolf heult den Mond an.',                  ex_en:'The wolf howls at the moon.' },
+  { id:758, cat:'animals', pt:'Onça',      de:'Jaguar',         en:'Jaguar',       pron:'ÔN-sa',        ex_pt:'A onça-pintada é símbolo do Brasil.',        ex_de:'Der Jaguar ist ein Symbol Brasiliens.',        ex_en:'The jaguar is a symbol of Brazil.' },
+  { id:759, cat:'animals', pt:'Animal',    de:'Tier',           en:'Animal',       pron:'a-ni-MAL',     ex_pt:'Qual é o seu animal favorito?',              ex_de:'Was ist Ihr Lieblingstier?',                   ex_en:'What is your favorite animal?' },
+  { id:760, cat:'animals', pt:'Zoológico', de:'Zoo',            en:'Zoo',          pron:'zo-o-LÓ-zhi-ku', ex_pt:'Visitamos o zoológico no fim de semana.', ex_de:'Wir besuchten am Wochenende den Zoo.',         ex_en:'We visited the zoo on the weekend.' },
+
+  /* ── EDUCATION ── */
+  { id:761, cat:'education', pt:'Escola',       de:'Schule',             en:'School',       pron:'es-KÓ-la',      ex_pt:'Minha escola fica perto de casa.',           ex_de:'Meine Schule ist nahe bei zu Hause.',          ex_en:'My school is close to home.' },
+  { id:762, cat:'education', pt:'Professor/a',  de:'Lehrer/in',          en:'Teacher',      pron:'pro-fe-SOR/a',   ex_pt:'A professora explica muito bem.',            ex_de:'Die Lehrerin erklärt sehr gut.',               ex_en:'The teacher explains very well.' },
+  { id:763, cat:'education', pt:'Aluno/a',      de:'Schüler/in',         en:'Student',      pron:'a-LÚ-nu/na',     ex_pt:'Ela é uma aluna dedicada.',                  ex_de:'Sie ist eine engagierte Schülerin.',           ex_en:'She is a dedicated student.' },
+  { id:764, cat:'education', pt:'Aula',         de:'Unterrichtsstunde',  en:'Class/Lesson', pron:'ÁU-la',          ex_pt:'A aula de português começa às oito.',        ex_de:'Der Portugiesisch-Unterricht beginnt um acht.', ex_en:'The Portuguese class starts at eight.' },
+  { id:765, cat:'education', pt:'Universidade', de:'Universität',        en:'University',   pron:'u-ni-ver-si-DÁ-dʒi', ex_pt:'Ela estuda na universidade federal.',   ex_de:'Sie studiert an der Bundesuniversität.',       ex_en:'She studies at the federal university.' },
+  { id:766, cat:'education', pt:'Estudar',      de:'Lernen/Studieren',   en:'To study',     pron:'es-tu-DÁR',      ex_pt:'Preciso estudar mais para o exame.',         ex_de:'Ich muss mehr für die Prüfung lernen.',        ex_en:'I need to study more for the exam.' },
+  { id:767, cat:'education', pt:'Aprender',     de:'Lernen',             en:'To learn',     pron:'a-prên-DÊR',     ex_pt:'Aprender um idioma novo é enriquecedor.',    ex_de:'Eine neue Sprache zu lernen ist bereichernd.',  ex_en:'Learning a new language is enriching.' },
+  { id:768, cat:'education', pt:'Ensinar',      de:'Unterrichten/Lehren',en:'To teach',     pron:'ên-si-NÁR',      ex_pt:'Ela ensina inglês há dez anos.',             ex_de:'Sie unterrichtet seit zehn Jahren Englisch.',  ex_en:'She has been teaching English for ten years.' },
+  { id:769, cat:'education', pt:'Lição de casa',de:'Hausaufgaben',       en:'Homework',     pron:'li-SÃO dʒi KÁ-za', ex_pt:'Fiz toda a lição de casa hoje.',          ex_de:'Ich habe heute alle Hausaufgaben gemacht.',    ex_en:'I did all my homework today.' },
+  { id:770, cat:'education', pt:'Livro didático',de:'Lehrbuch',          en:'Textbook',     pron:'LÍ-vru dʒi-DÁ-tʃi-ku', ex_pt:'O livro didático tem todos os exercícios.', ex_de:'Das Lehrbuch enthält alle Übungen.',      ex_en:'The textbook contains all the exercises.' },
+  { id:771, cat:'education', pt:'Caderno',      de:'Heft',               en:'Notebook',     pron:'ka-DÉR-nu',      ex_pt:'Anote no caderno o que for importante.',     ex_de:'Schreib das Wichtige ins Heft.',               ex_en:'Write what is important in your notebook.' },
+  { id:772, cat:'education', pt:'Lápis',        de:'Bleistift',          en:'Pencil',       pron:'LÁ-pis',         ex_pt:'Escreva a resposta a lápis.',                ex_de:'Schreib die Antwort mit Bleistift.',           ex_en:'Write the answer in pencil.' },
+  { id:773, cat:'education', pt:'Caneta',       de:'Kugelschreiber',     en:'Pen',          pron:'ka-NÉ-ta',        ex_pt:'A prova deve ser feita a caneta azul.',     ex_de:'Die Prüfung muss mit blauem Stift gemacht werden.', ex_en:'The test must be done with a blue pen.' },
+  { id:774, cat:'education', pt:'Borracha',     de:'Radiergummi',        en:'Eraser',       pron:'bo-HÁ-sha',      ex_pt:'Pode me emprestar a borracha?',              ex_de:'Können Sie mir den Radiergummi leihen?',       ex_en:'Can you lend me the eraser?' },
+  { id:775, cat:'education', pt:'Mochila',      de:'Rucksack',           en:'Backpack',     pron:'mo-SHÍ-la',      ex_pt:'Coloquei todos os livros na mochila.',       ex_de:'Ich habe alle Bücher in den Rucksack gesteckt.', ex_en:'I put all the books in the backpack.' },
+  { id:776, cat:'education', pt:'Exame',        de:'Prüfung',            en:'Exam',         pron:'e-ZÂ-mi',        ex_pt:'O exame final é na próxima semana.',         ex_de:'Die Abschlussprüfung ist nächste Woche.',      ex_en:'The final exam is next week.' },
+  { id:777, cat:'education', pt:'Nota',         de:'Note/Zensur',        en:'Grade',        pron:'NÓ-ta',          ex_pt:'Tirei nota dez no exame!',                   ex_de:'Ich habe eine Zehn in der Prüfung bekommen!',  ex_en:'I got a ten on the exam!' },
+  { id:778, cat:'education', pt:'Certificado',  de:'Zertifikat',         en:'Certificate',  pron:'ser-tʃi-fi-KÁ-du', ex_pt:'Recebi o certificado de conclusão.',      ex_de:'Ich erhielt das Abschlusszertifikat.',         ex_en:'I received the completion certificate.' },
+  { id:779, cat:'education', pt:'Formatura',    de:'Abschlussfeier',     en:'Graduation',   pron:'for-ma-TÚ-ra',   ex_pt:'A formatura será no próximo mês.',           ex_de:'Die Abschlussfeier ist nächsten Monat.',       ex_en:'The graduation will be next month.' },
+  { id:780, cat:'education', pt:'Recreio',      de:'Schulpause',         en:'Recess/Break', pron:'he-KRÉ-iu',      ex_pt:'As crianças adoram o recreio.',              ex_de:'Die Kinder lieben die Schulpause.',            ex_en:'The children love recess.' },
+  { id:781, cat:'education', pt:'Matemática',   de:'Mathematik',         en:'Math',         pron:'ma-te-MÁ-tʃi-ka', ex_pt:'Matemática é minha matéria preferida.',    ex_de:'Mathematik ist mein Lieblingsfach.',           ex_en:'Math is my favorite subject.' },
+  { id:782, cat:'education', pt:'Ciências',     de:'Naturwissenschaften',en:'Science',      pron:'si-ÊN-si-as',    ex_pt:'Gosto muito da aula de ciências.',           ex_de:'Ich mag den Naturwissenschaftsunterricht sehr.',ex_en:'I really like the science class.' },
+  { id:783, cat:'education', pt:'Biblioteca',   de:'Bibliothek',         en:'Library',      pron:'bi-bli-o-TÉ-ka', ex_pt:'Fui à biblioteca estudar hoje.',             ex_de:'Ich bin heute in die Bibliothek zum Lernen gegangen.', ex_en:'I went to the library to study today.' },
+  { id:784, cat:'education', pt:'Língua',       de:'Sprache',            en:'Language',     pron:'LÎN-gua',        ex_pt:'Aprendo uma nova língua todo ano.',          ex_de:'Ich lerne jedes Jahr eine neue Sprache.',      ex_en:'I learn a new language every year.' },
+  { id:785, cat:'education', pt:'Dever',        de:'Pflicht/Aufgabe',    en:'Duty/Task',    pron:'de-VÊR',         ex_pt:'É meu dever proteger o meio ambiente.',      ex_de:'Es ist meine Pflicht, die Umwelt zu schützen.',ex_en:'It is my duty to protect the environment.' },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -5639,7 +5774,7 @@ const App = (() => {
     try {
       const data = {
         exportDate: new Date().toISOString(),
-        appVersion: 'v0.75',
+        appVersion: 'v1.0',
         state: state
       };
       const json = JSON.stringify(data, null, 2);
