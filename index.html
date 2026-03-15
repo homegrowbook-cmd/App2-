@@ -2186,7 +2186,7 @@
         <button class="rating-btn bad" onclick="App.rateCard(false)">👈 Noch nicht</button>
         <button class="rating-btn good" onclick="App.rateCard(true)">Gewusst! 👉</button>
       </div>
-      <div class="swipe-hint" id="swipe-hint" style="text-align:center;font-size:0.72rem;color:var(--text-2);margin-top:4px;opacity:0.7">← wischen = Nochmal &nbsp;|&nbsp; wischen = Gewusst! →</div>
+      <div class="swipe-hint" id="swipe-hint" style="text-align:center;font-size:0.72rem;color:var(--text-2);margin-top:4px;opacity:0.7">👈 wischen = Nochmal &nbsp;|&nbsp; wischen = Gewusst! 👉</div>
     </div>
 
     <div class="session-complete hidden" id="session-complete">
@@ -5032,12 +5032,12 @@ const App = (() => {
 
     // Swipe gesture on card container (left = wrong, right = correct)
     const cc = document.getElementById('card-container');
-    cc._swipeStartX = null;
-    cc.ontouchstart = function(e) { cc._swipeStartX = e.changedTouches[0].clientX; };
+    let swipeStartX = null;
+    cc.ontouchstart = function(e) { swipeStartX = e.changedTouches[0].clientX; };
     cc.ontouchend = function(e) {
-      if (cc._swipeStartX === null || !session.flipped) return;
-      const dx = e.changedTouches[0].clientX - cc._swipeStartX;
-      cc._swipeStartX = null;
+      if (swipeStartX === null || !session.flipped) return;
+      const dx = e.changedTouches[0].clientX - swipeStartX;
+      swipeStartX = null;
       if (Math.abs(dx) < 60) return; // require at least 60px to avoid accidental swipes
       if (dx > 0) { rateCard(true); } else { rateCard(false); }
     };
@@ -6490,6 +6490,8 @@ const App = (() => {
 
   function haptic(type) {
     if (!navigator.vibrate) return;
+    // correct: short 50ms pulse; wrong: double-tap pattern 80-40-80ms;
+    // levelup: rising triple pattern; combo: quick rising pair
     if (type === 'correct') navigator.vibrate(50);
     else if (type === 'wrong') navigator.vibrate([80, 40, 80]);
     else if (type === 'levelup') navigator.vibrate([100, 50, 100, 50, 200]);
