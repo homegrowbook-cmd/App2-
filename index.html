@@ -1687,6 +1687,154 @@
     }
     .dlg-reaction-who { font-weight: 700; font-style: normal; color: var(--blue); margin-right: 4px; }
     @keyframes fadein { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+    /* ─── Onboarding Wizard ────────────────────────────────────────────────── */
+    .onboarding-overlay {
+      position: fixed; inset: 0; z-index: 3000;
+      background: rgba(0,39,118,0.88); backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .onboarding-overlay.hidden { display: none; }
+    .onboarding-card {
+      background: var(--card); border-radius: 24px; padding: 28px 22px;
+      max-width: 420px; width: 100%; box-shadow: 0 20px 60px rgba(0,39,118,0.35);
+      text-align: center; position: relative;
+    }
+    .onboarding-logo { font-size: 3rem; margin-bottom: 8px; }
+    .onboarding-step-dots {
+      display: flex; gap: 6px; justify-content: center; margin-bottom: 20px;
+    }
+    .onboarding-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--border);
+      transition: var(--transition);
+    }
+    .onboarding-dot.active { background: var(--blue); transform: scale(1.3); }
+    .onboarding-dot.done { background: var(--green); }
+    .onboarding-title { font-size: 1.3rem; font-weight: 800; color: var(--blue); margin-bottom: 6px; }
+    .onboarding-subtitle { font-size: 0.88rem; color: var(--text-2); margin-bottom: 20px; }
+    .onboarding-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .onboarding-opt {
+      padding: 14px 10px; border-radius: 14px; border: 2px solid var(--border);
+      background: var(--bg); cursor: pointer; font-size: 0.88rem; font-weight: 600;
+      color: var(--text); transition: var(--transition); text-align: center;
+      display: flex; flex-direction: column; gap: 4px; align-items: center;
+    }
+    .onboarding-opt:hover { border-color: var(--blue); background: rgba(0,39,118,0.06); }
+    .onboarding-opt.selected { border-color: var(--blue); background: rgba(0,39,118,0.10); color: var(--blue); }
+    .onboarding-opt .opt-icon { font-size: 1.6rem; }
+    .onboarding-skip { background: none; border: none; color: var(--text-2); font-size: 0.8rem; cursor: pointer; text-decoration: underline; margin-top: 8px; }
+
+    /* ─── Continue Button ──────────────────────────────────────────────────── */
+    .continue-btn {
+      width: 100%; padding: 13px 16px;
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: #fff; border: none; border-radius: var(--radius-sm);
+      font-size: 0.92rem; font-weight: 700; cursor: pointer;
+      display: flex; align-items: center; gap: 10px; justify-content: center;
+      box-shadow: 0 4px 14px rgba(5,150,105,0.35);
+      transition: var(--transition); margin-bottom: 10px;
+    }
+    .continue-btn:hover { filter: brightness(1.08); }
+    .continue-btn.hidden { display: none; }
+
+    /* ─── Heatmap ──────────────────────────────────────────────────────────── */
+    .heatmap-card {
+      background: var(--card); border-radius: var(--radius);
+      padding: 14px 16px; box-shadow: var(--shadow); margin-bottom: 14px;
+    }
+    .heatmap-title { font-size: 0.82rem; font-weight: 700; color: var(--text-2); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .heatmap-grid { display: flex; gap: 3px; flex-wrap: wrap; }
+    .heatmap-cell {
+      width: 20px; height: 20px; border-radius: 4px;
+      background: var(--border); transition: background var(--transition);
+      cursor: default;
+    }
+    .heatmap-cell.h1 { background: rgba(0,156,59,0.25); }
+    .heatmap-cell.h2 { background: rgba(0,156,59,0.45); }
+    .heatmap-cell.h3 { background: rgba(0,156,59,0.7); }
+    .heatmap-cell.h4 { background: rgba(0,156,59,1); }
+    .heatmap-legend { display: flex; gap: 4px; align-items: center; margin-top: 8px; font-size: 0.72rem; color: var(--text-2); justify-content: flex-end; }
+    .heatmap-legend-cell { width: 14px; height: 14px; border-radius: 3px; }
+
+    /* ─── 5-Min Timer ──────────────────────────────────────────────────────── */
+    .session-timer-bar {
+      position: sticky; top: 0; z-index: 50;
+      background: linear-gradient(135deg, #7c3aed, #5b21b6);
+      color: #fff; padding: 8px 16px;
+      display: flex; align-items: center; gap: 10px; justify-content: space-between;
+      font-size: 0.88rem; font-weight: 700;
+      box-shadow: 0 2px 10px rgba(124,58,237,0.4);
+    }
+    .session-timer-bar.hidden { display: none; }
+    .session-timer-bar .timer-progress { flex: 1; height: 6px; background: rgba(255,255,255,0.25); border-radius: 3px; overflow: hidden; }
+    .session-timer-bar .timer-progress-fill { height: 100%; background: #fff; border-radius: 3px; transition: width 1s linear; }
+    .session-timer-bar .timer-close { background: none; border: none; color: #fff; cursor: pointer; font-size: 1.1rem; opacity: 0.8; }
+
+    /* ─── Daily Challenge ──────────────────────────────────────────────────── */
+    .challenge-card {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+      color: #fff; border-radius: var(--radius); padding: 14px 16px;
+      margin-bottom: 12px; box-shadow: 0 4px 16px rgba(30,58,138,0.35);
+    }
+    .challenge-card.hidden { display: none; }
+    .challenge-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .challenge-icon { font-size: 1.4rem; }
+    .challenge-title { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.85; }
+    .challenge-desc { font-size: 0.95rem; font-weight: 700; margin-bottom: 10px; }
+    .challenge-progress-bg { height: 8px; background: rgba(255,255,255,0.25); border-radius: 4px; overflow: hidden; }
+    .challenge-progress-fill { height: 100%; background: #fff; border-radius: 4px; transition: width 0.5s ease; }
+    .challenge-meta { display: flex; justify-content: space-between; margin-top: 6px; font-size: 0.78rem; opacity: 0.85; }
+
+    /* ─── Emoji Quiz ───────────────────────────────────────────────────────── */
+    .emoji-quiz-card {
+      background: var(--card); border-radius: var(--radius); padding: 24px 18px;
+      text-align: center; box-shadow: var(--shadow); margin-bottom: 14px;
+    }
+    .emoji-quiz-emoji { font-size: 5rem; margin-bottom: 12px; line-height: 1; }
+    .emoji-quiz-prompt { font-size: 0.88rem; color: var(--text-2); font-weight: 600; margin-bottom: 18px; }
+    .emoji-quiz-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .emoji-choice-btn {
+      padding: 14px 10px; border-radius: var(--radius-sm);
+      border: 2px solid var(--border); background: var(--bg);
+      cursor: pointer; font-size: 0.9rem; font-weight: 600; color: var(--text);
+      transition: var(--transition);
+    }
+    .emoji-choice-btn:hover { border-color: var(--blue); background: rgba(0,39,118,0.06); }
+    .emoji-choice-btn.correct { background: rgba(6,214,160,0.15); border-color: var(--success); color: var(--success); }
+    .emoji-choice-btn.wrong { background: rgba(239,71,111,0.1); border-color: var(--danger); color: var(--danger); }
+
+    /* ─── Milestone Confetti Overlay ───────────────────────────────────────── */
+    .milestone-overlay {
+      position: fixed; inset: 0; z-index: 2500;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+    }
+    .milestone-overlay.hidden { display: none; }
+    .milestone-banner {
+      background: linear-gradient(135deg, var(--yellow), #ffb300);
+      color: var(--blue); padding: 16px 28px; border-radius: 20px;
+      font-size: 1.1rem; font-weight: 800; text-align: center;
+      box-shadow: 0 8px 32px rgba(255,223,0,0.6);
+      pointer-events: auto;
+      animation: milestone-pop 0.5s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes milestone-pop {
+      0% { transform: scale(0.4); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .milestone-confetti-wrap { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 2400; }
+    .milestone-confetti-wrap.hidden { display: none; }
+
+    /* ─── Streak Freeze ────────────────────────────────────────────────────── */
+    .streak-freeze-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: rgba(99,102,241,0.12); color: #6366f1;
+      border: 1.5px solid rgba(99,102,241,0.3);
+      border-radius: 12px; padding: 4px 10px; font-size: 0.78rem; font-weight: 700;
+      cursor: pointer;
+    }
+    .streak-freeze-badge.used { opacity: 0.45; cursor: default; }
   </style>
 </head>
 <body>
@@ -1726,6 +1874,13 @@
   <!-- HOME -->
   <div class="view active" id="view-home">
 
+    <!-- 5-Minute Timer Bar (only shown during timed session) -->
+    <div class="session-timer-bar hidden" id="session-timer-bar">
+      <span id="session-timer-label">⏱️ 5:00</span>
+      <div class="timer-progress"><div class="timer-progress-fill" id="timer-progress-fill" style="width:100%"></div></div>
+      <button class="timer-close" onclick="App.stopTimedSession()" title="Timer beenden">✕</button>
+    </div>
+
     <div class="daily-card" id="daily-card">
       <h2>Wort des Tages / Word of the Day</h2>
       <div class="word-of-day" id="daily-word">Saudade</div>
@@ -1751,11 +1906,36 @@
 
     <button class="cta-btn" onclick="App.startQuickSession()">⚡ Schnellübung starten</button>
 
+    <!-- Continue Last Activity -->
+    <button class="continue-btn hidden" id="home-continue-btn" onclick="App.resumeLastActivity()">
+      <span>▶️</span><span id="home-continue-label">Weiter wo du aufgehört hast</span>
+    </button>
+
+    <!-- Daily Challenge -->
+    <div id="home-challenge-card" class="challenge-card hidden"></div>
+
+    <!-- Activity Heatmap -->
+    <div class="heatmap-card" id="home-heatmap-card">
+      <div class="heatmap-title">📅 Aktivität – letzte 30 Tage</div>
+      <div class="heatmap-grid" id="home-heatmap-grid"></div>
+      <div class="heatmap-legend">Wenig <div class="heatmap-legend-cell" style="background:var(--border)"></div><div class="heatmap-legend-cell h1"></div><div class="heatmap-legend-cell h2"></div><div class="heatmap-legend-cell h3"></div><div class="heatmap-legend-cell h4"></div> Viel</div>
+    </div>
+
     <!-- Daily Missions -->
     <div id="missions-card" class="missions-card" style="display:none"></div>
 
     <p class="home-section-title">Übungstypen / Exercise Types</p>
     <div class="quick-grid">
+      <button class="quick-btn" style="background:linear-gradient(135deg,#7c3aed,#a855f7)" onclick="App.startTimedSession(5)">
+        <span class="qb-icon">⏱️</span>
+        <span class="qb-title">5-Min Blitz</span>
+        <span class="qb-desc">Kurze Intensiv-Session</span>
+      </button>
+      <button class="quick-btn" style="background:linear-gradient(135deg,#d97706,#f59e0b)" onclick="App.startEmojiQuiz()">
+        <span class="qb-icon">🖼️</span>
+        <span class="qb-title">Emoji-Quiz</span>
+        <span class="qb-desc">Bild-Vokabular üben</span>
+      </button>
       <button class="quick-btn" style="background:linear-gradient(135deg,var(--blue),var(--light-blue))" onclick="App.showView('learn')">
         <span class="qb-icon">📚</span>
         <span class="qb-title">Kategorien</span>
@@ -2049,6 +2229,18 @@
     </div>
 
     <div class="progress-card">
+      <h3>📅 Aktivitäts-Heatmap / Activity Heatmap</h3>
+      <div class="heatmap-grid" id="prog-heatmap-grid" style="margin-top:8px"></div>
+      <div class="heatmap-legend">Wenig <div class="heatmap-legend-cell" style="background:var(--border)"></div><div class="heatmap-legend-cell h1"></div><div class="heatmap-legend-cell h2"></div><div class="heatmap-legend-cell h3"></div><div class="heatmap-legend-cell h4"></div> Viel</div>
+    </div>
+
+    <div class="progress-card">
+      <h3>❄️ Streak Freeze</h3>
+      <p style="font-size:0.82rem;color:var(--text-2);margin-bottom:10px">Schütze deinen Streak! 1× pro Woche kannst du einen verpassten Tag überspringen. / Protect your streak! Skip one missed day per week.</p>
+      <div id="streak-freeze-status"></div>
+    </div>
+
+    <div class="progress-card">
       <h3>🎯 SRS-Level Verteilung</h3>
       <div class="srs-levels" id="srs-distribution"></div>
     </div>
@@ -2177,7 +2369,7 @@
     <div class="settings-section">
       <h3 class="settings-heading">ℹ️ App-Info</h3>
       <div class="settings-info">
-        <p><strong>LuiBrasil</strong> v7.0</p>
+        <p><strong>LuiBrasil</strong> v8.0</p>
         <p id="settings-word-count">665 Vokabeln &amp; Sätze · 21 Kategorien</p>
         <p>🇧🇷 Brasilianisches Portugiesisch lernen</p>
         <p style="margin-top:8px;font-size:0.78rem">Kostenlos · Offline nutzbar · Keine Anmeldung erforderlich</p>
@@ -2479,6 +2671,41 @@
     </div>
   </div>
 
+  <!-- EMOJI QUIZ -->
+  <div class="view" id="view-emoji-quiz">
+    <div class="flashcard-header">
+      <button class="back-btn" onclick="App.exitSession()">←</button>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-label" id="eq-progress-label">0 / 10</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="eq-progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+    <div id="eq-session-area">
+      <div class="quiz-score-bar">
+        <span>Punkte / Score</span>
+        <span class="quiz-score-val" id="eq-score-val">0</span>
+      </div>
+      <div class="emoji-quiz-card">
+        <div class="emoji-quiz-emoji" id="eq-emoji">🍕</div>
+        <div class="emoji-quiz-prompt" id="eq-prompt">Welches Wort passt zum Emoji?<br>Which word matches the emoji?</div>
+      </div>
+      <div class="emoji-quiz-choices" id="eq-choices"></div>
+      <div class="quiz-feedback hidden" id="eq-feedback"></div>
+      <button class="cta-btn hidden" id="eq-next-btn" onclick="App.nextEmojiQuestion()">Weiter →</button>
+    </div>
+    <div class="session-complete hidden" id="eq-complete">
+      <div class="trophy">🖼️</div>
+      <h2>Emoji-Quiz abgeschlossen!</h2>
+      <p id="eq-complete-msg">Gut gemacht!</p>
+      <div class="xp-earned" id="eq-xp">+0 XP</div>
+      <br><br>
+      <button class="cta-btn" onclick="App.showView('home')" style="max-width:280px;margin:0 auto">🏠 Startseite</button>
+      <button class="cta-btn" style="max-width:280px;margin:8px auto;background:linear-gradient(135deg,#d97706,#f59e0b)" onclick="App.startEmojiQuiz()">🔄 Nochmal</button>
+    </div>
+  </div>
+
   <!-- ── Bottom Navigation ───────────────────────────────────── -->
   <nav class="bottom-nav">
     <button class="nav-btn active" id="nav-home" onclick="App.showView('home')">
@@ -2536,6 +2763,78 @@
     </div>
     <p class="lang-popup-hint">⚙️ Die Sprachauswahl kann jederzeit in den <strong>Einstellungen</strong> geändert werden.<br><span style="font-size:0.82em">The language selection can be changed at any time in Settings.</span></p>
   </div>
+</div>
+
+<!-- Onboarding Wizard -->
+<div id="onboarding-overlay" class="onboarding-overlay hidden" role="dialog" aria-modal="true" aria-label="Willkommen bei LuiBrasil">
+  <div class="onboarding-card">
+    <div class="onboarding-logo">🇧🇷</div>
+    <div class="onboarding-step-dots">
+      <div class="onboarding-dot" id="ob-dot-1"></div>
+      <div class="onboarding-dot" id="ob-dot-2"></div>
+      <div class="onboarding-dot" id="ob-dot-3"></div>
+    </div>
+    <!-- Step 1: Goal -->
+    <div id="ob-step-1">
+      <div class="onboarding-title">Was ist dein Ziel?</div>
+      <div class="onboarding-subtitle">Wir passen deinen Lernplan an / We'll tailor your learning plan</div>
+      <div class="onboarding-options">
+        <button class="onboarding-opt" id="ob-goal-travel" onclick="App.onboardingSelect('goal','travel')">
+          <span class="opt-icon">🧳</span><span>Reisen</span>
+        </button>
+        <button class="onboarding-opt" id="ob-goal-daily" onclick="App.onboardingSelect('goal','daily')">
+          <span class="opt-icon">🗣️</span><span>Alltag</span>
+        </button>
+        <button class="onboarding-opt" id="ob-goal-work" onclick="App.onboardingSelect('goal','work')">
+          <span class="opt-icon">💼</span><span>Arbeit</span>
+        </button>
+        <button class="onboarding-opt" id="ob-goal-culture" onclick="App.onboardingSelect('goal','culture')">
+          <span class="opt-icon">🎭</span><span>Kultur</span>
+        </button>
+      </div>
+      <button class="onboarding-skip" onclick="App.completeOnboarding()">Überspringen / Skip</button>
+    </div>
+    <!-- Step 2: Level -->
+    <div id="ob-step-2" style="display:none">
+      <div class="onboarding-title">Wie ist dein Niveau?</div>
+      <div class="onboarding-subtitle">Wie viel Portugiesisch kennst du schon? / How much Portuguese do you know?</div>
+      <div class="onboarding-options">
+        <button class="onboarding-opt" id="ob-level-beginner" onclick="App.onboardingSelect('level','beginner')">
+          <span class="opt-icon">🌱</span><span>Anfänger</span><span style="font-size:0.75rem;color:var(--text-2)">Kein / No Portuguese</span>
+        </button>
+        <button class="onboarding-opt" id="ob-level-advanced" onclick="App.onboardingSelect('level','advanced')">
+          <span class="opt-icon">📚</span><span>Fortgeschritten</span><span style="font-size:0.75rem;color:var(--text-2)">Schon etwas / Some knowledge</span>
+        </button>
+      </div>
+      <button class="onboarding-skip" onclick="App.completeOnboarding()">Überspringen / Skip</button>
+    </div>
+    <!-- Step 3: Time -->
+    <div id="ob-step-3" style="display:none">
+      <div class="onboarding-title">Wie viel Zeit täglich?</div>
+      <div class="onboarding-subtitle">Wie viele Minuten möchtest du täglich lernen? / How many minutes per day?</div>
+      <div class="onboarding-options">
+        <button class="onboarding-opt" id="ob-time-5" onclick="App.onboardingSelect('time',5)">
+          <span class="opt-icon">⚡</span><span>5 Min</span><span style="font-size:0.75rem;color:var(--text-2)">Schnell / Quick</span>
+        </button>
+        <button class="onboarding-opt" id="ob-time-10" onclick="App.onboardingSelect('time',10)">
+          <span class="opt-icon">⏱️</span><span>10 Min</span><span style="font-size:0.75rem;color:var(--text-2)">Täglich / Daily</span>
+        </button>
+        <button class="onboarding-opt" id="ob-time-20" onclick="App.onboardingSelect('time',20)">
+          <span class="opt-icon">🧠</span><span>20 Min</span><span style="font-size:0.75rem;color:var(--text-2)">Intensiv / Intensive</span>
+        </button>
+        <button class="onboarding-opt" id="ob-time-30" onclick="App.onboardingSelect('time',30)">
+          <span class="opt-icon">🏋️</span><span>30 Min</span><span style="font-size:0.75rem;color:var(--text-2)">Profi / Pro</span>
+        </button>
+      </div>
+      <button class="onboarding-skip" onclick="App.completeOnboarding()">Überspringen / Skip</button>
+    </div>
+  </div>
+</div>
+
+<!-- Milestone Confetti -->
+<div id="milestone-confetti-wrap" class="milestone-confetti-wrap hidden"></div>
+<div id="milestone-overlay" class="milestone-overlay hidden">
+  <div class="milestone-banner" id="milestone-banner-text"></div>
 </div>
 
 <script>
@@ -3764,6 +4063,18 @@ function loadState() {
   return {
     lang: 'de',
     langSelected: false,
+    onboardingDone: false,
+    learningGoal: null,       // 'travel'|'daily'|'work'|'culture'
+    learningLevel: null,      // 'beginner'|'advanced'
+    dailyTimeMinutes: 10,     // 5|10|20|30
+    lastActivity: null,       // { type, catId, label }
+    heatmap: {},              // { 'YYYY-MM-DD': sessionsCount }
+    streakFreezeAvailable: 1, // resets to 1 each week
+    streakFreezeWeek: null,   // ISO week string when freeze was refreshed
+    streakFreezeUsed: false,  // used this week?
+    dailyChallenge: null,     // { catId, goal, type, desc, icon }
+    dailyChallengeDate: null,
+    dailyChallengeProgress: 0,
     xp: 0,
     streak: 0,
     lastStudied: null,
@@ -3843,10 +4154,36 @@ const App = (() => {
     if (state.lastStudied && daysBetween(state.lastStudied, td) === 1) {
       state.streak += 1;
     } else if (!state.lastStudied || daysBetween(state.lastStudied, td) > 1) {
-      state.streak = 1;
+      // Check streak freeze: allows skipping exactly 1 missed day (gap of 2)
+      const gap = state.lastStudied ? daysBetween(state.lastStudied, td) : 999;
+      const week = isoWeek(td);
+      // Refresh freeze availability weekly
+      if (state.streakFreezeWeek !== week) {
+        state.streakFreezeWeek = week;
+        state.streakFreezeAvailable = 1;
+        state.streakFreezeUsed = false;
+      }
+      if (gap === 2 && state.streakFreezeAvailable > 0 && !state.streakFreezeUsed && state.streak > 0) {
+        // Use streak freeze: continue streak as if no day was missed
+        state.streakFreezeAvailable -= 1;
+        state.streakFreezeUsed = true;
+        state.streak += 1;
+        setTimeout(() => showToast('❄️ Streak Freeze aktiviert! Dein Streak bleibt erhalten.'), 800);
+      } else {
+        state.streak = 1;
+      }
     }
     state.lastStudied = td;
     saveState(state);
+  }
+
+  function isoWeek(dateStr) {
+    const d = new Date(dateStr);
+    const jan4 = new Date(d.getFullYear(), 0, 4);
+    const startOfWeek1 = new Date(jan4);
+    startOfWeek1.setDate(jan4.getDate() - (jan4.getDay() || 7) + 1);
+    const weekNum = Math.ceil((d - startOfWeek1) / (7 * 86400000));
+    return d.getFullYear() + '-W' + weekNum;
   }
 
   /* ── XP constants & Level System ──────────────────────────────────────── */
@@ -4276,6 +4613,23 @@ const App = (() => {
     document.getElementById('home-streak').textContent = state.streak;
     document.getElementById('home-accuracy').textContent = acc;
 
+    // continue button
+    const contBtn = document.getElementById('home-continue-btn');
+    const contLbl = document.getElementById('home-continue-label');
+    if (state.lastActivity && state.lastActivity.label && contBtn && contLbl) {
+      contLbl.textContent = '▶️ Weiter: ' + state.lastActivity.label;
+      contBtn.classList.remove('hidden');
+    } else if (contBtn) {
+      contBtn.classList.add('hidden');
+    }
+
+    // heatmap
+    renderHeatmap('home-heatmap-grid');
+
+    // daily challenge
+    generateDailyChallenge();
+    renderDailyChallenge();
+
     // daily missions
     renderDailyMissions();
     // update Wortliste button description dynamically
@@ -4297,6 +4651,10 @@ const App = (() => {
     document.getElementById('lang-popup-overlay').classList.add('hidden');
     renderHome();
     renderSettingsLang();
+    // Show onboarding wizard for first-time users
+    if (!state.onboardingDone) {
+      setTimeout(showOnboarding, 300);
+    }
   }
 
   /* ── LEARN ───────────────────────────────────────────────────────────────── */
@@ -4347,6 +4705,7 @@ const App = (() => {
     };
     updateStreak();
     checkMissions('streak', 1);
+    trackLastActivity('flashcard', catId, '🃏 Karten: ' + (catId || 'Alle'));
     showView('flashcard');
     document.getElementById('session-complete').classList.add('hidden');
     document.getElementById('fc-session-area').classList.remove('hidden');
@@ -4494,6 +4853,7 @@ const App = (() => {
     if (session.xpEarned > 0) addXP(session.xpEarned, window.innerWidth / 2, window.innerHeight / 3);
     trackSessionCompleted();
     checkAchievements();
+    checkDailyChallenge('session', 1);
     renderHeaderStats();
   }
 
@@ -4533,6 +4893,7 @@ const App = (() => {
     };
     updateStreak();
     checkMissions('streak', 1);
+    trackLastActivity('quiz', null, '🎯 Quiz');
     document.getElementById('quiz-session-area').classList.remove('hidden');
     document.getElementById('quiz-complete').classList.add('hidden');
     document.getElementById('quiz-score-val').textContent = '0';
@@ -4627,6 +4988,8 @@ const App = (() => {
       checkCombo(session.combo);
       checkMissions('correct', 1);
       checkMissions('combo', session.combo);
+      checkDailyChallenge('correct', 1);
+      checkDailyChallenge('combo', session.combo);
     } else {
       session.combo = 0;
       fb.classList.add('wrong-fb');
@@ -4670,6 +5033,8 @@ const App = (() => {
     if (session.xpEarned > 0) addXP(session.xpEarned, window.innerWidth / 2, window.innerHeight / 3);
     trackSessionCompleted();
     checkMissions('quiz', 1);
+    checkDailyChallenge('quiz', 1);
+    checkDailyChallenge('session', 1);
     renderHeaderStats();
   }
 
@@ -4782,6 +5147,12 @@ const App = (() => {
     // New Goals section
     renderNewGoals();
 
+    // Heatmap in progress view
+    renderHeatmap('prog-heatmap-grid');
+
+    // Streak freeze status
+    renderStreakFreezeStatus();
+
     // Level test certificates in progress
     const certsDiv = document.getElementById('prog-level-test-certs');
     if (certsDiv) {
@@ -4846,7 +5217,14 @@ const App = (() => {
     });
     if (newlyUnlocked.length > 0) {
       saveState(state);
-      newlyUnlocked.forEach(a => showToast('🏆 Erfolg freigeschaltet: ' + a.name + ' ' + a.icon));
+      newlyUnlocked.forEach(a => {
+        showToast('🏆 Erfolg freigeschaltet: ' + a.name + ' ' + a.icon);
+        // Show confetti for major milestones
+        const confettiMilestones = ['words_50', 'words_100', 'words_200', 'streak_7', 'streak_30', 'mastered_50', 'xp_1000', 'xp_5000'];
+        if (confettiMilestones.includes(a.id)) {
+          setTimeout(() => showMilestoneConfetti(a.icon + ' ' + a.name + '!'), 400);
+        }
+      });
     }
   }
 
@@ -4896,7 +5274,8 @@ const App = (() => {
   function resetProgress() {
     if (confirm('Fortschritt wirklich zurücksetzen? / Really reset progress?')) {
       state = {
-        lang: state.lang, xp: 0, streak: 0, lastStudied: null,
+        lang: state.lang, langSelected: state.langSelected,
+        xp: 0, streak: 0, lastStudied: null,
         totalCorrect: 0, totalAnswered: 0, cards: {}, wrongCounts: {},
         darkMode: state.darkMode, fontSize: state.fontSize,
         xpPenaltyEnabled: state.xpPenaltyEnabled,
@@ -4906,13 +5285,20 @@ const App = (() => {
         sessionsCompleted: 0, dailySessions: 0, dailySessionDate: null,
         bestCombo: 0, totalMissionsCompleted: 0,
         dailyMissions: [], dailyMissionsDate: null, dailyMissionsProgress: {},
-        dialogsCompleted: 0, voiceTranslateUsed: 0
+        dialogsCompleted: 0, voiceTranslateUsed: 0,
+        heatmap: {}, lastActivity: null,
+        onboardingDone: state.onboardingDone, learningGoal: state.learningGoal,
+        learningLevel: state.learningLevel, dailyTimeMinutes: state.dailyTimeMinutes,
+        streakFreezeAvailable: 1, streakFreezeWeek: null, streakFreezeUsed: false,
+        dailyChallenge: null, dailyChallengeDate: null, dailyChallengeProgress: 0
       };
       saveState(state);
       generateDailyMissions();
+      generateDailyChallenge();
       renderHeaderStats();
       renderProgress();
       renderDailyMissions();
+      renderHome();
       showToast('Fortschritt zurückgesetzt / Progress reset');
     }
   }
@@ -5012,7 +5398,7 @@ const App = (() => {
     try {
       const data = {
         exportDate: new Date().toISOString(),
-        appVersion: 'v7.0',
+        appVersion: 'v8.0',
         state: state
       };
       const json = JSON.stringify(data, null, 2);
@@ -5059,6 +5445,432 @@ const App = (() => {
 
   /* ── UI helpers ─────────────────────────────────────────────────────────── */
   let toastTimer = null;
+
+  /* ─── Onboarding Wizard ─────────────────────────────────────────────────── */
+  let onboardingStep = 1;
+  let onboardingSelections = {};
+
+  function showOnboarding() {
+    onboardingStep = 1;
+    onboardingSelections = {};
+    _renderOnboardingStep();
+    document.getElementById('onboarding-overlay').classList.remove('hidden');
+  }
+
+  function _renderOnboardingStep() {
+    [1, 2, 3].forEach(i => {
+      const s = document.getElementById('ob-step-' + i);
+      if (s) s.style.display = i === onboardingStep ? 'block' : 'none';
+      const dot = document.getElementById('ob-dot-' + i);
+      if (dot) {
+        dot.classList.toggle('active', i === onboardingStep);
+        dot.classList.toggle('done', i < onboardingStep);
+      }
+    });
+  }
+
+  function onboardingSelect(field, value) {
+    onboardingSelections[field] = value;
+    // Highlight selected option
+    const prefix = field === 'goal' ? 'ob-goal-' : (field === 'level' ? 'ob-level-' : 'ob-time-');
+    document.querySelectorAll(`[id^="${prefix}"]`).forEach(el => el.classList.remove('selected'));
+    const sel = document.getElementById(prefix + value);
+    if (sel) sel.classList.add('selected');
+    // Auto-advance after short delay
+    setTimeout(() => {
+      if (onboardingStep < 3) {
+        onboardingStep++;
+        _renderOnboardingStep();
+      } else {
+        completeOnboarding();
+      }
+    }, 350);
+  }
+
+  function completeOnboarding() {
+    state.onboardingDone = true;
+    if (onboardingSelections.goal) state.learningGoal = onboardingSelections.goal;
+    if (onboardingSelections.level) state.learningLevel = onboardingSelections.level;
+    if (onboardingSelections.time) {
+      state.dailyTimeMinutes = onboardingSelections.time;
+      // Adjust daily XP goal based on time chosen
+      const xpMap = { 5: 30, 10: 50, 20: 100, 30: 150 };
+      state.dailyGoal = xpMap[onboardingSelections.time] || 50;
+    }
+    saveState(state);
+    document.getElementById('onboarding-overlay').classList.add('hidden');
+    renderHeaderStats();
+    renderHome();
+  }
+
+  /* ─── Activity Tracking / Continue Button ───────────────────────────────── */
+  function trackLastActivity(type, catId, label) {
+    state.lastActivity = { type, catId: catId || null, label: label || type };
+    // Also update heatmap
+    updateHeatmap();
+    saveState(state);
+  }
+
+  function resumeLastActivity() {
+    if (!state.lastActivity) return;
+    const { type, catId } = state.lastActivity;
+    switch (type) {
+      case 'flashcard': startFlashcardSession(catId || null); break;
+      case 'quiz':      startQuizSession(); break;
+      case 'typing':    startTypingSession(catId || null); break;
+      case 'listening': catId ? startCategoryListeningQuiz(catId) : startListeningQuiz(); break;
+      case 'lueckentext': startLueckentext(catId || null); break;
+      case 'sentence':  startSentenceBuilder(); break;
+      case 'dialog':    startDialogSession(); break;
+      case 'emoji':     startEmojiQuiz(); break;
+      default:          startQuickSession(); break;
+    }
+  }
+
+  /* ─── Heatmap ────────────────────────────────────────────────────────────── */
+  function updateHeatmap() {
+    if (!state.heatmap) state.heatmap = {};
+    const td = today();
+    state.heatmap[td] = (state.heatmap[td] || 0) + 1;
+    // Prune entries older than 60 days to keep state small
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 60);
+    const cutoffStr = cutoff.toISOString().split('T')[0];
+    Object.keys(state.heatmap).forEach(d => { if (d < cutoffStr) delete state.heatmap[d]; });
+    saveState(state);
+  }
+
+  function renderHeatmap(containerId) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    el.innerHTML = '';
+    const hm = state.heatmap || {};
+    const cells = [];
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const ds = d.toISOString().split('T')[0];
+      const val = hm[ds] || 0;
+      const level = val === 0 ? 0 : val === 1 ? 1 : val === 2 ? 2 : val <= 4 ? 3 : 4;
+      cells.push({ ds, val, level });
+    }
+    cells.forEach(({ ds, val, level }) => {
+      const cell = document.createElement('div');
+      cell.className = 'heatmap-cell' + (level > 0 ? ' h' + level : '');
+      cell.title = ds + ': ' + val + ' Session(s)';
+      el.appendChild(cell);
+    });
+  }
+
+  /* ─── 5-Minute Timed Session ────────────────────────────────────────────── */
+  let timedSessionTimer = null;
+  let timedSessionEnd = null;
+  let timedSessionDuration = 0;
+
+  function startTimedSession(minutes) {
+    timedSessionDuration = (minutes || 5) * 60;
+    timedSessionEnd = Date.now() + timedSessionDuration * 1000;
+    // Start a quick session
+    startQuickSession();
+    // Show timer bar
+    _showTimerBar();
+    _tickTimer();
+  }
+
+  function _showTimerBar() {
+    const bar = document.getElementById('session-timer-bar');
+    if (bar) bar.classList.remove('hidden');
+  }
+
+  function _hideTimerBar() {
+    const bar = document.getElementById('session-timer-bar');
+    if (bar) bar.classList.add('hidden');
+  }
+
+  function _tickTimer() {
+    if (!timedSessionEnd) return;
+    if (timedSessionTimer) clearTimeout(timedSessionTimer);
+    const remaining = Math.max(0, Math.ceil((timedSessionEnd - Date.now()) / 1000));
+    const mins = Math.floor(remaining / 60);
+    const secs = remaining % 60;
+    const label = document.getElementById('session-timer-label');
+    if (label) label.textContent = '⏱️ ' + mins + ':' + String(secs).padStart(2, '0');
+    const fill = document.getElementById('timer-progress-fill');
+    if (fill) fill.style.width = ((remaining / timedSessionDuration) * 100) + '%';
+    if (remaining > 0) {
+      timedSessionTimer = setTimeout(_tickTimer, 1000);
+    } else {
+      timedSessionEnd = null;
+      _hideTimerBar();
+      showToast('⏱️ Zeit abgelaufen! / Time\'s up! Gut gemacht! 🎉');
+      setTimeout(() => showMilestoneConfetti('⏱️ 5-Min Session geschafft!'), 500);
+    }
+  }
+
+  function stopTimedSession() {
+    timedSessionEnd = null;
+    if (timedSessionTimer) { clearTimeout(timedSessionTimer); timedSessionTimer = null; }
+    _hideTimerBar();
+  }
+
+  /* ─── Milestone Confetti ─────────────────────────────────────────────────── */
+  function showMilestoneConfetti(msg) {
+    const wrap = document.getElementById('milestone-confetti-wrap');
+    const overlay = document.getElementById('milestone-overlay');
+    const banner = document.getElementById('milestone-banner-text');
+    if (!wrap || !overlay || !banner) return;
+    banner.textContent = msg;
+    wrap.innerHTML = '';
+    const colors = ['#FFDF00','#009c3b','#002776','#ef476f','#06d6a0','#ffd166','#ff9f43','#a29bfe'];
+    for (let i = 0; i < 60; i++) {
+      const p = document.createElement('div');
+      p.className = 'conf-piece';
+      p.style.cssText = `left:${Math.random()*100}%;background:${colors[i%colors.length]};` +
+        `animation-duration:${2 + Math.random()*1.5}s;animation-delay:${Math.random()*0.8}s;` +
+        `width:${6 + Math.random()*8}px;height:${6 + Math.random()*8}px;` +
+        `border-radius:${Math.random()>0.5?'50%':'2px'}`;
+      wrap.appendChild(p);
+    }
+    wrap.classList.remove('hidden');
+    overlay.classList.remove('hidden');
+    setTimeout(() => {
+      overlay.classList.add('hidden');
+      wrap.classList.add('hidden');
+      wrap.innerHTML = '';
+    }, 3500);
+  }
+
+  /* ─── Daily Challenge ────────────────────────────────────────────────────── */
+  const CHALLENGE_TEMPLATES = [
+    { icon: '📖', type: 'session', goal: 3, desc: '3 Übungen heute abschließen' },
+    { icon: '🎯', type: 'correct', goal: 20, desc: '20 Antworten heute richtig' },
+    { icon: '✏️', type: 'typing', goal: 1, desc: '1 Tipp-Übung abschließen' },
+    { icon: '👂', type: 'listening', goal: 1, desc: '1 Hör-Übung abschließen' },
+    { icon: '💬', type: 'dialog', goal: 1, desc: '1 Dialog abschließen' },
+    { icon: '🔤', type: 'sentence_builder', goal: 1, desc: 'Einen Satz-Builder abschließen' },
+    { icon: '🏃', type: 'session', goal: 5, desc: '5 Übungen heute abschließen' },
+    { icon: '⚡', type: 'combo', goal: 5, desc: '5 Antworten in Folge richtig' },
+    { icon: '🎮', type: 'quiz', goal: 2, desc: '2 Quiz-Runden abschließen' },
+  ];
+
+  function generateDailyChallenge() {
+    const td = today();
+    if (state.dailyChallengeDate === td && state.dailyChallenge) return;
+    const dayIdx = Math.floor(new Date(td).getTime() / 86400000);
+    const tpl = CHALLENGE_TEMPLATES[dayIdx % CHALLENGE_TEMPLATES.length];
+    state.dailyChallenge = { ...tpl };
+    state.dailyChallengeDate = td;
+    state.dailyChallengeProgress = 0;
+    saveState(state);
+  }
+
+  function renderDailyChallenge() {
+    const card = document.getElementById('home-challenge-card');
+    if (!card) return;
+    const ch = state.dailyChallenge;
+    if (!ch) { card.classList.add('hidden'); return; }
+    const prog = Math.min(ch.goal, state.dailyChallengeProgress || 0);
+    const done = prog >= ch.goal;
+    const pct = Math.round((prog / ch.goal) * 100);
+    const doneLabel = done ? ' ✅' : '';
+    card.classList.remove('hidden');
+    card.innerHTML = `
+      <div class="challenge-header">
+        <span class="challenge-icon">${esc(ch.icon)}</span>
+        <span class="challenge-title">⚡ Tages-Challenge${doneLabel}</span>
+      </div>
+      <div class="challenge-desc">${esc(ch.desc)}</div>
+      <div class="challenge-progress-bg">
+        <div class="challenge-progress-fill" style="width:${pct}%"></div>
+      </div>
+      <div class="challenge-meta">
+        <span>${prog}/${ch.goal}</span>
+        <span>+50 XP bei Abschluss</span>
+      </div>`;
+  }
+
+  function checkDailyChallenge(type, value) {
+    if (!state.dailyChallenge) return;
+    const td = today();
+    if (state.dailyChallengeDate !== td) { generateDailyChallenge(); return; }
+    const ch = state.dailyChallenge;
+    if ((state.dailyChallengeProgress || 0) >= ch.goal) return;
+    if (ch.type !== type) return;
+    const prev = state.dailyChallengeProgress || 0;
+    const newVal = ch.type === 'combo' ? Math.max(prev, value) : Math.min(ch.goal, prev + (value || 1));
+    if (newVal !== prev) {
+      state.dailyChallengeProgress = newVal;
+      saveState(state);
+      if (newVal >= ch.goal) {
+        setTimeout(() => {
+          showToast('🏆 Tages-Challenge abgeschlossen! +50 XP');
+          addXP(50, window.innerWidth / 2, 80);
+          showMilestoneConfetti('🏆 Challenge erledigt!');
+        }, 800);
+      }
+      renderDailyChallenge();
+    }
+  }
+
+  /* ─── Streak Freeze UI ───────────────────────────────────────────────────── */
+  function renderStreakFreezeStatus() {
+    const el = document.getElementById('streak-freeze-status');
+    if (!el) return;
+    const avail = state.streakFreezeAvailable > 0 && !state.streakFreezeUsed;
+    el.innerHTML = avail
+      ? `<span class="streak-freeze-badge" onclick="App.useStreakFreeze()" title="Jetzt aktivieren">❄️ Streak Freeze verfügbar (1× diese Woche)</span>`
+      : `<span class="streak-freeze-badge used">❄️ Streak Freeze diese Woche bereits genutzt</span>`;
+  }
+
+  function useStreakFreeze() {
+    if (!state.streakFreezeAvailable || state.streakFreezeUsed) {
+      showToast('❄️ Kein Streak Freeze mehr verfügbar diese Woche.');
+      return;
+    }
+    showToast('❄️ Streak Freeze gespeichert – wird beim nächsten verpassten Tag aktiviert.');
+  }
+
+  /* ─── Emoji Quiz ─────────────────────────────────────────────────────────── */
+  // Words with emoji associations for the quiz
+  const EMOJI_WORDS = WORDS.filter(w => w.emoji);
+  // Fallback: assign emoji by category for words without explicit emoji
+  const CAT_EMOJI = {
+    food: ['🍕','🍔','🍣','🥗','🍰','🍺','🥩','🍜','🍎','🧀'],
+    travel: ['✈️','🚂','🚢','🏨','🗺️','🎒','🧳','🌍','🚗','🏖️'],
+    family: ['👨‍👩‍👧','👶','👴','👵','🧒','👩','👨','❤️'],
+    greetings: ['👋','😊','🤝','👍','🙏','💋','🥰'],
+    colors: ['🔴','🟢','🔵','🟡','⚫','⚪','🟤','🟠','🟣','🩷'],
+    body: ['🦷','👁️','👂','👃','🦵','🦶','💪','🤚'],
+    clothing: ['👕','👗','👔','👒','🧤','🧦','👠','🎒'],
+    weather: ['☀️','🌧️','❄️','🌈','🌊','🌪️','⛅','🌙'],
+    emotions: ['😊','😢','😠','😲','😍','😰','🤣','😴'],
+    house: ['🏠','🛋️','🛏️','🚿','🪴','🔑','🍳','🪞'],
+    jobs: ['👨‍⚕️','👩‍💻','👮','🧑‍🍳','👷','🧑‍🏫','👨‍🎨','🧑‍🚒'],
+    nature: ['🌲','🌸','🦋','🐦','🌊','⛰️','🌺','🍀'],
+    health: ['💊','🩺','🏥','🩹','🧬','💉','🩻','🧘'],
+    tech: ['💻','📱','🤖','⌨️','🖥️','📡','🔋','💡'],
+    sports: ['⚽','🏀','🎾','🏊','🚴','🏋️','🎯','🥊'],
+    ocean: ['🌊','🐋','🐠','🦈','🐙','🦑','🐚','⚓'],
+    society: ['🏛️','📰','🎓','⚖️','🌍','🤝','📣','🗳️'],
+    numbers: ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','🔢'],
+    sentences: ['💬','🗣️','📝'],
+    days: ['📅','🗓️','⏰'],
+    verbs: ['⚡','🏃','🧠'],
+  };
+
+  function _getWordEmoji(word) {
+    if (word.emoji) return word.emoji;
+    const pool = CAT_EMOJI[word.cat] || ['📖'];
+    // Use word id to deterministically pick an emoji from the pool
+    return pool[word.id % pool.length];
+  }
+
+  let emojiSession = null;
+
+  function startEmojiQuiz() {
+    // Pick 10 words that have emoji-friendly categories
+    const pool = WORDS.filter(w => CAT_EMOJI[w.cat]);
+    if (pool.length < 4) { showToast('Nicht genug Wörter verfügbar!'); return; }
+    const shuffled = shuffle(pool).slice(0, 10);
+    emojiSession = {
+      queue: shuffled,
+      index: 0,
+      score: 0,
+      xpEarned: 0,
+    };
+    trackLastActivity('emoji', null, 'Emoji-Quiz');
+    updateStreak();
+    checkMissions('streak', 1);
+    showView('emoji-quiz');
+    document.getElementById('eq-session-area').classList.remove('hidden');
+    document.getElementById('eq-complete').classList.add('hidden');
+    _renderEmojiQuestion();
+  }
+
+  function _renderEmojiQuestion() {
+    if (!emojiSession) return;
+    const { queue, index } = emojiSession;
+    if (index >= queue.length) { _endEmojiQuiz(); return; }
+    const word = queue[index];
+    const emoji = _getWordEmoji(word);
+    const total = queue.length;
+    document.getElementById('eq-progress-label').textContent = (index + 1) + ' / ' + total;
+    document.getElementById('eq-progress-fill').style.width = ((index / total) * 100) + '%';
+    document.getElementById('eq-emoji').textContent = emoji;
+    document.getElementById('eq-score-val').textContent = emojiSession.score;
+    // Build 4 choices (correct + 3 wrong)
+    const correctTr = nativeLang() === 'de' ? word.de : word.en;
+    const distractors = shuffle(WORDS.filter(w => w.id !== word.id && CAT_EMOJI[w.cat]))
+      .slice(0, 3)
+      .map(w => nativeLang() === 'de' ? w.de : w.en);
+    const choices = shuffle([correctTr, ...distractors]);
+    const choicesEl = document.getElementById('eq-choices');
+    choicesEl.innerHTML = '';
+    choices.forEach((ch, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'emoji-choice-btn';
+      btn.textContent = ch;
+      btn.onclick = () => answerEmojiQuestion(ch, correctTr, btn);
+      choicesEl.appendChild(btn);
+    });
+    document.getElementById('eq-feedback').classList.add('hidden');
+    document.getElementById('eq-next-btn').classList.add('hidden');
+  }
+
+  function answerEmojiQuestion(chosen, correct, btnEl) {
+    // Disable all buttons
+    document.querySelectorAll('.emoji-choice-btn').forEach(b => { b.onclick = null; });
+    const isCorrect = chosen === correct;
+    if (isCorrect) {
+      btnEl.classList.add('correct');
+      emojiSession.score++;
+      emojiSession.xpEarned = (emojiSession.xpEarned || 0) + 10;
+      checkMissions('correct', 1);
+    } else {
+      btnEl.classList.add('wrong');
+      // Highlight correct answer
+      document.querySelectorAll('.emoji-choice-btn').forEach(b => {
+        if (b.textContent === correct) b.classList.add('correct');
+      });
+      penaltyXP();
+    }
+    const fb = document.getElementById('eq-feedback');
+    fb.textContent = isCorrect ? '✅ Richtig!' : '❌ ' + correct;
+    fb.className = 'quiz-feedback ' + (isCorrect ? 'correct' : 'wrong');
+    fb.classList.remove('hidden');
+    document.getElementById('eq-next-btn').classList.remove('hidden');
+  }
+
+  function nextEmojiQuestion() {
+    if (!emojiSession) return;
+    emojiSession.index++;
+    if (emojiSession.index >= emojiSession.queue.length) {
+      _endEmojiQuiz();
+    } else {
+      _renderEmojiQuestion();
+    }
+  }
+
+  function _endEmojiQuiz() {
+    if (!emojiSession) return;
+    document.getElementById('eq-session-area').classList.add('hidden');
+    document.getElementById('eq-complete').classList.remove('hidden');
+    const score = emojiSession.score;
+    const total = emojiSession.queue.length;
+    const pct = Math.round((score / total) * 100);
+    let msg = '';
+    if (pct >= 90) msg = score + '/' + total + ' – Ausgezeichnet! 🌟';
+    else if (pct >= 70) msg = score + '/' + total + ' – Super! 💪';
+    else if (pct >= 50) msg = score + '/' + total + ' – Gut! Weiter üben! 📚';
+    else msg = score + '/' + total + ' – Nicht aufgeben! 💡';
+    document.getElementById('eq-complete-msg').textContent = msg;
+    document.getElementById('eq-xp').textContent = '+' + emojiSession.xpEarned + ' XP';
+    if (emojiSession.xpEarned > 0) addXP(emojiSession.xpEarned, window.innerWidth / 2, window.innerHeight / 3);
+    trackSessionCompleted();
+    checkDailyChallenge('session', 1);
+    renderHeaderStats();
+    emojiSession = null;
+  }
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -5649,6 +6461,7 @@ const App = (() => {
     };
     updateStreak();
     checkMissions('streak', 1);
+    trackLastActivity('typing', catId, '✏️ Tippen: ' + (catId || 'Alle'));
     document.getElementById('type-session-area').classList.remove('hidden');
     document.getElementById('type-complete').classList.add('hidden');
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -5764,6 +6577,8 @@ const App = (() => {
     if (session.xpEarned > 0) addXP(session.xpEarned, window.innerWidth / 2, window.innerHeight / 3);
     trackSessionCompleted();
     checkMissions('typing', 1);
+    checkDailyChallenge('typing', 1);
+    checkDailyChallenge('session', 1);
     renderHeaderStats();
   }
 
@@ -5788,6 +6603,7 @@ const App = (() => {
     session = { type: 'listening', catId: null, queue: pool, index: 0, score: 0, xpEarned: 0, answered: false, combo: 0 };
     updateStreak();
     checkMissions('streak', 1);
+    trackLastActivity('listening', null, '👂 Hören');
     document.getElementById('listen-session-area').classList.remove('hidden');
     document.getElementById('listen-complete').classList.add('hidden');
     document.getElementById('listen-score-val').textContent = '0';
@@ -5905,6 +6721,8 @@ const App = (() => {
     if (session.xpEarned > 0) addXP(session.xpEarned, window.innerWidth / 2, window.innerHeight / 3);
     trackSessionCompleted();
     checkMissions('listening', 1);
+    checkDailyChallenge('listening', 1);
+    checkDailyChallenge('session', 1);
     renderHeaderStats();
   }
 
@@ -6068,6 +6886,8 @@ const App = (() => {
     if (session.xpEarned > 0) addXP(session.xpEarned, window.innerWidth / 2, window.innerHeight / 3);
     trackSessionCompleted();
     checkMissions('sentence_builder', 1);
+    checkDailyChallenge('sentence_builder', 1);
+    checkDailyChallenge('session', 1);
     renderHeaderStats();
     checkAchievements();
   }
@@ -6396,6 +7216,7 @@ const App = (() => {
     session = { type: 'dialog', queue, index: 0, score: 0, xpEarned: 0, answered: false, combo: 0 };
     updateStreak();
     checkMissions('streak', 1);
+    trackLastActivity('dialog', null, '💬 Dialoge');
     document.getElementById('dlg-session-area').classList.remove('hidden');
     document.getElementById('dlg-complete').classList.add('hidden');
     document.getElementById('dlg-score-val').textContent = '0';
@@ -6518,6 +7339,8 @@ const App = (() => {
     state.dialogsCompleted = (state.dialogsCompleted || 0) + 1;
     saveState(state);
     trackSessionCompleted();
+    checkDailyChallenge('dialog', 1);
+    checkDailyChallenge('session', 1);
     renderHeaderStats();
     checkAchievements();
   }
@@ -6664,6 +7487,7 @@ const App = (() => {
     if (session.xpEarned > 0) addXP(session.xpEarned, window.innerWidth / 2, window.innerHeight / 3);
     trackSessionCompleted();
     checkMissions('sentence_builder', 1);
+    checkDailyChallenge('session', 1);
     renderHeaderStats();
     checkAchievements();
   }
@@ -6873,8 +7697,19 @@ const App = (() => {
     if (!state.dailyMissions) state.dailyMissions = [];
     if (state.dailyMissionsDate === undefined) state.dailyMissionsDate = null;
     if (!state.dailyMissionsProgress) state.dailyMissionsProgress = {};
+    // Migrate v8.0 fields
+    if (state.onboardingDone === undefined) state.onboardingDone = false;
+    if (!state.heatmap) state.heatmap = {};
+    if (state.streakFreezeAvailable === undefined) state.streakFreezeAvailable = 1;
+    if (state.streakFreezeWeek === undefined) state.streakFreezeWeek = null;
+    if (state.streakFreezeUsed === undefined) state.streakFreezeUsed = false;
+    if (state.dailyChallenge === undefined) state.dailyChallenge = null;
+    if (state.dailyChallengeDate === undefined) state.dailyChallengeDate = null;
+    if (state.dailyChallengeProgress === undefined) state.dailyChallengeProgress = 0;
+    if (state.lastActivity === undefined) state.lastActivity = null;
     updateStreak();
     generateDailyMissions();
+    generateDailyChallenge();
     renderHeaderStats();
     renderHome();
     // Apply dark mode and font size from saved state
@@ -6883,9 +7718,13 @@ const App = (() => {
     if (state.fontSize === 'small') document.body.classList.add('font-small');
     if (state.fontSize === 'large') document.body.classList.add('font-large');
 
-    // Show language selection popup on first launch
+    // Show language selection popup on first launch, then onboarding
     if (!state.langSelected) {
       document.getElementById('lang-popup-overlay').classList.remove('hidden');
+    } else if (!state.onboardingDone) {
+      // Returning user who hasn't done onboarding yet (e.g. upgraded from v7)
+      // Show onboarding after a short delay
+      setTimeout(showOnboarding, 500);
     }
 
     // Swipe left/right to navigate between main tabs
@@ -6994,7 +7833,13 @@ const App = (() => {
       toggleGrammarCard,
       startLueckentext, checkLueckentext, nextLueckentext, ltHint,
       startConjugationTrainer, checkConjugation, nextConjugation, exitConjugation, conjHint, setConjTense,
-      toggleVoiceTranslate, stopVoiceTranslate
+      toggleVoiceTranslate, stopVoiceTranslate,
+      // v8.0 Roadmap 2.0 features
+      onboardingSelect, completeOnboarding,
+      resumeLastActivity,
+      startTimedSession, stopTimedSession,
+      startEmojiQuiz, nextEmojiQuestion, answerEmojiQuestion,
+      useStreakFreeze
     };
   }
 
